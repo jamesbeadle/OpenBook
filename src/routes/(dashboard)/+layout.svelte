@@ -1,14 +1,14 @@
 <script>
-  import '../../app.css';
-  import Sidebar from '../../lib/components/Sidebar.svelte';
-  import Container from '../../lib/components/Container.svelte';
-  import LineLayout from '../../lib/components/LineLayout.svelte';
-  import menu from '../../lib/config/menu.js';
+  import "./layout.css";
+  import Sidebar from "../../lib/components/Sidebar.svelte";
+  import Container from "../../lib/components/Container.svelte";
+  import LineLayout from "../../lib/components/LineLayout.svelte";
+  import menu from "../../lib/config/menu.js";
 
-  import store from '../../lib/config/store';
-  import { onMount, afterUpdate } from 'svelte';
+  import store from "../../lib/config/store";
+  import { onMount, afterUpdate } from "svelte";
 
-  import UserAvatar from '../../assets/useravatar.svg';
+  import UserAvatar from "../../assets/useravatar.svg";
 
   let navIndex = 0;
   let unsubscribe;
@@ -30,22 +30,21 @@
   });
 </script>
 
-<main style="background-color: black;">
+<main class="dashboard">
   <div class="flex h-auto bg-neutral-950 md:h-screen">
     <Sidebar />
     <Container>
       <LineLayout backgroundColor="#1A1A1D">
         <div
-          class="flex items-center justify-between py-6 pl-14 pr-8"
-          style="border-color: #2E323A; border-bottom-width: 1px;"
+          class="dashboard-header flex items-center justify-between py-6 pl-8 md:pl-14 pr-8 border-b-2"
         >
           <span class="text-white">{menu[navIndex].name}</span>
-          <!-- svelte-ignore a11y-no-static-element-interactions -->
           <div
-            class="h-8 w-8 p-0.5 rounded-full border-solid border-2"
+            class="h-7 w-7 p-0.5 rounded-full border-solid border-2"
             style="border-color: {isHovered === -2 ? '#4ade80' : '#1A1A1D'};"
             on:mouseenter={() => {
               isHovered = -2;
+              console.log("ok")
             }}
             on:mouseleave={() => {
               isHovered = -1;

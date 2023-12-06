@@ -1,0 +1,21 @@
+.board {
+  background-color: #101111;
+}
+
+.welcome-label {
+  font-family: Poppins;
+}
+
+.login-description {
+  color: var(--text-g-6, #8c8c8c);
+  font-family: Poppins;
+}
+
+.whitepaper-button {
+  background: var(--status-positive, #66e094);
+}
+
+.whitepaper-description {
+  color: var(--text-g-6, #8c8c8c);
+  font-family: Poppins;
+}

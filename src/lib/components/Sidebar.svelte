@@ -1,8 +1,8 @@
 <script>
-  import menu from '../../lib/config/menu';
-  import OrgName from '../../assets/orgname.svg';
-  import store from '../../lib/config/store';
-  import { onMount, afterUpdate } from 'svelte';
+  import menu from "../../lib/config/menu";
+  import OrgName from "../../assets/orgname.svg";
+  import store from "../../lib/config/store";
+  import { onMount, afterUpdate } from "svelte";
 
   let isSeleted = 0;
   let isHovered = 0;
@@ -27,57 +27,57 @@
 
   const collapse = () => {
     // @ts-ignore
-    document.getElementById('sidebarContainer').classList.remove('w-60');
+    document.getElementById("sidebarContainer").classList.remove("w-60");
     // @ts-ignore
-    document.getElementById('sidebarContent').classList.remove('px-8');
+    document.getElementById("sidebarContent").classList.remove("px-8");
     // @ts-ignore
-    document.getElementById('sidebarContent').classList.add('px-3');
+    document.getElementById("sidebarContent").classList.add("px-3");
 
     // @ts-ignore
-    document.getElementById('mark').classList.remove('grid-cols-2');
+    document.getElementById("mark").classList.remove("grid-cols-2");
     // @ts-ignore
-    document.getElementById('mark').classList.add('grid-cols-1');
+    document.getElementById("mark").classList.add("grid-cols-1");
     // @ts-ignore
-    document.getElementById('icon').classList.remove('justify-end');
+    document.getElementById("icon").classList.remove("justify-end");
     // @ts-ignore
-    document.getElementById('icon').classList.add('justify-center');
+    document.getElementById("icon").classList.add("justify-center");
 
     // @ts-ignore
-    document.getElementById('sidebarContainer').dataset.expanded = '0';
+    document.getElementById("sidebarContainer").dataset.expanded = "0";
     // @ts-ignore
-    document.querySelectorAll('#link').forEach((link) => {
-      console.log('ok');
-      link.classList.add('sr-only');
+    document.querySelectorAll("#link").forEach((link) => {
+      console.log("ok");
+      link.classList.add("sr-only");
     });
   };
 
   const expand = () => {
     // @ts-ignore
-    document.getElementById('sidebarContainer').classList.add('w-60');
+    document.getElementById("sidebarContainer").classList.add("w-60");
     // @ts-ignore
-    document.getElementById('sidebarContent').classList.remove('px-3');
+    document.getElementById("sidebarContent").classList.remove("px-3");
     // @ts-ignore
-    document.getElementById('sidebarContent').classList.add('px-8');
+    document.getElementById("sidebarContent").classList.add("px-8");
     // @ts-ignore
-    document.getElementById('mark').classList.remove('grid-cols-1');
+    document.getElementById("mark").classList.remove("grid-cols-1");
     // @ts-ignore
-    document.getElementById('icon').classList.remove('justify-center');
+    document.getElementById("icon").classList.remove("justify-center");
     // @ts-ignore
-    document.getElementById('icon').classList.add('justify-end');
+    document.getElementById("icon").classList.add("justify-end");
     // @ts-ignore
-    document.getElementById('mark').classList.add('grid-cols-2');
+    document.getElementById("mark").classList.add("grid-cols-2");
     // @ts-ignore
-    document.getElementById('sidebarContainer').dataset.expanded = '1';
+    document.getElementById("sidebarContainer").dataset.expanded = "1";
     // @ts-ignore
     // document.getElementById('link').classList.remove("sr-only");
-    document.querySelectorAll('#link').forEach((link) => {
-      link.classList.remove('sr-only');
+    document.querySelectorAll("#link").forEach((link) => {
+      link.classList.remove("sr-only");
     });
   };
 
   const toggle = () => {
     // @ts-ignore
-    if (document.getElementById('sidebarContainer').dataset.expanded === '1') {
+    if (document.getElementById("sidebarContainer").dataset.expanded === "1") {
       isExpanded = 1;
       collapse();
     } else {
@@ -89,7 +89,7 @@
 
 <div
   id="container"
-  class="flex border-r-2"
+  class="flex border-r-2" 
   style="background-color: #1A1A1D; color:rgb(140, 140, 140); border-color: #2E323A; border-width: 1px;"
 >
   <aside
@@ -98,10 +98,7 @@
     data-expanded="1"
     data-controller="sidebar"
   >
-    <div
-      class="sticky top-0 h-screen w-full px-8 py-6 overflow-auto"
-      id="sidebarContent"
-    >
+    <div class="sticky top-0 h-screen w-full px-8 py-6 overflow-auto" id="sidebarContent">
       <div class="mb-20 grid h-10 grid-cols-2" id="mark">
         <div class="h-10">
           <svg
@@ -132,7 +129,6 @@
             data-action="click->sidebar#toggle"
             on:click={() => toggle()}
           >
-            <!-- svelte-ignore a11y-no-static-element-interactions -->
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-10 w-3"
@@ -151,9 +147,9 @@
                 stroke-linejoin="round"
                 stroke-width="2"
                 d={isExpanded === 1
-                  ? 'M13 5l7 7-7 7M5 5l7 7-7 7'
-                  : 'M11 19l-7-7 7-7m8 14l-7-7 7-7'}
-                fill={isHovered == -5 ? '#F3F3F3' : '#8C8C8C'}
+                  ? "M13 5l7 7-7 7M5 5l7 7-7 7"
+                  : "M11 19l-7-7 7-7m8 14l-7-7 7-7"}
+                fill={isHovered == -5 ? "#F3F3F3" : "#8C8C8C"}
               />
             </svg>
           </button>
@@ -170,7 +166,7 @@
                   (isSeleted = m.index),
                   (isHovered = m.index),
                   store.store.dispatch(
-                    store.navIndexSlice.actions.setNavIndex(m.index),
+                    store.navIndexSlice.actions.setNavIndex(m.index)
                   )
                 )}
                 on:mouseenter={() => {
@@ -203,9 +199,8 @@
         <div class="flex h-6 items-center hover:text-gray-200">
           <!-- svelte-ignore a11y-invalid-attribute -->
           <div class="flex h-6 items-center gap-2">
-            <!-- svelte-ignore a11y-no-static-element-interactions -->
             <div
-              class="h-8 w-8 p-0.5 rounded-full border-solid border-2"
+              class="h-7 w-7 p-0.5 rounded-full border-solid border-2"
               style="border-color: {isHovered === -2 ? '#4ade80' : '#1A1A1D'};"
               on:mouseenter={() => {
                 isHovered = -2;

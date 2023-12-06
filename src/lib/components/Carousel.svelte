@@ -85,8 +85,8 @@
   }
 </script>
 
-<div class="carousel w-full h-screen">
-  <div class="slides h-screen" bind:this={siema}>
+<div class="carousel md:h-screen">
+  <div class="slides md:h-screen" bind:this={siema}>
     <slot />
   </div>
 </div>
