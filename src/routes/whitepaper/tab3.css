@@ -6,9 +6,7 @@ p {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
-img {
-  border-radius: 1rem;
-}
+
 blockquote {
   font-size: 30px;
   color: #888;

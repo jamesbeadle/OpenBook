@@ -6,16 +6,18 @@
   const handleClick = (tabValue) => () => (activeTabValue = tabValue);
 </script>
 
+
+
 <ul class="tabs_ul rounded-t-lg">
   {#each items as item}
     <li
-      class="tabs_li hover:text-white;"
+      class="tabs_li hover:text-white"
       style="border-bottom-color: {activeTabValue === item.value
         ? '#39dca5'
         : '#292c33'};"
     >
       <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <span on:click={handleClick(item.value)}>{item.label}</span>
+      <span on:click={handleClick(item.value)} class="hover:text-white">{item.label}</span>
     </li>
   {/each}
 </ul>
@@ -28,7 +30,3 @@
     </div>
   {/if}
 {/each}
-
-<style>
-  
-</style>

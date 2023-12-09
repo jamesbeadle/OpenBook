@@ -5,6 +5,7 @@
   export let perPage = 1;
   export let loop = true;
   export let autoplay = 0;
+  export let play = true;
   export let duration = 200;
   export let easing = "ease-out";
   export let startIndex = 0;
@@ -37,7 +38,7 @@
       onChange: handleChange,
     });
 
-    if (autoplay) {
+    if (autoplay && play) {
       timer = setInterval(right, autoplay);
     }
     return () => {
@@ -85,8 +86,8 @@
   }
 </script>
 
-<div class="carousel md:h-screen">
-  <div class="slides md:h-screen" bind:this={siema}>
+<div class="carousel md:h-screen md:w-screen">
+  <div class="slides md:h-screen md:w-auto" bind:this={siema}>
     <slot />
   </div>
 </div>
