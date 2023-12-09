@@ -101,6 +101,15 @@
               White Paper
             </button>
           </a>
+
+             <a href="/whitepaper">
+            <button
+              type="button"
+              class="whitepaper-button text-white rounded flex text-xl md:text-sm mt-4 w-80 md:w-56 md:mt-10 px-8 py-3 justify-center align-middle gap-1"
+            >
+              White Paper
+            </button>
+          </a>
         </div>
       </div>
       <div

@@ -1,7 +1,7 @@
 export default [
   {
     index: 0,
-	url: '/banking',
+	url: '/dashboard/banking',
     svg: `<svg
 		xmlns="http://www.w3.org/2000/svg"
 		width="24"
@@ -30,7 +30,7 @@ export default [
   },
   {
     index: 1,
-	url: '/debtors',
+	url: '/dashboard/debtors',
     svg: `<svg
 		xmlns="http://www.w3.org/2000/svg"
 		width="24"
@@ -59,7 +59,7 @@ export default [
   },
   {
     index: 2,
-	url: '/creditors',
+	url: '/dashboard/creditors',
     svg: `<svg
 		xmlns="http://www.w3.org/2000/svg"
 		width="24"
@@ -88,7 +88,7 @@ export default [
   },
   {
     index: 3,
-	url: '/profit',
+	url: '/dashboard/profit',
     svg: `<svg
 		xmlns="http://www.w3.org/2000/svg"
 		width="24"
@@ -117,7 +117,7 @@ export default [
   },
   {
     index: 4,
-	url: '/balance',
+	url: '/dashboard/balance',
     svg: `<svg
 		xmlns="http://www.w3.org/2000/svg"
 		width="24"
@@ -146,7 +146,7 @@ export default [
   },
   {
     index: 5,
-	url: '/financing',
+	url: '/dashboard/financing',
     svg: `<svg
 		xmlns="http://www.w3.org/2000/svg"
 		width="24"
