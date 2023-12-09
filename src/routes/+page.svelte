@@ -14,6 +14,12 @@
   import image11 from "../assets/Slides/11.png";
   import image12 from "../assets/Slides/12.png";
 
+  const imgAspect = 1728 / 2234;
+
+  let innerWidth = 0;
+  let innerHeight = 0;
+  let height;
+
   let images = [
     image1,
     image2,
@@ -30,21 +36,36 @@
   ];
 </script>
 
-<div class="mx-auto h-screen bg-white overflow-hidden">
+<svelte:window bind:innerHeight={height} />
+
+<div class="mx-auto h-screen overflow-hidden">
   <div class="h-screen md:flex md:h-screen md:flex-row-reverse">
-    <div class="h-1/4 md:h-screen md:w-1/2">
-      <Carousel autoplay="4000">
+    <!-- <div class="md:w-full"></div> -->
+    <div
+      class="h-1/4 md:h-screen md:w-1/2"
+      style="min-width: {height * imgAspect}px"
+    >
+      <!-- <Carousel autoplay="2000" play={false} draggable={false}>
         {#each images as image, index (index)}
           <img
-            src={image}
-            class="-translate-y-40 md:translate-y-0 md:w-screen md:h-screen"
+            src={image12}
+            class="-translate-y-40 md:translate-y-0 md:w-auto md:h-screen"
             alt="ok"
           />
         {/each}
-      </Carousel>
+      </Carousel> -->
+      <div class="carousel md:h-screen md:w-screen">
+        <div class="slides md:h-screen md:w-auto">
+          <img
+            src={image12}
+            class="-translate-y-40 md:translate-y-0 md:w-auto md:h-screen"
+            alt="ok"
+          />
+        </div>
+      </div>
     </div>
     <div
-      class="board h-3/4 md:h-screen md:w-1/2 relative flex flex-col justify-center gap-8"
+      class="board h-3/4 md:h-screen md:w-full relative flex flex-col justify-center gap-8"
     >
       <div
         class="absolute justify-center left-6 right-6 top-8 md:top-10 md:left-10 md:right-0 md:flex md:justify-start flex gap-2"
@@ -70,31 +91,30 @@
       <div class="md:flex md:flex-col justify-center h-auto">
         <p class="welcome-label text-white text-center text-5xl md:text-4xl">
           Welcome to OpenBook
-        </p>
-        <!-- <p class="login-description text-2xl md:text-sm text-center">
-          Please Login to continue.
-        </p> -->
+        </p>      
         <div class="justify-center flex">
-          <button
-            type="button"
-            class="whitepaper-button text-white rounded flex text-xl md:text-sm mt-4 w-80 md:w-56 md:mt-10 px-8 py-3 justify-center align-middle gap-1"
-          >
-            <a href="/whitepaper"> White Paper </a>
-          </button>
+          <a href="/whitepaper">
+            <button
+              type="button"
+              class="whitepaper-button text-white rounded flex text-xl md:text-sm mt-4 w-80 md:w-56 md:mt-10 px-8 py-3 justify-center align-middle gap-1"
+            >
+              White Paper
+            </button>
+          </a>
         </div>
       </div>
       <div
-        class="absolute bottom-10 left-10 right-10 md:bottom-10 md:left-10 md:right-10 md:justify-center justify-center"
+        class="absolute bottom-10 left-10 right-10 md:bottom-12 md:left-30 md:right-30 md:justify-center justify-center"
       >
-        <p class="text-xs whitepaper-description text-center">
+        <p class="text-md whitepaper-description text-center">
           Welcome to <b class="text-white">OpenBook</b>, the future of
-          accounting at your fingertips! Experience the ease of decentralized
-          financial management. Streamline processes, manage transactions
-          securely, and gain real-time insights. Simplify your accounting
-          journey with
-          <b class="text-white">OpenBook</b>!
+          accounting at your fingertips! Experience the ease
+          of decentralized financial management. Streamline processes, manage transactions
+          securely, and gain real-time insights. Simplify your accounting journey
+          with <b class="text-white">OpenBook</b>!
         </p>
       </div>
     </div>
+    <!-- <div class="md:w-full"></div> -->
   </div>
 </div>

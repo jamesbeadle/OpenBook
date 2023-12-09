@@ -70,6 +70,9 @@
 		"stimulus": "^3.2.2",
 		"svelte-grid-responsive": "^1.2.4",
 		"svelte-tables-tailwind": "^1.0.6",
-		"tailwindcss-stimulus-components": "^4.0.4"
+		"tailwindcss-stimulus-components": "^4.0.4",
+		"s-date-range-picker": "^0.3.0",
+		"svelte-device-info": "^1.0.0"
+
 	}
 }

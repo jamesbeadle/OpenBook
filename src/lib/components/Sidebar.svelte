@@ -200,7 +200,7 @@
           <!-- svelte-ignore a11y-invalid-attribute -->
           <div class="flex h-6 items-center gap-2">
             <div
-              class="h-7 w-7 p-0.5 rounded-full border-solid border-2"
+              class="h-8 w-8 p-0.5 rounded-full border-solid border-2"
               style="border-color: {isHovered === -2 ? '#4ade80' : '#1A1A1D'};"
               on:mouseenter={() => {
                 isHovered = -2;
