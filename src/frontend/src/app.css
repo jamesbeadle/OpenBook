@@ -15,6 +15,14 @@
 .book-btn.disabled {
   @apply bg-gray-500;
 }
+.side-nav-icon{
+  @apply w-6 mt-8;
+}
+
+.top-bar{
+  background-color: #1A1A1D;
+  border-bottom: 1px solid #2E323A;
+}
 
 input {
   background-color: #2e323a !important;
