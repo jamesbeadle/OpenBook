@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.modal-backdrop {
+  z-index: 1000;
+}
+
+.default-text {
+  @apply text-xs xs:text-sm sm:text-lg;
+}
+.book-btn {
+  @apply bg-customGreen px-4 py-2 rounded-md;
+}
+.book-btn.disabled {
+  @apply bg-gray-500;
+}
+
+input {
+  background-color: #2e323a !important;
+}
+
+/* Extra small devices (portrait phones, less than 480px) */
+@media (min-width: 480px) {
+}
+
+/* Small devices (landscape phones, 640px and up) */
+@media (min-width: 640px) {
+  /* Your CSS here */
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  /* Your CSS here */
+}
+
+/* Large devices (desktops, 1024px and up) */
+@media (min-width: 1024px) {
+  /* Your CSS here */
+}
+
+/* Extra large devices (large desktops, 1280px and up) */
+@media (min-width: 1280px) {
+  /* Your CSS here */
+}
+
+/* 2XL devices (larger desktops, 1536px and up) */
+@media (min-width: 1536px) {
+  /* Your CSS here */
+}
+
+/* 3XL devices (extra large desktops, 1920px and up) */
+@media (min-width: 1920px) {
+  /* Your CSS here */
+}

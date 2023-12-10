@@ -1,5 +1,8 @@
 {
+  "backend": {
+    "ic": "eur5j-5iaaa-aaaal-qcrva-cai"
+  },
   "frontend": {
-    "ic": "igvli-baaaa-aaaai-qpc5q-cai"
+    "ic": "etq35-qqaaa-aaaal-qcrvq-cai"
   }
 }
