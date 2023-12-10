@@ -6,12 +6,17 @@
   z-index: 1000;
 }
 
+.default-text {
+  @apply text-xxs xs:text-xs sm:text-base;
+}
+
 input {
   background-color: #2e323a !important;
 }
 
 /* Extra small devices (portrait phones, less than 480px) */
 @media (min-width: 480px) {
+  
 }
 
 /* Small devices (landscape phones, 640px and up) */
