@@ -1,75 +1,49 @@
 <h1 class="text-2xl">Value Proposition</h1>
 <div class="flex flex-col space-y-4 mt-4">
-    <p>$BOOK Utility Token
-        OpenBook operates as a DAO (Decentralised Autonomous Organisation). The $BOOK token is used
-        within the DAO for the following purposes:
-        - Organisations will pay an annual subscription for the basic OpenBook service with $BOOK
-        tokens.
-        - Organisations will be able to settle invoices and pay employees in $BOOK, along with any other
-        ICRC token.
-        - Neuron holders will be rewarded with $BOOK maturity interest.
-        Future features will enable the $BOOK utility token to be used for:
-        - Finance professionals will be able to design and build financial reports based on the granular
-        chart of accounts structure an organisation sets up. These professionals will be rewarded in
-        $BOOK tokens when an organisation uses their designed report.
-        - As OpenBook grows it will venture into all areas of business management, subscriptions to these
-        additional advanced features will also be paid using $BOOK.
-        Genesis Token Allocation
-        We will decentralise OpenBook through the following token allocation at genesis:
-        - James Beadle + Team - 12%
-        - Funded NFT Holders - 12%
-        - SNS Decentralisation Sale - 25%
-        - DAO Treasury - 51%
-        DAO Reward Structure
-        The OpenBook DAO's rewards are funded by the minting of new BOOK tokens, minting 2.5% of the total
-        supply annually.
-        The minted $BOOK is distributed throughout the year for the following reward categories
-        - Professional Service Rewards (75%)
-        - Governance Rewards (25%)
-        Professional Service Rewards
-        In the first instance professional service rewards will be utilised for the writing of jurisdictional specific
-        reports by local finance professionals. These professionals will build tailored reports for their local
-        jurisdictional finance rules and formats that users in their locality can utilise.
-        
-        This reward pool will be expanded to other experts in fields relevant to future OpenBook features.
-        Governance Rewards
-        Initially the DAO will operate using the non-custom SNS governance proposals. Failed proposals will cost
-        10 $BOOK tokens to a neuron holder which will be deposited into the DAO’s treasury.
-        
-        Revenue
-        OpenBook's revenue model is thoughtfully designed to sustain and grow the DAO while ensuring
-        practical utility and value for its users.
-        Diversified Revenue Model
-        To avoid creating a supply shock by pegging services to a fixed token amount, OpenBook's revenue
-        streams are diversified. This approach mitigates the risk of reduced service usage due to infeasibility,
-        ensuring long-term stability and utility.
-        Each OpenBook service will generate revenue through an annual subscription model. The core
-        subscription will be charged in $ICP to establish a stable revenue base. Additional features will be
-        payable using the BOOK token enabling a balanced mix of $BOOK and $ICP revenue.
-        Revenue Redistribution Plan
-        In line with our commitment to directly benefit neuron holders, OpenBook will allocate 50% of any ICRC-1
-        token received by the DAO each month to neuron holders.
-        Distribution to neuron holders will be proportional to each neuron's total $BOOK value and its remaining
-        duration. This ensures a fair and equitable redistribution of revenue.
-        Calculation for this distribution will be based on the status of BOOK neurons as at the end of each
-        month, aligning with the DAO's transparent and community-focused ethos.
-        Overall Revenue Philosophy
-        OpenBook’s revenue philosophy is rooted in creating a sustainable ecosystem where the utility token
-        maintains its value and relevance.
-        The reinvestment of revenues into the DAO and direct distribution to neuron holders are designed to
-        foster a cycle of growth, user engagement, and shared prosperity.
-        
-        DAO Valuation
+    <h1>$BOOK Utility Token</h1>
+    <p>OpenBook operates as a DAO (Decentralised Autonomous Organisation). The $BOOK token is used
+        within the DAO for the following purposes:</p>
+    <ul>
+        <li>
+            Organisations will pay an annual subscription for the basic OpenBook service with $BOOK
+            tokens.
+        </li>
+        <li>
+            Organisations will be able to settle invoices and pay employees in $BOOK, along with any other
+            ICRC token.
+        </li>
+        <li>
+            Neuron holders will be rewarded with $BOOK maturity interest.
+        </li>
+        <li>
+            Finance professionals will be able to design and build financial reports based on the granular
+            chart of accounts structure an organisation sets up. These professionals will be rewarded in
+            $BOOK tokens when an organisation uses their designed report.
+        </li>
+        <li>
+            As OpenBook grows it will venture into all areas of business management, subscriptions to these
+            additional advanced features will also be paid using $BOOK.
+        </li>
+    </ul>
+
+    <p>DAO Valuation</p>
+    <p>
         In forecasting the potential revenue for our platform, we conducted a comparative analysis between
         two established SaaS platforms: Salesforce and QuickBooks.
-        QuickBooks: Highly popular in the accounting software market. As of the recent data, QuickBooks
-        generated a total revenue of $9.6 billion, a 25% increase year-over-year. Their combined platform
-        revenue, which includes QuickBooks Online, TurboTax Online, and Credit Karma, accounted for $6.6
-        billion, marking a 39% growth.
+    </p>
+    <p>
         Salesforce: A dominant force in the CRM space. Salesforce has seen consistent growth over the years. In
         2023, their annual revenue was $31.352 billion, up 18.35% from 2022. To provide a broader perspective,
         their revenue in 2022 was $26.492 billion, marking a 24.66% growth from 2021, which had a revenue of
         $21.252 billion, a 24.3% increase from 2020.
+    </p>
+    <p>
+        QuickBooks: Highly popular in the accounting software market. As of the recent data, QuickBooks
+        generated a total revenue of $9.6 billion, a 25% increase year-over-year. Their combined platform
+        revenue, which includes QuickBooks Online, TurboTax Online, and Credit Karma, accounted for $6.6
+        billion, marking a 39% growth.
+    </p>
+    <p>
         Both these platforms represent a combined user base of approximately 6.6 million. It's crucial to
         understand that the impressive revenue figures, especially from Salesforce, often stem from their
         enterprise licensing agreements. Enterprise licences differ significantly from individual or small business
@@ -77,6 +51,7 @@
         services like consulting, training, and customisation. This model can significantly inflate the average
         revenue per user, especially for platforms like Salesforce, which caters to large corporations and
         businesses across the globe.
+    </p><p>
         Drawing insights from QuickBooks and Salesforce, we find that Salesforce's revenue is approximately
         $10,451 per user per year, while QuickBooks stands at about $2,667 per user. We'll use the more
         conservative figure from QuickBooks as our benchmark.
@@ -84,6 +59,81 @@
         a user base of 37,500. This goal entails an average onboarding of roughly 4,688 users per annum with
         this target representing a mere 0.57% of the combined 6.6 million user base of Salesforce and
         QuickBooks.
-        </p>
+    </p>
+
+    <p>Revenue Model: Adaptive and User-Focused</p>
+
+    <p>
+        Central to OpenBook's revenue strategy is our dedication to simple, user-friendly subscription models. 
+        Users have the freedom to activate or deactivate platform features as their business needs evolve. 
+        This unique model allows for a customisable experience, ensuring that users only pay for what they need, when they need it. 
+        Crucially, even when a feature is deactivated, all associated data is preserved, ready to be reactivated at any time. 
+        This approach not only makes OpenBook adaptive to changing business landscapes but also ensures that it remains economically efficient for our users.
+        $BOOK tokens will be used to pay for these services. 
+    </p>
+
+    <p>
+        In line with our commitment to directly benefit neuron holders, OpenBook will allocate 50% of any ICRC-1 token received by the DAO each month to neuron holders. 
+        Distribution to neuron holders will be proportional to each neuron's total $BOOK value and its remaining duration. 
+        This ensures a fair and equitable redistribution of revenue. 
+        Calculation for this distribution will be based on the status of BOOK neurons as at the end of each month, 
+        aligning with the DAO's transparent and community-focused ethos.
+        The remaining 50% will remain in the OpenBook treasury free for the DAO to use as required.
+    </p>
+
+    <p>
+        The reinvestment of revenues into the DAO and direct distribution to neuron holders are designed to
+        foster a cycle of growth, user engagement, and shared prosperity.
+    </p>
+    
+    
+
+    <p>
+        DAO Reward Structure
+    </p>
+
+    <p>
+        The OpenBook DAO's rewards are funded by the minting of new BOOK tokens, minting 2.5% of the total
+        supply annually. The minted $BOOK is distributed throughout the year for the following reward categories
+    </p>
+
+    <ul>
+        <li>Professional Service Rewards (75%)</li>
+        <li>Governance Rewards (25%)</li>
+    </ul>
+
+    <p>
+        Professional Service Rewards
+    </p>
+    
+    <p>
+        The DAO has the ability to propose and vote on new features or adjustments, leveraging the expertise of finance professionals. 
+        This integration of domain knowledge ensures that the feature development process is strategic and thoughtful, 
+        providing businesses with a clear understanding of the services available. 
+        The inclusion of these professionals in the DAO's decision-making adds a layer of practical insight and relevance to the features and adjustments considered, 
+        ensuring they align with real-world financial needs and trends.
+    </p>
+    <p>
+        Professional Service Rewards further reinforce this approach. 
+        Initially, these rewards will be used for writing jurisdiction-specific reports by local finance professionals, 
+        who will build tailored reports suited to their local jurisdictional finance rules and formats. 
+        This reward pool will later expand to include other experts in fields relevant to future OpenBook features, 
+        continuing to enrich the platform with practical and expert insights.
+    </p>
+
+    <p>Governance Rewards</p>
+
+    <p>The DAO will reward users for participation in governance with $BOOK tokens. Failed proposals will cost
+        10 $BOOK tokens to a neuron holder which will be deposited into the DAO’s treasury.</p>
+
+    <p>
+        We will decentralise OpenBook through the following token allocation at genesis:
+    </p>
+    <ul>
+        <li>James Beadle + Team - 12%</li>
+        <li>Funded NFT Holders - 12%</li>
+        <li>SNS Decentralisation Sale - 25%</li>
+        <li>DAO Treasury - 51%</li>
+    </ul>
 </div>
 

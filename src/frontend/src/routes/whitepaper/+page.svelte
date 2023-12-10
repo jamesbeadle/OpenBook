@@ -31,7 +31,7 @@
 </script>
 
 <Layout>
-    <div class="flex h-screen">
+    <div class="flex h-full">
       <nav class="p-4 h-full side-nav flex flex-col">
         <a href="/">
           <Logo className='w-6' />
