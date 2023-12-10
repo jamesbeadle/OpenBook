@@ -19,3 +19,26 @@
         January 2025: Joint Venture Accounting, Sales CRM & HR Platform Features Launch</p>
 </div>
 
+
+
+<p>OpenBook is a secure, decentralised, multi-tenant, multi-currency role based platform designed to
+    ensure your business operates effectively 100% on-chain. With the ability to provide transparency to
+    current & future stakeholders in real time, OpenBook plans to change the way small businesses operate
+    from obtaining funding to rewarding employees.</p>
+<p>OpenBook plans to target the core business management SaaS platforms that exist within web2, initially
+            bringing these core services on-chain:</p>
+<p>- Finance
+                - Sales
+                - HR</p>
+<p>As the platform grows we plan to enhance the user experience for organisations by adding features for:</p>
+<p>
+                    - Joint Venture Accountancy
+- Timesheet Management
+- Project Management
+- Customer Service
+- Inventory & Supply Chain Management
+- Risk Management
+- Recruitment
+- Training
+- Advanced Reporting
+                </p>

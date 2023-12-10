@@ -1,30 +1,35 @@
 <h1 class="text-2xl">Vision</h1>
 <div class="flex flex-col space-y-4 mt-4">
-    <p>The Internet Computer blockchain has provided the world with the infrastructure required to truly
-        decentralise the services we use each day.</p>
-    <p>One such service that organisations use worldwide is the management of their internal business
-        processes. Well implemented processes drive competent business decisions, allow for organic growth
-        along with providing the metrics that allow an organisation’s success to be evaluated.</p>
-        <p>OpenBook is a secure, decentralised, multi-tenant, multi-currency role based platform designed to
-            ensure your business operates effectively 100% on-chain. With the ability to provide transparency to
-            current & future stakeholders in real time, OpenBook plans to change the way small businesses operate
-            from obtaining funding to rewarding employees.</p>
-            <p>OpenBook plans to target the core business management SaaS platforms that exist within web2, initially
-                bringing these core services on-chain:</p>
-                <p>- Finance
-                    - Sales
-                    - HR</p>
-                    <p>As the platform grows we plan to enhance the user experience for organisations by adding features for:</p>
-                    <p>
-                        - Joint Venture Accountancy
-- Timesheet Management
-- Project Management
-- Customer Service
-- Inventory & Supply Chain Management
-- Risk Management
-- Recruitment
-- Training
-- Advanced Reporting
-                    </p>
+    <p>        
+        The Internet Computer blockchain has provided the world with a foundation for genuine decentralisation. 
+        This technological leap is particularly transformative for businesses worldwide, which are increasingly reliant on Software as a Service (SaaS) platforms for critical data processing.
+    </p>
+    <p>
+        Businesses today face the task of managing multiple subscriptions across a range of platforms. Their use cases often extend further, 
+        encompassing multiple organisations, currencies, and user roles. These challenges open the door for opportunities to create a more streamlined and 
+        integrated approach to business operations. In the world of SaaS platforms, diversity in functionality often comes at a cost. 
+        These platforms are frequently cluttered with ads, compromising the user experience. 
+        Additionally, they are characterised by complex subscription models, where access to full features is often gated behind various tiers of service. 
+        This can lead to a situation where businesses feel trapped, using software that doesn't fully meet their needs or forces them into paying more for essential features.
+    </p>
+    <p>
+        Moreover, each dataset is privately held, limiting the potential for broader societal benefits. 
+        These siloed data repositories prevent the collective intelligence and insights that could be gleaned from a more open and shared approach.
+        This is where a transformative opportunity emerges. 
+        Envision harnessing the power of these extensive datasets in an accessible, unified way.
+    </p>
+    <p>
+        By applying AI to a consolidated data lake, a DAO could democratically decide to develop powerful tools. 
+        These tools wouldn't just elevate business operations' functionality and efficiency; they could also offer broader societal benefits. 
+        This vast, yet untapped, resource of data holds potential far beyond individual organisational growth. 
+        It represents a communal asset, poised to drive innovation and progress in a manner that resonates with the ethos of decentralisation.
+    </p>
+    <p>
+        Furthermore, a critical issue in today's SaaS environment is data ownership. Currently, businesses often don't retain full control over their own data. 
+        This limitation restricts their ability to fully leverage this asset, particularly in the creation of bespoke AI models and other innovative applications. 
+        Changing this paradigm is essential. By shifting towards a model where businesses retain ownership of their data, they are empowered to explore and implement custom AI solutions and other tools that cater specifically to their unique needs and objectives.
+    </p>
+
+
 </div>
 
