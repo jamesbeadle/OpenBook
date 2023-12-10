@@ -7,7 +7,9 @@
     <p>
         Businesses today face the task of managing multiple subscriptions across a range of platforms. Their use cases often extend further, 
         encompassing multiple organisations, currencies, and user roles. These challenges open the door for opportunities to create a more streamlined and 
-        integrated approach to business operations. In the world of SaaS platforms, diversity in functionality often comes at a cost. 
+        integrated approach to business operations.     
+    </p>
+    <p>In the world of SaaS platforms, diversity in functionality often comes at a cost. 
         These platforms are frequently cluttered with ads, compromising the user experience. 
         Additionally, they are characterised by complex subscription models, where access to full features is often gated behind various tiers of service. 
         This can lead to a situation where businesses feel trapped, using software that doesn't fully meet their needs or forces them into paying more for essential features.
@@ -15,13 +17,15 @@
     <p>
         Moreover, each dataset is privately held, limiting the potential for broader societal benefits. 
         These siloed data repositories prevent the collective intelligence and insights that could be gleaned from a more open and shared approach.
-        This is where a transformative opportunity emerges. 
-        Envision harnessing the power of these extensive datasets in an accessible, unified way.
     </p>
     <p>
+        This is where a transformative opportunity emerges. 
+        Envision harnessing the power of these extensive datasets in an accessible, unified way.
         By applying AI to a consolidated data lake, a DAO could democratically decide to develop powerful tools. 
+    </p>
+    <p>
         These tools wouldn't just elevate business operations' functionality and efficiency; they could also offer broader societal benefits. 
-        This vast, yet untapped, resource of data holds potential far beyond individual organisational growth. 
+        This vast resource of data holds potential far beyond individual organisational growth. 
         It represents a communal asset, poised to drive innovation and progress in a manner that resonates with the ethos of decentralisation.
     </p>
     <p>

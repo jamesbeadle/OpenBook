@@ -1,9 +1,12 @@
 <h1 class="text-2xl">Value Proposition</h1>
 <div class="flex flex-col space-y-4 mt-4">
-    <h1>$BOOK Utility Token</h1>
-    <p>OpenBook operates as a DAO (Decentralised Autonomous Organisation). The $BOOK token is used
-        within the DAO for the following purposes:</p>
-    <ul>
+    <h1 class="text-xl">$BOOK Utility Token</h1>
+    <p>
+        OpenBook operates as a DAO (Decentralised Autonomous Organisation). The $BOOK token is used
+        within the DAO for the following purposes:
+    </p>
+    
+    <ul class="list-disc px-4">
         <li>
             Organisations will pay an annual subscription for the basic OpenBook service with $BOOK
             tokens.
@@ -26,19 +29,19 @@
         </li>
     </ul>
 
-    <p>DAO Valuation</p>
+    <h1 class="text-xl">DAO Valuation</h1>
     <p>
         In forecasting the potential revenue for our platform, we conducted a comparative analysis between
         two established SaaS platforms: Salesforce and QuickBooks.
     </p>
     <p>
-        Salesforce: A dominant force in the CRM space. Salesforce has seen consistent growth over the years. In
+        <b>Salesforce:</b> A dominant force in the CRM space. Salesforce has seen consistent growth over the years. In
         2023, their annual revenue was $31.352 billion, up 18.35% from 2022. To provide a broader perspective,
         their revenue in 2022 was $26.492 billion, marking a 24.66% growth from 2021, which had a revenue of
         $21.252 billion, a 24.3% increase from 2020.
     </p>
     <p>
-        QuickBooks: Highly popular in the accounting software market. As of the recent data, QuickBooks
+        <b>QuickBooks:</b> Highly popular in the accounting software market. As of the recent data, QuickBooks
         generated a total revenue of $9.6 billion, a 25% increase year-over-year. Their combined platform
         revenue, which includes QuickBooks Online, TurboTax Online, and Credit Karma, accounted for $6.6
         billion, marking a 39% growth.
@@ -51,7 +54,8 @@
         services like consulting, training, and customisation. This model can significantly inflate the average
         revenue per user, especially for platforms like Salesforce, which caters to large corporations and
         businesses across the globe.
-    </p><p>
+    </p>
+    <p>
         Drawing insights from QuickBooks and Salesforce, we find that Salesforce's revenue is approximately
         $10,451 per user per year, while QuickBooks stands at about $2,667 per user. We'll use the more
         conservative figure from QuickBooks as our benchmark.
@@ -61,8 +65,8 @@
         QuickBooks.
     </p>
 
-    <p>Revenue Model: Adaptive and User-Focused</p>
-
+    <h1 class="text-xl">Adaptive and User-Focused Revenue Model</h1>
+    
     <p>
         Central to OpenBook's revenue strategy is our dedication to simple, user-friendly subscription models. 
         Users have the freedom to activate or deactivate platform features as their business needs evolve. 
@@ -86,25 +90,19 @@
         foster a cycle of growth, user engagement, and shared prosperity.
     </p>
     
-    
-
-    <p>
-        DAO Reward Structure
-    </p>
+    <h1 class="text-xl">DAO Reward Structure</h1>
 
     <p>
         The OpenBook DAO's rewards are funded by the minting of new BOOK tokens, minting 2.5% of the total
         supply annually. The minted $BOOK is distributed throughout the year for the following reward categories
     </p>
 
-    <ul>
+    <ul class="list-disc px-4">
         <li>Professional Service Rewards (75%)</li>
         <li>Governance Rewards (25%)</li>
     </ul>
 
-    <p>
-        Professional Service Rewards
-    </p>
+    <h1 class="text-xl">Professional Service Rewards</h1>
     
     <p>
         The DAO has the ability to propose and vote on new features or adjustments, leveraging the expertise of finance professionals. 
@@ -121,7 +119,7 @@
         continuing to enrich the platform with practical and expert insights.
     </p>
 
-    <p>Governance Rewards</p>
+    <h1 class="text-xl">Governance Rewards</h1>
 
     <p>The DAO will reward users for participation in governance with $BOOK tokens. Failed proposals will cost
         10 $BOOK tokens to a neuron holder which will be deposited into the DAO’s treasury.</p>
@@ -129,7 +127,7 @@
     <p>
         We will decentralise OpenBook through the following token allocation at genesis:
     </p>
-    <ul>
+    <ul class="list-disc px-4">
         <li>James Beadle + Team - 12%</li>
         <li>Funded NFT Holders - 12%</li>
         <li>SNS Decentralisation Sale - 25%</li>

@@ -1,10 +1,5 @@
 <script lang="ts">
-  import Balance from "$lib/components/whitepaper/balance.svelte";
-  import Creditors from "$lib/components/whitepaper/creditors.svelte";
-  import Debtors from "$lib/components/whitepaper/debtors.svelte";
-  import Financing from "$lib/components/whitepaper/financing.svelte";
   import Mvp from "$lib/components/whitepaper/mvp.svelte";
-  import Profit from "$lib/components/whitepaper/profit.svelte";
   import Team from "$lib/components/whitepaper/team.svelte";
   import Value from "$lib/components/whitepaper/value.svelte";
   import Vision from "$lib/components/whitepaper/vision.svelte";
@@ -48,21 +43,6 @@
         <button on:click={() => selectSection("mvp")}>
           <MvpIcon className="side-nav-icon" fill={activeSection == 'mvp' ? '#FFFFFF' : '#8C8C8C'}  />
         </button>
-        <button on:click={() => selectSection("financing")}>
-          <FinancingIcon className="side-nav-icon" fill={activeSection == 'financing' ? '#FFFFFF' : '#8C8C8C'}  />
-        </button>
-        <button on:click={() => selectSection("debtors")}>
-          <DebtorsIcon className="side-nav-icon" fill={activeSection == 'debtors' ? '#FFFFFF' : '#8C8C8C'}  />
-        </button>
-        <button on:click={() => selectSection("creditors")}>
-          <CreditorsIcon className="side-nav-icon" fill={activeSection == 'creditors' ? '#FFFFFF' : '#8C8C8C'}  />
-        </button>
-        <button on:click={() => selectSection("profit")}>
-          <ProfitIcon className="side-nav-icon" fill={activeSection == 'profit' ? '#FFFFFF' : '#8C8C8C'}  />
-        </button>
-        <button on:click={() => selectSection("balance")}>
-          <BalanceIcon className="side-nav-icon" fill={activeSection == 'balance' ? '#FFFFFF' : '#8C8C8C'}  />
-        </button>
         <button on:click={() => selectSection("team")}>
           <TeamIcon className="side-nav-icon" fill={activeSection == 'team' ? '#FFFFFF' : '#8C8C8C'}  />
         </button>
@@ -83,21 +63,6 @@
           {/if}
           {#if activeSection == 'mvp'}
             <Mvp />
-          {/if}
-          {#if activeSection == 'financing'}
-            <Financing />
-          {/if}
-          {#if activeSection == 'debtors'}
-            <Debtors />
-          {/if}
-          {#if activeSection == 'creditors'}
-            <Creditors />
-          {/if}
-          {#if activeSection == 'profit'}
-            <Profit />
-          {/if}
-          {#if activeSection == 'balance'}
-            <Balance />
           {/if}
           {#if activeSection == 'team'}
             <Team />
