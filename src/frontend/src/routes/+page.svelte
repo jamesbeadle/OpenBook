@@ -6,6 +6,7 @@
 
   let isLoggedIn = false;
   let isLoading = true;
+  let isDisabled = true;
 
   onMount(async () => {
     try {
@@ -21,25 +22,35 @@
   {#if isLoading}
     <Spinner />
   {:else}
-
-
-  <div class="flex flex-col md:flex-row h-screen">
-    <div class="relative md:w-1/2 w-full h-full overflow-hidden md:overflow-visible">
-      <img src="home.png" alt="home" class="md:absolute md:right-0 h-full md:w-full w-full object-cover md:object-none object-middle" />    </div>
-    <div class="md:flex-1 flex flex-col justify-center items-center p-4 md:p-12 mb-64 mt-64 md:mb-0 md:mt-0 space-y-4">
-      <Logo className="w-24" />
-      <p>Welcome Back</p>
-      <p>Please connect to continue</p>
-      <button>Connect</button>
-      <button>Whitepaper</button>
-      <p class="text-center">
-        Welcome to OpenBook, the future of accounting at your fingertips! 
-        Experience the ease of decentralised financial management, secure transaction management and real-time insights.
-        Simplify your accounting journey with OpenBook!
-      </p>
-  </div>
-</div>
-
-    
+    <div class="flex flex-col md:flex-row h-screen">
+      <div
+        class="relative md:w-1/2 w-full h-full overflow-hidden md:overflow-visible"
+      >
+        <img
+          src="home.png"
+          alt="home"
+          class="md:absolute md:right-0 h-full md:w-full w-full object-cover object-middle"
+        />
+      </div>
+      <div
+        class="md:flex-1 flex flex-col justify-center items-center p-4 md:p-12 my-16 md:my-2 space-y-8"
+      >
+        <Logo className="w-24" />
+        <p>Welcome Back</p>
+        <p class="hidden">Please connect to continue</p>
+        <button class="book-btn min-w-[150px]">Whitepaper</button>
+        <button
+          disabled={isDisabled}
+          class="book-btn min-w-[150px] {isDisabled ? 'disabled' : ''}"
+          >Connect (soon)</button
+        >
+        <p class="text-center">
+          Welcome to OpenBook, the future of accounting at your fingertips!
+          Experience the ease of decentralised financial management, secure
+          transaction management and real-time insights. Simplify your
+          accounting journey with OpenBook!
+        </p>
+      </div>
+    </div>
   {/if}
 </Layout>
