@@ -10,7 +10,7 @@
   @apply text-xs xs:text-sm sm:text-lg;
 }
 .book-btn {
-  @apply bg-customGreen px-4 py-2 rounded-md;
+  @apply bg-customGreen px-4 py-2 rounded-md text-center;
 }
 .book-btn.disabled {
   @apply bg-gray-500;

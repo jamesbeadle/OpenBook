@@ -38,10 +38,10 @@
         <Logo className="w-24" />
         <p>Welcome Back</p>
         <p class="hidden">Please connect to continue</p>
-        <button class="book-btn min-w-[150px]">Whitepaper</button>
+        <a href="/whitepaper" class="book-btn min-w-[150px]">Whitepaper</a>
         <button
           disabled={isDisabled}
-          class="book-btn min-w-[150px] {isDisabled ? 'disabled' : ''}"
+          class="hidden book-btn min-w-[150px] {isDisabled ? 'disabled' : ''}"
           >Connect (soon)</button
         >
         <p class="text-center">
