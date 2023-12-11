@@ -17,11 +17,22 @@
   import Layout from '../Layout.svelte';
   import Roadmap from '$lib/components/whitepaper/roadmap.svelte';
 
-  let activeSection = 'vision';
+  let activeSection = 0;
+  let sections = ['vision', 'value', 'roadmap', 'mvp', 'team'];
 
-  function selectSection(section: string) {
-    activeSection = section;
+
+  function selectSection(sectionIndex: number) {
+    activeSection = sectionIndex;
   }
+
+  function nextSection(){
+    activeSection = (activeSection + 1) > sections.length - 1 ? 0 : activeSection + 1;
+  }
+
+  function priorSection(){
+    activeSection = (activeSection - 1) < 0 ? sections.length - 1 : activeSection - 1;
+  }
+
 </script>
 
 <Layout>
@@ -30,34 +41,34 @@
       <a href="/">
         <Logo className="w-6" />
       </a>
-      <button on:click={() => selectSection('vision')}>
+      <button on:click={() => selectSection(0)}>
         <IcpIcon
           className="side-nav-icon"
-          fill={activeSection == 'vision' ? '#FFFFFF' : '#8C8C8C'}
+          fill={activeSection == 0 ? '#FFFFFF' : '#8C8C8C'}
         />
       </button>
-      <button on:click={() => selectSection('value')}>
+      <button on:click={() => selectSection(1)}>
         <ValueIcon
           className="side-nav-icon"
-          fill={activeSection == 'value' ? '#FFFFFF' : '#8C8C8C'}
+          fill={activeSection == 1 ? '#FFFFFF' : '#8C8C8C'}
         />
       </button>
-      <button on:click={() => selectSection('roadmap')}>
+      <button on:click={() => selectSection(2)}>
         <RoadmapIcon
           className="side-nav-icon"
-          fill={activeSection == 'roadmap' ? '#FFFFFF' : '#8C8C8C'}
+          fill={activeSection == 2 ? '#FFFFFF' : '#8C8C8C'}
         />
       </button>
-      <button on:click={() => selectSection('mvp')}>
+      <button on:click={() => selectSection(3)}>
         <MvpIcon
           className="side-nav-icon"
-          fill={activeSection == 'mvp' ? '#FFFFFF' : '#8C8C8C'}
+          fill={activeSection == 3 ? '#FFFFFF' : '#8C8C8C'}
         />
       </button>
-      <button on:click={() => selectSection('team')}>
+      <button on:click={() => selectSection(4)}>
         <TeamIcon
           className="side-nav-icon"
-          fill={activeSection == 'team' ? '#FFFFFF' : '#8C8C8C'}
+          fill={activeSection == 4 ? '#FFFFFF' : '#8C8C8C'}
         />
       </button>
     </nav>
@@ -66,21 +77,25 @@
         <h1>OpenBook Whitepaper</h1>
       </div>
       <div class="p-4">
-        {#if activeSection == 'vision'}
+        {#if activeSection == 0}
           <Vision />
         {/if}
-        {#if activeSection == 'roadmap'}
+        {#if activeSection == 1}
           <Roadmap />
         {/if}
-        {#if activeSection == 'value'}
+        {#if activeSection == 2}
           <Value />
         {/if}
-        {#if activeSection == 'mvp'}
+        {#if activeSection == 3}
           <Mvp />
         {/if}
-        {#if activeSection == 'team'}
+        {#if activeSection == 4}
           <Team />
         {/if}
+      </div>
+      <div class="flex flex-row space-x-4 mx-4">
+        <button on:click={priorSection} disabled={activeSection == 0} class="book-btn {activeSection == 0 ? 'disabled' : ''}">&lt; Prior Section</button>
+        <button on:click={nextSection} disabled={activeSection == sections.length - 1} class="book-btn {activeSection == sections.length - 1 ? 'disabled' : ''}">Next Section &gt;</button>
       </div>
     </main>
   </div>
