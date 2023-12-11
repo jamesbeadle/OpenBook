@@ -20,19 +20,19 @@
   let activeSection = 0;
   let sections = ['vision', 'value', 'roadmap', 'mvp', 'team'];
 
-
   function selectSection(sectionIndex: number) {
     activeSection = sectionIndex;
   }
 
-  function nextSection(){
-    activeSection = (activeSection + 1) > sections.length - 1 ? 0 : activeSection + 1;
+  function nextSection() {
+    activeSection =
+      activeSection + 1 > sections.length - 1 ? 0 : activeSection + 1;
   }
 
-  function priorSection(){
-    activeSection = (activeSection - 1) < 0 ? sections.length - 1 : activeSection - 1;
+  function priorSection() {
+    activeSection =
+      activeSection - 1 < 0 ? sections.length - 1 : activeSection - 1;
   }
-
 </script>
 
 <Layout>
@@ -94,8 +94,19 @@
         {/if}
       </div>
       <div class="flex flex-row space-x-4 mx-4">
-        <button on:click={priorSection} disabled={activeSection == 0} class="book-btn {activeSection == 0 ? 'disabled' : ''}">&lt; Prior Section</button>
-        <button on:click={nextSection} disabled={activeSection == sections.length - 1} class="book-btn {activeSection == sections.length - 1 ? 'disabled' : ''}">Next Section &gt;</button>
+        <button
+          on:click={priorSection}
+          disabled={activeSection == 0}
+          class="book-btn {activeSection == 0 ? 'disabled' : ''}"
+          >&lt; Prior Section</button
+        >
+        <button
+          on:click={nextSection}
+          disabled={activeSection == sections.length - 1}
+          class="book-btn {activeSection == sections.length - 1
+            ? 'disabled'
+            : ''}">Next Section &gt;</button
+        >
       </div>
     </main>
   </div>

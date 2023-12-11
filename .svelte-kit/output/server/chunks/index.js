@@ -3355,7 +3355,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1wde1at"
+  version_hash: "1f5dk7m"
 };
 function get_hooks() {
   return {};
@@ -3926,6 +3926,8 @@ const css = {
   map: null
 };
 const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let activeSection = 0;
+  let sections = ["vision", "value", "roadmap", "mvp", "team"];
   $$result.css.add(css);
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
@@ -3969,7 +3971,7 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
         },
         {},
         {}
-      )}</button></nav> <main class="flex-1"><div class="w-full p-4 top-bar" data-svelte-h="svelte-m3ksr3"><h1>OpenBook Whitepaper</h1></div> <div class="p-4">${`${validate_component(Vision, "Vision").$$render($$result, {}, {}, {})}`} ${``} ${``} ${``} ${``}</div></main></div>`;
+      )}</button></nav> <main class="flex-1"><div class="w-full p-4 top-bar" data-svelte-h="svelte-m3ksr3"><h1>OpenBook Whitepaper</h1></div> <div class="p-4">${`${validate_component(Vision, "Vision").$$render($$result, {}, {}, {})}`} ${``} ${``} ${``} ${``}</div> <div class="flex flex-row space-x-4 mx-4"><button ${"disabled"} class="${"book-btn " + escape("disabled", true)}">&lt; Prior Section</button> <button ${activeSection == sections.length - 1 ? "disabled" : ""} class="${"book-btn " + escape(activeSection == sections.length - 1 ? "disabled" : "", true)}">Next Section &gt;</button></div></main></div>`;
     }
   })}`;
 });
