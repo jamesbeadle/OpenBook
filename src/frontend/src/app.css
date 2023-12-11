@@ -10,18 +10,18 @@
   @apply text-xs xs:text-sm sm:text-lg;
 }
 .book-btn {
-  @apply bg-customGreen px-4 py-2 rounded-md text-center;
+  @apply bg-customGreen px-4 py-2 rounded-md text-center text-black;
 }
 .book-btn.disabled {
   @apply bg-gray-500;
 }
-.side-nav-icon{
+.side-nav-icon {
   @apply w-6 mt-8;
 }
 
-.top-bar{
-  background-color: #1A1A1D;
-  border-bottom: 1px solid #2E323A;
+.top-bar {
+  background-color: #1a1a1d;
+  border-bottom: 1px solid #2e323a;
 }
 
 input {

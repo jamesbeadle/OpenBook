@@ -3155,12 +3155,12 @@ const options = {
   root: Root,
   service_worker: false,
   templates: {
-    app: ({ head, body, assets: assets2, nonce, env }) => '<!DOCTYPE html>\n<html lang="en">\n  <head>\n    <meta charset="utf-8" />\n    <meta content="width=device-width, initial-scale=1" name="viewport" />\n\n    <title>OpenBook</title>\n    <link href="https://openbook.services" rel="canonical" />\n    <meta\n      content="OpenBook is a decentralised business management platform on the Internet Computer blockchain."\n      name="description"\n    />\n    <meta content="OpenBook" property="og:title" />\n    <meta\n      content="OpenBook is a decentralised business management platform on the Internet Computer blockchain."\n      property="og:description"\n    />\n    <meta content="website" property="og:type" />\n    <meta content="https://openbook.services" property="og:url" />\n    <meta\n      content="https://openbook.services/meta-share.jpg"\n      property="og:image"\n    />\n    <meta content="summary_large_image" name="twitter:card" />\n    <meta content="OpenBook" name="twitter:title" />\n    <meta\n      content="OpenBook is a decentralised business management platform on the Internet Computer blockchain."\n      name="twitter:description"\n    />\n    <meta\n      content="https://openbook.services/meta-share.jpg"\n      name="twitter:image"\n    />\n    <meta content="@beadle1989" name="twitter:creator" />\n\n    <link crossorigin="anonymous" href="/manifest.webmanifest" rel="manifest" />\n\n    <!-- Favicon -->\n    <link\n      rel="icon"\n      type="image/png"\n      sizes="32x32"\n      href="' + assets2 + '/favicons/favicon-32x32.png"\n    />\n    <link\n      rel="icon"\n      type="image/png"\n      sizes="16x16"\n      href="' + assets2 + '/favicons/favicon-16x16.png"\n    />\n    <link rel="shortcut icon" href="' + assets2 + '/favicons/favicon.ico" />\n\n    <!-- iOS meta tags & icons -->\n    <meta name="apple-mobile-web-app-capable" content="yes" />\n    <meta name="apple-mobile-web-app-status-bar-style" content="#2CE3A6" />\n    <meta name="apple-mobile-web-app-title" content="OpenBook" />\n    <link\n      rel="apple-touch-icon"\n      href="' + assets2 + '/favicons/apple-touch-icon.png"\n    />\n    <link\n      rel="mask-icon"\n      href="' + assets2 + '/favicons/safari-pinned-tab.svg"\n      color="#2CE3A6"\n    />\n\n    <!-- MS -->\n    <meta name="msapplication-TileColor" content="#1A1A1D" />\n    <meta\n      name="msapplication-config"\n      content="' + assets2 + '/favicons/browserconfig.xml"\n    />\n\n    <meta content="#2CE3A6" name="theme-color" />\n    ' + head + "\n\n    <style>\n      html,\n      body {\n        height: 100%;\n        margin: 0;\n      }\n\n      @font-face {\n        font-display: swap;\n        font-family: 'Poppins';\n        font-style: normal;\n        font-weight: 400;\n        src: url('" + assets2 + "/poppins-regular-webfont.woff2')\n          format('woff2');\n      }\n\n      @font-face {\n        font-display: swap;\n        font-family: 'Manrope';\n        font-style: normal;\n        font-weight: 400;\n        src: url('" + assets2 + `/Manrope-Regular.woff2') format('woff2');
+    app: ({ head, body, assets: assets2, nonce, env }) => '<!DOCTYPE html>\n<html lang="en">\n  <head>\n    <meta charset="utf-8" />\n    <meta content="width=device-width, initial-scale=1" name="viewport" />\n\n    <title>OpenBook</title>\n    <link href="https://openbook.services" rel="canonical" />\n    <meta\n      content="OpenBook is a decentralised business management platform on the Internet Computer blockchain."\n      name="description"\n    />\n    <meta content="OpenBook" property="og:title" />\n    <meta\n      content="OpenBook is a decentralised business management platform on the Internet Computer blockchain."\n      property="og:description"\n    />\n    <meta content="website" property="og:type" />\n    <meta content="https://openbook.services" property="og:url" />\n    <meta\n      content="https://openbook.services/meta-share.jpg"\n      property="og:image"\n    />\n    <meta content="summary_large_image" name="twitter:card" />\n    <meta content="OpenBook" name="twitter:title" />\n    <meta\n      content="OpenBook is a decentralised business management platform on the Internet Computer blockchain."\n      name="twitter:description"\n    />\n    <meta\n      content="https://openbook.services/meta-share.jpg"\n      name="twitter:image"\n    />\n    <meta content="@beadle1989" name="twitter:creator" />\n\n    <link crossorigin="anonymous" href="/manifest.webmanifest" rel="manifest" />\n\n    <!-- Favicon -->\n    <link\n      rel="icon"\n      type="image/png"\n      sizes="32x32"\n      href="' + assets2 + '/favicons/favicon-32x32.png"\n    />\n    <link\n      rel="icon"\n      type="image/png"\n      sizes="16x16"\n      href="' + assets2 + '/favicons/favicon-16x16.png"\n    />\n    <link rel="shortcut icon" href="' + assets2 + '/favicons/favicon.ico" />\n\n    <!-- iOS meta tags & icons -->\n    <meta name="apple-mobile-web-app-capable" content="yes" />\n    <meta name="apple-mobile-web-app-status-bar-style" content="#2CE3A6" />\n    <meta name="apple-mobile-web-app-title" content="OpenBook" />\n    <link\n      rel="apple-touch-icon"\n      href="' + assets2 + '/favicons/apple-touch-icon.png"\n    />\n    <link\n      rel="mask-icon"\n      href="' + assets2 + '/favicons/safari-pinned-tab.svg"\n      color="#2CE3A6"\n    />\n\n    <!-- MS -->\n    <meta name="msapplication-TileColor" content="#101111" />\n    <meta\n      name="msapplication-config"\n      content="' + assets2 + '/favicons/browserconfig.xml"\n    />\n\n    <meta content="#2CE3A6" name="theme-color" />\n    ' + head + "\n\n    <style>\n      html,\n      body {\n        height: 100%;\n        margin: 0;\n      }\n\n      @font-face {\n        font-display: swap;\n        font-family: 'Poppins';\n        font-style: normal;\n        font-weight: 400;\n        src: url('" + assets2 + "/poppins-regular-webfont.woff2')\n          format('woff2');\n      }\n\n      @font-face {\n        font-display: swap;\n        font-family: 'Manrope';\n        font-style: normal;\n        font-weight: 400;\n        src: url('" + assets2 + `/Manrope-Regular.woff2') format('woff2');
       }
       body {
         font-family: 'Poppins', sans-serif !important;
         color: white !important;
-        background-color: #1a1a1d;
+        background-color: #101111;
         height: 100vh;
         margin: 0;
       }
@@ -3355,7 +3355,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "vlq5p2"
+  version_hash: "1wde1at"
 };
 function get_hooks() {
   return {};
@@ -3523,7 +3523,7 @@ const busyStore = initBusyStore();
 const busy = derived(busyStore, ($busyStore) => $busyStore.length > 0);
 const busyMessage = derived(busyStore, ($busyStore) => $busyStore.reverse().find(({ text: text2 }) => nonNullish(text2))?.text);
 const Spinner_svelte_svelte_type_style_lang = "";
-const css$5 = {
+const css$6 = {
   code: ".medium.svelte-85668t{--spinner-size:30px}.small.svelte-85668t{--spinner-size:calc(var(--line-height-standard) * 1rem)}.tiny.svelte-85668t{--spinner-size:calc(var(--line-height-standard) * 0.5rem)}svg.svelte-85668t{width:var(--spinner-size);height:var(--spinner-size);animation:spinner-linear-rotate 2000ms linear infinite;position:absolute;top:calc(50% - var(--spinner-size) / 2);left:calc(50% - var(--spinner-size) / 2);--radius:45px;--circumference:calc(3.1415926536 * var(--radius) * 2);--start:calc((1 - 0.05) * var(--circumference));--end:calc((1 - 0.8) * var(--circumference))}svg.inline.svelte-85668t{display:inline-block;position:relative}circle.svelte-85668t{stroke-dasharray:var(--circumference);stroke-width:10%;transform-origin:50% 50% 0;transition-property:stroke;animation-name:spinner-stroke-rotate-100;animation-duration:4000ms;animation-timing-function:cubic-bezier(0.35, 0, 0.25, 1);animation-iteration-count:infinite;fill:transparent;stroke:currentColor;transition:stroke-dashoffset 225ms linear}@keyframes spinner-linear-rotate{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}@keyframes spinner-stroke-rotate-100{0%{stroke-dashoffset:var(--start);transform:rotate(0)}12.5%{stroke-dashoffset:var(--end);transform:rotate(0)}12.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(72.5deg)}25%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(72.5deg)}25.0001%{stroke-dashoffset:var(--start);transform:rotate(270deg)}37.5%{stroke-dashoffset:var(--end);transform:rotate(270deg)}37.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(161.5deg)}50%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(161.5deg)}50.0001%{stroke-dashoffset:var(--start);transform:rotate(180deg)}62.5%{stroke-dashoffset:var(--end);transform:rotate(180deg)}62.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(251.5deg)}75%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(251.5deg)}75.0001%{stroke-dashoffset:var(--start);transform:rotate(90deg)}87.5%{stroke-dashoffset:var(--end);transform:rotate(90deg)}87.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(341.5deg)}100%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(341.5deg)}}",
   map: null
 };
@@ -3534,11 +3534,11 @@ const Spinner = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     $$bindings.inline(inline);
   if ($$props.size === void 0 && $$bindings.size && size !== void 0)
     $$bindings.size(size);
-  $$result.css.add(css$5);
+  $$result.css.add(css$6);
   return `  <svg class="${[escape(null_to_empty(size), true) + " svelte-85668t", inline ? "inline" : ""].join(" ").trim()}" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true" data-tid="spinner" viewBox="0 0 100 100"><circle cx="50%" cy="50%" r="45" class="svelte-85668t"></circle></svg>`;
 });
 const BusyScreen_svelte_svelte_type_style_lang = "";
-const css$4 = {
+const css$5 = {
   code: "div.svelte-14plyno{z-index:calc(var(--z-index) + 1000);position:fixed;top:0;right:0;bottom:0;left:0;background:var(--backdrop);color:var(--backdrop-contrast)}.content.svelte-14plyno{display:flex;flex-direction:column;justify-content:center;align-items:center}p.svelte-14plyno{padding-bottom:var(--padding);max-width:calc(var(--section-max-width) / 2)}",
   map: null
 };
@@ -3547,7 +3547,7 @@ const BusyScreen = create_ssr_component(($$result, $$props, $$bindings, slots) =
   let $busyMessage, $$unsubscribe_busyMessage;
   $$unsubscribe_busy = subscribe(busy, (value) => $busy = value);
   $$unsubscribe_busyMessage = subscribe(busyMessage, (value) => $busyMessage = value);
-  $$result.css.add(css$4);
+  $$result.css.add(css$5);
   $$unsubscribe_busy();
   $$unsubscribe_busyMessage();
   return ` ${$busy ? `<div data-tid="busy" class="svelte-14plyno"><div class="content svelte-14plyno">${nonNullish($busyMessage) ? `<p class="svelte-14plyno">${escape($busyMessage)}</p>` : ``} <span>${validate_component(Spinner, "Spinner").$$render($$result, { inline: true }, {}, {})}</span></div></div>` : ``}`;
@@ -3579,7 +3579,7 @@ const IconError = create_ssr_component(($$result, $$props, $$bindings, slots) =>
   return `  <svg xmlns="http://www.w3.org/2000/svg"${add_attribute("height", size, 0)} viewBox="0 0 24 24"${add_attribute("width", size, 0)} fill="currentColor"><path d="M0 0h24v24H0z" fill="none"></path><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>`;
 });
 const IconInfo_svelte_svelte_type_style_lang = "";
-const css$3 = {
+const css$4 = {
   code: "svg.svelte-1lui9gh{vertical-align:middle}",
   map: null
 };
@@ -3587,7 +3587,7 @@ const IconInfo = create_ssr_component(($$result, $$props, $$bindings, slots) => 
   let { size = `${DEFAULT_ICON_SIZE}px` } = $$props;
   if ($$props.size === void 0 && $$bindings.size && size !== void 0)
     $$bindings.size(size);
-  $$result.css.add(css$3);
+  $$result.css.add(css$4);
   return `  <svg${add_attribute("width", size, 0)}${add_attribute("height", size, 0)} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" data-tid="icon-info" class="svelte-1lui9gh"><path d="M10.2222 17.5C14.3643 17.5 17.7222 14.1421 17.7222 10C17.7222 5.85786 14.3643 2.5 10.2222 2.5C6.08003 2.5 2.72217 5.85786 2.72217 10C2.72217 14.1421 6.08003 17.5 10.2222 17.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M10.2222 13.3333V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M10.2222 6.66699H10.2305" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>`;
 });
 const IconMeter_svelte_svelte_type_style_lang = "";
@@ -3744,7 +3744,7 @@ const initToastsStore = () => {
 };
 const toastsStore = initToastsStore();
 const Toast_svelte_svelte_type_style_lang = "";
-const css$2 = {
+const css$3 = {
   code: ".toast.svelte-1ih7d9r.svelte-1ih7d9r{display:flex;justify-content:space-between;align-items:center;gap:var(--padding-1_5x);background:var(--overlay-background);color:var(--overlay-background-contrast);--button-secondary-background:var(--focus-background);border-radius:var(--border-radius);box-shadow:var(--strong-shadow, 8px 8px 16px 0 rgba(0, 0, 0, 0.25));padding:var(--padding-1_5x);box-sizing:border-box}.toast.inverted.svelte-1ih7d9r.svelte-1ih7d9r{background:var(--toast-inverted-background);color:var(--toast-inverted-background-contrast)}.toast.svelte-1ih7d9r .icon.svelte-1ih7d9r{line-height:0}.toast.svelte-1ih7d9r .icon.success.svelte-1ih7d9r{color:var(--positive-emphasis)}.toast.svelte-1ih7d9r .icon.info.svelte-1ih7d9r{color:var(--primary)}.toast.svelte-1ih7d9r .icon.warn.svelte-1ih7d9r{color:var(--warning-emphasis-shade)}.toast.svelte-1ih7d9r .icon.error.svelte-1ih7d9r{color:var(--negative-emphasis)}.toast.svelte-1ih7d9r .msg.svelte-1ih7d9r{flex-grow:1;margin:0;word-break:break-word}.toast.svelte-1ih7d9r .msg.scroll.svelte-1ih7d9r{max-height:calc(8.5 * var(--padding));overflow-y:auto}.toast.svelte-1ih7d9r .msg.truncate.svelte-1ih7d9r{white-space:var(--text-white-space, nowrap);overflow:hidden;text-overflow:ellipsis}.toast.svelte-1ih7d9r .msg.truncate .title.svelte-1ih7d9r{white-space:var(--text-white-space, nowrap);overflow:hidden;text-overflow:ellipsis}.toast.svelte-1ih7d9r .msg.clamp.svelte-1ih7d9r{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}.toast.svelte-1ih7d9r .msg.clamp .title.svelte-1ih7d9r{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}.toast.svelte-1ih7d9r .title.svelte-1ih7d9r{display:block;font-size:var(--font-size-h4);line-height:var(--line-height-h4);font-weight:var(--font-weight-bold)}.toast.svelte-1ih7d9r button.close.svelte-1ih7d9r{padding:0;line-height:0;color:inherit}",
   map: null
 };
@@ -3781,7 +3781,7 @@ const Toast = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   onDestroy(cleanUpAutoHide);
   if ($$props.msg === void 0 && $$bindings.msg && msg !== void 0)
     $$bindings.msg(msg);
-  $$result.css.add(css$2);
+  $$result.css.add(css$3);
   ({ text: text2, level, spinner, title, overflow, position, icon, theme: theme2 } = msg);
   scroll = overflow === void 0 || overflow === "scroll";
   truncate = overflow === "truncate";
@@ -3793,7 +3793,7 @@ const Toast = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   ].join(" ").trim()}"${add_attribute("style", minHeightMessage, 0)}>${nonNullish(title) ? `<span class="title svelte-1ih7d9r">${escape(title)}</span>` : ``} ${escape(text2)}</p> <button class="close svelte-1ih7d9r"${add_attribute("aria-label", $i18n.core.close, 0)}>${validate_component(IconClose, "IconClose").$$render($$result, {}, {}, {})}</button> </div>`;
 });
 const Toasts_svelte_svelte_type_style_lang = "";
-const css$1 = {
+const css$2 = {
   code: ".wrapper.svelte-24m335{position:fixed;left:50%;transform:translate(-50%, 0);bottom:calc(var(--layout-bottom-offset, 0) + var(--padding-2x));width:calc(100% - var(--padding-8x) - var(--padding-0_5x));display:flex;flex-direction:column;gap:var(--padding);z-index:var(--toast-info-z-index)}.wrapper.error.svelte-24m335{z-index:var(--toast-error-z-index)}@media(min-width: 1024px){.wrapper.svelte-24m335{max-width:calc(var(--section-max-width) - var(--padding-2x))}}.top.svelte-24m335{top:calc(var(--header-height) + var(--padding-3x));bottom:unset;width:calc(100% - var(--padding-6x))}@media(min-width: 1024px){.top.svelte-24m335{right:var(--padding-2x);left:unset;transform:none;max-width:calc(var(--section-max-width) / 1.5 - var(--padding-2x))}}",
   map: null
 };
@@ -3807,7 +3807,7 @@ const Toasts = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let hasErrors;
   if ($$props.position === void 0 && $$bindings.position && position !== void 0)
     $$bindings.position(position);
-  $$result.css.add(css$1);
+  $$result.css.add(css$2);
   toasts = $toastsStore.filter(({ position: pos }) => (pos ?? "bottom") === position);
   hasErrors = toasts.find(({ level }) => ["error", "warn"].includes(level)) !== void 0;
   $$unsubscribe_toastsStore();
@@ -3821,29 +3821,167 @@ const Toasts = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 });
 const WizardTransition_svelte_svelte_type_style_lang = "";
 const Layout_svelte_svelte_type_style_lang = "";
-const css = {
+const css$1 = {
   code: "main.svelte-vmfccd{flex:1;display:flex;flex-direction:column}",
   map: null
 };
 const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  $$result.css.add(css);
+  $$result.css.add(css$1);
   return `<div class="flex flex-col h-screen justify-between default-text"><main class="page-wrapper svelte-vmfccd">${slots.default ? slots.default({}) : ``}</main> ${validate_component(Toasts, "Toasts").$$render($$result, {}, {}, {})}</div> ${validate_component(BusyScreen, "BusyScreen").$$render($$result, {}, {}, {})}`;
 });
-const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Logo_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { className = "" } = $$props;
+  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
+    $$bindings.className(className);
+  return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 28 40" fill="none"><path d="M27.6525 32.0409V38.6535C25.9333 37.6255 23.8653 37.0304 21.6411 37.0304C19.8257 37.0304 18.1184 37.4272 16.6156 38.1305C15.5756 38.6174 14.6318 39.2486 13.8263 40.0001C13.0207 39.2486 12.0769 38.6174 11.037 38.1305C9.53412 37.4272 7.82687 37.0304 6.01142 37.0304C3.7872 37.0304 1.71927 37.6255 0 38.6535V32.0409C1.08206 31.3917 2.29636 30.9168 3.60685 30.6583C4.38233 30.502 5.18786 30.4178 6.01142 30.4178C6.62459 30.4178 7.23174 30.4659 7.81485 30.5501C10.1593 30.8988 12.2513 31.9207 13.8263 33.3875C15.4013 31.9207 17.4932 30.8988 19.8377 30.5501C20.4208 30.4659 21.028 30.4178 21.6411 30.4178C22.4647 30.4178 23.2702 30.502 24.0457 30.6583C25.3562 30.9168 26.5705 31.3917 27.6525 32.0409Z" fill="#66E094"></path><path d="M13.8263 0C6.19177 0 0 6.19177 0 13.8263C0 21.4608 6.19177 27.6525 13.8263 27.6525C21.4608 27.6525 27.6525 21.4608 27.6525 13.8263C27.6525 6.19177 21.4608 0 13.8263 0ZM13.8263 21.04C9.8407 21.04 6.61257 17.8118 6.61257 13.8263C6.61257 9.8407 9.8407 6.61257 13.8263 6.61257C17.8118 6.61257 21.04 9.8407 21.04 13.8263C21.04 17.8118 17.8118 21.04 13.8263 21.04Z" fill="white"></path></svg>`;
+});
+const Page$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `${`${validate_component(Spinner, "Spinner").$$render($$result, {}, {}, {})}`}`;
     }
   })}`;
 });
+const Vision = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  return `<h1 class="text-2xl" data-svelte-h="svelte-1yp5w0h">Vision</h1> <div class="flex flex-col space-y-4 mt-4" data-svelte-h="svelte-1lagbxw"><p>The Internet Computer blockchain has provided the world with a foundation
+    for genuine decentralisation. This technological leap is particularly
+    transformative for businesses worldwide, which are increasingly reliant on
+    Software as a Service (SaaS) platforms for critical data processing.</p> <p>Businesses today face the task of managing multiple subscriptions across a
+    range of platforms. Their use cases often extend further, encompassing
+    multiple organisations, currencies, and user roles. These challenges open
+    the door for opportunities to create a more streamlined and integrated
+    approach to business operations.</p> <p>In the world of SaaS platforms, diversity in functionality often comes at a
+    cost. These platforms are frequently cluttered with ads, compromising the
+    user experience. Additionally, they are characterised by complex
+    subscription models, where access to full features is often gated behind
+    various tiers of service. This can lead to a situation where businesses feel
+    trapped, using software that doesn&#39;t fully meet their needs or forces them
+    into paying more for essential features.</p> <p>Moreover, each dataset is privately held, limiting the potential for broader
+    societal benefits. These siloed data repositories prevent the collective
+    intelligence and insights that could be gleaned from a more open and shared
+    approach.</p> <p>This is where a transformative opportunity emerges. Envision harnessing the
+    power of these extensive datasets in an accessible, unified way. By applying
+    AI to a consolidated data lake, a DAO could democratically decide to develop
+    powerful tools.</p> <p>These tools wouldn&#39;t just elevate business operations&#39; functionality and
+    efficiency; they could also offer broader societal benefits. This vast
+    resource of data holds potential far beyond individual organisational
+    growth. It represents a communal asset, poised to drive innovation and
+    progress in a manner that resonates with the ethos of decentralisation.</p> <p>Furthermore, a critical issue in today&#39;s SaaS environment is data ownership.
+    Currently, businesses often don&#39;t retain full control over their own data.
+    This limitation restricts their ability to fully leverage this asset,
+    particularly in the creation of bespoke AI models and other innovative
+    applications. Changing this paradigm is essential. By shifting towards a
+    model where businesses retain ownership of their data, they are empowered to
+    explore and implement custom AI solutions and other tools that cater
+    specifically to their unique needs and objectives.</p></div>`;
+});
+const Icp_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { className = "" } = $$props;
+  let { fill = "#FFFFFF" } = $$props;
+  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
+    $$bindings.className(className);
+  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
+    $$bindings.fill(fill);
+  return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><g clip-path="url(#clip0_143_3542)"><path d="M23.055 7.33252C22.1423 5.1788 20.6205 3.34753 18.7057 2.05266C16.7914 0.757781 14.4794 -0.000328019 12 1.0647e-07C10.3475 -9.36435e-05 8.76816 0.336563 7.33261 0.944906C5.17894 1.85766 3.34763 3.37936 2.0527 5.2942C0.757828 7.20844 -0.000328019 9.5205 1.06464e-07 12C-9.36435e-05 13.6526 0.336609 15.2319 0.944953 16.6675C1.85766 18.8212 3.3795 20.6525 5.2943 21.9473C7.20858 23.2422 9.52064 24.0003 12 24C13.6525 24.0001 15.2318 23.6634 16.6674 23.0551C18.8211 22.1424 20.6524 20.6206 21.9473 18.7058C23.2422 16.7916 24.0003 14.4794 24 12C24.0001 10.3474 23.6634 8.76806 23.055 7.33252ZM21.5819 16.0434C20.792 17.9081 19.4704 19.4992 17.8095 20.622C16.1482 21.7447 14.1524 22.3997 12 22.4001C10.5648 22.4 9.20025 22.1086 7.95684 21.5819C6.09211 20.792 4.50103 19.4705 3.37823 17.8096C2.25534 16.1482 1.60031 14.1524 1.59998 12C1.60008 10.5647 1.8915 9.20011 2.41814 7.9567C3.20803 6.09197 4.52962 4.50089 6.19045 3.37814C7.85184 2.2553 9.84769 1.60031 12 1.59998C13.4353 1.60008 14.7998 1.89145 16.0432 2.41814C17.9079 3.20798 19.499 4.52958 20.6218 6.19041C21.7446 7.8518 22.3996 9.84759 22.4 12C22.3999 13.4354 22.1085 14.7999 21.5819 16.0434Z"${add_attribute("fill", fill, 0)}></path><path d="M20.302 10.4768C20.004 9.77372 19.5086 9.1778 18.8845 8.75569C18.5725 8.54466 18.2278 8.37713 17.8597 8.26238C17.4916 8.14763 17.1 8.08589 16.6966 8.08594C16.1171 8.08542 15.5699 8.20842 15.0705 8.41331C14.6328 8.59252 14.2299 8.83238 13.8531 9.10697C13.1941 9.58828 12.6109 10.1754 12.054 10.776C12.0359 10.7955 12.0182 10.8152 12.0001 10.8348C11.9962 10.8306 11.9923 10.8263 11.9884 10.822C11.6762 10.4836 11.3553 10.1493 11.0183 9.83452C10.5125 9.36295 9.97 8.93297 9.35631 8.61206C9.04965 8.45194 8.72495 8.32003 8.38173 8.22839C8.0387 8.1367 7.67734 8.08589 7.30328 8.08599C6.76534 8.08589 6.24878 8.19581 5.78026 8.39447C5.07719 8.69255 4.48126 9.18792 4.05915 9.81197C3.84812 10.124 3.68059 10.4687 3.56584 10.8368C3.45109 11.2049 3.38936 11.5965 3.3894 11.9999C3.38931 12.5378 3.49923 13.0544 3.69789 13.5229C3.99597 14.2259 4.49139 14.8218 5.11539 15.2439C5.42744 15.455 5.77215 15.6225 6.14026 15.7373C6.50833 15.852 6.89992 15.9137 7.30333 15.9137C7.88279 15.9142 8.43001 15.7912 8.92942 15.5863C9.36714 15.4071 9.77008 15.1673 10.1468 14.8927C10.8058 14.4113 11.389 13.8242 11.946 13.2237C11.9641 13.2041 11.9818 13.1844 11.9998 13.1648C12.0037 13.1691 12.0076 13.1734 12.0115 13.1777C12.3237 13.5161 12.6446 13.8504 12.9817 14.1652C13.4875 14.6367 14.0299 15.0667 14.6436 15.3876C14.9503 15.5476 15.275 15.6796 15.6182 15.7713C15.9612 15.863 16.3226 15.9138 16.6967 15.9137C17.2346 15.9138 17.7512 15.8038 18.2197 15.6052C18.9227 15.3071 19.5187 14.8118 19.9408 14.1877C20.1518 13.8757 20.3193 13.5309 20.4341 13.1628C20.5488 12.7948 20.6106 12.4032 20.6105 11.9998C20.6106 11.4619 20.5007 10.9453 20.302 10.4768ZM10.8379 12.1162C10.54 12.4391 10.2447 12.7458 9.95003 13.0208C9.50819 13.4339 9.06798 13.7729 8.63204 13.9997C8.41389 14.1135 8.19704 14.2002 7.97795 14.2587C7.75867 14.3172 7.53704 14.348 7.30337 14.3481C6.97801 14.348 6.67155 14.2823 6.39109 14.1637C5.97072 13.9858 5.60992 13.6864 5.35614 13.3108C5.2292 13.1231 5.12903 12.9168 5.06054 12.697C4.99206 12.4772 4.95503 12.2439 4.95503 11.9999C4.95512 11.6745 5.02079 11.368 5.13944 11.0876C5.31733 10.6673 5.61676 10.3065 5.99237 10.0527C6.18006 9.92574 6.3864 9.82556 6.60625 9.75708C6.82609 9.6886 7.05934 9.65156 7.30342 9.65156C7.66473 9.65203 7.99905 9.72478 8.33673 9.86236C8.63144 9.98278 8.92698 10.155 9.22459 10.372C9.74565 10.7511 10.2687 11.268 10.7974 11.8397C10.8461 11.8923 10.8951 11.9465 10.944 12C10.9087 12.0385 10.8732 12.078 10.8379 12.1162ZM18.8606 12.9121C18.6827 13.3325 18.3833 13.6933 18.0077 13.9471C17.82 14.074 17.6137 14.1742 17.3938 14.2427C17.174 14.3112 16.9407 14.3482 16.6967 14.3482C16.3353 14.3477 16.001 14.275 15.6633 14.1374C15.3686 14.017 15.0731 13.8448 14.7755 13.6277C14.2544 13.2487 13.7313 12.7318 13.2027 12.16C13.154 12.1074 13.105 12.0532 13.0561 11.9998C13.0915 11.9611 13.1269 11.9217 13.1622 11.8835C13.4601 11.5606 13.7554 11.2538 14.05 10.9789C14.4919 10.5658 14.9321 10.2268 15.368 9.99994C15.5862 9.88613 15.803 9.79945 16.0221 9.74095C16.2414 9.6825 16.463 9.65166 16.6967 9.65156C17.0221 9.65166 17.3285 9.71733 17.609 9.83597C18.0294 10.0139 18.3902 10.3133 18.6439 10.6889C18.7709 10.8766 18.871 11.0829 18.9395 11.3027C19.008 11.5225 19.045 11.7558 19.045 11.9999C19.045 12.3252 18.9793 12.6316 18.8606 12.9121Z"${add_attribute("fill", fill, 0)}></path></g><defs><clipPath id="clip0_143_3542"><rect width="24" height="24"${add_attribute("fill", fill, 0)}></rect></clipPath></defs></svg>`;
+});
+const Mvp_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { className = "" } = $$props;
+  let { fill = "#FFFFFF" } = $$props;
+  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
+    $$bindings.className(className);
+  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
+    $$bindings.fill(fill);
+  return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><path d="M21 2H9C8.73478 2 8.48043 2.10536 8.29289 2.29289C8.10536 2.48043 8 2.73478 8 3V7H6C5.73478 7 5.48043 7.10536 5.29289 7.29289C5.10536 7.48043 5 7.73478 5 8V12H3C2.73478 12 2.48043 12.1054 2.29289 12.2929C2.10536 12.4804 2 12.7348 2 13V21C2 21.2652 2.10536 21.5196 2.29289 21.7071C2.48043 21.8946 2.73478 22 3 22H11C11.2652 22 11.5196 21.8946 11.7071 21.7071C11.8946 21.5196 12 21.2652 12 21V19H16C16.2652 19 16.5196 18.8946 16.7071 18.7071C16.8946 18.5196 17 18.2652 17 18V16H21C21.2652 16 21.5196 15.8946 21.7071 15.7071C21.8946 15.5196 22 15.2652 22 15V3C22 2.73478 21.8946 2.48043 21.7071 2.29289C21.5196 2.10536 21.2652 2 21 2ZM10 20H4V14H10V20ZM15 17H12V13C12 12.7348 11.8946 12.4804 11.7071 12.2929C11.5196 12.1054 11.2652 12 11 12H7V9H15V17ZM20 14H17V8C17 7.73478 16.8946 7.48043 16.7071 7.29289C16.5196 7.10536 16.2652 7 16 7H10V4H20V14Z"${add_attribute("fill", fill, 0)}></path></svg>`;
+});
+const Team_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { className = "" } = $$props;
+  let { fill = "#FFFFFF" } = $$props;
+  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
+    $$bindings.className(className);
+  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
+    $$bindings.fill(fill);
+  return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><g clip-path="url(#clip0_15_112)"><path d="M10.644 17.08C13.51 16.418 15.183 15.839 13.89 13.398C9.958 5.971 12.848 2 17.001 2C21.236 2 24.055 6.124 20.111 13.398C18.779 15.853 20.548 16.432 23.353 17.08C25.836 17.654 26 18.867 26 20.969V22H8C8 19.255 7.78 17.742 10.644 17.08ZM-2 22H5.809C5.774 13.823 9.245 16.687 9.245 10.873C9.245 8.362 7.606 7 5.497 7C2.382 7 0.215 9.979 3.164 15.549C4.133 17.379 2.133 17.814 -0.017 18.31C-1.879 18.74 -2 19.65 -2 21.227V22Z"${add_attribute("fill", fill, 0)}></path></g><defs><clipPath id="clip0_15_112"><rect width="24" height="24"${add_attribute("fill", fill, 0)}></rect></clipPath></defs></svg>`;
+});
+const Value_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { className = "" } = $$props;
+  let { fill = "#FFFFFF" } = $$props;
+  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
+    $$bindings.className(className);
+  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
+    $$bindings.fill(fill);
+  return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><path d="M9.50001 10.5001H12C12.2652 10.5001 12.5196 10.3947 12.7071 10.2072C12.8947 10.0196 13 9.76528 13 9.50007C13 9.23485 12.8947 8.9805 12.7071 8.79296C12.5196 8.60543 12.2652 8.50007 12 8.50007H11V8.00007C11 7.73485 10.8947 7.4805 10.7071 7.29296C10.5196 7.10543 10.2652 7.00007 10 7.00007C9.73479 7.00007 9.48044 7.10543 9.2929 7.29296C9.10537 7.4805 9.00001 7.73485 9.00001 8.00007V8.55007C8.39243 8.67344 7.85237 9.01817 7.48466 9.51733C7.11696 10.0165 6.94785 10.6345 7.01015 11.2513C7.07246 11.8682 7.36174 12.4398 7.82184 12.8554C8.28194 13.2709 8.88003 13.5007 9.50001 13.5001H10.5C10.6326 13.5001 10.7598 13.5527 10.8536 13.6465C10.9473 13.7403 11 13.8675 11 14.0001C11 14.1327 10.9473 14.2599 10.8536 14.3536C10.7598 14.4474 10.6326 14.5001 10.5 14.5001H8.00001C7.73479 14.5001 7.48044 14.6054 7.2929 14.793C7.10537 14.9805 7.00001 15.2349 7.00001 15.5001C7.00001 15.7653 7.10537 16.0196 7.2929 16.2072C7.48044 16.3947 7.73479 16.5001 8.00001 16.5001H9.00001V17.0001C9.00001 17.2653 9.10537 17.5196 9.2929 17.7072C9.48044 17.8947 9.73479 18.0001 10 18.0001C10.2652 18.0001 10.5196 17.8947 10.7071 17.7072C10.8947 17.5196 11 17.2653 11 17.0001V16.4501C11.6076 16.3267 12.1476 15.982 12.5154 15.4828C12.8831 14.9836 13.0522 14.3657 12.9899 13.7488C12.9276 13.132 12.6383 12.5603 12.1782 12.1448C11.7181 11.7292 11.12 11.4994 10.5 11.5001H9.50001C9.3674 11.5001 9.24022 11.4474 9.14645 11.3536C9.05269 11.2599 9.00001 11.1327 9.00001 11.0001C9.00001 10.8675 9.05269 10.7403 9.14645 10.6465C9.24022 10.5527 9.3674 10.5001 9.50001 10.5001ZM21 12.0001H18V3.00007C18.0007 2.82386 17.9548 2.65059 17.867 2.49781C17.7792 2.34504 17.6526 2.21817 17.5 2.13007C17.348 2.0423 17.1755 1.99609 17 1.99609C16.8245 1.99609 16.652 2.0423 16.5 2.13007L13.5 3.85007L10.5 2.13007C10.348 2.0423 10.1755 1.99609 10 1.99609C9.82447 1.99609 9.65203 2.0423 9.50001 2.13007L6.50001 3.85007L3.50001 2.13007C3.34799 2.0423 3.17554 1.99609 3.00001 1.99609C2.82447 1.99609 2.65203 2.0423 2.50001 2.13007C2.3474 2.21817 2.22079 2.34504 2.13299 2.49781C2.04518 2.65059 1.99931 2.82386 2.00001 3.00007V19.0001C2.00001 19.7957 2.31608 20.5588 2.87869 21.1214C3.4413 21.684 4.20436 22.0001 5.00001 22.0001H19C19.7957 22.0001 20.5587 21.684 21.1213 21.1214C21.6839 20.5588 22 19.7957 22 19.0001V13.0001C22 12.7349 21.8947 12.4805 21.7071 12.293C21.5196 12.1054 21.2652 12.0001 21 12.0001ZM5.00001 20.0001C4.73479 20.0001 4.48044 19.8947 4.2929 19.7072C4.10536 19.5196 4.00001 19.2653 4.00001 19.0001V4.73007L6.00001 5.87007C6.15435 5.95068 6.32589 5.99278 6.50001 5.99278C6.67413 5.99278 6.84567 5.95068 7.00001 5.87007L10 4.15007L13 5.87007C13.1543 5.95068 13.3259 5.99278 13.5 5.99278C13.6741 5.99278 13.8457 5.95068 14 5.87007L16 4.73007V19.0001C16.0027 19.3412 16.0636 19.6794 16.18 20.0001H5.00001ZM20 19.0001C20 19.2653 19.8947 19.5196 19.7071 19.7072C19.5196 19.8947 19.2652 20.0001 19 20.0001C18.7348 20.0001 18.4804 19.8947 18.2929 19.7072C18.1054 19.5196 18 19.2653 18 19.0001V14.0001H20V19.0001Z"${add_attribute("fill", fill, 0)}></path></svg>`;
+});
+const Roadmap_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { className = "" } = $$props;
+  let { fill = "#FFFFFF" } = $$props;
+  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
+    $$bindings.className(className);
+  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
+    $$bindings.fill(fill);
+  return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><g clip-path="url(#clip0_15_154)"><path d="M5 9C6.654 9 8 10.346 8 12C8 13.654 6.654 15 5 15C3.346 15 2 13.654 2 12C2 10.346 3.346 9 5 9ZM5 7C2.238 7 0 9.239 0 12C0 14.761 2.238 17 5 17C7.762 17 10 14.761 10 12C10 9.239 7.762 7 5 7ZM20 16C18.835 16 17.796 16.506 17.065 17.301L11.577 14.374C11.347 15.01 11.028 15.603 10.633 16.138L16.121 19.065C16.049 19.366 16 19.676 16 20C16 22.209 17.791 24 20 24C22.209 24 24 22.209 24 20C24 17.791 22.209 16 20 16ZM20 22C18.897 22 18 21.103 18 20C18 18.897 18.897 18 20 18C21.103 18 22 18.897 22 20C22 21.103 21.103 22 20 22ZM20 0C17.791 0 16 1.791 16 4C16 4.324 16.049 4.634 16.121 4.935L10.633 7.862C11.028 8.398 11.346 8.99 11.577 9.626L17.065 6.699C17.796 7.494 18.835 8 20 8C22.209 8 24 6.209 24 4C24 1.791 22.209 0 20 0ZM20 6C18.897 6 18 5.103 18 4C18 2.897 18.897 2 20 2C21.103 2 22 2.897 22 4C22 5.103 21.103 6 20 6Z"${add_attribute("fill", fill, 0)}></path></g><defs><clipPath id="clip0_15_154"><rect width="24" height="24"${add_attribute("fill", fill, 0)}></rect></clipPath></defs></svg>`;
+});
+const _page_svelte_svelte_type_style_lang = "";
+const css = {
+  code: ".side-nav.svelte-13ks2f8{background-color:#1a1a1d;border-right:1px solid #2e323a}",
+  map: null
+};
+const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  $$result.css.add(css);
+  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+    default: () => {
+      return `<div class="flex h-full"><nav class="p-4 h-full side-nav flex flex-col svelte-13ks2f8"><a href="/">${validate_component(Logo_icon, "Logo").$$render($$result, { className: "w-6" }, {}, {})}</a> <button>${validate_component(Icp_icon, "IcpIcon").$$render(
+        $$result,
+        {
+          className: "side-nav-icon",
+          fill: "#FFFFFF"
+        },
+        {},
+        {}
+      )}</button> <button>${validate_component(Value_icon, "ValueIcon").$$render(
+        $$result,
+        {
+          className: "side-nav-icon",
+          fill: "#8C8C8C"
+        },
+        {},
+        {}
+      )}</button> <button>${validate_component(Roadmap_icon, "RoadmapIcon").$$render(
+        $$result,
+        {
+          className: "side-nav-icon",
+          fill: "#8C8C8C"
+        },
+        {},
+        {}
+      )}</button> <button>${validate_component(Mvp_icon, "MvpIcon").$$render(
+        $$result,
+        {
+          className: "side-nav-icon",
+          fill: "#8C8C8C"
+        },
+        {},
+        {}
+      )}</button> <button>${validate_component(Team_icon, "TeamIcon").$$render(
+        $$result,
+        {
+          className: "side-nav-icon",
+          fill: "#8C8C8C"
+        },
+        {},
+        {}
+      )}</button></nav> <main class="flex-1"><div class="w-full p-4 top-bar" data-svelte-h="svelte-m3ksr3"><h1>OpenBook Whitepaper</h1></div> <div class="p-4">${`${validate_component(Vision, "Vision").$$render($$result, {}, {}, {})}`} ${``} ${``} ${``} ${``}</div></main></div>`;
+    }
+  })}`;
+});
 export {
   Error$1 as E,
   Layout$1 as L,
-  Page as P,
+  Page$1 as P,
   Server as S,
   set_building as a,
   set_private_env as b,
   set_public_env as c,
+  Page as d,
   get_hooks as g,
   options as o,
   set_assets as s
