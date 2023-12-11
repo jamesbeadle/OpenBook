@@ -45,9 +45,9 @@
           >Connect (soon)</button
         >
         <p class="text-center">
-          Welcome to OpenBook, the future of accounting at your fingertips!
-          Experience the ease of decentralised financial management, secure
-          transaction management and real-time insights. Simplify your
+          Welcome to OpenBook, the future of business management at your
+          fingertips! Experience the ease of decentralised financial management,
+          secure transaction management and real-time insights. Simplify your
           accounting journey with OpenBook!
         </p>
       </div>

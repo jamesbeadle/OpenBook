@@ -73,10 +73,10 @@
       </button>
     </nav>
     <main class="flex-1">
-      <div class="w-full p-4 top-bar">
+      <div class="w-full p-4 px-8 top-bar">
         <h1>OpenBook Whitepaper</h1>
       </div>
-      <div class="p-4">
+      <div class="p-4 px-8">
         {#if activeSection == 0}
           <Vision />
         {/if}
@@ -93,7 +93,7 @@
           <Team />
         {/if}
       </div>
-      <div class="flex flex-row space-x-4 mx-4">
+      <div class="flex flex-row space-x-4 px-7 mb-4">
         <button
           on:click={priorSection}
           disabled={activeSection == 0}

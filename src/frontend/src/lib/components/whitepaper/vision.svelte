@@ -1,5 +1,5 @@
-<h1 class="text-2xl">Vision</h1>
-<div class="flex flex-col space-y-4 mt-4">
+<h1 class="text-2xl mb-8 mt-4">Vision</h1>
+<div class="flex flex-col space-y-8 mt-4 mb-4 mb-4">
   <p>
     The Internet Computer blockchain has provided the world with a foundation
     for genuine decentralisation. This technological leap is particularly

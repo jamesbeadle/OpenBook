@@ -3355,7 +3355,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1f5dk7m"
+  version_hash: "1ilfjzm"
 };
 function get_hooks() {
   return {};
@@ -3843,7 +3843,7 @@ const Page$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   })}`;
 });
 const Vision = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<h1 class="text-2xl" data-svelte-h="svelte-1yp5w0h">Vision</h1> <div class="flex flex-col space-y-4 mt-4" data-svelte-h="svelte-1lagbxw"><p>The Internet Computer blockchain has provided the world with a foundation
+  return `<h1 class="text-2xl mb-8 mt-4" data-svelte-h="svelte-i9bpij">Vision</h1> <div class="flex flex-col space-y-8 mt-4 mb-4 mb-4" data-svelte-h="svelte-1ff3zt0"><p>The Internet Computer blockchain has provided the world with a foundation
     for genuine decentralisation. This technological leap is particularly
     transformative for businesses worldwide, which are increasingly reliant on
     Software as a Service (SaaS) platforms for critical data processing.</p> <p>Businesses today face the task of managing multiple subscriptions across a
@@ -3971,7 +3971,7 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
         },
         {},
         {}
-      )}</button></nav> <main class="flex-1"><div class="w-full p-4 top-bar" data-svelte-h="svelte-m3ksr3"><h1>OpenBook Whitepaper</h1></div> <div class="p-4">${`${validate_component(Vision, "Vision").$$render($$result, {}, {}, {})}`} ${``} ${``} ${``} ${``}</div> <div class="flex flex-row space-x-4 mx-4"><button ${"disabled"} class="${"book-btn " + escape("disabled", true)}">&lt; Prior Section</button> <button ${activeSection == sections.length - 1 ? "disabled" : ""} class="${"book-btn " + escape(activeSection == sections.length - 1 ? "disabled" : "", true)}">Next Section &gt;</button></div></main></div>`;
+      )}</button></nav> <main class="flex-1"><div class="w-full p-4 px-8 top-bar" data-svelte-h="svelte-ra0uei"><h1>OpenBook Whitepaper</h1></div> <div class="p-4 px-8">${`${validate_component(Vision, "Vision").$$render($$result, {}, {}, {})}`} ${``} ${``} ${``} ${``}</div> <div class="flex flex-row space-x-4 px-7 mb-4"><button ${"disabled"} class="${"book-btn " + escape("disabled", true)}">&lt; Prior Section</button> <button ${activeSection == sections.length - 1 ? "disabled" : ""} class="${"book-btn " + escape(activeSection == sections.length - 1 ? "disabled" : "", true)}">Next Section &gt;</button></div></main></div>`;
     }
   })}`;
 });
