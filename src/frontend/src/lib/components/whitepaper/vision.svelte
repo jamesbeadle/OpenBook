@@ -1,10 +1,24 @@
 <h1 class="text-2xl mb-8 mt-4">Vision</h1>
 <div class="flex flex-col space-y-8 mt-4 mb-4 mb-4">
   <p>
+    Businesses are increasingly turning to Software as a Service (SaaS)
+    platforms to manager their internal processes. Platforms like Salesforce &
+    Quickbooks use this common software distribution model in which applications
+    are hosted by a third-party provider and made available to customers over
+    the internet. This model allows businesses to access software applications
+    without the need for internal hardware or technical expertise, paying on a
+    subscription basis.
+  </p>
+  <p>
     The Internet Computer blockchain has provided the world with a foundation
-    for genuine decentralisation. This technological leap is particularly
-    transformative for businesses worldwide, which are increasingly reliant on
-    Software as a Service (SaaS) platforms for critical data processing.
+    for genuine decentralisation, a significant leap for the technological
+    underpinnings of SaaS platforms. This evolution is especially transformative
+    for businesses worldwide, which are reliant on SaaS for critical data
+    processing. The Internet Computer blockchain has provided the world with a
+    foundation for genuine decentralisation. This technological leap is
+    particularly transformative for businesses worldwide, which are increasingly
+    reliant on Software as a Service (SaaS) platforms for critical data
+    processing.
   </p>
   <p>
     Businesses today face the task of managing multiple subscriptions across a

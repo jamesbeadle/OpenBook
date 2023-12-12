@@ -24,32 +24,35 @@
   {:else}
     <div class="flex flex-col md:flex-row h-screen">
       <div
-        class="relative md:w-1/2 w-full h-full overflow-hidden md:overflow-visible"
+        class="relative md:w-auto w-full h-full overflow-hidden md:overflow-visible"
       >
         <img
           src="home.png"
-          alt="home"
-          class="md:absolute md:right-0 h-full md:w-full w-full object-cover object-middle"
+          alt=""
+          class="hidden-image aspect-w-16 md:h-full w-full md:w-auto object-cover object-middle"
         />
       </div>
       <div
-        class="md:flex-1 flex flex-col justify-center items-center p-4 md:p-12 my-16 md:my-2 space-y-8"
+        class="md:flex-1 flex flex-col justify-center items-center p-4 md:p-12 my-16 md:my-2"
       >
-        <Logo className="w-24" />
-        <p>Welcome Back</p>
-        <p class="hidden">Please connect to continue</p>
-        <a href="/whitepaper" class="book-btn min-w-[150px]">Whitepaper</a>
-        <button
-          disabled={isDisabled}
-          class="hidden book-btn min-w-[150px] {isDisabled ? 'disabled' : ''}"
-          >Connect (soon)</button
+        <div
+          class="md:flex-1 flex flex-col justify-center items-center p-4 md:p-12 my-16 md:my-2 space-y-8"
         >
-        <p class="text-center">
-          Welcome to OpenBook, the future of business management at your
-          fingertips! Experience the ease of decentralised financial management,
-          secure transaction management and real-time insights. Simplify your
-          accounting journey with OpenBook!
-        </p>
+          <Logo className="w-24" />
+          <p>Welcome Back</p>
+          <p class="hidden">Please connect to continue</p>
+          <a href="/whitepaper" class="book-btn min-w-[150px]">Whitepaper</a>
+          <button
+            disabled={isDisabled}
+            class="hidden book-btn min-w-[150px] {isDisabled ? 'disabled' : ''}"
+            >Connect (soon)</button
+          >
+          <p class="text-center">
+            Welcome to OpenBook, the future of business management at your
+            fingertips! Experience the ease of decentralised financial
+            management, secure transaction management and real-time insights.
+          </p>
+        </div>
       </div>
     </div>
   {/if}

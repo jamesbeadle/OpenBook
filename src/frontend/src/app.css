@@ -24,6 +24,10 @@
   border-bottom: 1px solid #2e323a;
 }
 
+.hidden-image {
+  visibility: hidden;
+}
+
 input {
   background-color: #2e323a !important;
 }

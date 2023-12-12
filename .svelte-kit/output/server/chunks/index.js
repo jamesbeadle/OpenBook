@@ -3355,7 +3355,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "104r6n0"
+  version_hash: "hm3kcw"
 };
 function get_hooks() {
   return {};
@@ -3843,10 +3843,21 @@ const Page$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   })}`;
 });
 const Vision = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<h1 class="text-2xl mb-8 mt-4" data-svelte-h="svelte-i9bpij">Vision</h1> <div class="flex flex-col space-y-8 mt-4 mb-4 mb-4" data-svelte-h="svelte-1ff3zt0"><p>The Internet Computer blockchain has provided the world with a foundation
-    for genuine decentralisation. This technological leap is particularly
-    transformative for businesses worldwide, which are increasingly reliant on
-    Software as a Service (SaaS) platforms for critical data processing.</p> <p>Businesses today face the task of managing multiple subscriptions across a
+  return `<h1 class="text-2xl mb-8 mt-4" data-svelte-h="svelte-i9bpij">Vision</h1> <div class="flex flex-col space-y-8 mt-4 mb-4 mb-4" data-svelte-h="svelte-1sok86p"><p>Businesses are increasingly turning to Software as a Service (SaaS)
+    platforms to manager their internal processes. Platforms like Salesforce &amp;
+    Quickbooks use this common software distribution model in which applications
+    are hosted by a third-party provider and made available to customers over
+    the internet. This model allows businesses to access software applications
+    without the need for internal hardware or technical expertise, paying on a
+    subscription basis.</p> <p>The Internet Computer blockchain has provided the world with a foundation
+    for genuine decentralisation, a significant leap for the technological
+    underpinnings of SaaS platforms. This evolution is especially transformative
+    for businesses worldwide, which are reliant on SaaS for critical data
+    processing. The Internet Computer blockchain has provided the world with a
+    foundation for genuine decentralisation. This technological leap is
+    particularly transformative for businesses worldwide, which are increasingly
+    reliant on Software as a Service (SaaS) platforms for critical data
+    processing.</p> <p>Businesses today face the task of managing multiple subscriptions across a
     range of platforms. Their use cases often extend further, encompassing
     multiple organisations, currencies, and user roles. These challenges open
     the door for opportunities to create a more streamlined and integrated

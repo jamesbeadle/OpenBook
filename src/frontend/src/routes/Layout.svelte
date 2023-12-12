@@ -9,6 +9,27 @@
 
   onMount(async () => {
     try {
+      const images = document.images;
+      const promises = Array.from(images).map((img) => {
+        if (img.complete) {
+          return Promise.resolve();
+        }
+        return new Promise((resolve) => {
+          img.addEventListener('load', resolve);
+          img.addEventListener('error', resolve);
+        });
+      });
+
+      await Promise.all(promises);
+
+      // Make images visible
+      const hiddenImages = document.querySelectorAll('.hidden-image');
+      hiddenImages.forEach((img) => {
+        const imageElement = img as HTMLImageElement;
+        imageElement.style.visibility = 'visible';
+      });
+
+      // Remove spinner
       const spinner = document.querySelector('body > #app-spinner');
       spinner?.remove();
     } catch (error) {
