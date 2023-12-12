@@ -6,6 +6,7 @@ module Types {
     public type OrganisationId = Nat32;
     public type ServiceId = Nat32;
     public type ServiceAgreementId = Nat32;
+    public type AccountCodeId = Nat16;
 
     public type Error = {
         #NotFound;
@@ -139,6 +140,7 @@ module Types {
 
     public type AssetAccount = {
         accountType: AssetAccountType;
+        name: Text;
     };
 
     public type AssetAccountType = {
@@ -153,6 +155,46 @@ module Types {
     public type BankDetail = {
         description: Text;
         value: Text;
+    };
+
+    public type Transaction = {
+        id: Nat32;
+        description: Text;
+        accountCodeId: AccountCodeId;
+        debit: Nat;
+        credit: Nat;
+        transactionType: TransactionType;
+    };
+    
+    public type TransactionType = {
+        #SalesInvoice;              
+        #SalesCreditNote;           
+        #SalesReceipt;              
+        #CustomerRefund;            
+        #PurchaseInvoice;           
+        #PurchaseCreditNote;        
+        #SupplierPayment;           
+        #CashPurchase;              
+        #DiscountReceived;          
+        #DiscountGiven;             
+        #JournalEntry;              
+        #BankDeposit;               
+        #BankWithdrawal;            
+        #FundTransfer;              
+        #AssetPurchase;             
+        #AssetDisposal;             
+        #AssetDepreciation;         
+        #InventoryAdjustment;       
+        #PayrollDisbursement;       
+        #TaxPayment;                
+        #TaxRebate;                 
+        #LoanRepayment;             
+        #LoanDisbursement;          
+        #InterestIncome;            
+        #InterestExpense;           
+        #DividendReceipt;           
+        #WriteOff;                  
+        #ReconciliationAdjustment;  
     };
 
 };
