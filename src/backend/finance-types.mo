@@ -191,8 +191,7 @@ module Types {
 
     public type TokenWallet = {
         id: Nat32;
-        account: Text;
-        principal: Text;
+        details: List.List<BankDetail>;
         lastModified: Int64;
     };
 
