@@ -1,43 +1,6 @@
 import List "mo:base/List";
 
-module Types {
-
-    public type OrganisationId = Nat32;
-    public type ServiceId = Nat32;
-    public type ServiceAgreementId = Nat32;
-
-    public type Error = {
-        #NotFound;
-        #AlreadyExists;
-        #NotAuthorized;
-        #NotAllowed;
-        #DecodeError;
-        #InvalidData;
-    };
-
-    public type ChangeType = {
-        #ProfileCreated;
-        #ProfileNameUpdated;
-        #TermsAccepted;
-        #ProfilePictureUpdated;
-        #ProfileOrganisationAdded;
-        #ProfileOrganisationRemoved;
-    };
-
-    public type Country = {
-        #UK;
-        #USA;
-        #Germany;
-        #Canada;
-        #Japan;
-        #France;
-        #Australia;
-        #India;
-        #China;
-        #Brazil;
-        #Netherlands;
-        #Sweden;
-    };
+module TaxTypes {
 
     public type UKTaxType = {
         #IncomeTax;
@@ -153,7 +116,7 @@ module Types {
         #RealEstateTransferTax;
         #RoadTax;
     };
-    
+
     public type SwedenTaxType = {
         #IncomeTax;
         #ValueAddedTax;

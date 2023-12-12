@@ -1,4 +1,5 @@
 import List "mo:base/List";
+import TaxTypes "tax-types";
 
 module Types {
 
@@ -39,84 +40,119 @@ module Types {
         #Sweden;
     };
 
-  public type Role = {
-    #Finance;
-    #Sales;
-    #HR;
-    #Administration;
-    #Marketing;
-    #CustomerService;
-    #ProjectManagement;
-    #Payroll;
-    #Compliance;
-    #ResearchAndDevelopment;
-    #SoftwareDevelopment;
-    /*
-    #Production;
-    #SupplyChain;
-    #Legal;
-    #PR;
-    #QR;
-    #Procurement;
-    #Logistics;
-    #Operations;
-    #BusinessDevelopment;
-    #RiskManagement;
-    #Training;
-    #HealthAndSafety;
-    #Recruitment;
-    #SystemAdministration;
-    #Security;
-    #TechnicalSupport;
-    #Planning;
-    */
-  };
+    public type Role = {
+        #Finance;
+        #Sales;
+        #HR;
+        #Administration;
+        #Marketing;
+        #CustomerService;
+        #ProjectManagement;
+        #Payroll;
+        #Compliance;
+        #ResearchAndDevelopment;
+        #SoftwareDevelopment;
+        /*
+        #Production;
+        #SupplyChain;
+        #Legal;
+        #PR;
+        #QR;
+        #Procurement;
+        #Logistics;
+        #Operations;
+        #BusinessDevelopment;
+        #RiskManagement;
+        #Training;
+        #HealthAndSafety;
+        #Recruitment;
+        #SystemAdministration;
+        #Security;
+        #TechnicalSupport;
+        #Planning;
+        */
+    };
 
-  public type AuditRecord = {
-    changeType: ChangeType;
-    timestamp: Int64;
-  };
+    public type AuditRecord = {
+        changeType: ChangeType;
+        timestamp: Int64;
+    };
 
-  public type Profile = {
-    principalName : Text;
-    displayName : Text;
-    termsAccepted : Bool;
-    profilePicture : Text;
-    organisations: [OrganisationId];
-    createDate : Int;
-    auditHistory: List.List<AuditRecord>;
-  };
+    public type Profile = {
+        principalName : Text;
+        displayName : Text;
+        termsAccepted : Bool;
+        profilePicture : Text;
+        organisations: [OrganisationId];
+        createDate : Int;
+        auditHistory: List.List<AuditRecord>;
+        lastModified: Int64;
+    };
 
-  public type Organisation = {
-    id: OrganisationId;
-    name: Text;
-    friendlyName: Text;
-    referenceNumber: Text;
-    taxReferences: Text;//VAT and maybe utr number
-    logo: Text;
-    banner: Text;
-    members: List.List<OrganisationMember>;
-    services: List.List<ServiceAgreement>;
-    addresses: List.List<Address>;
-    auditHistory: List.List<AuditRecord>;
-  };
+    public type Organisation = {
+        id: OrganisationId;
+        name: Text;
+        friendlyName: Text;
+        referenceNumber: Text;
+        taxReferences: List.List<TaxReference>;
+        logo: Text;
+        banner: Text;
+        mainAddress: Address;
+        mainContact: Contact;
+        members: List.List<OrganisationMember>;
+        services: List.List<ServiceAgreement>;
+        addresses: List.List<Address>;
+        auditHistory: List.List<AuditRecord>;
+    };
 
-  public type OrganisationMember = {
-    id: Nat32;
-    principalId: Text;
-    role: Role;
-    auditHistory: List.List<AuditRecord>;
-  };
+    public type TaxReference = {
+        taxType: TaxType;
+        referenceNumber: Text;
+    };
 
-  public type ServiceAgreement = {
-    id: ServiceAgreementId;
-    auditHistory: List.List<AuditRecord>;
-  };
+    public type TaxType = {
+        #UK: [TaxTypes.UKTaxType];
+        #USA: [TaxTypes.USTaxType];
+    };
 
-  public type Address = {
-    addressName: Text;
-    addressLines: List.List<Text>;
-    auditHistory: List.List<AuditRecord>;
-  };
+    public type OrganisationMember = {
+        id: Nat32;
+        principalId: Text;
+        role: Role;
+        auditHistory: List.List<AuditRecord>;
+    };
+
+    public type ServiceAgreement = {
+        id: ServiceAgreementId;
+        auditHistory: List.List<AuditRecord>;
+    };
+
+    public type Address = {
+        addressName: Text;
+        addressLines: List.List<Text>;
+        auditHistory: List.List<AuditRecord>;
+    };
+
+    public type Contact = {
+
+    };
+
+    public type AssetAccount = {
+        accountType: AssetAccountType;
+    };
+
+    public type AssetAccountType = {
+        #TokenWallet;
+        #BankAccount;
+    };  
+
+    public type BankAccount = {
+        details: List.List<BankDetail>;
+    };
+
+    public type BankDetail = {
+        description: Text;
+        value: Text;
+    };
 
 };
