@@ -1,52 +1,28 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { goto } from "$app/navigation";
-  import ProfileDetail from "$lib/components/profile/profile-detail.svelte";
-  import Layout from "../Layout.svelte";
-  import { Spinner } from "@dfinity/gix-components";
-  let activeTab: string = "details";
-
+  import { onMount } from 'svelte';
+  import Layout from '../Layout.svelte';
+  import { authStore } from '$lib/stores/auth-store';
+  import { authSignedInStore } from '$lib/derived/auth.derived';
+  import Dashboard from '$lib/components/dashboard.svelte';
+  import Landing from '$lib/components/landing.svelte';
   let isLoading = true;
+
   onMount(async () => {
-    isLoading = false;
+    try {
+      await authStore.sync();
+    } catch (error) {
+      console.error('Error fetching homepage data:', error);
+    } finally {
+      isLoading = false;
+    }
   });
-  function setActiveTab(tab: string): void {
-    activeTab = tab;
-  }
-
 </script>
-
 <Layout>
-  {#if isLoading}
-    <Spinner />
-  {:else}
-    <div class="m-4">
-      <div class="bg-panel rounded-md">
-        <ul
-          class="flex rounded-t-lg bg-light-gray border-b border-gray-700 px-4 pt-2"
-        >
-          <li class={`mr-4 ${activeTab === "details" ? "active-tab" : ""}`}>
-            <button
-              class={`p-2 ${
-                activeTab === "details" ? "text-white" : "text-gray-400"
-              }`}
-              on:click={() => setActiveTab("details")}>Details</button
-            >
-          </li>
-          <li class={`mr-4 ${activeTab === "gameweeks" ? "active-tab" : ""}`}>
-            <button
-              class={`p-2 ${
-                activeTab === "gameweeks" ? "text-white" : "text-gray-400"
-              }`}
-              on:click={() => setActiveTab("gameweeks")}>Gameweeks</button
-            >
-          </li>
-        </ul>
-
-        {#if activeTab === "details"}
-          <ProfileDetail />
-        {/if}
+  {#if $authSignedInStore}
+      <div class="flex flex-row h-screen w-full">
+        <Dashboard />
       </div>
-    </div>
+  {:else}
+    <Landing />
   {/if}
 </Layout>

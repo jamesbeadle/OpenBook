@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import Dashboard from '$lib/components/dashboard.svelte';
-  
+    import { page } from '$app/stores';
+
     import DashboardHeader from '$lib/components/dashboard-header.svelte';
     import Owner from '$lib/components/dashboards/owner.svelte';
     import Accounts from '$lib/components/dashboards/accounts.svelte';
@@ -11,6 +11,7 @@
     import IcpIcon from '$lib/icons/icp-icon.svelte';
     import Logo from '$lib/icons/logo-icon.svelte';
     import ValueIcon from '$lib/icons/value-icon.svelte';
+  import ProfileDetail from './profile/profile-detail.svelte';
 
     let activeSection = 0;
     let sections = ['projects', 'contacts'];
@@ -21,8 +22,10 @@
     
     let activeRole = -1;
     let isLoading = true;
-  
+    $: currentRoute = $page.url.pathname;
+
     onMount(async () => {
+        console.log(currentRoute)
       try {
       } catch (error) {
         console.error('Error fetching homepage data:', error);
@@ -57,13 +60,19 @@
 <div class="w-full">
     <DashboardHeader /> 
     <div class="flex-1 overflow-y-auto p-4">
+        {#if currentRoute === '/profile'}
+            <ProfileDetail />
+        {/if}
         {#if activeRole === 0}
           <Owner />
-        {:else if activeRole === 1}
+          {/if}
+        {#if activeRole === 1}
           <Accounts />
-        {:else if activeRole === 2}
+          {/if}
+        {#if activeRole === 2}
           <Sales />
-        {:else}
+        {/if}
+        {#if activeRole < 0 && currentRoute === '/'}
             <p class="text-2xl">Welcome to OpenBook</p>
             <p>OpenBook is a decentralised business management tool for organisations of all sizes:</p>
             <button class="book-btn mt-4">Create Organisation</button>

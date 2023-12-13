@@ -46,11 +46,11 @@ function createUserStore() {
         process.env.BACKEND_CANISTER_ID ?? '',
       );
 
-      let updatedProfileDataObj = (await identityActor.getProfileDTO()) as any;
+      let updatedProfileDataObj = (await identityActor.getProfile()) as any;
 
       if (!updatedProfileDataObj) {
         await identityActor.createProfile();
-        updatedProfileDataObj = (await identityActor.getProfileDTO()) as any;
+        updatedProfileDataObj = (await identityActor.getProfile()) as any;
       }
       let updatedProfileData = updatedProfileDataObj[0];
       if (
@@ -118,7 +118,7 @@ function createUserStore() {
         authStore,
         process.env.BACKEND_CANISTER_ID ?? '',
       );
-      const result = await identityActor.getProfileDTO();
+      const result = await identityActor.getProfile();
       console.log(result);
       set(result);
       return result;
