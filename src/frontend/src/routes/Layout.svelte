@@ -26,7 +26,7 @@
     } catch (error) {
       console.error('Error', error);
     } finally {
-      console.log("here")
+      console.log('here');
       isLoading = false;
     }
   });

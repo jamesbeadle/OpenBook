@@ -47,12 +47,13 @@ function createUserStore() {
       );
 
       let updatedProfileDataObj = (await identityActor.getProfile()) as any;
+      console.log(updatedProfileDataObj)
 
       if (!updatedProfileDataObj) {
         await identityActor.createProfile();
         updatedProfileDataObj = (await identityActor.getProfile()) as any;
       }
-      let updatedProfileData = updatedProfileDataObj[0];
+      let updatedProfileData = updatedProfileDataObj;
       if (
         updatedProfileData &&
         updatedProfileData.profilePicture instanceof Uint8Array

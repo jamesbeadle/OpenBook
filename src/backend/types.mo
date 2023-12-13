@@ -98,7 +98,7 @@ module Types {
     principal : Text;
     displayName : Text;
     termsAccepted : Bool;
-    profilePicture : Text;
+    profilePictureCanisterId : Text;
     organisations : [OrganisationId];
     createDate : Int;
     auditHistory : List.List<AuditRecord>;

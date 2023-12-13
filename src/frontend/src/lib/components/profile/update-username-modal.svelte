@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { userStore } from "$lib/stores/user-store";
-  import { toastsError, toastsShow } from "$lib/stores/toasts-store";
-  import { Modal, busyStore } from "@dfinity/gix-components";
+  import { userStore } from '$lib/stores/user-store';
+  import { toastsError, toastsShow } from '$lib/stores/toasts-store';
+  import { Modal, busyStore } from '@dfinity/gix-components';
 
   export let visible: boolean;
   export let closeModal: () => void;
   export let cancelModal: () => void;
-  export let newUsername: string = "";
+  export let newUsername: string = '';
 
   function isDisplayNameValid(displayName: string): boolean {
     if (!displayName) {
@@ -24,27 +24,27 @@
 
   async function updateUsername() {
     busyStore.startBusy({
-      initiator: "update-name",
-      text: "Updating display name...",
+      initiator: 'update-name',
+      text: 'Updating display name...',
     });
     try {
       await userStore.updateUsername(newUsername);
       userStore.sync();
       await closeModal();
       toastsShow({
-        text: "Display name updated.",
-        level: "success",
+        text: 'Display name updated.',
+        level: 'success',
         duration: 2000,
       });
     } catch (error) {
       toastsError({
-        msg: { text: "Error updating username." },
+        msg: { text: 'Error updating username.' },
         err: error,
       });
-      console.error("Error updating username:", error);
+      console.error('Error updating username:', error);
       cancelModal();
     } finally {
-      busyStore.stopBusy("update-name");
+      busyStore.stopBusy('update-name');
     }
   }
 </script>
@@ -73,7 +73,7 @@
         </button>
         <button
           class={`px-4 py-2 ${
-            isSubmitDisabled ? "bg-gray-500" : "fpl-purple-btn"
+            isSubmitDisabled ? 'bg-gray-500' : 'fpl-purple-btn'
           } default-button fpl-purple-btn`}
           type="submit"
           disabled={isSubmitDisabled}

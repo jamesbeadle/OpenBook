@@ -19,9 +19,9 @@
       });
     } catch (error) {
       console.error('Error', error);
-    } finally {}
+    } finally {
+    }
   });
-  
 </script>
 
 <div

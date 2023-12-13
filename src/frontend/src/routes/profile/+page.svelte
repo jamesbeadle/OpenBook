@@ -17,11 +17,12 @@
     }
   });
 </script>
+
 <Layout>
   {#if $authSignedInStore}
-      <div class="flex flex-row h-screen w-full">
-        <Dashboard />
-      </div>
+    <div class="flex flex-row h-screen w-full">
+      <Dashboard />
+    </div>
   {:else}
     <Landing />
   {/if}
