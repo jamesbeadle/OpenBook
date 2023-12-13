@@ -72,9 +72,20 @@ actor Self {
     };
   };
 
-  public shared query ({ caller }) func isDisplayNameValid(displayName : Text) : async Bool {
+  public shared ({ caller }) func updateUsername(username : Text) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
-    return profilesInstance.isDisplayNameValid(displayName);
+    let invalidName = not profilesInstance.isUsernameValid(username);
+    assert not invalidName;
+
+    var profile = profilesInstance.getProfile(Principal.toText(caller));
+    switch (profile) {
+      case (null) {
+        profilesInstance.createProfile(Principal.toText(caller), "", "", "", "", "", "", ""); //here
+        return #ok(());
+      };
+      case (?foundProfile) {};
+    };
+    return profilesInstance.updateDisplayName(Principal.toText(caller), displayName);
   };
 
   public shared ({ caller }) func updateDisplayName(displayName : Text) : async Result.Result<(), T.Error> {

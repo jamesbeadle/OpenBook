@@ -301,6 +301,88 @@ module {
       };
     };
 
+    public func updateEmail(principalName : Text, email : Text) : Result.Result<(), T.Error> {
+      let existingProfile = userProfiles.get(principalName);
+      switch (existingProfile) {
+        case (null) {
+          return #err(#NotFound);
+        };
+        case (?existingProfile) {
+          if (existingProfile.emailAddress == email) {
+            return #ok(());
+          };
+          let emailValid = isEmailValid(email);
+          if (not emailValid) {
+            return #err(#NotAllowed);
+          };
+
+          let updatedProfile : T.Profile = {
+            principal = existingProfile.principal;
+            username = existingProfile.username;
+            displayName = existingProfile.displayName;
+            firstName = existingProfile.firstName;
+            lastName = existingProfile.lastName;
+            openChatUsername = existingProfile.openChatUsername;
+            emailAddress = email;
+            phoneNumber = existingProfile.phoneNumber;
+            profilePictureCanisterId = existingProfile.profilePictureCanisterId;
+            termsAccepted = existingProfile.termsAccepted;
+            createDate = existingProfile.createDate;
+            auditHistory = existingProfile.auditHistory;
+            lastModified = existingProfile.lastModified;
+            organisations = existingProfile.organisations;
+            preferredPaymentCurrency = existingProfile.preferredPaymentCurrency;
+            userDefinedWallet = existingProfile.userDefinedWallet;
+          };
+
+          userProfiles.put(principalName, updatedProfile);
+
+          return #ok(());
+        };
+      };
+    };
+
+    public func updatePhone(principalName : Text, phone : Text) : Result.Result<(), T.Error> {
+      let existingProfile = userProfiles.get(principalName);
+      switch (existingProfile) {
+        case (null) {
+          return #err(#NotFound);
+        };
+        case (?existingProfile) {
+          if (existingProfile.phoneNumber == phone) {
+            return #ok(());
+          };
+          let phoneValid = isPhoneValid(phone);
+          if (not phoneValid) {
+            return #err(#NotAllowed);
+          };
+
+          let updatedProfile : T.Profile = {
+            principal = existingProfile.principal;
+            username = existingProfile.username;
+            displayName = existingProfile.displayName;
+            firstName = existingProfile.firstName;
+            lastName = existingProfile.lastName;
+            openChatUsername = existingProfile.openChatUsername;
+            emailAddress = existingProfile.emailAddress;
+            phoneNumber = phone;
+            profilePictureCanisterId = existingProfile.profilePictureCanisterId;
+            termsAccepted = existingProfile.termsAccepted;
+            createDate = existingProfile.createDate;
+            auditHistory = existingProfile.auditHistory;
+            lastModified = existingProfile.lastModified;
+            organisations = existingProfile.organisations;
+            preferredPaymentCurrency = existingProfile.preferredPaymentCurrency;
+            userDefinedWallet = existingProfile.userDefinedWallet;
+          };
+
+          userProfiles.put(principalName, updatedProfile);
+
+          return #ok(());
+        };
+      };
+    };
+
     public func updateProfilePicture(principalName : Text, profilePicture : Blob) : Result.Result<(), T.Error> {
       let existingProfile = userProfiles.get(principalName);
       userProfilePictures.put(principalName, profilePicture);
@@ -433,32 +515,55 @@ module {
       return true;
     };
     
-   public func isEmailValid(email: Text) : Bool {
-      if (Text.size(email) < 5 or Text.size(email) > 254) {
-        // too short or too long
+    public func isEmailValid(email: Text) : Bool {
+        if (Text.size(email) < 5 or Text.size(email) > 254) {
+          // too short or too long
+          return false;
+        };
+
+        var atFound = false;
+        var dotFound = false;
+        let chars = Text.toIter(email);
+        for (c in chars) {
+          if (c == '@') {
+            if (atFound) {
+              // Multiple '@' symbols found
+              return false;
+            };
+            atFound := true;
+          } else if (atFound and c == '.') {
+            dotFound := true;
+          };
+        };
+
+        return atFound and dotFound;
+      };
+
+
+
+
+    };
+
+    public func isPhoneValid(phone : Text) : Bool {
+
+      if (Text.size(phone) < 0 or Text.size(phone) > 30) {
         return false;
       };
 
-      var atFound = false;
-      var dotFound = false;
-      let chars = Text.toIter(email);
-      for (c in chars) {
-        if (c == '@') {
-          if (atFound) {
-            // Multiple '@' symbols found
+      let isAlphanumeric = func(s : Text) : Bool {
+        let chars = Text.toIter(s);
+        for (c in chars) {
+          if (not ((c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z') or (c >= '0' and c <= '9') or (c == ' ') or (c == '+') or (c == '-') or (c == '(') or (c == ')'))) {
             return false;
           };
-          atFound := true;
-        } else if (atFound and c == '.') {
-          dotFound := true;
         };
+        return true;
       };
 
-      return atFound and dotFound;
+      if (not isAlphanumeric(phone)) {
+        return false;
+      };
+
+      return true;
     };
-
-
-
-
-  };
 };
