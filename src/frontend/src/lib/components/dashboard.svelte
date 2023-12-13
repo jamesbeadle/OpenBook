@@ -8,17 +8,17 @@
     import Sales from '$lib/components/dashboards/sales.svelte';
   
     import ExpandIcon from '$lib/icons/expand-icon.svelte';
-      import IcpIcon from '$lib/icons/icp-icon.svelte';
-      import Logo from '$lib/icons/logo-icon.svelte';
-      import ValueIcon from '$lib/icons/value-icon.svelte';
+    import IcpIcon from '$lib/icons/icp-icon.svelte';
+    import Logo from '$lib/icons/logo-icon.svelte';
+    import ValueIcon from '$lib/icons/value-icon.svelte';
+
+    let activeSection = 0;
+    let sections = ['projects', 'contacts'];
+
+    function selectSection(sectionIndex: number) {
+    activeSection = sectionIndex;
+    }
     
-      let activeSection = 0;
-      let sections = ['projects', 'contacts'];
-    
-      function selectSection(sectionIndex: number) {
-        activeSection = sectionIndex;
-      }
-    let activeTitle = "OpenBook";
     let activeRole = -1;
     let isLoading = true;
   
@@ -35,32 +35,40 @@
     <a href="/">
         <Logo className="w-6" />
     </a>
-    <button on:click={() => selectSection(0)}>
-        <IcpIcon
-            className="side-nav-icon"
-            fill={activeSection == 0 ? '#FFFFFF' : '#8C8C8C'}
-        />
-    </button>
-    <button on:click={() => selectSection(1)}>
-        <ValueIcon
-            className="side-nav-icon"
-            fill={activeSection == 1 ? '#FFFFFF' : '#8C8C8C'}
-        />
-    </button>
+    {#if activeRole === 0}
+        <button on:click={() => selectSection(0)}>
+            <IcpIcon
+                className="side-nav-icon"
+                fill={activeSection == 0 ? '#FFFFFF' : '#8C8C8C'}
+            />
+        </button>
+        <button on:click={() => selectSection(1)}>
+            <ValueIcon
+                className="side-nav-icon"
+                fill={activeSection == 1 ? '#FFFFFF' : '#8C8C8C'}
+            />
+        </button>    
+    {/if}
+    
     <div class="pull-down">
         <ExpandIcon fill="#555555" />
     </div>
 </nav>
 <div class="w-full">
     <DashboardHeader /> 
+    <div class="flex-1 overflow-y-auto p-4">
+        {#if activeRole === 0}
+          <Owner />
+        {:else if activeRole === 1}
+          <Accounts />
+        {:else if activeRole === 2}
+          <Sales />
+        {:else}
+            <p class="text-2xl">Welcome to OpenBook</p>
+            <p>OpenBook is a decentralised business management tool for organisations of all sizes:</p>
+            <button class="book-btn mt-4">Create Organisation</button>
+            <button class="book-btn mt-4 disabled">Find Existing</button>
+        {/if}
+    </div>
 </div>
-{#if activeRole == 0}
-  <Owner />
-{/if}
-{#if activeRole == 1}
-  <Accounts />
-{/if}
-{#if activeRole == 2}
-  <Sales />
-{/if}
   
