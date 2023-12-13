@@ -5,6 +5,7 @@
   import Landing from '$lib/components/landing.svelte';
   import { authSignedInStore } from '$lib/derived/auth.derived';
   import { authStore } from '$lib/stores/auth-store';
+  import Dashboard from '$lib/components/dashboard.svelte';
 
   let isLoading = true;
 
@@ -25,9 +26,7 @@
   {:else}
     <div class="flex flex-col md:flex-row h-screen">
       {#if $authSignedInStore}
-        <!-- Dashboard component based on the users role -->
-
-        <p>Logged in</p>
+        <Dashboard />
       {:else}
         <Landing />
       {/if}

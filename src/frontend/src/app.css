@@ -19,9 +19,18 @@
   @apply w-6 mt-8;
 }
 
+.pull-down {
+  @apply flex flex-col h-full justify-end;
+}
+
 .top-bar {
   background-color: #1a1a1d;
   border-bottom: 1px solid #2e323a;
+}
+
+.side-nav {
+  background-color: #1a1a1d;
+  border-right: 1px solid #2e323a;
 }
 
 .hidden-image {
