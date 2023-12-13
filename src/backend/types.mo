@@ -4,9 +4,15 @@ import TaxTypes "tax-types";
 module Types {
 
     public type OrganisationId = Nat32;
-    public type ServiceId = Nat32;
+    public type ServiceId = Nat16;
     public type ServiceAgreementId = Nat32;
     public type AccountCodeId = Nat16;
+    public type CustomerId = Nat32;
+    public type SupplierId = Nat32;
+    public type AddressId = Nat32;
+    public type ContactId = Nat32;
+    public type OrganisationMemberId = Nat32;
+    public type CurrencyId = Nat16;
 
     public type Error = {
         #NotFound;
@@ -97,6 +103,8 @@ module Types {
         createDate : Int;
         auditHistory: List.List<AuditRecord>;
         lastModified: Int64;
+        userDefinedWallet: Text;
+        preferredPaymentCurrency: CurrencyId;
     };
 
     public type Organisation = {
@@ -107,8 +115,8 @@ module Types {
         taxReferences: List.List<TaxReference>;
         logo: Text;
         banner: Text;
-        mainAddress: Address;
-        mainContact: Contact;
+        mainAddressId: AddressId;
+        mainContactId: ContactId;
         members: List.List<OrganisationMember>;
         services: List.List<ServiceAgreement>;
         addresses: List.List<Address>;
@@ -117,28 +125,58 @@ module Types {
         customers: List.List<Customer>;
         suppliers: List.List<Supplier>;
         lastModified: Int64;
+        primaryAddressId: AddressId;
+        primaryContactId: ContactId;
+        chartOfAccounts: ChartOfAccounts;
     };
 
     public type OrganisationMember = {
-        id: Nat32;
+        id: OrganisationMemberId;
         principalId: Text;
         role: Role;
         lastModified: Int64;
     };
 
     public type Customer = {
-        id: Nat32;
+        id: CustomerId;
         name: Text;
         legalName: Text;
-        mainContact: Text;
+        mainAddressId: AddressId;
+        mainContactId: ContactId;
         assetAccounts: AssetAccount;
         salesTaxId: Text;
         paymentTermDays: Nat16;
         contactMethod: ContactMethod;
+        accountManager: CustomerId;
+        primaryAddressId: AddressId;
+        primaryContactId: ContactId;
+        addresses: List.List<Address>;
+        contacts: List.List<Contact>;
+        
+    };
+
+    public type CustomerStatus = {
+        #Active;
+        #OnHold;
+        #Inactive;
     };
 
     public type Supplier = {
-        id: Nat32;
+        id: SupplierId;
+        name: Text;
+        legalName: Text;
+        mainAddressId: AddressId;
+        mainContactId: ContactId;
+        assetAccounts: AssetAccount;
+        salesTaxId: Text;
+        paymentTermDays: Nat16;
+        contactMethod: ContactMethod;
+        accountManager: CustomerId;
+        primaryAddressId: AddressId;
+        primaryContactId: ContactId;
+        addresses: List.List<Address>;
+        contacts: List.List<Contact>;
+        paymentOptions: List.List<AssetAccount>;
     };
 
     public type TaxReference = {
@@ -168,13 +206,21 @@ module Types {
     };
 
     public type Address = {
+        id: Nat32;
         addressName: Text;
         addressLines: List.List<Text>;
         lastModified: Int64;
     };
 
     public type Contact = {
+        id: Nat32;
+        firstName: Text;
+        lastName: Text;
+        email: Text;
+        addressId: AddressId;
+        jobTitle: Text;
         lastModified: Int64;
+        
     };
 
     public type AssetAccount = {
@@ -212,11 +258,26 @@ module Types {
         id: Nat32;
         description: Text;
         accountCodeId: AccountCodeId;
+        currency: Currency;
         debit: Nat;
         credit: Nat;
         transactionType: TransactionType;
         contraId: Nat32;
         timestamp: Int64;
+    };
+
+    public type Currency = {
+        id: CurrencyId;
+        name: Text;
+        currencyType: CurrencyType;
+        symbol: Text;
+        icon: Text;
+        canister: Text;
+    };
+
+    public type CurrencyType = {
+        #Fiat;
+        #Token;
     };
     
     public type TransactionType = {
@@ -249,5 +310,95 @@ module Types {
         #WriteOff;                  
         #ReconciliationAdjustment;  
     };
+
+    public type ChartOfAccounts = {
+        accounts: List.List<GeneralLedgerAccount>;
+        
+    };
+
+    public type GeneralLedgerAccount = {
+        group: AccountGroup;
+        subGroup: AccountSubGroup;
+        name: Text;
+    };
+
+    public type AccountGroup = {
+        #Assets;
+        #Liabilities;
+        #Equity;
+        #Income;
+        #Expenses;
+    };
+
+    public type AccountSubGroup = {
+        // Assets
+        #CashAndCashEquivalents;
+        #ShortTermInvestments;
+        #AccountsReceivable;
+        #Inventory;
+        #PrepaidExpenses;
+        #FixedAssets;
+        #AccumulatedDepreciation;
+        #LongTermInvestments;
+        #Goodwill;
+        #OtherIntangibleAssets;
+        #DeferredIncomeTaxes;
+        #OtherNonCurrentAssets;
+
+        // Liabilities
+        #AccountsPayable;
+        #AccruedExpenses;
+        #ShortTermDebt;
+        #CurrentPortionOfLongTermDebt;
+        #UnearnedRevenue;
+        #LongTermDebt;
+        #PensionLiabilities;
+        #DeferredRevenue;
+        #DeferredIncomeTaxesLiability;
+        #OtherLongTermLiabilities;
+
+        // Equity
+        #CommonStock;
+        #PreferredStock;
+        #AdditionalPaidInCapital;
+        #TreasuryStock;
+        #RetainedEarnings;
+        #AccumulatedOtherComprehensiveIncome;
+
+        // Income
+        #SalesRevenue;
+        #ServiceRevenue;
+        #InterestIncome;
+        #DividendIncome;
+        #RentalIncome;
+        #RoyaltyIncome;
+        #CapitalGains;
+
+        // Expenses
+        #CostOfSales;
+        #OperatingExpenses;
+        #GeneralAndAdministrativeExpenses;
+        #SellingAndMarketingExpenses;
+        #ResearchAndDevelopmentExpenses;
+        #DepreciationAndAmortizationExpenses;
+        #InterestExpense;
+        #IncomeTaxExpense;
+        #ForeignExchangeLoss;
+        #ImpairmentLosses;
+        #RestructuringCosts;
+    };
+
+    public type Department = {
+
+    };
+
+    public type CostCenter = {
+
+    };
+
+    public type FinanceAgreement = {
+
+    };
+
 
 };
