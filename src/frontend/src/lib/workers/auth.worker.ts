@@ -1,24 +1,24 @@
-import { AUTH_TIMER_INTERVAL } from "$lib/constants/app.constants";
+import { AUTH_TIMER_INTERVAL } from '$lib/constants/app.constants';
 import type {
   PostMessage,
   PostMessageDataRequest,
-} from "$lib/types/post-message";
-import { createAuthClient } from "$lib/utils/auth.utils";
+} from '$lib/types/post-message';
+import { createAuthClient } from '$lib/utils/auth.utils';
 import {
   IdbStorage,
   KEY_STORAGE_DELEGATION,
   type AuthClient,
-} from "@dfinity/auth-client";
-import { DelegationChain, isDelegationValid } from "@dfinity/identity";
+} from '@dfinity/auth-client';
+import { DelegationChain, isDelegationValid } from '@dfinity/identity';
 
 onmessage = ({ data }: MessageEvent<PostMessage<PostMessageDataRequest>>) => {
   const { msg } = data;
 
   switch (msg) {
-    case "startIdleTimer":
+    case 'startIdleTimer':
       startIdleTimer();
       return;
-    case "stopIdleTimer":
+    case 'stopIdleTimer':
       stopIdleTimer();
       return;
   }
@@ -77,7 +77,7 @@ const checkDelegationChain = async (): Promise<{
 }> => {
   const idbStorage: IdbStorage = new IdbStorage();
   const delegationChain: string | null = await idbStorage.get(
-    KEY_STORAGE_DELEGATION
+    KEY_STORAGE_DELEGATION,
   );
 
   const delegation =
@@ -94,7 +94,7 @@ const logout = () => {
   // Clear timer to not emit sign-out multiple times
   stopIdleTimer();
 
-  postMessage({ msg: "signOutIdleTimer" });
+  postMessage({ msg: 'signOutIdleTimer' });
 };
 
 const emitExpirationTime = (delegation: DelegationChain) => {
@@ -111,7 +111,7 @@ const emitExpirationTime = (delegation: DelegationChain) => {
     new Date(Number(expirationTime / BigInt(1_000_000))).getTime() - Date.now();
 
   postMessage({
-    msg: "delegationRemainingTime",
+    msg: 'delegationRemainingTime',
     data: {
       authRemainingTime,
     },

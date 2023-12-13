@@ -1,7 +1,7 @@
-import type { ToastMsg } from "$lib/types//toast";
-import { errorDetailToString } from "$lib/utils/error.utils";
-import { toastsStore } from "@dfinity/gix-components";
-import { nonNullish } from "@dfinity/utils";
+import type { ToastMsg } from '$lib/types//toast';
+import { errorDetailToString } from '$lib/utils/error.utils';
+import { toastsStore } from '@dfinity/gix-components';
+import { nonNullish } from '@dfinity/utils';
 
 export const toastsShow = (msg: ToastMsg): symbol => toastsStore.show(msg);
 
@@ -9,7 +9,7 @@ export const toastsError = ({
   msg: { text, ...rest },
   err,
 }: {
-  msg: Omit<ToastMsg, "level">;
+  msg: Omit<ToastMsg, 'level'>;
   err?: unknown;
 }): symbol => {
   if (nonNullish(err)) {
@@ -17,13 +17,13 @@ export const toastsError = ({
   }
 
   return toastsStore.show({
-    text: `${text}${nonNullish(err) ? ` / ${errorDetailToString(err)}` : ""}`,
+    text: `${text}${nonNullish(err) ? ` / ${errorDetailToString(err)}` : ''}`,
     ...rest,
-    level: "error",
+    level: 'error',
   });
 };
 
-export const toastsClean = () => toastsStore.reset(["success", "warn", "info"]);
+export const toastsClean = () => toastsStore.reset(['success', 'warn', 'info']);
 
 export const toastsHide = (ids: symbol[]) =>
   ids.forEach((id) => toastsStore.hide(id));

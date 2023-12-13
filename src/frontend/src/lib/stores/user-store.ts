@@ -1,8 +1,8 @@
-import { authStore } from "$lib/stores/auth.store";
-import { replacer } from "$lib/utils/Helpers";
-import { writable } from "svelte/store";
-import type { ProfileDTO } from "../../../../declarations/OpenFPL_backend/OpenFPL_backend.did";
-import { ActorFactory } from "../../utils/ActorFactory";
+import { authStore } from '$lib/stores/auth-store';
+import { replacer } from '$lib/utils/Helpers';
+import { writable } from 'svelte/store';
+import type { ProfileDTO } from '../../../../declarations/backend/backend.did';
+import { ActorFactory } from '../utils/actor-factory';
 
 function createUserStore() {
   const { subscribe, set } = writable<any>(null);
@@ -10,7 +10,7 @@ function createUserStore() {
   function uint8ArrayToBase64(bytes: Uint8Array): string {
     const binary = Array.from(bytes)
       .map((byte) => String.fromCharCode(byte))
-      .join("");
+      .join('');
     return btoa(binary);
   }
 
@@ -25,13 +25,13 @@ function createUserStore() {
   }
 
   function getProfileFromLocalStorage(): ProfileDTO | null {
-    const storedData = localStorage.getItem("user_profile_data");
+    const storedData = localStorage.getItem('user_profile_data');
     if (storedData) {
       const profileData: ProfileDTO = JSON.parse(storedData);
-      if (profileData && typeof profileData.profilePicture === "string") {
+      if (profileData && typeof profileData.profilePicture === 'string') {
         // Decode the Base64 string back to a Uint8Array
         profileData.profilePicture = base64ToUint8Array(
-          profileData.profilePicture
+          profileData.profilePicture,
         );
       }
       return profileData;
@@ -43,7 +43,7 @@ function createUserStore() {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,
-        process.env.OPENFPL_BACKEND_CANISTER_ID ?? ""
+        process.env.BACKEND_CANISTER_ID ?? '',
       );
 
       let updatedProfileDataObj = (await identityActor.getProfileDTO()) as any;
@@ -58,27 +58,27 @@ function createUserStore() {
         updatedProfileData.profilePicture instanceof Uint8Array
       ) {
         const base64Picture = uint8ArrayToBase64(
-          updatedProfileData.profilePicture
+          updatedProfileData.profilePicture,
         );
         localStorage.setItem(
-          "user_profile_data",
+          'user_profile_data',
           JSON.stringify(
             {
               ...updatedProfileData,
               profilePicture: base64Picture,
             },
-            replacer
-          )
+            replacer,
+          ),
         );
       } else {
         localStorage.setItem(
-          "user_profile_data",
-          JSON.stringify(updatedProfileData, replacer)
+          'user_profile_data',
+          JSON.stringify(updatedProfileData, replacer),
         );
       }
       set(updatedProfileData);
     } catch (error) {
-      console.error("Error fetching user profile:", error);
+      console.error('Error fetching user profile:', error);
       throw error;
     }
   }
@@ -87,12 +87,12 @@ function createUserStore() {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,
-        process.env.OPENFPL_BACKEND_CANISTER_ID ?? ""
+        process.env.BACKEND_CANISTER_ID ?? '',
       );
       const result = await identityActor.createProfile();
       return result;
     } catch (error) {
-      console.error("Error updating username:", error);
+      console.error('Error updating username:', error);
       throw error;
     }
   }
@@ -101,28 +101,13 @@ function createUserStore() {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,
-        process.env.OPENFPL_BACKEND_CANISTER_ID ?? ""
+        process.env.BACKEND_CANISTER_ID ?? '',
       );
       const result = await identityActor.updateDisplayName(username);
       sync();
       return result;
     } catch (error) {
-      console.error("Error updating username:", error);
-      throw error;
-    }
-  }
-
-  async function updateFavouriteTeam(favouriteTeamId: number): Promise<any> {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        process.env.OPENFPL_BACKEND_CANISTER_ID ?? ""
-      );
-      sync();
-      const result = await identityActor.updateFavouriteTeam(favouriteTeamId);
-      return result;
-    } catch (error) {
-      console.error("Error updating favourite team:", error);
+      console.error('Error updating username:', error);
       throw error;
     }
   }
@@ -131,14 +116,14 @@ function createUserStore() {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,
-        process.env.OPENFPL_BACKEND_CANISTER_ID ?? ""
+        process.env.BACKEND_CANISTER_ID ?? '',
       );
       const result = await identityActor.getProfileDTO();
       console.log(result);
       set(result);
       return result;
     } catch (error) {
-      console.error("Error getting profile:", error);
+      console.error('Error getting profile:', error);
       throw error;
     }
   }
@@ -158,7 +143,7 @@ function createUserStore() {
         try {
           const identityActor = await ActorFactory.createIdentityActor(
             authStore,
-            process.env.OPENFPL_BACKEND_CANISTER_ID ?? ""
+            process.env.BACKEND_CANISTER_ID ?? '',
           );
           const result = await identityActor.updateProfilePicture(uint8Array);
           sync();
@@ -168,7 +153,7 @@ function createUserStore() {
         }
       };
     } catch (error) {
-      console.error("Error updating username:", error);
+      console.error('Error updating username:', error);
       throw error;
     }
   }
@@ -177,7 +162,6 @@ function createUserStore() {
     subscribe,
     sync,
     updateUsername,
-    updateFavouriteTeam,
     getProfile,
     updateProfilePicture,
     createProfile,

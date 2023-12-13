@@ -7,7 +7,7 @@ export const replaceHistory = (url: URL) => {
     return;
   }
 
-  history.replaceState({}, "", url);
+  history.replaceState({}, '', url);
 };
 
 /**
@@ -16,5 +16,5 @@ export const replaceHistory = (url: URL) => {
  */
 const supportsHistory = (): boolean =>
   window.history !== undefined &&
-  "pushState" in window.history &&
-  typeof window.history.pushState !== "undefined";
+  'pushState' in window.history &&
+  typeof window.history.pushState !== 'undefined';

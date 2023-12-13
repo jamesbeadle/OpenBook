@@ -1,28 +1,24 @@
-import { FixtureStatus } from "$lib/enums/FixtureStatus";
-import { Position } from "$lib/enums/Position";
-import type { FixtureWithTeams } from "$lib/types/fixture-with-teams";
-
 export function formatUnixDateToReadable(unixNano: number) {
   const date = new Date(unixNano / 1000000);
   const options: Intl.DateTimeFormatOptions = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
   };
 
-  return new Intl.DateTimeFormat("en-UK", options).format(date);
+  return new Intl.DateTimeFormat('en-UK', options).format(date);
 }
 
 export function formatUnixDateToSmallReadable(unixNano: number) {
   const date = new Date(unixNano / 1000000);
   const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
   };
 
-  return new Intl.DateTimeFormat("en-UK", options).format(date);
+  return new Intl.DateTimeFormat('en-UK', options).format(date);
 }
 
 export function getCountdownTime(unixNano: number) {
@@ -42,7 +38,7 @@ export function getCountdownTime(unixNano: number) {
 }
 
 export function replacer(key: string, value: bigint) {
-  if (typeof value === "bigint") {
+  if (typeof value === 'bigint') {
     return value.toString();
   } else {
     return value;
@@ -55,63 +51,18 @@ export function formatUnixTimeToTime(unixTimeNano: number): string {
 
   let hours = date.getHours();
   const minutes = date.getMinutes();
-  const ampm = hours >= 12 ? "PM" : "AM";
+  const ampm = hours >= 12 ? 'PM' : 'AM';
   hours = hours % 12;
   hours = hours ? hours : 12;
-  const minutesStr = minutes < 10 ? "0" + minutes : minutes;
+  const minutesStr = minutes < 10 ? '0' + minutes : minutes;
 
   return `${hours}:${minutesStr} ${ampm}`;
-}
-
-export function getPositionText(position: Position): string {
-  switch (position) {
-    case Position.GOALKEEPER:
-      return "Goalkeeper";
-    case Position.DEFENDER:
-      return "Defender";
-    case Position.MIDFIELDER:
-      return "Midfielder";
-    case Position.FORWARD:
-      return "Forward";
-    default:
-      return "Unknown position";
-  }
-}
-
-export function getPositionAbbreviation(position: Position): string {
-  switch (position) {
-    case Position.GOALKEEPER:
-      return "GK";
-    case Position.DEFENDER:
-      return "DF";
-    case Position.MIDFIELDER:
-      return "MF";
-    case Position.FORWARD:
-      return "FW";
-    default:
-      return "-";
-  }
-}
-
-export function getFixtureStatusText(status: FixtureStatus): string {
-  switch (status) {
-    case FixtureStatus.UNPLAYED:
-      return "Unplayed";
-    case FixtureStatus.ACTIVE:
-      return "Active";
-    case FixtureStatus.COMPLETED:
-      return "In Consensus";
-    case FixtureStatus.VERIFIED:
-      return "Verified";
-    default:
-      return "-";
-  }
 }
 
 export function convertDateToReadable(nanoseconds: number): string {
   const milliseconds = nanoseconds / 1e6;
   const date = new Date(milliseconds);
-  return date.toLocaleDateString("en-GB");
+  return date.toLocaleDateString('en-GB');
 }
 
 export function calculateAgeFromNanoseconds(nanoseconds: number) {
@@ -132,266 +83,140 @@ export function calculateAgeFromNanoseconds(nanoseconds: number) {
   return age;
 }
 
-import type { TeamStats } from "$lib/types/team-stats";
-import * as FlagIcons from "svelte-flag-icons";
-import type {
-  FantasyTeam,
-  Team,
-} from "../../../../declarations/OpenFPL_backend/OpenFPL_backend.did";
-import type { PlayerDTO } from "../../../../declarations/player_canister/player_canister.did";
-
+import * as FlagIcons from 'svelte-flag-icons';
 export function getFlagComponent(countryCode: string) {
   switch (countryCode) {
-    case "Albania":
+    case 'Albania':
       return FlagIcons.Al;
-    case "Algeria":
+    case 'Algeria':
       return FlagIcons.Dz;
-    case "Argentina":
+    case 'Argentina':
       return FlagIcons.Ar;
-    case "Australia":
+    case 'Australia':
       return FlagIcons.Au;
-    case "Austria":
+    case 'Austria':
       return FlagIcons.At;
-    case "Belgium":
+    case 'Belgium':
       return FlagIcons.Be;
-    case "Bosnia and Herzegovina":
+    case 'Bosnia and Herzegovina':
       return FlagIcons.Ba;
-    case "Brazil":
+    case 'Brazil':
       return FlagIcons.Br;
-    case "Burkina Faso":
+    case 'Burkina Faso':
       return FlagIcons.Bf;
-    case "Cameroon":
+    case 'Cameroon':
       return FlagIcons.Cm;
-    case "Canada":
+    case 'Canada':
       return FlagIcons.Ca;
-    case "Colombia":
+    case 'Colombia':
       return FlagIcons.Co;
-    case "Costa Rica":
+    case 'Costa Rica':
       return FlagIcons.Cr;
-    case "Croatia":
+    case 'Croatia':
       return FlagIcons.Hr;
-    case "Czech Republic":
+    case 'Czech Republic':
       return FlagIcons.Cz;
-    case "Denmark":
+    case 'Denmark':
       return FlagIcons.Dk;
-    case "DR Congo":
+    case 'DR Congo':
       return FlagIcons.Cg;
-    case "Ecuador":
+    case 'Ecuador':
       return FlagIcons.Ec;
-    case "Egypt":
+    case 'Egypt':
       return FlagIcons.Eg;
-    case "England":
+    case 'England':
       return FlagIcons.Gb;
-    case "Estonia":
+    case 'Estonia':
       return FlagIcons.Ee;
-    case "Finland":
+    case 'Finland':
       return FlagIcons.Fi;
-    case "France":
+    case 'France':
       return FlagIcons.Fr;
-    case "Gabon":
+    case 'Gabon':
       return FlagIcons.Ga;
-    case "Germany":
+    case 'Germany':
       return FlagIcons.De;
-    case "Ghana":
+    case 'Ghana':
       return FlagIcons.Gh;
-    case "Greece":
+    case 'Greece':
       return FlagIcons.Gr;
-    case "Grenada":
+    case 'Grenada':
       return FlagIcons.Gd;
-    case "Guinea":
+    case 'Guinea':
       return FlagIcons.Gn;
-    case "Iceland":
+    case 'Iceland':
       return FlagIcons.Is;
-    case "Iran":
+    case 'Iran':
       return FlagIcons.Ir;
-    case "Ireland":
+    case 'Ireland':
       return FlagIcons.Ie;
-    case "Israel":
+    case 'Israel':
       return FlagIcons.Il;
-    case "Italy":
+    case 'Italy':
       return FlagIcons.It;
-    case "Ivory Coast":
+    case 'Ivory Coast':
       return FlagIcons.Ci;
-    case "Jamaica":
+    case 'Jamaica':
       return FlagIcons.Jm;
-    case "Japan":
+    case 'Japan':
       return FlagIcons.Jp;
-    case "Macedonia":
+    case 'Macedonia':
       return FlagIcons.Mk;
-    case "Mali":
+    case 'Mali':
       return FlagIcons.Ml;
-    case "Mexico":
+    case 'Mexico':
       return FlagIcons.Mx;
-    case "Montserrat":
+    case 'Montserrat':
       return FlagIcons.Ms;
-    case "Morocco":
+    case 'Morocco':
       return FlagIcons.Ma;
-    case "Netherlands":
+    case 'Netherlands':
       return FlagIcons.Nl;
-    case "Nigeria":
+    case 'Nigeria':
       return FlagIcons.Ne;
-    case "Northern Ireland":
+    case 'Northern Ireland':
       return FlagIcons.Gb;
-    case "Norway":
+    case 'Norway':
       return FlagIcons.No;
-    case "Paraguay":
+    case 'Paraguay':
       return FlagIcons.Py;
-    case "Poland":
+    case 'Poland':
       return FlagIcons.Pl;
-    case "Portugal":
+    case 'Portugal':
       return FlagIcons.Pt;
-    case "Scotland":
+    case 'Scotland':
       return FlagIcons.Gb;
-    case "Senegal":
+    case 'Senegal':
       return FlagIcons.Sn;
-    case "Serbia":
+    case 'Serbia':
       return FlagIcons.Rs;
-    case "Slovakia":
+    case 'Slovakia':
       return FlagIcons.Sk;
-    case "South Africa":
+    case 'South Africa':
       return FlagIcons.Za;
-    case "South Korea":
+    case 'South Korea':
       return FlagIcons.Kr;
-    case "Spain":
+    case 'Spain':
       return FlagIcons.Es;
-    case "Sweden":
+    case 'Sweden':
       return FlagIcons.Se;
-    case "Switzerland":
+    case 'Switzerland':
       return FlagIcons.Ch;
-    case "Tunisia":
+    case 'Tunisia':
       return FlagIcons.Tn;
-    case "Turkey":
+    case 'Turkey':
       return FlagIcons.Tr;
-    case "Ukraine":
+    case 'Ukraine':
       return FlagIcons.Ua;
-    case "United States":
+    case 'United States':
       return FlagIcons.Us;
-    case "Uruguay":
+    case 'Uruguay':
       return FlagIcons.Uy;
-    case "Wales":
+    case 'Wales':
       return FlagIcons.Gb;
-    case "Zimbabwe":
+    case 'Zimbabwe':
       return FlagIcons.Zw;
     default:
       return null;
   }
-}
-
-export function updateTableData(
-  fixtures: FixtureWithTeams[],
-  teams: Team[],
-  selectedGameweek: number
-): TeamStats[] {
-  let tempTable: Record<number, TeamStats> = {};
-
-  teams.forEach((team) => initTeamData(team.id, tempTable, teams));
-
-  const relevantFixtures = fixtures.filter(
-    (fixture) =>
-      fixture.fixture.status === 3 &&
-      fixture.fixture.gameweek <= selectedGameweek
-  );
-
-  relevantFixtures.forEach(({ fixture, homeTeam, awayTeam }) => {
-    if (!homeTeam || !awayTeam) return;
-
-    initTeamData(homeTeam.id, tempTable, teams);
-    initTeamData(awayTeam.id, tempTable, teams);
-
-    const homeStats = tempTable[homeTeam.id];
-    const awayStats = tempTable[awayTeam.id];
-
-    homeStats.played++;
-    awayStats.played++;
-
-    homeStats.goalsFor += fixture.homeGoals;
-    homeStats.goalsAgainst += fixture.awayGoals;
-    awayStats.goalsFor += fixture.awayGoals;
-    awayStats.goalsAgainst += fixture.homeGoals;
-
-    if (fixture.homeGoals > fixture.awayGoals) {
-      homeStats.wins++;
-      homeStats.points += 3;
-      awayStats.losses++;
-    } else if (fixture.homeGoals === fixture.awayGoals) {
-      homeStats.draws++;
-      awayStats.draws++;
-      homeStats.points += 1;
-      awayStats.points += 1;
-    } else {
-      awayStats.wins++;
-      awayStats.points += 3;
-      homeStats.losses++;
-    }
-  });
-
-  return Object.values(tempTable).sort((a, b) => {
-    const goalDiffA = a.goalsFor - a.goalsAgainst;
-    const goalDiffB = b.goalsFor - b.goalsAgainst;
-
-    if (b.points !== a.points) return b.points - a.points;
-    if (goalDiffB !== goalDiffA) return goalDiffB - goalDiffA;
-    if (b.goalsFor !== a.goalsFor) return b.goalsFor - a.goalsFor;
-    return a.goalsAgainst - b.goalsAgainst;
-  });
-}
-
-function initTeamData(
-  teamId: number,
-  table: Record<number, TeamStats>,
-  teams: Team[]
-) {
-  if (!table[teamId]) {
-    const team = teams.find((t) => t.id === teamId);
-    if (team) {
-      table[teamId] = {
-        ...team,
-        played: 0,
-        wins: 0,
-        draws: 0,
-        losses: 0,
-        goalsFor: 0,
-        goalsAgainst: 0,
-        points: 0,
-      };
-    }
-  }
-}
-
-export function getAvailableFormations(
-  players: PlayerDTO[],
-  team: FantasyTeam
-): string[] {
-  const positionCounts: Record<number, number> = { 0: 0, 1: 0, 2: 0, 3: 0 };
-  team.playerIds.forEach((id) => {
-    const teamPlayer = players.find((p) => p.id === id);
-    if (teamPlayer) {
-      positionCounts[teamPlayer.position]++;
-    }
-  });
-
-  const formations = [
-    "3-4-3",
-    "3-5-2",
-    "4-3-3",
-    "4-4-2",
-    "4-5-1",
-    "5-4-1",
-    "5-3-2",
-  ];
-  return formations.filter((formation) => {
-    const [def, mid, fwd] = formation.split("-").map(Number);
-    const minDef = Math.max(0, def - (positionCounts[1] || 0));
-    const minMid = Math.max(0, mid - (positionCounts[2] || 0));
-    const minFwd = Math.max(0, fwd - (positionCounts[3] || 0));
-    const minGK = Math.max(0, 1 - (positionCounts[0] || 0));
-
-    const additionalPlayersNeeded = minDef + minMid + minFwd + minGK;
-    const totalPlayers = Object.values(positionCounts).reduce(
-      (a, b) => a + b,
-      0
-    );
-
-    return totalPlayers + additionalPlayersNeeded <= 11;
-  });
 }
