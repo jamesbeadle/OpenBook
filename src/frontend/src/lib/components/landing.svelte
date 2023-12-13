@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import Logo from '$lib/icons/logo-icon.svelte';
   import { authStore, type AuthSignInParams } from '$lib/stores/auth-store';
 
@@ -8,6 +9,19 @@
     };
     authStore.signIn(params);
   }
+
+  onMount(async () => {
+    try {
+      const hiddenImages = document.querySelectorAll('.hidden-image');
+      hiddenImages.forEach((img) => {
+        const imageElement = img as HTMLImageElement;
+        imageElement.style.visibility = 'visible';
+      });
+    } catch (error) {
+      console.error('Error', error);
+    } finally {}
+  });
+  
 </script>
 
 <div

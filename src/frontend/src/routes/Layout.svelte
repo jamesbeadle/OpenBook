@@ -22,13 +22,6 @@
 
       await Promise.all(promises);
 
-      // Make images visible
-      const hiddenImages = document.querySelectorAll('.hidden-image');
-      hiddenImages.forEach((img) => {
-        const imageElement = img as HTMLImageElement;
-        imageElement.style.visibility = 'visible';
-      });
-
       // Remove spinner
       const spinner = document.querySelector('body > #app-spinner');
       spinner?.remove();

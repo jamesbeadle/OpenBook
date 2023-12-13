@@ -12,6 +12,7 @@
   import Accounts from './dashboards/accounts.svelte';
   import Sales from './dashboards/sales.svelte';
   import ExpandIcon from '$lib/icons/expand-icon.svelte';
+  import WalletIcon from "$lib/icons/wallet-icon.svelte";
 
   let activeTitle = "OpenBook";
   let activeRole = -1;
@@ -19,13 +20,16 @@
   let showProfileDropdown = false;
   let unsubscribeLogin: () => void;
 
+  $: currentBorder = (route: string) =>
+    $page.url.pathname === route ? "active-border" : "";
+
   onMount(async () => {
     if (typeof window !== "undefined") {
       document.addEventListener("click", closeDropdownOnClickOutside);
     }
     try {
-      await userStore.sync();
-      await authStore.sync();
+      //await userStore.sync();
+      //await authStore.sync();
     } catch (error) {
       toastsError({
         msg: { text: "Error syncing authentication." },
@@ -78,7 +82,7 @@
     }
 
 </script>
- 
+
 <div class="flex h-full w-full">
   {#if activeRole == -1}
       <nav class="p-4 h-full side-nav flex flex-col">
@@ -103,22 +107,17 @@
     <div class="w-full p-4 top-bar flex justify-between items-center">
       <h1>{activeTitle}</h1>
       <div class="profile-image">
-        
-
-
-
-
         <div class="relative inline-block">
           <button
             on:click={toggleProfileDropdown}
-            class={`h-full flex items-center border rounded-sm ${currentBorder(
+            class={`h-full flex items-center border rounded-full ${currentBorder(
               "/profile"
             )}`}
           >
             <img
               src={$userGetProfilePicture}
               alt="Profile"
-              class="h-12 rounded-sm profile-pic"
+              class="h-12 rounded-full profile-pic"
               aria-label="Toggle Profile"
             />
           </button>
@@ -127,17 +126,17 @@
               showProfileDropdown ? "block" : "hidden"
             }`}
           >
-            <ul class="text-gray-700">
+            <ul class="">
               <li>
                 <a
                   href="/profile"
-                  class="flex items-center h-full w-full nav-underline hover:text-gray-400"
+                  class="flex items-center h-full w-full nav-underline"
                 >
                   <span class="flex items-center h-full w-full">
                     <img
                       src={$userGetProfilePicture}
                       alt="logo"
-                      class="w-8 h-8 my-2 ml-4 mr-2"
+                      class="w-8 h-8 my-2 ml-4 mr-2 rounded-full"
                     />
                     <p class="w-full min-w-[125px] max-w-[125px] truncate">
                       Profile
@@ -157,68 +156,6 @@
             </ul>
           </div>
         </div>
-
-
-
-
-
-
-
-
-        
-
-
-
-<div
-          class={`absolute top-12 right-2.5 bg-black rounded-lg shadow-md z-10 p-2 ${
-            menuOpen ? "block" : "hidden"
-          } md:hidden`}
-        >
-          <ul class="flex flex-col">
-            <li class="p-2">
-              <a
-                href="/profile"
-                class="flex h-full w-full nav-underline hover:text-gray-400 w-full ${currentClass(
-                  '/profile'
-                )}"
-              >
-                <span class="flex items-center h-full w-full">
-                  <img
-                    src={$userGetProfilePicture}
-                    alt="logo"
-                    class="w-8 h-8 rounded-sm"
-                  />
-                  <p class="w-full min-w-[100px] max-w-[100px] truncate p-2">
-                    Profile
-                  </p>
-                </span>
-              </a>
-            </li>
-            <li class="px-2">
-              <button
-                class="flex h-full w-full hover:text-gray-400 w-full items-center"
-                on:click={handleLogout}
-              >
-                Disconnect
-                <WalletIcon className="ml-2 h-6 w-6 mt-1" />
-              </button>
-            </li>
-          </ul>
-        </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <img src="profile_placeholder.png" alt="Profile" class="w-10 h-10 rounded-full">
       </div>
     </div>
     <div class="p-4 px-8">
@@ -236,6 +173,5 @@
         <Sales />
       {/if}
     </div>
-    
   </main>
 </div>

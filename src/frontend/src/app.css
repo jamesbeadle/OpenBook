@@ -37,6 +37,10 @@
   visibility: hidden;
 }
 
+.active-border {
+  border-color: #66E094;
+}
+
 input {
   background-color: #2e323a !important;
 }
