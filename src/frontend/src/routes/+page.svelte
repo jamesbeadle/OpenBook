@@ -10,8 +10,8 @@
 
   onMount(async () => {
     try {
-    } catch (error) {
       await authStore.sync();
+    } catch (error) {
       console.error('Error fetching homepage data:', error);
     } finally {
       isLoading = false;
