@@ -1,5 +1,5 @@
 import { authStore } from '$lib/stores/auth-store';
-import { replacer } from '$lib/utils/Helpers';
+import { replacer } from '$lib/utils/helpers';
 import { writable } from 'svelte/store';
 import type { ProfileDTO } from '../../../../declarations/backend/backend.did';
 import { ActorFactory } from '../utils/actor-factory';

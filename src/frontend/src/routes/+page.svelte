@@ -1,12 +1,10 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import Layout from './Layout.svelte';
-  import { Spinner } from '@dfinity/gix-components';
-  import Landing from '$lib/components/landing.svelte';
-  import { authSignedInStore } from '$lib/derived/auth.derived';
   import { authStore } from '$lib/stores/auth-store';
+  import { authSignedInStore } from '$lib/derived/auth.derived';
   import Dashboard from '$lib/components/dashboard.svelte';
-
+  import Landing from '$lib/components/landing.svelte';
   let isLoading = true;
 
   onMount(async () => {
@@ -19,17 +17,12 @@
     }
   });
 </script>
-
 <Layout>
-  {#if isLoading}
-    <Spinner />
-  {:else}
-    <div class="flex flex-col md:flex-row h-screen">
-      {#if $authSignedInStore}
+  {#if $authSignedInStore}
+      <div class="flex flex-row h-screen w-full">
         <Dashboard />
-      {:else}
-        <Landing />
-      {/if}
-    </div>
+      </div>
+  {:else}
+    <Landing />
   {/if}
 </Layout>

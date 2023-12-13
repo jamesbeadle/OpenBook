@@ -1,10 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { fade } from 'svelte/transition';
   import '../app.css';
 
-  import { BusyScreen, Spinner, Toasts } from '@dfinity/gix-components';
-
+  import { BusyScreen, Toasts } from '@dfinity/gix-components';
   let isLoading = true;
 
   onMount(async () => {
@@ -28,17 +26,22 @@
     } catch (error) {
       console.error('Error', error);
     } finally {
+      console.log("here")
       isLoading = false;
     }
   });
 </script>
 
-<div class="flex flex-col h-screen justify-between default-text">
-  <main class="page-wrapper">
-    <slot />
-  </main>
-  <Toasts />
-</div>
+{#if !isLoading}
+  <div class="flex flex-col h-screen justify-between default-text">
+    <main class="page-wrapper">
+      <div class="flex flex-col md:flex-row h-screen">
+        <slot />
+      </div>
+    </main>
+    <Toasts />
+  </div>
+{/if}
 
 <BusyScreen />
 
