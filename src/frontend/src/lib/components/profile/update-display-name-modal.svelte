@@ -6,33 +6,33 @@
   export let visible: boolean;
   export let closeModal: () => void;
   export let cancelModal: () => void;
-  export let newUsername: string = '';
+  export let newDisplayName: string = '';
 
-  function isUsernameValid(username: string): boolean {
-    if (!username) {
+  function isDisplayNameValid(displayName: string): boolean {
+    if (!displayName) {
       return false;
     }
 
-    if (username.length < 3 || username.length > 20) {
+    if (displayName.length < 3 || displayName.length > 30) {
       return false;
     }
 
-    return /^[a-zA-Z0-9]+$/.test(username);
+    return /^[a-zA-Z0-9 ]+$/.test(displayName);
   }
 
-  $: isSubmitDisabled = !isUsernameValid(newUsername);
+  $: isSubmitDisabled = !isDisplayNameValid(newDisplayName);
 
   async function updateUsername() {
     busyStore.startBusy({
       initiator: 'update-name',
-      text: 'Updating username...',
+      text: 'Updating display name...',
     });
     try {
-      await userStore.updateUsername(newUsername);
+      await userStore.updateDisplayName(newDis);
       userStore.sync();
       await closeModal();
       toastsShow({
-        text: 'Username updated.',
+        text: 'Display name updated.',
         level: 'success',
         duration: 2000,
       });
@@ -52,7 +52,7 @@
 <Modal {visible} on:nnsClose={cancelModal}>
   <div class="p-4">
     <div class="flex justify-between items-center my-2">
-      <h3 class="default-header">Update Username</h3>
+      <h3 class="default-header">Update Display Name</h3>
       <button class="times-button" on:click={cancelModal}>&times;</button>
     </div>
     <form on:submit|preventDefault={updateUsername}>

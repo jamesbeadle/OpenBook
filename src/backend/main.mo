@@ -5,15 +5,20 @@ import Result "mo:base/Result";
 import Principal "mo:base/Principal";
 import Array "mo:base/Array";
 import Blob "mo:base/Blob";
+import Debug "mo:base/Debug";
 import Profiles "profiles";
 
 actor Self {
 
   let profilesInstance = Profiles.Profiles();
 
-  public func getProfile() : async DTO.ProfileDTO {
-    let profileDTO : DTO.ProfileDTO = {
+  public shared query ({ caller }) func getProfile() : async DTO.ProfileDTO {
+    let newProfile : DTO.ProfileDTO = {
       principal = "";
+      username = "";
+      firstName = "";
+      lastName = "";
+      openChatUsername = "";
       displayName = "";
       termsAccepted = false;
       profilePicture = "";
@@ -23,7 +28,35 @@ actor Self {
       userDefinedWallet = "";
       preferredPaymentCurrency = 1;
     };
-    return profileDTO;
+
+    var existingProfile = profilesInstance.getProfile(Principal.toText(caller));
+    Debug.print(debug_show existingProfile);
+    switch (existingProfile) {
+      case (null) {
+        return newProfile;
+      };
+      case (?foundProfile) {
+        let profilePicture = profilesInstance.getProfilePicture(foundProfile.principal);
+
+        return {
+          principal = foundProfile.principal;
+          displayName = foundProfile.displayName; 
+          username = foundProfile.username;
+          firstName = foundProfile.firstName;
+          lastName = foundProfile.lastName;
+          openChatUsername = foundProfile.openChatUsername;
+          emailAddress = foundProfile.emailAddress;
+          phoneNumber = foundProfile.phoneNumber;
+          termsAccepted = foundProfile.termsAccepted;
+          profilePicture = profilePicture;
+          organisations = List.nil<T.Organisation>();
+          createDate = foundProfile.createDate;
+          lastModified = foundProfile.lastModified;
+          userDefinedWallet = foundProfile.userDefinedWallet;
+          preferredPaymentCurrency = foundProfile.preferredPaymentCurrency;
+        };
+      };
+    };
   };
 
   public shared ({ caller }) func createProfile() : async () {
@@ -33,7 +66,7 @@ actor Self {
     var existingProfile = profilesInstance.getProfile(Principal.toText(caller));
     switch (existingProfile) {
       case (null) {
-        profilesInstance.createProfile(Principal.toText(caller), Principal.toText(caller));
+        profilesInstance.createProfile(Principal.toText(caller), Principal.toText(caller), "", "", "", "", "", "");
       };
       case (_) {};
     };
@@ -52,12 +85,11 @@ actor Self {
     var profile = profilesInstance.getProfile(Principal.toText(caller));
     switch (profile) {
       case (null) {
-        profilesInstance.createProfile(Principal.toText(caller), Principal.toText(caller));
-        profile := profilesInstance.getProfile(Principal.toText(caller));
+        profilesInstance.createProfile(Principal.toText(caller), displayName, "", "", "", "", "", "");
+        return #ok(());
       };
       case (?foundProfile) {};
     };
-
     return profilesInstance.updateDisplayName(Principal.toText(caller), displayName);
   };
 
@@ -72,4 +104,16 @@ actor Self {
     return profilesInstance.updateProfilePicture(Principal.toText(caller), profilePicture);
   };
 
+  //Stable Variables
+  private stable var stable_profiles : [(Text, T.Profile)] = [];
+  private stable var stable_profilePictures : [(Text, Blob)] = [];
+
+  system func preupgrade() {
+    stable_profiles := profilesInstance.getProfiles();
+    stable_profilePictures := profilesInstance.getProfilePictures();
+  };
+
+  system func postupgrade() {
+    profilesInstance.setData(stable_profiles, stable_profilePictures);
+  };
 };

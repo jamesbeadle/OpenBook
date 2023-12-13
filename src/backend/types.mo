@@ -96,7 +96,13 @@ module Types {
 
   public type Profile = {
     principal : Text;
-    displayName : Text;
+    username : Text;
+    firstName: Text;
+    lastName: Text;
+    displayName: Text;
+    openChatUsername: Text;
+    emailAddress: Text;
+    phoneNumber: Text;
     termsAccepted : Bool;
     profilePictureCanisterId : Text;
     organisations : [OrganisationId];

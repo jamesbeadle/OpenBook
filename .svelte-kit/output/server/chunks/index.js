@@ -3346,7 +3346,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1b3a7ww"
+  version_hash: "1xpes1f"
 };
 function get_hooks() {
   return {};
@@ -3799,7 +3799,7 @@ const idlFactory = ({ IDL }) => {
   const Result = IDL.Variant({ "ok": IDL.Null, "err": Error2 });
   return IDL.Service({
     "createProfile": IDL.Func([], [], []),
-    "getProfile": IDL.Func([], [ProfileDTO], []),
+    "getProfile": IDL.Func([], [ProfileDTO], ["query"]),
     "isDisplayNameValid": IDL.Func([IDL.Text], [IDL.Bool], ["query"]),
     "updateDisplayName": IDL.Func([IDL.Text], [Result], []),
     "updateProfilePicture": IDL.Func([IDL.Vec(IDL.Nat8)], [Result], [])
@@ -3884,11 +3884,12 @@ function createUserStore() {
         { "__CANDID_UI_CANISTER_ID": "dfdal-2uaaa-aaaaa-qaama-cai", "BACKEND_CANISTER_ID": "cpmcr-yeaaa-aaaaa-qaala-cai", "FRONTEND_CANISTER_ID": "cinef-v4aaa-aaaaa-qaalq-cai", "DFX_NETWORK": "local" }.BACKEND_CANISTER_ID ?? ""
       );
       let updatedProfileDataObj = await identityActor.getProfile();
+      console.log(updatedProfileDataObj);
       if (!updatedProfileDataObj) {
         await identityActor.createProfile();
         updatedProfileDataObj = await identityActor.getProfile();
       }
-      let updatedProfileData = updatedProfileDataObj[0];
+      let updatedProfileData = updatedProfileDataObj;
       if (updatedProfileData && updatedProfileData.profilePicture instanceof Uint8Array) {
         const base64Picture = uint8ArrayToBase64(
           updatedProfileData.profilePicture
@@ -3949,7 +3950,6 @@ function createUserStore() {
         { "__CANDID_UI_CANISTER_ID": "dfdal-2uaaa-aaaaa-qaama-cai", "BACKEND_CANISTER_ID": "cpmcr-yeaaa-aaaaa-qaala-cai", "FRONTEND_CANISTER_ID": "cinef-v4aaa-aaaaa-qaalq-cai", "DFX_NETWORK": "local" }.BACKEND_CANISTER_ID ?? ""
       );
       const result = await identityActor.getProfile();
-      console.log(result);
       set(result);
       return result;
     } catch (error2) {

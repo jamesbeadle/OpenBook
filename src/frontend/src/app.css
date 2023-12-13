@@ -15,6 +15,11 @@
 .book-btn.disabled {
   @apply bg-gray-500;
 }
+
+.book-cancel-btn {
+  background-color: aliceblue;
+}
+
 .side-nav-icon {
   @apply w-6 mt-8;
 }

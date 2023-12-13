@@ -47,8 +47,7 @@ function createUserStore() {
       );
 
       let updatedProfileDataObj = (await identityActor.getProfile()) as any;
-      console.log(updatedProfileDataObj)
-
+      console.log(updatedProfileDataObj);
       if (!updatedProfileDataObj) {
         await identityActor.createProfile();
         updatedProfileDataObj = (await identityActor.getProfile()) as any;
@@ -104,11 +103,101 @@ function createUserStore() {
         authStore,
         process.env.BACKEND_CANISTER_ID ?? '',
       );
-      const result = await identityActor.updateDisplayName(username);
+      const result = await identityActor.updateUsername(username);
       sync();
       return result;
     } catch (error) {
       console.error('Error updating username:', error);
+      throw error;
+    }
+  }
+
+  async function updateDisplayName(displayName: string): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? '',
+      );
+      const result = await identityActor.updateDisplayName(displayName);
+      sync();
+      return result;
+    } catch (error) {
+      console.error('Error updating display name:', error);
+      throw error;
+    }
+  }
+
+  async function updateFirstName(firstName: string): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? '',
+      );
+      const result = await identityActor.updateFirstName(firstName);
+      sync();
+      return result;
+    } catch (error) {
+      console.error('Error updating first name:', error);
+      throw error;
+    }
+  }
+
+  async function updateLastName(lastName: string): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? '',
+      );
+      const result = await identityActor.updateFirstName(lastName);
+      sync();
+      return result;
+    } catch (error) {
+      console.error('Error updating last name:', error);
+      throw error;
+    }
+  }
+
+  async function updateOpenChatUsername(openChatUsername: string): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? '',
+      );
+      const result = await identityActor.updateOpenChatUsername(openChatUsername);
+      sync();
+      return result;
+    } catch (error) {
+      console.error('Error updating OpenChat username:', error);
+      throw error;
+    }
+  }
+
+  async function updateEmail(email: string): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? '',
+      );
+      const result = await identityActor.updateEmail(email);
+      sync();
+      return result;
+    } catch (error) {
+      console.error('Error updating email address:', error);
+      throw error;
+    }
+  }
+
+  async function updatePhone(phone: string): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? '',
+      );
+      const result = await identityActor.updatePhone(phone);
+      sync();
+      return result;
+    } catch (error) {
+      console.error('Error updating phone number:', error);
       throw error;
     }
   }
@@ -120,7 +209,6 @@ function createUserStore() {
         process.env.BACKEND_CANISTER_ID ?? '',
       );
       const result = await identityActor.getProfile();
-      console.log(result);
       set(result);
       return result;
     } catch (error) {

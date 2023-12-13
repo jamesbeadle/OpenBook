@@ -9,7 +9,7 @@ module DTOs {
 
   public type ProfileDTO = {
     principal : Text;
-    displayName : Text;
+    username : Text;
     termsAccepted : Bool;
     profilePicture : Blob;
     organisations : List.List<DTOs.OrganisationDTO>;

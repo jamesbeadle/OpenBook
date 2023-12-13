@@ -25,7 +25,6 @@
   $: currentRoute = $page.url.pathname;
 
   onMount(async () => {
-    console.log(currentRoute);
     try {
     } catch (error) {
       console.error('Error fetching homepage data:', error);

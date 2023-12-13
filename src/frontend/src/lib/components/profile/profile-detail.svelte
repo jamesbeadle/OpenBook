@@ -5,6 +5,7 @@
   import { toastsError, toastsShow } from '$lib/stores/toasts-store';
   import type { ProfileDTO } from '../../../../../declarations/backend/backend.did';
   import UpdateUsernameModal from '$lib/components/profile/update-username-modal.svelte';
+  import UpdateDisplayNameModal from '$lib/components/profile/update-display-name-modal.svelte';
   import { busyStore, Copy, Spinner } from '@dfinity/gix-components';
   import { getDateFromBigInt } from '$lib/utils/helpers';
 
@@ -27,7 +28,6 @@
       await userStore.sync();
 
       unsubscribeUserProfile = userStore.subscribe((value) => {
-        console.log(value)
         if (!value) {
           return;
         }
@@ -114,7 +114,6 @@
       });
       console.error('Error updating profile image', error);
     } finally {
-      console.log('updating store');
       busyStore.stopBusy('upload-image');
     }
   }
@@ -124,10 +123,16 @@
   <Spinner />
 {:else}
   <UpdateUsernameModal
-    newUsername={$profile ? $profile.displayName : ''}
+    newUsername={$profile ? $profile.username : ''}
     visible={showUsernameModal}
     closeModal={closeUsernameModal}
     cancelModal={cancelUsernameModal}
+  />
+  <UpdateDisplayNameModal
+    newUsername={$profile ? $profile.displayName : ''}
+    visible={showDisplayNameModal}
+    closeModal={closeDisplayNameModal}
+    cancelModal={cancelDisplayNameModal}
   />
 
   <div class="flex-1 flex-col">
@@ -157,7 +162,7 @@
           <img src={profileSrc} alt="Profile" class="w-full mb-1 rounded-lg" />
 
           <div class="file-upload-wrapper mt-4">
-            <button class="btn-file-upload fpl-button" on:click={clickFileInput}
+            <button class="btn-file-upload book-btn" on:click={clickFileInput}
               >Upload Photo</button
             >
             <input
@@ -174,13 +179,23 @@
 
       <div class="w-full md:w-1/2 lg:w-2/3 xl:w-3/4 md:px-2 mb-4 md:mb-0">
         <div class="md:ml-4 md:px-4 px-4 mt-2 md:mt-1 rounded-lg">
+          <p class="mb-1">Username:</p>
+          <h2 class="default-header mb-1 md:mb-2">
+            {$profile?.username}
+          </h2>
+          <button
+            class="text-sm md:text-sm p-1 md:p-2 px-2 md:px-4 rounded book-btn"
+            on:click={displayUsernameModal}
+          >
+            Update
+          </button>
           <p class="mb-1">Display Name:</p>
           <h2 class="default-header mb-1 md:mb-2">
             {$profile?.displayName}
           </h2>
           <button
-            class="text-sm md:text-sm p-1 md:p-2 px-2 md:px-4 rounded fpl-button"
-            on:click={displayUsernameModal}
+            class="text-sm md:text-sm p-1 md:p-2 px-2 md:px-4 rounded book-btn"
+            on:click={displayDisplayNameModal}
           >
             Update
           </button>
