@@ -516,32 +516,27 @@ module {
     };
     
     public func isEmailValid(email: Text) : Bool {
-        if (Text.size(email) < 5 or Text.size(email) > 254) {
-          // too short or too long
-          return false;
-        };
-
-        var atFound = false;
-        var dotFound = false;
-        let chars = Text.toIter(email);
-        for (c in chars) {
-          if (c == '@') {
-            if (atFound) {
-              // Multiple '@' symbols found
-              return false;
-            };
-            atFound := true;
-          } else if (atFound and c == '.') {
-            dotFound := true;
-          };
-        };
-
-        return atFound and dotFound;
+      if (Text.size(email) < 5 or Text.size(email) > 254) {
+        // too short or too long
+        return false;
       };
 
+      var atFound = false;
+      var dotFound = false;
+      let chars = Text.toIter(email);
+      for (c in chars) {
+        if (c == '@') {
+          if (atFound) {
+            // Multiple '@' symbols found
+            return false;
+          };
+          atFound := true;
+        } else if (atFound and c == '.') {
+          dotFound := true;
+        };
+      };
 
-
-
+      return atFound and dotFound;
     };
 
     public func isPhoneValid(phone : Text) : Bool {
@@ -566,4 +561,5 @@ module {
 
       return true;
     };
+  };
 };
