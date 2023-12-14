@@ -48,6 +48,10 @@
   display: block;
 }
 
+.times-button {
+  @apply text-white text-3xl;
+}
+
 input[type='file'] {
   font-size: 100px;
   position: absolute;
