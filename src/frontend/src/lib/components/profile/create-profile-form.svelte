@@ -14,14 +14,26 @@
   export let profile: Writable<ProfileDTO | null> = writable(null);
   export let profileCreated: () => void;
   export let profileUpdated: () => void;
-  export let title = 'Create Your OpenBook Profile';
 
   let usernameCheckStatus: string | null = null;
   let usernameInputValue = '';
   let displayNameInputValue = '';
+  let firstNameInputValue = '';
+  let lastNameInputValue = '';
+  let professionInputValue = '';
   let usernameChecking = false; 
 
   const debouncedCheck = debounce(checkUsernameAvailability, 300);
+
+  onMount(async () => {
+    console.log("here")
+    console.log($profile)
+    usernameInputValue = $profile?.username ?? '';
+    displayNameInputValue = $profile?.displayName ?? '';
+    firstNameInputValue = $profile?.firstName ?? '';
+    lastNameInputValue = $profile?.lastName ?? '';
+    professionInputValue = $profile?.profession ?? '';
+  });
 
   function handleUsernameInput(event: Event) {
     const target = event.currentTarget as HTMLInputElement;
@@ -39,6 +51,30 @@
     if (target) {
       updateProfileField('displayName', target.value);
       displayNameInputValue = target.value;
+    }
+  }
+
+  function handleFirstNameInput(event: Event) {
+    const target = event.currentTarget as HTMLInputElement;
+    if (target) {
+      updateProfileField('firstName', target.value);
+      firstNameInputValue = target.value;
+    }
+  }
+
+  function handleLastNameInput(event: Event) {
+    const target = event.currentTarget as HTMLInputElement;
+    if (target) {
+      updateProfileField('lastName', target.value);
+      lastNameInputValue = target.value;
+    }
+  }
+
+  function handleProfessionInput(event: Event) {
+    const target = event.currentTarget as HTMLInputElement;
+    if (target) {
+      updateProfileField('profession', target.value);
+      professionInputValue = target.value;
     }
   }
 
@@ -71,16 +107,8 @@
   $: newDisplayName = $profile?.displayName ?? '';
   $: newFirstName = $profile?.firstName ?? '';
   $: newLastName = $profile?.lastName ?? '';
-
-  $: if ($profile) {
-    profile.update((currentProfile) => {
-      if (currentProfile) {
-        currentProfile.username = newUsername;
-        currentProfile.displayName = newDisplayName;
-      }
-      return currentProfile;
-    });
-  }
+  $: newProfession = $profile?.profession ?? '';
+  
 
   $: isSubmitDisabled =
     $profile === null ||
@@ -103,10 +131,10 @@
       let updateProfileDTO: UpdateProfileDTO = {
         username: usernameInputValue,
         displayName: displayNameInputValue,
-        firstName: $profile.firstName,
-        lastName: $profile.lastName,
+        firstName: newFirstName,
+        lastName: newLastName,
         openChatUsername: $profile.openChatUsername,
-        profession: $profile.profession,
+        profession: newProfession,
         emailAddress: $profile.emailAddress,
         phoneNumber: $profile.phoneNumber,
         otherContact: $profile.otherContact,
@@ -139,23 +167,25 @@
     }
   }
 
-  function updateProfileField(
-  field: keyof ProfileDTO,
-  value: string | null | undefined,
-) {
-  if (field === 'username') {
-    newUsername = value ?? '';
-  } else if (field === 'displayName') {
-    newDisplayName = value ?? '';
+  function updateProfileField(field: keyof ProfileDTO, value: string | null | undefined) {
+    if (field === 'username') {
+      newUsername = value ?? '';
+    } else if (field === 'displayName') {
+      newDisplayName = value ?? '';
+    } else if (field === 'firstName') {
+      newFirstName = value ?? '';
+    } else if (field === 'lastName') {
+      newLastName = value ?? '';
+    } else if (field === 'profession') {
+      newProfession = value ?? '';
+    }
   }
-}
 
 </script>
 
 {#if $profile}
   <div class="flex flex-col">
-    <h3 class="text-2xl">{title}</h3>
-    <p class="text-sm text-amber-600 my-2">
+   <p class="text-sm text-amber-600 my-2">
       The information your provide in this form will be public.
     </p>
   </div>
@@ -194,7 +224,7 @@
           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2"
           placeholder="Enter a display name"
           on:input={handleDisplayNameInput}
-          bind:value={$profile.displayName}
+          bind:value={displayNameInputValue}
         />
       </div>
     </div>
@@ -208,7 +238,8 @@
           type="text"
           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2"
           placeholder="Enter your first name"
-          bind:value={$profile.firstName}
+          on:input={handleFirstNameInput}
+          bind:value={firstNameInputValue}
         />
       </div>
       <div class="form-group w-1/2">
@@ -217,7 +248,8 @@
           type="text"
           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2"
           placeholder="Enter your last name"
-          bind:value={$profile.lastName}
+          on:input={handleLastNameInput}
+          bind:value={lastNameInputValue}
         />
       </div>
     </div>
@@ -228,7 +260,8 @@
           type="text"
           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2"
           placeholder="Enter your profession"
-          bind:value={$profile.profession}
+          on:input={handleProfessionInput}
+          bind:value={professionInputValue}
         />
       </div>
       <div class="form-group w-1/2" />

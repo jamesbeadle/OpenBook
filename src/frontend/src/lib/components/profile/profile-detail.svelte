@@ -127,7 +127,7 @@
   <Modal visible={showUpdateModal} on:nnsClose={toggleUpdateModal}>
     <div class="p-4">
       <div class="flex justify-between items-center my-2">
-        <h3 class="default-header">Update System State</h3>
+        <h3 class="default-header">Update Public Profile Information</h3>
         <button class="times-button" on:click={toggleUpdateModal}>&times;</button>
       </div>
 
@@ -135,14 +135,13 @@
         profile={profile}
         {profileUpdated}
         {profileCreated}
-        title="Update Public Profile Information"
       />
-
     </div>
   </Modal>
 {/if}
 
   {#if newUser || !$profile}
+    <h3 class="default-header">Create Your OpenBook Profile</h3>
     <CreateProfileForm {profile} {profileCreated} {profileUpdated} />
   {:else}
     <div class="flex-1 flex-col m-4">

@@ -13,6 +13,12 @@
   background-color: rgba(36, 37, 41, 0.7) !important;
 }
 
+[data-tid="busy"] {
+  background-color: rgba(36, 37, 41, 0.7) !important;
+  z-index: 99999 !important;
+}
+
+
 .modal .content {
   left: 0 !important;
   right: 0 !important;
