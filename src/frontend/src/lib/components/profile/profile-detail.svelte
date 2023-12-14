@@ -8,13 +8,16 @@
   import { getDateFromBigInt } from '$lib/utils/helpers';
   import CreateProfileForm from './create-profile-form.svelte';
   import OpenchatIcon from '$lib/icons/openchat-icon.svelte';
+  import ShareableUpdateModal from './shareable-update-modal.svelte';
+  import CopyIcon from '$lib/icons/copy-icon.svelte';
 
   let profile: Writable<ProfileDTO | null> = writable(null);
   let fileInput: HTMLInputElement;
   let joinedDate = '';
   let newUser = false;
   let showUpdateModal = false;
-
+  let showShareableUpdateModal = false;
+  
   let unsubscribeUserProfile: () => void;
 
   $: profileSrc =
@@ -35,6 +38,7 @@
         if (value.principal === '') {
           newUser = true;
         }
+        console.log(value)
         setProfile(value);
         joinedDate = getDateFromBigInt(value.createDate);
       });
@@ -115,8 +119,28 @@
   }
 
   function profileUpdated() {
-    
+    showUpdateModal = false;
   }
+
+  function toggleShareableUpdateModal(){
+    showShareableUpdateModal = !showShareableUpdateModal;
+  }
+
+ 
+  async function copyTextAndShowToast() {
+    try {
+      const textToCopy = $profile ? $profile.principal : "";
+      await navigator.clipboard.writeText(textToCopy);
+      toastsShow({
+        text: 'Copied to clipboard.',
+        level: 'success',
+        duration: 2000,
+      });
+    } catch (err) {
+      console.error('Failed to copy:', err);
+    }
+  }
+
 </script>
 
 {#if isLoading}
@@ -138,6 +162,11 @@
       />
     </div>
   </Modal>
+{/if}
+
+
+{#if showShareableUpdateModal}
+  <ShareableUpdateModal {profile} {toggleShareableUpdateModal} {showShareableUpdateModal} shareableInfoUpdated={toggleShareableUpdateModal}/>
 {/if}
 
   {#if newUser || !$profile}
@@ -173,9 +202,7 @@
           </div>
           <p class="text-xs">Maximimum Size 500KB.</p>
         </div>
-        <div
-          class="flex flex-1 md:p-4 flex-col md:flex-row md:space-x-16 w-full md:px-8"
-        >
+        <div class="flex flex-1 md:p-4 flex-col md:flex-row md:space-x-16 w-full md:px-8">
           <div class="w-full md:w-1/2 flex-col flex">
             <div class="w-full flex mb-2 my-4 md:mt-0">
               <div class="w-1/2">
@@ -226,6 +253,12 @@
               <div class="form-group w-1/2">
               </div>
             </div>
+            <div class="w-full flex flex-row space-x-4 mt-4">
+              <button class="w-full text-left flex items-center text-xs" on:click={copyTextAndShowToast}>
+                Principal: {$profile.principal}
+                <CopyIcon className="w-4" fill='#FFFFFF' />
+              </button>
+            </div>
           </div>
           <div class="w-full md:w-1/2 flex-col flex">
             <div class="w-full flex mb-2 my-4 md:mt-0">
@@ -233,7 +266,7 @@
                 Shareable Profile Information:
               </div>
               <div class="w-1/2 flex justify-end">
-                <button class="book-btn px-4 py-2 rounded-md">
+                <button on:click={toggleShareableUpdateModal} class="book-btn px-4 py-2 rounded-md">
                   Update
                 </button>
               </div>
@@ -270,3 +303,14 @@
     </div>
   {/if}
 {/if}
+
+<style>
+  .overlay {
+    position: absolute;
+    width: 100%; 
+    height: 100%;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+  }
+</style>

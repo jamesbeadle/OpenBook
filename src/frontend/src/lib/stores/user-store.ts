@@ -105,7 +105,22 @@ function createUserStore() {
         authStore,
         process.env.BACKEND_CANISTER_ID ?? '',
       );
-      const result = await identityActor.updateProfile(updatedProfile);
+      const result = await identityActor.updateProfileDetail(updatedProfile);
+      sync();
+      return result;
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      throw error;
+    }
+  }
+
+  async function updateShareableProfileInfo(updatedProfile: UpdateProfileDTO): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? '',
+      );
+      const result = await identityActor.updateProfileDetail(updatedProfile);
       sync();
       return result;
     } catch (error) {
@@ -176,11 +191,12 @@ function createUserStore() {
   return {
     subscribe,
     sync,
-    updateProfile,
-    getProfile,
-    updateProfilePicture,
     createProfile,
+    getProfile,
     getProfileFromLocalStorage,
+    updateProfile,
+    updateProfilePicture,
+    updateShareableProfileInfo,
     checkUsernameAvailability,
   };
 }

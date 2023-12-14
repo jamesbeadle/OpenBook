@@ -143,18 +143,23 @@
         preferredPaymentCurrency: $profile.preferredPaymentCurrency,
       };
 
-      await userStore.createProfile(updateProfileDTO);
+      let result = null;
+      if($profile.principal.length == 0){
+        result = await userStore.createProfile(updateProfileDTO);
+        profileCreated();
+      }
+      else{
+        result = await userStore.updateProfile(updateProfileDTO);
+        profileUpdated();
+      }
+      console.log(result)
       userStore.sync();
       toastsShow({
         text: 'Profile updated.',
         level: 'success',
         duration: 2000,
       });
-      if($profile.principal.length == 0){
-        profileCreated();
-        return;
-      }
-      profileUpdated();
+
 
     } catch (error) {
       toastsError({
