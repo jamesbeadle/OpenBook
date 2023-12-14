@@ -7,6 +7,7 @@
   import { busyStore, Copy, Spinner } from '@dfinity/gix-components';
   import { getDateFromBigInt } from '$lib/utils/helpers';
   import UpdateProfileDetailModal from '$lib/components/profile/update-profile-detail-modal.svelte';
+  import CreateProfileForm from './create-profile-form.svelte';
 
   let profile: Writable<ProfileDTO | null> = writable(null);
   let showProfileDetailModal: boolean = false;
@@ -133,7 +134,10 @@
   />
 
   {#if newUser}
-    <p>New User</p>
+    <div class="flex flex-col">
+      <p class="text-2xl">Welcome To OpenBook</p>
+      <CreateProfileForm profile={profile} />
+    </div>
   {:else}
     <div class="flex-1 flex-col">
       <div class="w-full flex flex-row">
