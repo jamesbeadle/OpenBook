@@ -50,7 +50,6 @@ function createUserStore() {
       );
 
       let updatedProfileDataObj = (await identityActor.getProfile()) as any;
-      console.log(updatedProfileDataObj);
       if (!updatedProfileDataObj) {
         await identityActor.createProfile();
         updatedProfileDataObj = (await identityActor.getProfile()) as any;
@@ -137,7 +136,6 @@ function createUserStore() {
         process.env.BACKEND_CANISTER_ID ?? '',
       );
       const result = await identityActor.isUsernameAvailable(username);
-      set(result);
       return result;
     } catch (error) {
       console.error('Error getting profile:', error);

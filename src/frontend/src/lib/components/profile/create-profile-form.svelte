@@ -16,6 +16,7 @@
 
   let usernameCheckStatus: string | null = null;
   let usernameInputValue = '';
+  let displayNameInputValue = '';
   let usernameChecking = false; 
 
   const debouncedCheck = debounce(checkUsernameAvailability, 300);
@@ -31,11 +32,29 @@
     }
   }
 
+  function handleDisplayNameInput(event: Event) {
+    const target = event.currentTarget as HTMLInputElement;
+    if (target) {
+      updateProfileField('displayName', target.value);
+      displayNameInputValue = target.value;
+    }
+  }
+
   async function checkUsernameAvailability(username: string) {
+    if(username.length == 0){
+      usernameCheckStatus = '';
+      usernameChecking = false;
+      return;
+    }
     usernameCheckStatus = 'checking';
     usernameChecking = true;
     try {
       const isAvailable = await userStore.checkUsernameAvailability(username);
+      if(usernameInputValue.length == 0){
+        usernameCheckStatus = '';
+        usernameChecking = false;
+        return;
+      }
       usernameCheckStatus = isAvailable ? 'available' : 'unavailable';
       usernameChecking = false;
     } catch (error) {
@@ -50,6 +69,16 @@
   $: newDisplayName = $profile?.displayName ?? '';
   $: newFirstName = $profile?.firstName ?? '';
   $: newLastName = $profile?.lastName ?? '';
+
+  $: if ($profile) {
+    profile.update((currentProfile) => {
+      if (currentProfile) {
+        currentProfile.username = newUsername;
+        currentProfile.displayName = newDisplayName;
+      }
+      return currentProfile;
+    });
+  }
 
   $: isSubmitDisabled =
     $profile === null ||
@@ -67,8 +96,8 @@
       }
 
       let updateProfileDTO: UpdateProfileDTO = {
-        username: $profile.username,
-        displayName: $profile.displayName,
+        username: usernameInputValue,
+        displayName: displayNameInputValue,
         firstName: $profile.firstName,
         lastName: $profile.lastName,
         openChatUsername: $profile.openChatUsername,
@@ -101,19 +130,23 @@
   }
 
   function updateProfileField(
-    field: keyof ProfileDTO,
-    value: string | null | undefined,
-  ) {
+  field: keyof ProfileDTO,
+  value: string | null | undefined,
+) {
+  if (field === 'username') {
     newUsername = value ?? '';
-    console.log(field);
-    console.log(value);
+  } else if (field === 'displayName') {
+    newDisplayName = value ?? ''; // Add this line to handle display name updates
   }
+  // You can add more conditions if other fields also need to trigger updates
+}
+
 </script>
 
 {#if $profile}
   <div class="flex flex-col">
     <h3 class="text-2xl">Create Your OpenBook Profile</h3>
-    <p class="text-sm text-red-600 my-2">
+    <p class="text-sm text-amber-600 my-2">
       The information your provide in this form will be public.
     </p>
   </div>
@@ -151,6 +184,7 @@
           type="text"
           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2"
           placeholder="Enter a display name"
+          on:input={handleDisplayNameInput}
           bind:value={$profile.displayName}
         />
       </div>

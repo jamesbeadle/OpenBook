@@ -87,7 +87,6 @@
   }
 
   async function uploadProfileImage(file: File) {
-    console.log('Uploading profile image');
     busyStore.startBusy({
       initiator: 'upload-image',
       text: 'Uploading profile picture...',
@@ -118,7 +117,6 @@
       });
       console.error('Error updating profile image', error);
     } finally {
-      console.log('Stopping the busy text');
       busyStore.stopBusy('upload-image');
     }
   }
