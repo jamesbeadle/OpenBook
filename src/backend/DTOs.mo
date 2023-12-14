@@ -11,11 +11,13 @@ module DTOs {
     principal : Text;
     username : Text;
     displayName : Text;
+    profession : Text;
     firstName : Text;
     lastName : Text;
     openChatUsername : Text;
     emailAddress : Text;
     phoneNumber : Text;
+    otherContact : Text;
     termsAccepted : Bool;
     profilePicture : Blob;
     organisations : List.List<DTOs.OrganisationDTO>;
@@ -28,11 +30,13 @@ module DTOs {
   public type UpdateProfileDTO = {
     username : Text;
     displayName : Text;
+    profession : Text;
     firstName : Text;
     lastName : Text;
     openChatUsername : Text;
     emailAddress : Text;
     phoneNumber : Text;
+    otherContact : Text;
     termsAccepted : Bool;
     userDefinedWallet : Text;
     preferredPaymentCurrency : T.CurrencyId;

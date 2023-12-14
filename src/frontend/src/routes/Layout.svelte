@@ -34,7 +34,7 @@
 {#if !isLoading}
   <div class="flex flex-col h-screen justify-between default-text">
     <main class="page-wrapper">
-      <div class="flex flex-col md:flex-row h-screen">
+      <div class="flex flex-col md:flex-row">
         <slot />
       </div>
     </main>

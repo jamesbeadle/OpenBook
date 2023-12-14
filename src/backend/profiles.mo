@@ -77,9 +77,6 @@ module {
       username : Text,
       firstName : Text,
       lastName : Text,
-      openChatUsername : Text,
-      emailAddress : Text,
-      phoneNumber : Text,
     ) : () {
       if (userProfiles.get(principalName) == null) {
         let newProfile : T.Profile = {
@@ -88,9 +85,11 @@ module {
           username = username;
           firstName = firstName;
           lastName = lastName;
-          openChatUsername = openChatUsername;
-          emailAddress = emailAddress;
-          phoneNumber = phoneNumber;
+          profession = "";
+          openChatUsername = "";
+          emailAddress = "";
+          phoneNumber = "";
+          otherContact = "";
           profilePictureCanisterId = "";
           termsAccepted = false;
           createDate = now();
@@ -116,10 +115,12 @@ module {
             principal = existingProfile.principal;
             username = updatedProfile.username;
             displayName = updatedProfile.displayName;
+            profession = updatedProfile.profession;
             firstName = updatedProfile.firstName;
             lastName = updatedProfile.lastName;
             openChatUsername = updatedProfile.openChatUsername;
             emailAddress = updatedProfile.emailAddress;
+            otherContact = updatedProfile.otherContact;
             phoneNumber = updatedProfile.phoneNumber;
             profilePictureCanisterId = existingProfile.profilePictureCanisterId;
             termsAccepted = existingProfile.termsAccepted;
@@ -133,286 +134,6 @@ module {
 
           userProfiles.put(principalName, adjustedProfile);
 
-          return #ok(());
-        };
-      };
-    };
-
-    public func updateUsername(principalName : Text, username : Text) : Result.Result<(), T.Error> {
-      let existingProfile = userProfiles.get(principalName);
-      switch (existingProfile) {
-        case (null) {
-          return #err(#NotFound);
-        };
-        case (?existingProfile) {
-          if (existingProfile.username == username) {
-            return #ok(());
-          };
-          let nameValid = isUsernameValid(username);
-          if (not nameValid) {
-            return #err(#NotAllowed);
-          };
-
-          let updatedProfile : T.Profile = {
-            principal = existingProfile.principal;
-            username = username;
-            displayName = existingProfile.displayName;
-            firstName = existingProfile.firstName;
-            lastName = existingProfile.lastName;
-            openChatUsername = existingProfile.openChatUsername;
-            emailAddress = existingProfile.emailAddress;
-            phoneNumber = existingProfile.phoneNumber;
-            profilePictureCanisterId = existingProfile.profilePictureCanisterId;
-            termsAccepted = existingProfile.termsAccepted;
-            createDate = existingProfile.createDate;
-            auditHistory = existingProfile.auditHistory;
-            lastModified = existingProfile.lastModified;
-            organisations = existingProfile.organisations;
-            preferredPaymentCurrency = existingProfile.preferredPaymentCurrency;
-            userDefinedWallet = existingProfile.userDefinedWallet;
-          };
-
-          userProfiles.put(principalName, updatedProfile);
-
-          return #ok(());
-        };
-      };
-    };
-
-    public func updateFirstName(principalName : Text, firstName : Text) : Result.Result<(), T.Error> {
-      let existingProfile = userProfiles.get(principalName);
-      switch (existingProfile) {
-        case (null) {
-          return #err(#NotFound);
-        };
-        case (?existingProfile) {
-          if (existingProfile.firstName == firstName) {
-            return #ok(());
-          };
-          let nameValid = isNameValid(firstName);
-          if (not nameValid) {
-            return #err(#NotAllowed);
-          };
-
-          let updatedProfile : T.Profile = {
-            principal = existingProfile.principal;
-            username = existingProfile.username;
-            displayName = existingProfile.displayName;
-            firstName = firstName;
-            lastName = existingProfile.lastName;
-            openChatUsername = existingProfile.openChatUsername;
-            emailAddress = existingProfile.emailAddress;
-            phoneNumber = existingProfile.phoneNumber;
-            profilePictureCanisterId = existingProfile.profilePictureCanisterId;
-            termsAccepted = existingProfile.termsAccepted;
-            createDate = existingProfile.createDate;
-            auditHistory = existingProfile.auditHistory;
-            lastModified = existingProfile.lastModified;
-            organisations = existingProfile.organisations;
-            preferredPaymentCurrency = existingProfile.preferredPaymentCurrency;
-            userDefinedWallet = existingProfile.userDefinedWallet;
-          };
-
-          userProfiles.put(principalName, updatedProfile);
-
-          return #ok(());
-        };
-      };
-    };
-
-    public func updateLastName(principalName : Text, lastName : Text) : Result.Result<(), T.Error> {
-      let existingProfile = userProfiles.get(principalName);
-      switch (existingProfile) {
-        case (null) {
-          return #err(#NotFound);
-        };
-        case (?existingProfile) {
-          if (existingProfile.lastName == lastName) {
-            return #ok(());
-          };
-          let nameValid = isNameValid(lastName);
-          if (not nameValid) {
-            return #err(#NotAllowed);
-          };
-
-          let updatedProfile : T.Profile = {
-            principal = existingProfile.principal;
-            username = existingProfile.username;
-            displayName = existingProfile.displayName;
-            firstName = existingProfile.firstName;
-            lastName = lastName;
-            openChatUsername = existingProfile.openChatUsername;
-            emailAddress = existingProfile.emailAddress;
-            phoneNumber = existingProfile.phoneNumber;
-            profilePictureCanisterId = existingProfile.profilePictureCanisterId;
-            termsAccepted = existingProfile.termsAccepted;
-            createDate = existingProfile.createDate;
-            auditHistory = existingProfile.auditHistory;
-            lastModified = existingProfile.lastModified;
-            organisations = existingProfile.organisations;
-            preferredPaymentCurrency = existingProfile.preferredPaymentCurrency;
-            userDefinedWallet = existingProfile.userDefinedWallet;
-          };
-
-          userProfiles.put(principalName, updatedProfile);
-
-          return #ok(());
-        };
-      };
-    };
-
-    public func updateOpenChatUsername(principalName : Text, openChatUsername : Text) : Result.Result<(), T.Error> {
-      let existingProfile = userProfiles.get(principalName);
-      switch (existingProfile) {
-        case (null) {
-          return #err(#NotFound);
-        };
-        case (?existingProfile) {
-          if (existingProfile.openChatUsername == openChatUsername) {
-            return #ok(());
-          };
-          let nameValid = isOpenChatUsernameValid(openChatUsername);
-          if (not nameValid) {
-            return #err(#NotAllowed);
-          };
-
-          let updatedProfile : T.Profile = {
-            principal = existingProfile.principal;
-            username = existingProfile.username;
-            displayName = existingProfile.displayName;
-            firstName = existingProfile.firstName;
-            lastName = existingProfile.lastName;
-            openChatUsername = openChatUsername;
-            emailAddress = existingProfile.emailAddress;
-            phoneNumber = existingProfile.phoneNumber;
-            profilePictureCanisterId = existingProfile.profilePictureCanisterId;
-            termsAccepted = existingProfile.termsAccepted;
-            createDate = existingProfile.createDate;
-            auditHistory = existingProfile.auditHistory;
-            lastModified = existingProfile.lastModified;
-            organisations = existingProfile.organisations;
-            preferredPaymentCurrency = existingProfile.preferredPaymentCurrency;
-            userDefinedWallet = existingProfile.userDefinedWallet;
-          };
-
-          userProfiles.put(principalName, updatedProfile);
-
-          return #ok(());
-        };
-      };
-    };
-
-    public func updateEmail(principalName : Text, email : Text) : Result.Result<(), T.Error> {
-      let existingProfile = userProfiles.get(principalName);
-      switch (existingProfile) {
-        case (null) {
-          return #err(#NotFound);
-        };
-        case (?existingProfile) {
-          if (existingProfile.emailAddress == email) {
-            return #ok(());
-          };
-          let emailValid = isEmailValid(email);
-          if (not emailValid) {
-            return #err(#NotAllowed);
-          };
-
-          let updatedProfile : T.Profile = {
-            principal = existingProfile.principal;
-            username = existingProfile.username;
-            displayName = existingProfile.displayName;
-            firstName = existingProfile.firstName;
-            lastName = existingProfile.lastName;
-            openChatUsername = existingProfile.openChatUsername;
-            emailAddress = email;
-            phoneNumber = existingProfile.phoneNumber;
-            profilePictureCanisterId = existingProfile.profilePictureCanisterId;
-            termsAccepted = existingProfile.termsAccepted;
-            createDate = existingProfile.createDate;
-            auditHistory = existingProfile.auditHistory;
-            lastModified = existingProfile.lastModified;
-            organisations = existingProfile.organisations;
-            preferredPaymentCurrency = existingProfile.preferredPaymentCurrency;
-            userDefinedWallet = existingProfile.userDefinedWallet;
-          };
-
-          userProfiles.put(principalName, updatedProfile);
-
-          return #ok(());
-        };
-      };
-    };
-
-    public func updatePhone(principalName : Text, phone : Text) : Result.Result<(), T.Error> {
-      let existingProfile = userProfiles.get(principalName);
-      switch (existingProfile) {
-        case (null) {
-          return #err(#NotFound);
-        };
-        case (?existingProfile) {
-          if (existingProfile.phoneNumber == phone) {
-            return #ok(());
-          };
-          let phoneValid = isPhoneValid(phone);
-          if (not phoneValid) {
-            return #err(#NotAllowed);
-          };
-
-          let updatedProfile : T.Profile = {
-            principal = existingProfile.principal;
-            username = existingProfile.username;
-            displayName = existingProfile.displayName;
-            firstName = existingProfile.firstName;
-            lastName = existingProfile.lastName;
-            openChatUsername = existingProfile.openChatUsername;
-            emailAddress = existingProfile.emailAddress;
-            phoneNumber = phone;
-            profilePictureCanisterId = existingProfile.profilePictureCanisterId;
-            termsAccepted = existingProfile.termsAccepted;
-            createDate = existingProfile.createDate;
-            auditHistory = existingProfile.auditHistory;
-            lastModified = existingProfile.lastModified;
-            organisations = existingProfile.organisations;
-            preferredPaymentCurrency = existingProfile.preferredPaymentCurrency;
-            userDefinedWallet = existingProfile.userDefinedWallet;
-          };
-
-          userProfiles.put(principalName, updatedProfile);
-
-          return #ok(());
-        };
-      };
-    };
-
-    public func updateProfilePicture(principalName : Text, profilePicture : Blob) : Result.Result<(), T.Error> {
-      let existingProfile = userProfiles.get(principalName);
-      userProfilePictures.put(principalName, profilePicture);
-
-      switch (existingProfile) {
-        case (null) {
-          return #err(#NotFound);
-        };
-        case (?existingProfile) {
-          let updatedProfile : T.Profile = {
-            principal = existingProfile.principal;
-            username = existingProfile.username;
-            displayName = existingProfile.displayName;
-            firstName = existingProfile.firstName;
-            lastName = existingProfile.lastName;
-            openChatUsername = existingProfile.openChatUsername;
-            emailAddress = existingProfile.emailAddress;
-            phoneNumber = existingProfile.phoneNumber;
-            termsAccepted = existingProfile.termsAccepted;
-            profilePictureCanisterId = ""; //SET WHEN MCA IMPLEMENTED
-            createDate = existingProfile.createDate;
-            auditHistory = existingProfile.auditHistory;
-            lastModified = existingProfile.lastModified;
-            organisations = existingProfile.organisations;
-            preferredPaymentCurrency = existingProfile.preferredPaymentCurrency;
-            userDefinedWallet = existingProfile.userDefinedWallet;
-          };
-
-          userProfiles.put(principalName, updatedProfile);
           return #ok(());
         };
       };
@@ -442,6 +163,29 @@ module {
         if (profile.username == username) {
           return false;
         };
+      };
+
+      return true;
+    };
+
+    public func isProfessionValid(profession : Text) : Bool {
+
+      if (Text.size(profession) < 0 or Text.size(profession) > 50) {
+        return false;
+      };
+
+      let isAlphanumeric = func(s : Text) : Bool {
+        let chars = Text.toIter(s);
+        for (c in chars) {
+          if (not ((c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z') or (c >= '0' and c <= '9') or (c == ' ') or (c == '-'))) {
+            return false;
+          };
+        };
+        return true;
+      };
+
+      if (not isAlphanumeric(profession)) {
+        return false;
       };
 
       return true;
@@ -562,5 +306,42 @@ module {
 
       return true;
     };
+
+    public func isOtherContactValid(otherContact : Text) : Bool {
+
+      if (Text.size(otherContact) < 0 or Text.size(otherContact) > 30) {
+        return false;
+      };
+
+      let isAlphanumeric = func(s : Text) : Bool {
+        let chars = Text.toIter(s);
+        for (c in chars) {
+          if (not ((c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z') or (c >= '0' and c <= '9') or (c == ' ') or (c == '+') or (c == '-') or (c == '(') or (c == ')') or (c == '@'))) {
+            return false;
+          };
+        };
+        return true;
+      };
+
+      if (not isAlphanumeric(otherContact)) {
+        return false;
+      };
+
+      return true;
+    };
+
+    public func updateProfilePicture(principalName : Text, profilePicture : Blob) : Result.Result<(), T.Error> {
+      let existingProfile = userProfiles.get(principalName);
+      switch (existingProfile) {
+        case (null) {
+          return #err(#NotFound);
+        };
+        case (?foundProfile) {
+          userProfilePictures.put(principalName, profilePicture);
+          return #ok(());
+        };
+      };
+    };
+
   };
 };

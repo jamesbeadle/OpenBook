@@ -19,11 +19,11 @@
 </script>
 
 <Layout>
-  {#if $authSignedInStore}
-    <div class="flex flex-row h-screen w-full">
+  <div class="flex flex-row h-screen w-full">
+    {#if $authSignedInStore}
       <Dashboard />
-    </div>
-  {:else}
-    <Landing />
-  {/if}
+    {:else}
+      <Landing />
+    {/if}
+  </div>
 </Layout>

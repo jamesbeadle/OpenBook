@@ -22,7 +22,9 @@ actor Self {
       openChatUsername = "";
       emailAddress = "";
       phoneNumber = "";
+      otherContact = "";
       displayName = "";
+      profession = "";
       termsAccepted = false;
       profilePicture = "";
       organisations = List.nil<DTO.OrganisationDTO>();
@@ -43,10 +45,12 @@ actor Self {
         return {
           principal = foundProfile.principal;
           displayName = foundProfile.displayName;
+          profession = foundProfile.profession;
           username = foundProfile.username;
           firstName = foundProfile.firstName;
           lastName = foundProfile.lastName;
           openChatUsername = foundProfile.openChatUsername;
+          otherContact = foundProfile.otherContact;
           emailAddress = foundProfile.emailAddress;
           phoneNumber = foundProfile.phoneNumber;
           termsAccepted = foundProfile.termsAccepted;
@@ -61,7 +65,7 @@ actor Self {
     };
   };
 
-  public shared ({ caller }) func createProfile(profileDTO: DTO.UpdateProfileDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func createProfile(profileDTO : DTO.UpdateProfileDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
@@ -85,7 +89,11 @@ actor Self {
           return #err(#InvalidData);
         };
 
-        profilesInstance.createProfile(Principal.toText(caller), profileDTO.displayName, profileDTO.username, profileDTO.firstName, profileDTO.lastName, "", "", "");
+        if (not profilesInstance.isProfessionValid(profileDTO.profession)) {
+          return #err(#InvalidData);
+        };
+
+        profilesInstance.createProfile(Principal.toText(caller), profileDTO.displayName, profileDTO.username, profileDTO.firstName, profileDTO.lastName);
         return #ok(());
       };
       case (_) {
@@ -150,7 +158,29 @@ actor Self {
           assert not invalidPhone;
         };
 
+        if (updatedProfile.otherContact != foundProfile.otherContact) {
+          var invalidOtherContact = false;
+          if (Text.size(updatedProfile.otherContact) > 0) {
+            invalidOtherContact := not profilesInstance.isOtherContactValid(updatedProfile.otherContact);
+          };
+          assert not invalidOtherContact;
+        };
+
         return profilesInstance.updateProfileDetail(Principal.toText(caller), updatedProfile);
+      };
+    };
+  };
+
+  public shared ({ caller }) func updateProfilePicture(updatedProfilePicture : Blob) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+
+    var existingProfile = profilesInstance.getProfile(Principal.toText(caller));
+    switch (existingProfile) {
+      case (null) {
+        return #err(#NotFound);
+      };
+      case (?foundProfile) {
+        return profilesInstance.updateProfilePicture(Principal.toText(caller), updatedProfilePicture);
       };
     };
   };

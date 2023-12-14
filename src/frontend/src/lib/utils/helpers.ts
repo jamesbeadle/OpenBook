@@ -241,7 +241,6 @@ export function getDateFromBigInt(dateMS: bigint): string {
   return `${monthNames[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 }
 
-
 export function isUsernameValid(username: string): boolean {
   if (!username) {
     return false;
@@ -267,54 +266,54 @@ export function isDisplayNameValid(displayName: string): boolean {
 }
 
 export function isNameValid(name: string): boolean {
-    if (!name) {
-        return false;
-    }
+  if (!name) {
+    return false;
+  }
 
-    if (name.length < 0 || name.length > 30) {
-        return false;
-    }
+  if (name.length < 0 || name.length > 30) {
+    return false;
+  }
 
-    return /^[a-zA-Z0-9 -]+$/.test(name);
+  return /^[a-zA-Z0-9 -]+$/.test(name);
 }
 
 export function isEmailValid(email: string): boolean {
-    if (!email || email.length < 5 || email.length > 254) {
-        // too short or too long
+  if (!email || email.length < 5 || email.length > 254) {
+    // too short or too long
+    return false;
+  }
+
+  let atFound = false;
+  let dotFound = false;
+
+  for (const c of email) {
+    if (c === '@') {
+      if (atFound) {
+        // Multiple '@' symbols found
         return false;
+      }
+      atFound = true;
+    } else if (atFound && c === '.') {
+      dotFound = true;
     }
+  }
 
-    let atFound = false;
-    let dotFound = false;
-
-    for (const c of email) {
-        if (c === '@') {
-        if (atFound) {
-            // Multiple '@' symbols found
-            return false;
-        }
-        atFound = true;
-        } else if (atFound && c === '.') {
-        dotFound = true;
-        }
-    }
-
-    return atFound && dotFound;
+  return atFound && dotFound;
 }
 
 export function isPhoneValid(phone: string): boolean {
-    if (!phone || phone.length > 30) {
+  if (!phone || phone.length > 30) {
+    return false;
+  }
+
+  const isAlphanumeric = (s: string): boolean => {
+    for (const c of s) {
+      if (!/[a-zA-Z0-9 +()-]/.test(c)) {
         return false;
+      }
     }
+    return true;
+  };
 
-    const isAlphanumeric = (s: string): boolean => {
-        for (const c of s) {
-            if (!(/[a-zA-Z0-9 +()-]/.test(c))) {
-                return false;
-            }
-        }
-        return true;
-    };
-
-    return isAlphanumeric(phone);
+  return isAlphanumeric(phone);
 }

@@ -11,14 +11,9 @@
   </p>
   <p>
     The Internet Computer blockchain has provided the world with a foundation
-    for genuine decentralisation, a significant leap for the technological
-    underpinnings of SaaS platforms. This evolution is especially transformative
-    for businesses worldwide, which are reliant on SaaS for critical data
-    processing. The Internet Computer blockchain has provided the world with a
-    foundation for genuine decentralisation. This technological leap is
-    particularly transformative for businesses worldwide, which are increasingly
-    reliant on Software as a Service (SaaS) platforms for critical data
-    processing.
+    for genuine decentralisation. This technological leap is particularly
+    transformative for businesses worldwide, which are increasingly reliant on
+    Software as a Service (SaaS) platforms for critical data processing.
   </p>
   <p>
     Businesses today face the task of managing multiple subscriptions across a

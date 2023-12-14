@@ -2,7 +2,10 @@
   import { userStore } from '$lib/stores/user-store';
   import { toastsError, toastsShow } from '$lib/stores/toasts-store';
   import { Modal, busyStore } from '@dfinity/gix-components';
-  import type { ProfileDTO, UpdateProfileDTO } from '../../../../../declarations/backend/backend.did';
+  import type {
+    ProfileDTO,
+    UpdateProfileDTO,
+  } from '../../../../../declarations/backend/backend.did';
 
   export let visible: boolean;
   export let closeModal: () => void;
@@ -22,13 +25,15 @@
   }
 
   $: isSubmitDisabled = !isDisplayNameValid(newDisplayName);
-  $: newUsername = profile ? profile.username : ""; 
-  $: newDisplayName = profile ? profile.displayName : ""; 
-  $: newFirstName = profile ? profile.firstName : ""; 
-  $: newLastName = profile ? profile.lastName : ""; 
-  $: newOpenChatUsername = profile ? profile.openChatUsername : ""; 
-  $: newEmailAddress = profile ? profile.emailAddress : ""; 
-  $: newPhoneNumber = profile ? profile.phoneNumber : ""; 
+  $: newUsername = profile ? profile.username : '';
+  $: newDisplayName = profile ? profile.displayName : '';
+  $: newFirstName = profile ? profile.firstName : '';
+  $: newLastName = profile ? profile.lastName : '';
+  $: newOpenChatUsername = profile ? profile.openChatUsername : '';
+  $: newProfession = profile ? profile.profession : '';
+  $: newEmailAddress = profile ? profile.emailAddress : '';
+  $: newPhoneNumber = profile ? profile.phoneNumber : '';
+  $: newOtherContact = profile ? profile.otherContact : '';
 
   async function updateProfileDetail() {
     busyStore.startBusy({
@@ -36,22 +41,23 @@
       text: 'Updating profile detail...',
     });
     try {
-      
-      if(!profile){
+      if (!profile) {
         return;
       }
-      
+
       let updateProfileDTO: UpdateProfileDTO = {
         username: newUsername,
         displayName: newDisplayName,
         firstName: newFirstName,
         lastName: newLastName,
         openChatUsername: newOpenChatUsername,
+        profession: newProfession,
         emailAddress: newEmailAddress,
         phoneNumber: newPhoneNumber,
+        otherContact: newOtherContact,
         termsAccepted: profile.termsAccepted,
         userDefinedWallet: profile.userDefinedWallet,
-        preferredPaymentCurrency: profile.preferredPaymentCurrency
+        preferredPaymentCurrency: profile.preferredPaymentCurrency,
       };
 
       await userStore.updateProfile(updateProfileDTO);

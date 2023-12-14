@@ -33,7 +33,7 @@
         if (!value) {
           return;
         }
-        if(value.principal === ""){
+        if (value.principal === '') {
           newUser = true;
         }
         setProfile(value);
@@ -82,12 +82,12 @@
         alert('File size exceeds 1000KB');
         return;
       }
-
       uploadProfileImage(file);
     }
   }
 
   async function uploadProfileImage(file: File) {
+    console.log('Uploading profile image');
     busyStore.startBusy({
       initiator: 'upload-image',
       text: 'Uploading profile picture...',
@@ -97,7 +97,6 @@
       await userStore.updateProfilePicture(file);
       await userStore.sync();
       const profileData = await userStore.getProfile();
-
       setProfile(profileData);
       if (
         profileData &&
@@ -105,7 +104,7 @@
         profileData.profilePicture.length > 0
       ) {
         const blob = new Blob([new Uint8Array(profileData.profilePicture)]);
-        profileSrc = URL.createObjectURL(blob);
+        profileSrc = URL.createObjectURL(blob) + '?v=' + new Date().getTime();
       }
       toastsShow({
         text: 'Profile image updated.',
@@ -119,14 +118,14 @@
       });
       console.error('Error updating profile image', error);
     } finally {
+      console.log('Stopping the busy text');
       busyStore.stopBusy('upload-image');
     }
   }
 
   function profileCreated() {
     newUser = false;
-  };
-
+  }
 </script>
 
 {#if isLoading}
@@ -142,7 +141,7 @@
   {#if newUser || !$profile}
     <div class="flex flex-col">
       <p class="text-2xl">Welcome To OpenBook</p>
-      <CreateProfileForm profile={profile} {profileCreated} />
+      <CreateProfileForm {profile} {profileCreated} />
     </div>
   {:else}
     <div class="flex-1 flex-col m-4">
@@ -150,8 +149,17 @@
         <div class="flex flex-col">
           <p class="text-xs mb-2">Profile Image</p>
           <div class="w-full md:w-36 flex flex-col">
-            <img src={profileSrc} alt="Profile" class="w-full mb-2 rounded-lg" />
-            <button class="btn-file-upload book-btn w-full text-xs mb-2" on:click={clickFileInput}>Upload Photo</button>
+            {#key profileSrc}
+              <img
+                src={profileSrc}
+                alt="Profile"
+                class="w-full mb-2 rounded-lg"
+              />
+            {/key}
+            <button
+              class="btn-file-upload book-btn w-full text-xs mb-2"
+              on:click={clickFileInput}>Upload Photo</button
+            >
             <div class="file-upload-wrapper">
               <input
                 type="file"
@@ -163,44 +171,42 @@
               />
             </div>
           </div>
-          <p class="pull-down text-xs"> Maximimum Size 500KB.</p>
+          <p class="pull-down text-xs">Maximimum Size 500KB.</p>
         </div>
-        <div class="flex flex-1 md:p-4 flex-col md:flex-row md:space-x-16 w-full md:px-8">
+        <div
+          class="flex flex-1 md:p-4 flex-col md:flex-row md:space-x-16 w-full md:px-8"
+        >
           <div class="w-full md:w-1/2 flex-col flex">
             <div class="w-full flex mb-2 my-4 md:mt-0">
               Public Profile Information:
             </div>
             <div class="w-full flex flex-row space-x-4">
               <div class="form-group w-1/2">
-                <label for="username" class="flex text-sm">Username
+                <label for="username" class="flex text-sm"
+                  >Username
                   <span>
-                    <div class="text-xs text-red-500 ml-1">
-                      *
-                    </div>
+                    <div class="text-xs text-red-500 ml-1">*</div>
                   </span>
-
-                </label>  
+                </label>
                 <p class="display-value">{$profile.username}</p>
               </div>
               <div class="form-group w-1/2">
-                <label for="username" class="flex text-sm">Display Name
+                <label for="username" class="flex text-sm"
+                  >Display Name
                   <span>
-                    <div class="text-xs text-red-500 ml-1">
-                      *
-                    </div>
+                    <div class="text-xs text-red-500 ml-1">*</div>
                   </span>
-
-                </label>  
+                </label>
                 <p class="display-value">{$profile.displayName}</p>
               </div>
             </div>
             <div class="w-full flex flex-row space-x-4 mt-4">
               <div class="form-group w-1/2">
-                <label for="username" class="block text-sm">First Name</label>  
+                <label for="username" class="block text-sm">First Name</label>
                 <p class="display-value">{$profile.firstName}</p>
               </div>
               <div class="form-group w-1/2">
-                <label for="displayName" class="block text-sm">Last Name</label>  
+                <label for="displayName" class="block text-sm">Last Name</label>
                 <p class="display-value">{$profile.lastName}</p>
               </div>
             </div>
@@ -211,22 +217,28 @@
             </div>
             <div class="w-full flex flex-row space-x-4">
               <div class="form-group w-1/2">
-                <label for="username" class="flex text-sm"><a target="_blank" href="https://oc.app/community/mldkd-vqaaa-aaaar-av5cq-cai/channel/230276105428323899255565868449599995147/?ref=zv6hh-xaaaa-aaaar-ac35q-cai"><OpenchatIcon className="w-4 mr-1" /></a>OpenChat</label>  
+                <label for="username" class="flex text-sm"
+                  ><a
+                    target="_blank"
+                    href="https://oc.app/community/mldkd-vqaaa-aaaar-av5cq-cai/channel/230276105428323899255565868449599995147/?ref=zv6hh-xaaaa-aaaar-ac35q-cai"
+                    ><OpenchatIcon className="w-4 mr-1" /></a
+                  >OpenChat</label
+                >
                 <p class="display-value">{$profile.openChatUsername} &nbsp;</p>
               </div>
               <div class="form-group w-1/2">
-                <label for="displayName" class="block text-sm">Email</label>  
+                <label for="displayName" class="block text-sm">Email</label>
                 <p class="display-value">{$profile.emailAddress} &nbsp;</p>
               </div>
             </div>
             <div class="w-full flex flex-row space-x-4 mt-4">
               <div class="form-group w-1/2">
-                <label for="username" class="block text-sm">Phone Number</label>  
+                <label for="username" class="block text-sm">Phone Number</label>
                 <p class="display-value">{$profile.phoneNumber} &nbsp;</p>
               </div>
               <div class="form-group w-1/2">
-                <label for="username" class="block text-sm">Other</label>  
-                <p class="display-value">{$profile.phoneNumber} &nbsp;</p>
+                <label for="username" class="block text-sm">Other</label>
+                <p class="display-value">{$profile.otherContact} &nbsp;</p>
               </div>
             </div>
           </div>

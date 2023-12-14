@@ -100,9 +100,11 @@ module Types {
     firstName : Text;
     lastName : Text;
     displayName : Text;
+    profession : Text;
     openChatUsername : Text;
     emailAddress : Text;
     phoneNumber : Text;
+    otherContact : Text;
     termsAccepted : Bool;
     profilePictureCanisterId : Text;
     organisations : [OrganisationId];
