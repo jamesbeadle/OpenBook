@@ -242,78 +242,96 @@ export function getDateFromBigInt(dateMS: bigint): string {
 }
 
 export function isUsernameValid(username: string): boolean {
-  if (!username) {
+  if(!username === undefined){
     return false;
   }
-
-  if (username.length < 0 || username.length > 16) {
-    return false;
-  }
-
-  return /^[a-zA-Z0-9]+$/.test(username);
+  const alphanumericRegex = /^[a-zA-Z0-9]+$/;
+  return username.length > 0 && username.length <= 16 && alphanumericRegex.test(username);
 }
 
 export function isDisplayNameValid(displayName: string): boolean {
-  if (!displayName) {
+  if(!displayName === undefined){
     return false;
   }
-
-  if (displayName.length < 0 || displayName.length > 30) {
-    return false;
-  }
-
-  return /^[a-zA-Z0-9 ]+$/.test(displayName);
+  const alphanumericSpaceRegex = /^[a-zA-Z0-9 ]+$/;
+  return displayName.length > 0 && displayName.length <= 30 && alphanumericSpaceRegex.test(displayName);
 }
 
 export function isNameValid(name: string): boolean {
-  if (!name) {
+  if(!name === undefined){
     return false;
   }
+  if(name.length == 0){
+    return true;
+  }
+  else{
+    const alphanumericSpaceDashRegex = /^[a-zA-Z0-9 \-]+$/;
+    return name.length <= 30 && alphanumericSpaceDashRegex.test(name);
+  }
+}
 
-  if (name.length < 0 || name.length > 30) {
+export function isOpenChatUsernameValid(openChatUsername: string): boolean {
+  if(!openChatUsername === undefined){
     return false;
   }
-
-  return /^[a-zA-Z0-9 -]+$/.test(name);
+  if(openChatUsername.length == 0){
+    return true;
+  }
+  else{
+    const alphanumericRegex = /^[a-zA-Z0-9]+$/;
+    return openChatUsername.length >= 5 && openChatUsername.length <= 13 && alphanumericRegex.test(openChatUsername);
+  }
 }
 
 export function isEmailValid(email: string): boolean {
-  if (!email || email.length < 5 || email.length > 254) {
-    // too short or too long
+  if(!email === undefined){
     return false;
   }
-
-  let atFound = false;
-  let dotFound = false;
-
-  for (const c of email) {
-    if (c === '@') {
-      if (atFound) {
-        // Multiple '@' symbols found
-        return false;
-      }
-      atFound = true;
-    } else if (atFound && c === '.') {
-      dotFound = true;
-    }
+  if(email.length == 0){
+    return true;
   }
-
-  return atFound && dotFound;
+  else{
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return email.length <= 254 && emailRegex.test(email);
+  }
 }
 
 export function isPhoneValid(phone: string): boolean {
-  if (!phone || phone.length > 30) {
+  if(!phone === undefined){
     return false;
   }
-
-  const isAlphanumeric = (s: string): boolean => {
-    for (const c of s) {
-      if (!/[a-zA-Z0-9 +()-]/.test(c)) {
-        return false;
-      }
-    }
+  if(phone.length == 0){
     return true;
-  };
-
-  return isAlphanumeric(phone);
+  }
+  else{
+    const phoneRegex = /^[a-zA-Z0-9 +()-]+$/;
+    return phone.length <= 30 && phoneRegex.test(phone);
+  }
 }
+
+export function isOtherContactValid(otherContact: string): boolean {
+  if(!otherContact === undefined){
+    return false;
+  }
+  if(otherContact.length == 0){
+    return true;
+  }
+  else{
+    const otherContactRegex = /^[a-zA-Z0-9 +()-@]+$/;
+    return otherContact.length <= 30 && otherContactRegex.test(otherContact);
+  }
+}
+
+export function isProfessionValid(profession: string): boolean {
+  if(profession === undefined){
+    return false;
+  }
+  if(profession.length == 0){
+    return true;
+  }
+  else{
+    const alphanumericSpaceDashRegex = /^[a-zA-Z0-9 \-]+$/;
+    return profession.length <= 50 && alphanumericSpaceDashRegex.test(profession);
+  }
+}
+

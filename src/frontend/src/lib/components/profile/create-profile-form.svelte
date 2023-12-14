@@ -8,7 +8,7 @@
     ProfileDTO,
     UpdateProfileDTO,
   } from '../../../../../declarations/backend/backend.did';
-  import { isDisplayNameValid, isUsernameValid } from '$lib/utils/helpers';
+  import { isDisplayNameValid, isNameValid, isUsernameValid, isProfessionValid } from '$lib/utils/helpers';
   import { writable, type Writable } from 'svelte/store';
 
   export let profile: Writable<ProfileDTO | null> = writable(null);
@@ -109,13 +109,16 @@
   $: newLastName = $profile?.lastName ?? '';
   $: newProfession = $profile?.profession ?? '';
   
-
   $: isSubmitDisabled =
     $profile === null ||
     !isUsernameValid(newUsername) ||
     !isDisplayNameValid(newDisplayName) ||
+    !isNameValid(newFirstName) ||
+    !isNameValid(newLastName) ||
+    !isProfessionValid(newProfession) ||
     usernameChecking ||
     usernameCheckStatus === 'unavailable';
+
 
 
   async function updateProfileDetail() {
@@ -213,6 +216,7 @@
           placeholder="Choose a username"
           on:input={handleUsernameInput}
           bind:value={usernameInputValue}
+          maxlength="16"
         />
         {#if usernameChecking}
           <div class="text-sm text-gray-500 animate-pulse mt-2">Checking...</div>
@@ -230,6 +234,7 @@
           placeholder="Enter a display name"
           on:input={handleDisplayNameInput}
           bind:value={displayNameInputValue}
+          maxlength="30"
         />
       </div>
     </div>
@@ -245,6 +250,7 @@
           placeholder="Enter your first name"
           on:input={handleFirstNameInput}
           bind:value={firstNameInputValue}
+          maxlength="30"
         />
       </div>
       <div class="form-group w-1/2">
@@ -255,6 +261,7 @@
           placeholder="Enter your last name"
           on:input={handleLastNameInput}
           bind:value={lastNameInputValue}
+          maxlength="30"
         />
       </div>
     </div>
@@ -267,6 +274,7 @@
           placeholder="Enter your profession"
           on:input={handleProfessionInput}
           bind:value={professionInputValue}
+          maxlength="50"
         />
       </div>
       <div class="form-group w-1/2" />

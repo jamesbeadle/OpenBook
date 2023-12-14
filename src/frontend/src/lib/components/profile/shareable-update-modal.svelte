@@ -8,6 +8,7 @@
       UpdateProfileDTO,
     } from '../../../../../declarations/backend/backend.did';
     import { writable, type Writable } from 'svelte/store';
+  import { isEmailValid, isOpenChatUsernameValid, isOtherContactValid, isPhoneValid } from '$lib/utils/helpers';
   
     export let profile: Writable<ProfileDTO | null> = writable(null);
     export let shareableInfoUpdated: () => void;
@@ -64,7 +65,13 @@
     $: newPhoneNumber = $profile?.phoneNumber ?? '';
     $: newOtherContact = $profile?.otherContact ?? '';
   
-    $: isSubmitDisabled = false;
+    $: isSubmitDisabled = 
+      $profile === null ||
+      !isOpenChatUsernameValid(newOpenChatUsername) ||
+      !isEmailValid(newEmailAddress) ||
+      !isPhoneValid(newPhoneNumber) ||
+      !isOtherContactValid(newOtherContact);
+
 
     async function updateProfileInfo() {
       busyStore.startBusy({
@@ -153,6 +160,7 @@
                         placeholder="Enter your OpenChat username"
                         on:input={handleOpenChatInput}
                         bind:value={openChatUsernameInputValue}
+                        maxlength="13"
                         />
                     </div>
                     <div class="form-group w-1/2">
@@ -163,6 +171,7 @@
                         placeholder="Enter your email address"
                         on:input={handleEmailAddressInput}
                         bind:value={emailAddressInputValue}
+                        maxlength="254"
                         />
                     </div>
                 </div>
@@ -176,16 +185,18 @@
                         placeholder="Enter your phone number"
                         on:input={handlePhoneNumberInput}
                         bind:value={phoneNumberInputValue}
+                        maxlength="30"
                         />
                     </div>
                     <div class="form-group w-1/2">
-                        <label for="emailAddress" class="block text-sm">Other Contact</label>
+                        <label for="otherContact" class="block text-sm">Other Contact</label>
                         <input
                         type="text"
                         class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2"
                         placeholder="Enter any other contact info"
                         on:input={handleOtherContactInput}
                         bind:value={otherContactInputValue}
+                        maxlength="30"
                         />
                     </div>
                 </div>
