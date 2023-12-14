@@ -139,10 +139,7 @@
   />
 
   {#if newUser || !$profile}
-    <div class="flex flex-col">
-      <p class="text-2xl">Welcome To OpenBook</p>
-      <CreateProfileForm {profile} {profileCreated} />
-    </div>
+    <CreateProfileForm {profile} {profileCreated} />
   {:else}
     <div class="flex-1 flex-col m-4">
       <div class="w-full flex flex-col md:flex-row">
@@ -171,7 +168,7 @@
               />
             </div>
           </div>
-          <p class="pull-down text-xs">Maximimum Size 500KB.</p>
+          <p class="text-xs">Maximimum Size 500KB.</p>
         </div>
         <div
           class="flex flex-1 md:p-4 flex-col md:flex-row md:space-x-16 w-full md:px-8"
@@ -191,7 +188,7 @@
                 <p class="display-value">{$profile.username}</p>
               </div>
               <div class="form-group w-1/2">
-                <label for="username" class="flex text-sm"
+                <label for="displayName" class="flex text-sm"
                   >Display Name
                   <span>
                     <div class="text-xs text-red-500 ml-1">*</div>
@@ -202,12 +199,20 @@
             </div>
             <div class="w-full flex flex-row space-x-4 mt-4">
               <div class="form-group w-1/2">
-                <label for="username" class="block text-sm">First Name</label>
+                <label for="firstName" class="block text-sm">First Name</label>
                 <p class="display-value">{$profile.firstName}</p>
               </div>
               <div class="form-group w-1/2">
-                <label for="displayName" class="block text-sm">Last Name</label>
+                <label for="lastName" class="block text-sm">Last Name</label>
                 <p class="display-value">{$profile.lastName}</p>
+              </div>
+            </div>
+            <div class="w-full flex flex-row space-x-4 mt-4">
+              <div class="form-group w-1/2">
+                <label for="profession" class="block text-sm">Profession</label>
+                <p class="display-value">{$profile.profession}</p>
+              </div>
+              <div class="form-group w-1/2">
               </div>
             </div>
           </div>

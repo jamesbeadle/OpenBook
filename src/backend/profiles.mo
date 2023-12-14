@@ -77,6 +77,7 @@ module {
       username : Text,
       firstName : Text,
       lastName : Text,
+      profession: Text
     ) : () {
       if (userProfiles.get(principalName) == null) {
         let newProfile : T.Profile = {
@@ -85,7 +86,7 @@ module {
           username = username;
           firstName = firstName;
           lastName = lastName;
-          profession = "";
+          profession = profession;
           openChatUsername = "";
           emailAddress = "";
           phoneNumber = "";

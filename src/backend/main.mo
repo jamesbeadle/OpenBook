@@ -93,7 +93,7 @@ actor Self {
           return #err(#InvalidData);
         };
 
-        profilesInstance.createProfile(Principal.toText(caller), profileDTO.displayName, profileDTO.username, profileDTO.firstName, profileDTO.lastName);
+        profilesInstance.createProfile(Principal.toText(caller), profileDTO.displayName, profileDTO.username, profileDTO.firstName, profileDTO.lastName, profileDTO.profession);
         return #ok(());
       };
       case (_) {
