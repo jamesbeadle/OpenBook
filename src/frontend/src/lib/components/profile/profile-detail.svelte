@@ -173,7 +173,14 @@
         >
           <div class="w-full md:w-1/2 flex-col flex">
             <div class="w-full flex mb-2 my-4 md:mt-0">
-              Public Profile Information:
+              <div class="w-1/2">
+                Public Profile Information:
+              </div>
+              <div class="w-1/2 flex justify-end">
+                <button class="book-btn px-4 py-2 rounded-md">
+                  Update
+                </button>
+              </div>
             </div>
             <div class="w-full flex flex-row space-x-4">
               <div class="form-group w-1/2">
@@ -198,28 +205,33 @@
             <div class="w-full flex flex-row space-x-4 mt-4">
               <div class="form-group w-1/2">
                 <label for="firstName" class="block text-sm">First Name</label>
-                <p class="display-value">{$profile.firstName}</p>
+                <p class="display-value">{$profile.firstName}&nbsp;</p>
               </div>
               <div class="form-group w-1/2">
                 <label for="lastName" class="block text-sm">Last Name</label>
-                <p class="display-value">{$profile.lastName}</p>
+                <p class="display-value">{$profile.lastName}&nbsp;</p>
               </div>
             </div>
             <div class="w-full flex flex-row space-x-4 mt-4">
               <div class="form-group w-1/2">
                 <label for="profession" class="block text-sm">Profession</label>
-                <p class="display-value">
-                  {$profile.profession.length == 0
-                    ? ' '
-                    : $profile.profession}&nbsp;
+                <p class="display-value">{$profile.profession}&nbsp;
                 </p>
               </div>
-              <div class="form-group w-1/2" />
+              <div class="form-group w-1/2">
+              </div>
             </div>
           </div>
           <div class="w-full md:w-1/2 flex-col flex">
             <div class="w-full flex mb-2 my-4 md:mt-0">
-              Shareable Profile Information:
+              <div class="w-1/2">
+                Shareable Profile Information:
+              </div>
+              <div class="w-1/2 flex justify-end">
+                <button class="book-btn px-4 py-2 rounded-md">
+                  Update
+                </button>
+              </div>
             </div>
             <div class="w-full flex flex-row space-x-4">
               <div class="form-group w-1/2">

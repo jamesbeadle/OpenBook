@@ -98,7 +98,7 @@
       </div>
       <div class="items-center py-3 flex space-x-4">
         <button
-          class="px-4 py-2 book-cancel-btn text-white rounded-md w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
+          class="px-4 py-2 book-cancel-btn rounded-md w-full shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
           on:click={cancelModal}
         >
           Cancel

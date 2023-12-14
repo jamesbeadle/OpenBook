@@ -83,7 +83,10 @@
   $: isSubmitDisabled =
     $profile === null ||
     !isUsernameValid(newUsername) ||
-    !isDisplayNameValid(newDisplayName);
+    !isDisplayNameValid(newDisplayName) ||
+    usernameChecking || // Disable if we are currently checking the username
+    usernameCheckStatus === 'unavailable'; // Disable if the username is unavailable
+
 
   async function updateProfileDetail() {
     busyStore.startBusy({
