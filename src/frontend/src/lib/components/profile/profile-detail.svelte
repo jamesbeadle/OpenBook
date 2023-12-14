@@ -176,7 +176,7 @@
     <div class="flex-1 flex-col m-4">
       <div class="w-full flex flex-col md:flex-row">
         <div class="flex flex-col">
-          <p class="text-xs mb-2">Profile Image</p>
+          <p class="mb-2 inputHeader">Profile Image</p>
           <div class="w-full md:w-36 flex flex-col">
             {#key profileSrc}
               <img
@@ -203,20 +203,20 @@
           <p class="text-xs">Maximimum Size 500KB.</p>
         </div>
         <div class="flex flex-1 md:p-4 flex-col md:flex-row md:space-x-16 w-full md:px-8">
-          <div class="w-full md:w-1/2 flex-col flex">
-            <div class="w-full flex mb-2 my-4 md:mt-0">
-              <div class="w-1/2">
+          <div class="w-full md:w-1/2 flex-col flex mt-4">
+            <div class="w-full flex my-4 md:mt-0 mb-4 items-center">
+              <div class="w-2/3 text-sm">
                 Public Profile Information:
               </div>
-              <div class="w-1/2 flex justify-end">
-                <button on:click={toggleUpdateModal} class="book-btn px-4 py-2 rounded-md">
+              <div class="w-1/3 flex justify-end">
+                <button on:click={toggleUpdateModal} class="book-btn px-4 py-2 rounded-md md:text-xxs">
                   Update
                 </button>
               </div>
             </div>
             <div class="w-full flex flex-row space-x-4">
               <div class="form-group w-1/2">
-                <label for="username" class="flex text-sm"
+                <label for="username" class="inputHeader"
                   >Username
                   <span>
                     <div class="text-xs text-red-500 ml-1">*</div>
@@ -225,7 +225,7 @@
                 <p class="display-value">{$profile.username}</p>
               </div>
               <div class="form-group w-1/2">
-                <label for="displayName" class="flex text-sm"
+                <label for="displayName" class="inputHeader"
                   >Display Name
                   <span>
                     <div class="text-xs text-red-500 ml-1">*</div>
@@ -236,44 +236,38 @@
             </div>
             <div class="w-full flex flex-row space-x-4 mt-4">
               <div class="form-group w-1/2">
-                <label for="firstName" class="block text-sm">First Name</label>
+                <label for="firstName" class="inputHeader">First Name</label>
                 <p class="display-value">{$profile.firstName}&nbsp;</p>
               </div>
               <div class="form-group w-1/2">
-                <label for="lastName" class="block text-sm">Last Name</label>
+                <label for="lastName" class="inputHeader">Last Name</label>
                 <p class="display-value">{$profile.lastName}&nbsp;</p>
               </div>
             </div>
             <div class="w-full flex flex-row space-x-4 mt-4">
               <div class="form-group w-1/2">
-                <label for="profession" class="block text-sm">Profession</label>
+                <label for="profession" class="inputHeader">Profession</label>
                 <p class="display-value">{$profile.profession}&nbsp;
                 </p>
               </div>
               <div class="form-group w-1/2">
               </div>
             </div>
-            <div class="w-full flex flex-row space-x-4 mt-4">
-              <button class="w-full text-left flex items-center text-xs" on:click={copyTextAndShowToast}>
-                Principal: {$profile.principal}
-                <CopyIcon className="w-4" fill='#FFFFFF' />
-              </button>
-            </div>
           </div>
-          <div class="w-full md:w-1/2 flex-col flex">
-            <div class="w-full flex mb-2 my-4 md:mt-0">
-              <div class="w-1/2">
+          <div class="w-full md:w-1/2 flex-col flex mt-4">
+            <div class="w-full flex my-4 md:mt-0 mb-4 items-center">
+              <div class="w-2/3 text-xs">
                 Shareable Profile Information:
               </div>
-              <div class="w-1/2 flex justify-end">
-                <button on:click={toggleShareableUpdateModal} class="book-btn px-4 py-2 rounded-md">
+              <div class="w-1/3 flex justify-end">
+                <button on:click={toggleShareableUpdateModal} class="book-btn px-4 py-2 rounded-md md:text-xxs">
                   Update
                 </button>
               </div>
             </div>
             <div class="w-full flex flex-row space-x-4">
               <div class="form-group w-1/2">
-                <label for="username" class="flex text-sm"
+                <label for="username" class="inputHeader"
                   ><a
                     target="_blank"
                     href="https://oc.app/community/mldkd-vqaaa-aaaar-av5cq-cai/channel/230276105428323899255565868449599995147/?ref=zv6hh-xaaaa-aaaar-ac35q-cai"
@@ -283,21 +277,27 @@
                 <p class="display-value">{$profile.openChatUsername} &nbsp;</p>
               </div>
               <div class="form-group w-1/2">
-                <label for="displayName" class="block text-sm">Email</label>
+                <label for="displayName" class="inputHeader">Email</label>
                 <p class="display-value">{$profile.emailAddress} &nbsp;</p>
               </div>
             </div>
             <div class="w-full flex flex-row space-x-4 mt-4">
               <div class="form-group w-1/2">
-                <label for="username" class="block text-sm">Phone Number</label>
+                <label for="username" class="inputHeader">Phone Number</label>
                 <p class="display-value">{$profile.phoneNumber} &nbsp;</p>
               </div>
               <div class="form-group w-1/2">
-                <label for="username" class="block text-sm">Other</label>
+                <label for="username" class="inputHeader">Other</label>
                 <p class="display-value">{$profile.otherContact} &nbsp;</p>
               </div>
             </div>
           </div>
+        </div>
+        <div class="w-full flex flex-row space-x-4 mt-8">
+          <button class="w-full text-left flex items-center text-xs" on:click={copyTextAndShowToast}>
+            Principal: {$profile.principal}
+            <CopyIcon className="w-4" fill='#FFFFFF' />
+          </button>
         </div>
       </div>
     </div>

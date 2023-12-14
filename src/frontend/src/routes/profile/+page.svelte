@@ -20,10 +20,12 @@
 
 <Layout>
   {#if $authSignedInStore}
-    <div class="flex flex-row h-screen w-full">
+    <div class="flex flex-row h-full md:h-screen w-full">
       <Dashboard />
     </div>
   {:else}
-    <Landing />
+    <div class="flex flex-row h-screen w-full">
+      <Landing />
+    </div>
   {/if}
 </Layout>

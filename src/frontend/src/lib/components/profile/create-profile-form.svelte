@@ -203,7 +203,7 @@
     </div>
     <div class="flex flex-row space-x-4 mt-4">
       <div class="form-group w-1/2">
-        <label for="username" class="block text-sm">Username</label>
+        <label for="username" class="inputHeader">Username</label>
         <input
           type="text"
           class={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2 ${
@@ -227,7 +227,7 @@
         {/if}
       </div>
       <div class="form-group w-1/2">
-        <label for="displayName" class="block text-sm">Display Name</label>
+        <label for="displayName" class="inputHeader">Display Name</label>
         <input
           type="text"
           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2"
@@ -243,7 +243,7 @@
     </div>
     <div class="mt-4 flex flex-row space-x-4">
       <div class="form-group w-1/2">
-        <label for="firstName" class="block text-sm">First Name</label>
+        <label for="firstName" class="inputHeader">First Name</label>
         <input
           type="text"
           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2"
@@ -254,7 +254,7 @@
         />
       </div>
       <div class="form-group w-1/2">
-        <label for="lastName" class="block text-sm">Last Name</label>
+        <label for="lastName" class="inputHeader">Last Name</label>
         <input
           type="text"
           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2"
@@ -267,7 +267,7 @@
     </div>
     <div class="mt-4 flex flex-row space-x-4">
       <div class="form-group w-1/2">
-        <label for="profession" class="block text-sm">Profession</label>
+        <label for="profession" class="inputHeader">Profession</label>
         <input
           type="text"
           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2"

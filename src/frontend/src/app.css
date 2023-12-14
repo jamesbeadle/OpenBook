@@ -108,9 +108,13 @@ input[type='file'] {
 }
 
 .display-value {
-  @apply w-full px-4 py-2 border rounded-md mt-2;
+  @apply w-full px-4 py-2 border rounded-md mt-2 text-xxs sm:text-sm md:text-xxs lg:text-sm xl:text-base;
   background-color: #25282e;
   border-color: #454b56 !important;
+}
+
+.inputHeader{
+  @apply flex text-sm md:text-xxs
 }
 
 input {
