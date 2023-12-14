@@ -4,17 +4,16 @@
   import { userStore } from '$lib/stores/user-store';
   import { toastsError, toastsShow } from '$lib/stores/toasts-store';
   import type { ProfileDTO } from '../../../../../declarations/backend/backend.did';
-  import { busyStore, Copy, Spinner } from '@dfinity/gix-components';
+  import { busyStore, Copy, Modal, Spinner } from '@dfinity/gix-components';
   import { getDateFromBigInt } from '$lib/utils/helpers';
-  import UpdateProfileDetailModal from '$lib/components/profile/update-profile-detail-modal.svelte';
   import CreateProfileForm from './create-profile-form.svelte';
   import OpenchatIcon from '$lib/icons/openchat-icon.svelte';
 
   let profile: Writable<ProfileDTO | null> = writable(null);
-  let showProfileDetailModal: boolean = false;
   let fileInput: HTMLInputElement;
   let joinedDate = '';
   let newUser = false;
+  let showUpdateModal = false;
 
   let unsubscribeUserProfile: () => void;
 
@@ -50,24 +49,14 @@
     }
   });
 
+  function toggleUpdateModal() {
+    showUpdateModal = !showUpdateModal;
+  }
+
   function setProfile(updatedProfile: any) {
     if (updatedProfile) {
       profile.set(updatedProfile);
     }
-  }
-
-  function displayProfileDetailModal(): void {
-    showProfileDetailModal = true;
-  }
-
-  async function closeProfileDetailModal() {
-    const profileData = await userStore.getProfile();
-    setProfile(profileData);
-    showProfileDetailModal = false;
-  }
-
-  function cancelProfileDetailModal() {
-    showProfileDetailModal = false;
   }
 
   function clickFileInput() {
@@ -124,20 +113,37 @@
   function profileCreated() {
     newUser = false;
   }
+
+  function profileUpdated() {
+    
+  }
 </script>
 
 {#if isLoading}
   <Spinner />
 {:else}
-  <UpdateProfileDetailModal
-    profile={$profile}
-    visible={showProfileDetailModal}
-    closeModal={closeProfileDetailModal}
-    cancelModal={cancelProfileDetailModal}
-  />
+
+{#if $profile && showUpdateModal}
+  <Modal visible={showUpdateModal} on:nnsClose={toggleUpdateModal}>
+    <div class="p-4">
+      <div class="flex justify-between items-center my-2">
+        <h3 class="default-header">Update System State</h3>
+        <button class="times-button" on:click={toggleUpdateModal}>&times;</button>
+      </div>
+
+      <CreateProfileForm
+        profile={profile}
+        {profileUpdated}
+        {profileCreated}
+        title="Update Public Profile Information"
+      />
+
+    </div>
+  </Modal>
+{/if}
 
   {#if newUser || !$profile}
-    <CreateProfileForm {profile} {profileCreated} />
+    <CreateProfileForm {profile} {profileCreated} {profileUpdated} />
   {:else}
     <div class="flex-1 flex-col m-4">
       <div class="w-full flex flex-col md:flex-row">
@@ -177,7 +183,7 @@
                 Public Profile Information:
               </div>
               <div class="w-1/2 flex justify-end">
-                <button class="book-btn px-4 py-2 rounded-md">
+                <button on:click={toggleUpdateModal} class="book-btn px-4 py-2 rounded-md">
                   Update
                 </button>
               </div>

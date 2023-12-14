@@ -13,6 +13,8 @@
 
   export let profile: Writable<ProfileDTO | null> = writable(null);
   export let profileCreated: () => void;
+  export let profileUpdated: () => void;
+  export let title = 'Create Your OpenBook Profile';
 
   let usernameCheckStatus: string | null = null;
   let usernameInputValue = '';
@@ -84,8 +86,8 @@
     $profile === null ||
     !isUsernameValid(newUsername) ||
     !isDisplayNameValid(newDisplayName) ||
-    usernameChecking || // Disable if we are currently checking the username
-    usernameCheckStatus === 'unavailable'; // Disable if the username is unavailable
+    usernameChecking ||
+    usernameCheckStatus === 'unavailable';
 
 
   async function updateProfileDetail() {
@@ -120,7 +122,12 @@
         level: 'success',
         duration: 2000,
       });
-      profileCreated();
+      if($profile.principal.length == 0){
+        profileCreated();
+        return;
+      }
+      profileUpdated();
+
     } catch (error) {
       toastsError({
         msg: { text: 'Error updating profile.' },
@@ -139,16 +146,15 @@
   if (field === 'username') {
     newUsername = value ?? '';
   } else if (field === 'displayName') {
-    newDisplayName = value ?? ''; // Add this line to handle display name updates
+    newDisplayName = value ?? '';
   }
-  // You can add more conditions if other fields also need to trigger updates
 }
 
 </script>
 
 {#if $profile}
   <div class="flex flex-col">
-    <h3 class="text-2xl">Create Your OpenBook Profile</h3>
+    <h3 class="text-2xl">{title}</h3>
     <p class="text-sm text-amber-600 my-2">
       The information your provide in this form will be public.
     </p>
@@ -228,13 +234,28 @@
       <div class="form-group w-1/2" />
     </div>
     <div class="items-center flex space-x-4 mt-6 mb-4">
-      <button
-        class={`book-btn ${isSubmitDisabled ? 'disabled' : ''}`}
-        type="submit"
-        disabled={isSubmitDisabled}
-      >
-        Create Profile
-      </button>
+
+      
+      {#if !$profile || $profile.principal.length == 0}
+        <button
+          class={`book-btn ${isSubmitDisabled ? 'disabled' : ''}`}
+          type="submit"
+          disabled={isSubmitDisabled}
+        >
+          Create Profile
+        </button>
+      {/if}
+
+      {#if profile && $profile.principal.length > 0}
+        <button
+          class={`book-btn ${isSubmitDisabled ? 'disabled' : ''}`}
+          type="submit"
+          disabled={isSubmitDisabled}
+        >
+          Update Profile
+        </button>
+      {/if}
+      
     </div>
   </form>
 {/if}

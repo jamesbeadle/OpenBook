@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+.modal-backdrop {
+  z-index: 1000;
+}
+
+
+.modal {
+  position: fixed !important;
+  z-index: 9999 !important;
+  background-color: rgba(36, 37, 41, 0.7) !important;
+}
+
+.modal .content {
+  left: 0 !important;
+  right: 0 !important;
+  background-color: #161819 !important;
+  border-radius: 8px;
+  border: 1px solid #2e323a !important;
+}
+
+.modal .container {
+  border-radius: 0px !important;
+}
+
 .file-upload-wrapper {
   position: relative;
   overflow: hidden;
