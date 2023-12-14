@@ -10,6 +10,7 @@ import Debug "mo:base/Debug";
 import List "mo:base/List";
 import Time "mo:base/Time";
 import Int64 "mo:base/Int64";
+import DTOs "DTOs";
 
 module {
   public class Profiles() {
@@ -70,8 +71,16 @@ module {
       return false;
     };
 
-    public func createProfile(principalName : Text, displayName : Text, username: Text, firstName: Text, lastName: Text,
-      openChatUsername: Text, emailAddress: Text, phoneNumber: Text) : () {
+    public func createProfile(
+      principalName : Text,
+      displayName : Text,
+      username : Text,
+      firstName : Text,
+      lastName : Text,
+      openChatUsername : Text,
+      emailAddress : Text,
+      phoneNumber : Text,
+    ) : () {
       if (userProfiles.get(principalName) == null) {
         let newProfile : T.Profile = {
           principal = principalName;
@@ -96,30 +105,22 @@ module {
       };
     };
 
-    public func updateDisplayName(principalName : Text, displayName : Text) : Result.Result<(), T.Error> {
+    public func updateProfileDetail(principalName : Text, updatedProfile : DTOs.UpdateProfileDTO) : Result.Result<(), T.Error> {
       let existingProfile = userProfiles.get(principalName);
       switch (existingProfile) {
         case (null) {
           return #err(#NotFound);
         };
         case (?existingProfile) {
-          if (existingProfile.displayName == displayName) {
-            return #ok(());
-          };
-          let nameValid = isDisplayNameValid(displayName);
-          if (not nameValid) {
-            return #err(#NotAllowed);
-          };
-
-          let updatedProfile : T.Profile = {
+          let adjustedProfile : T.Profile = {
             principal = existingProfile.principal;
-            username = existingProfile.username;
-            displayName = displayName;
-            firstName = existingProfile.firstName;
-            lastName = existingProfile.lastName;
-            openChatUsername = existingProfile.openChatUsername;
-            emailAddress = existingProfile.emailAddress;
-            phoneNumber = existingProfile.phoneNumber;
+            username = updatedProfile.username;
+            displayName = updatedProfile.displayName;
+            firstName = updatedProfile.firstName;
+            lastName = updatedProfile.lastName;
+            openChatUsername = updatedProfile.openChatUsername;
+            emailAddress = updatedProfile.emailAddress;
+            phoneNumber = updatedProfile.phoneNumber;
             profilePictureCanisterId = existingProfile.profilePictureCanisterId;
             termsAccepted = existingProfile.termsAccepted;
             createDate = existingProfile.createDate;
@@ -130,7 +131,7 @@ module {
             userDefinedWallet = existingProfile.userDefinedWallet;
           };
 
-          userProfiles.put(principalName, updatedProfile);
+          userProfiles.put(principalName, adjustedProfile);
 
           return #ok(());
         };
@@ -469,7 +470,7 @@ module {
       return true;
     };
 
-    public func isNameValid(name: Text) : Bool {
+    public func isNameValid(name : Text) : Bool {
 
       if (Text.size(name) < 0 or Text.size(name) > 30) {
         return false;
@@ -492,7 +493,7 @@ module {
       return true;
     };
 
-    public func isOpenChatUsernameValid(openChatUsername: Text) : Bool {
+    public func isOpenChatUsernameValid(openChatUsername : Text) : Bool {
 
       if (Text.size(openChatUsername) < 5 or Text.size(openChatUsername) > 13) {
         return false;
@@ -514,8 +515,8 @@ module {
 
       return true;
     };
-    
-    public func isEmailValid(email: Text) : Bool {
+
+    public func isEmailValid(email : Text) : Bool {
       if (Text.size(email) < 5 or Text.size(email) > 254) {
         // too short or too long
         return false;

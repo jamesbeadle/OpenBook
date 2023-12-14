@@ -10,11 +10,30 @@ module DTOs {
   public type ProfileDTO = {
     principal : Text;
     username : Text;
+    displayName : Text;
+    firstName : Text;
+    lastName : Text;
+    openChatUsername : Text;
+    emailAddress : Text;
+    phoneNumber : Text;
     termsAccepted : Bool;
     profilePicture : Blob;
     organisations : List.List<DTOs.OrganisationDTO>;
     createDate : Int;
     lastModified : Int64;
+    userDefinedWallet : Text;
+    preferredPaymentCurrency : T.CurrencyId;
+  };
+
+  public type UpdateProfileDTO = {
+    username : Text;
+    displayName : Text;
+    firstName : Text;
+    lastName : Text;
+    openChatUsername : Text;
+    emailAddress : Text;
+    phoneNumber : Text;
+    termsAccepted : Bool;
     userDefinedWallet : Text;
     preferredPaymentCurrency : T.CurrencyId;
   };

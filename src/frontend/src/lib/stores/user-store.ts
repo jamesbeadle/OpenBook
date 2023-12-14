@@ -1,7 +1,7 @@
 import { authStore } from '$lib/stores/auth-store';
 import { replacer } from '$lib/utils/helpers';
 import { writable } from 'svelte/store';
-import type { ProfileDTO } from '../../../../declarations/backend/backend.did';
+import type { ProfileDTO, UpdateProfileDTO } from '../../../../declarations/backend/backend.did';
 import { ActorFactory } from '../utils/actor-factory';
 
 function createUserStore() {
@@ -97,107 +97,17 @@ function createUserStore() {
     }
   }
 
-  async function updateUsername(username: string): Promise<any> {
+  async function updateProfile(updatedProfile: UpdateProfileDTO): Promise<any> {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,
         process.env.BACKEND_CANISTER_ID ?? '',
       );
-      const result = await identityActor.updateUsername(username);
+      const result = await identityActor.updateProfile(updatedProfile);
       sync();
       return result;
     } catch (error) {
-      console.error('Error updating username:', error);
-      throw error;
-    }
-  }
-
-  async function updateDisplayName(displayName: string): Promise<any> {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        process.env.BACKEND_CANISTER_ID ?? '',
-      );
-      const result = await identityActor.updateDisplayName(displayName);
-      sync();
-      return result;
-    } catch (error) {
-      console.error('Error updating display name:', error);
-      throw error;
-    }
-  }
-
-  async function updateFirstName(firstName: string): Promise<any> {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        process.env.BACKEND_CANISTER_ID ?? '',
-      );
-      const result = await identityActor.updateFirstName(firstName);
-      sync();
-      return result;
-    } catch (error) {
-      console.error('Error updating first name:', error);
-      throw error;
-    }
-  }
-
-  async function updateLastName(lastName: string): Promise<any> {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        process.env.BACKEND_CANISTER_ID ?? '',
-      );
-      const result = await identityActor.updateFirstName(lastName);
-      sync();
-      return result;
-    } catch (error) {
-      console.error('Error updating last name:', error);
-      throw error;
-    }
-  }
-
-  async function updateOpenChatUsername(openChatUsername: string): Promise<any> {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        process.env.BACKEND_CANISTER_ID ?? '',
-      );
-      const result = await identityActor.updateOpenChatUsername(openChatUsername);
-      sync();
-      return result;
-    } catch (error) {
-      console.error('Error updating OpenChat username:', error);
-      throw error;
-    }
-  }
-
-  async function updateEmail(email: string): Promise<any> {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        process.env.BACKEND_CANISTER_ID ?? '',
-      );
-      const result = await identityActor.updateEmail(email);
-      sync();
-      return result;
-    } catch (error) {
-      console.error('Error updating email address:', error);
-      throw error;
-    }
-  }
-
-  async function updatePhone(phone: string): Promise<any> {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        process.env.BACKEND_CANISTER_ID ?? '',
-      );
-      const result = await identityActor.updatePhone(phone);
-      sync();
-      return result;
-    } catch (error) {
-      console.error('Error updating phone number:', error);
+      console.error('Error updating profile:', error);
       throw error;
     }
   }
@@ -250,7 +160,7 @@ function createUserStore() {
   return {
     subscribe,
     sync,
-    updateUsername,
+    updateProfile,
     getProfile,
     updateProfilePicture,
     createProfile,

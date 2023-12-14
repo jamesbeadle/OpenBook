@@ -20,6 +20,8 @@ actor Self {
       firstName = "";
       lastName = "";
       openChatUsername = "";
+      emailAddress = "";
+      phoneNumber = "";
       displayName = "";
       termsAccepted = false;
       profilePicture = "";
@@ -40,7 +42,7 @@ actor Self {
 
         return {
           principal = foundProfile.principal;
-          displayName = foundProfile.displayName; 
+          displayName = foundProfile.displayName;
           username = foundProfile.username;
           firstName = foundProfile.firstName;
           lastName = foundProfile.lastName;
@@ -59,7 +61,7 @@ actor Self {
     };
   };
 
-  public shared ({ caller }) func createProfile(username: Text, displayName: Text, firstName: Text, lastName: Text, openChatUsername: Text, email: Text, phone: Text) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func createProfile(username : Text, displayName : Text, firstName : Text, lastName : Text, openChatUsername : Text, email : Text, phone : Text) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
@@ -67,31 +69,31 @@ actor Self {
     switch (existingProfile) {
       case (null) {
 
-        if(not profilesInstance.isDisplayNameValid(displayName)){
+        if (not profilesInstance.isDisplayNameValid(displayName)) {
           return #err(#InvalidData);
         };
 
-        if(not profilesInstance.isUsernameValid(username)){
+        if (not profilesInstance.isUsernameValid(username)) {
           return #err(#InvalidData);
         };
 
-        if(Text.size(firstName) > 0 and not profilesInstance.isNameValid(firstName)){
+        if (Text.size(firstName) > 0 and not profilesInstance.isNameValid(firstName)) {
           return #err(#InvalidData);
         };
 
-        if(not profilesInstance.isNameValid(lastName)){
+        if (not profilesInstance.isNameValid(lastName)) {
           return #err(#InvalidData);
         };
 
-        if(Text.size(openChatUsername) > 0 and not profilesInstance.isOpenChatUsernameValid(openChatUsername)){
+        if (Text.size(openChatUsername) > 0 and not profilesInstance.isOpenChatUsernameValid(openChatUsername)) {
           return #err(#InvalidData);
         };
 
-        if(Text.size(email) > 0 and not profilesInstance.isEmailValid(email)){
+        if (Text.size(email) > 0 and not profilesInstance.isEmailValid(email)) {
           return #err(#InvalidData);
         };
 
-        if(Text.size(phone) > 0 and not profilesInstance.isPhoneValid(phone)){
+        if (Text.size(phone) > 0 and not profilesInstance.isPhoneValid(phone)) {
           return #err(#InvalidData);
         };
 
@@ -104,90 +106,65 @@ actor Self {
     };
   };
 
-  public shared ({ caller }) func updateUsername(username : Text) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func updateProfileDetail(updatedProfile : DTO.UpdateProfileDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
-    let invalidName = not profilesInstance.isUsernameValid(username);
-    assert not invalidName;
 
-    var profile = profilesInstance.getProfile(Principal.toText(caller));
-    switch (profile) {
+    var existingProfile = profilesInstance.getProfile(Principal.toText(caller));
+    switch (existingProfile) {
       case (null) {
         return #err(#NotFound);
       };
-      case (?foundProfile) {};
-    };
-    return profilesInstance.updateUsername(Principal.toText(caller), username);
-  };
+      case (?foundProfile) {
+        if (updatedProfile.username != foundProfile.username) {
+          let invalidUsername = not profilesInstance.isUsernameValid(updatedProfile.username);
+          assert not invalidUsername;
+        };
 
-  public shared ({ caller }) func updateDisplayName(displayName : Text) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let invalidName = not profilesInstance.isDisplayNameValid(displayName);
-    assert not invalidName;
+        if (updatedProfile.displayName != foundProfile.displayName) {
+          let invalidDisplayName = not profilesInstance.isDisplayNameValid(updatedProfile.displayName);
+          assert not invalidDisplayName;
+        };
 
-    var profile = profilesInstance.getProfile(Principal.toText(caller));
-    switch (profile) {
-      case (null) {
-        return #err(#NotFound);
+        if (updatedProfile.firstName != foundProfile.firstName) {
+          var invalidFirstName = false;
+          if (Text.size(updatedProfile.firstName) > 0) {
+            invalidFirstName := not profilesInstance.isNameValid(updatedProfile.firstName);
+          };
+          assert not invalidFirstName;
+        };
+
+        if (updatedProfile.lastName != foundProfile.lastName) {
+          let invalidLastName = not profilesInstance.isNameValid(updatedProfile.lastName);
+          assert not invalidLastName;
+        };
+
+        if (updatedProfile.openChatUsername != foundProfile.openChatUsername) {
+          var invalidOpenChatUsername = false;
+          if (Text.size(updatedProfile.openChatUsername) > 0) {
+            invalidOpenChatUsername := not profilesInstance.isOpenChatUsernameValid(updatedProfile.openChatUsername);
+          };
+          assert not invalidOpenChatUsername;
+        };
+
+        if (updatedProfile.emailAddress != foundProfile.emailAddress) {
+          var invalidEmail = false;
+          if (Text.size(updatedProfile.emailAddress) > 0) {
+            invalidEmail := not profilesInstance.isEmailValid(updatedProfile.emailAddress);
+          };
+          assert not invalidEmail;
+        };
+
+        if (updatedProfile.phoneNumber != foundProfile.phoneNumber) {
+          var invalidPhone = false;
+          if (Text.size(updatedProfile.phoneNumber) > 0) {
+            invalidPhone := not profilesInstance.isPhoneValid(updatedProfile.phoneNumber);
+          };
+          assert not invalidPhone;
+        };
+
+        return profilesInstance.updateProfileDetail(Principal.toText(caller), updatedProfile);
       };
-      case (?foundProfile) {};
     };
-    return profilesInstance.updateDisplayName(Principal.toText(caller), displayName);
-  };
-
-  public shared ({ caller }) func updateFirstName(firstName : Text) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let invalidName = not profilesInstance.isNameValid(firstName);
-    assert not invalidName;
-
-    var profile = profilesInstance.getProfile(Principal.toText(caller));
-    switch (profile) {
-      case (null) {
-        return #err(#NotFound);
-      };
-      case (?foundProfile) {};
-    };
-    return profilesInstance.updateFirstName(Principal.toText(caller), firstName);
-  };
-
-  public shared ({ caller }) func updateLastName(lastName : Text) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let invalidName = not profilesInstance.isNameValid(lastName);
-    assert not invalidName;
-
-    var profile = profilesInstance.getProfile(Principal.toText(caller));
-    switch (profile) {
-      case (null) {
-        return #err(#NotFound);
-      };
-      case (?foundProfile) {};
-    };
-    return profilesInstance.updateLastName(Principal.toText(caller), lastName);
-  };
-
-  public shared ({ caller }) func updateOpenChatUsername(openChatUsername : Text) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let invalidName = not profilesInstance.isOpenChatUsernameValid(openChatUsername);
-    assert not invalidName;
-
-    var profile = profilesInstance.getProfile(Principal.toText(caller));
-    switch (profile) {
-      case (null) {
-        return #err(#NotFound);
-      };
-      case (?foundProfile) {};
-    };
-    return profilesInstance.updateOpenChatUsername(Principal.toText(caller), openChatUsername);
-  };
-
-  public shared ({ caller }) func updateProfilePicture(profilePicture : Blob) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-
-    let sizeInKB = Array.size(Blob.toArray(profilePicture)) / 1024;
-    if (sizeInKB > 500) {
-      return #err(#NotAllowed);
-    };
-
-    return profilesInstance.updateProfilePicture(Principal.toText(caller), profilePicture);
   };
 
   //Stable Variables
