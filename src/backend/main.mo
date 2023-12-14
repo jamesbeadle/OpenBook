@@ -61,7 +61,7 @@ actor Self {
     };
   };
 
-  public shared ({ caller }) func createProfile(username : Text, displayName : Text, firstName : Text, lastName : Text, openChatUsername : Text, email : Text, phone : Text) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func createProfile(profileDTO: DTO.UpdateProfileDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
@@ -69,35 +69,23 @@ actor Self {
     switch (existingProfile) {
       case (null) {
 
-        if (not profilesInstance.isDisplayNameValid(displayName)) {
+        if (not profilesInstance.isDisplayNameValid(profileDTO.displayName)) {
           return #err(#InvalidData);
         };
 
-        if (not profilesInstance.isUsernameValid(username)) {
+        if (not profilesInstance.isUsernameValid(profileDTO.username)) {
           return #err(#InvalidData);
         };
 
-        if (Text.size(firstName) > 0 and not profilesInstance.isNameValid(firstName)) {
+        if (Text.size(profileDTO.firstName) > 0 and not profilesInstance.isNameValid(profileDTO.firstName)) {
           return #err(#InvalidData);
         };
 
-        if (not profilesInstance.isNameValid(lastName)) {
+        if (not profilesInstance.isNameValid(profileDTO.lastName)) {
           return #err(#InvalidData);
         };
 
-        if (Text.size(openChatUsername) > 0 and not profilesInstance.isOpenChatUsernameValid(openChatUsername)) {
-          return #err(#InvalidData);
-        };
-
-        if (Text.size(email) > 0 and not profilesInstance.isEmailValid(email)) {
-          return #err(#InvalidData);
-        };
-
-        if (Text.size(phone) > 0 and not profilesInstance.isPhoneValid(phone)) {
-          return #err(#InvalidData);
-        };
-
-        profilesInstance.createProfile(Principal.toText(caller), displayName, username, firstName, lastName, openChatUsername, email, phone);
+        profilesInstance.createProfile(Principal.toText(caller), profileDTO.displayName, profileDTO.username, profileDTO.firstName, profileDTO.lastName, "", "", "");
         return #ok(());
       };
       case (_) {

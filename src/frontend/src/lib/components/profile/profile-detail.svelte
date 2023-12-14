@@ -8,6 +8,7 @@
   import { getDateFromBigInt } from '$lib/utils/helpers';
   import UpdateProfileDetailModal from '$lib/components/profile/update-profile-detail-modal.svelte';
   import CreateProfileForm from './create-profile-form.svelte';
+  import OpenchatIcon from '$lib/icons/openchat-icon.svelte';
 
   let profile: Writable<ProfileDTO | null> = writable(null);
   let showProfileDetailModal: boolean = false;
@@ -121,6 +122,11 @@
       busyStore.stopBusy('upload-image');
     }
   }
+
+  function profileCreated() {
+    newUser = false;
+  };
+
 </script>
 
 {#if isLoading}
@@ -133,42 +139,20 @@
     cancelModal={cancelProfileDetailModal}
   />
 
-  {#if newUser}
+  {#if newUser || !$profile}
     <div class="flex flex-col">
       <p class="text-2xl">Welcome To OpenBook</p>
-      <CreateProfileForm profile={profile} />
+      <CreateProfileForm profile={profile} {profileCreated} />
     </div>
   {:else}
-    <div class="flex-1 flex-col">
-      <div class="w-full flex flex-row">
-        <div class="flex w-auto flex-col">
-          <p>Profile Image</p>
-          <img alt="profile" />
-        </div>
-        <div class="flex justify-content-end">
-          <p>Maximimum Size.</p>
-          <p>500KB</p>
-        </div>
-      </div>
-
+    <div class="flex-1 flex-col m-4">
       <div class="w-full flex flex-col md:flex-row">
-        <div class="w-full md:w-1/2 flex flex-row">
-          <div class="" />
-        </div>
-        <div class="w-full md:w-1/2" />
-      </div>
-    </div>
-
-    <div class="container mx-auto p-4">
-      <div class="flex flex-wrap">
-        <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-2">
-          <div class="group flex flex-col md:block">
-            <img src={profileSrc} alt="Profile" class="w-full mb-1 rounded-lg" />
-
-            <div class="file-upload-wrapper mt-4">
-              <button class="btn-file-upload book-btn" on:click={clickFileInput}
-                >Upload Photo</button
-              >
+        <div class="flex flex-col">
+          <p class="text-xs mb-2">Profile Image</p>
+          <div class="w-full md:w-36 flex flex-col">
+            <img src={profileSrc} alt="Profile" class="w-full mb-2 rounded-lg" />
+            <button class="btn-file-upload book-btn w-full text-xs mb-2" on:click={clickFileInput}>Upload Photo</button>
+            <div class="file-upload-wrapper">
               <input
                 type="file"
                 id="profile-image"
@@ -179,57 +163,75 @@
               />
             </div>
           </div>
+          <p class="pull-down text-xs"> Maximimum Size 500KB.</p>
         </div>
+        <div class="flex flex-1 md:p-4 flex-col md:flex-row md:space-x-16 w-full md:px-8">
+          <div class="w-full md:w-1/2 flex-col flex">
+            <div class="w-full flex mb-2 my-4 md:mt-0">
+              Public Profile Information:
+            </div>
+            <div class="w-full flex flex-row space-x-4">
+              <div class="form-group w-1/2">
+                <label for="username" class="flex text-sm">Username
+                  <span>
+                    <div class="text-xs text-red-500 ml-1">
+                      *
+                    </div>
+                  </span>
 
-        <div class="w-full md:w-1/2 lg:w-2/3 xl:w-3/4 md:px-2 mb-4 md:mb-0">
-          <div class="md:ml-4 md:px-4 px-4 mt-2 md:mt-1 rounded-lg">
-            <p class="mb-1">Username:</p>
-            <h2 class="default-header mb-1 md:mb-2">
-              {$profile?.username}
-            </h2>
-            <p class="mb-1">Display Name:</p>
-            <h2 class="default-header mb-1 md:mb-2">
-              {$profile?.displayName}
-            </h2>
-            <p class="mb-1">First Name:</p>
-            <h2 class="default-header mb-1 md:mb-2">
-              {$profile?.firstName}
-            </h2>
-            <p class="mb-1">Last Name:</p>
-            <h2 class="default-header mb-1 md:mb-2">
-              {$profile?.lastName}
-            </h2>
-            <p class="mb-1">OpenChat:</p>
-            <h2 class="default-header mb-1 md:mb-2">
-              {$profile?.openChatUsername}
-            </h2>
-            <p class="mb-1">Email:</p>
-            <h2 class="default-header mb-1 md:mb-2">
-              {$profile?.emailAddress}
-            </h2>
-            <p class="mb-1">Phone Number:</p>
-            <h2 class="default-header mb-1 md:mb-2">
-              {$profile?.phoneNumber}
-            </h2>
-            <button
-              class="text-sm md:text-sm p-1 md:p-2 px-2 md:px-4 rounded book-btn"
-              on:click={displayProfileDetailModal}
-            >
-              Update
-            </button>
+                </label>  
+                <p class="display-value">{$profile.username}</p>
+              </div>
+              <div class="form-group w-1/2">
+                <label for="username" class="flex text-sm">Display Name
+                  <span>
+                    <div class="text-xs text-red-500 ml-1">
+                      *
+                    </div>
+                  </span>
 
-            <p class="mb-1 mt-4">Joined:</p>
-            <h2 class="default-header mb-1 md:mb-2">{joinedDate}</h2>
-
-            <p class="mb-1">Principal:</p>
-            <div class="flex items-center">
-              <h2 class="tiny-text">{$profile?.principal}</h2>
-              <Copy value={$profile?.principal ?? ''} />
+                </label>  
+                <p class="display-value">{$profile.displayName}</p>
+              </div>
+            </div>
+            <div class="w-full flex flex-row space-x-4 mt-4">
+              <div class="form-group w-1/2">
+                <label for="username" class="block text-sm">First Name</label>  
+                <p class="display-value">{$profile.firstName}</p>
+              </div>
+              <div class="form-group w-1/2">
+                <label for="displayName" class="block text-sm">Last Name</label>  
+                <p class="display-value">{$profile.lastName}</p>
+              </div>
+            </div>
+          </div>
+          <div class="w-full md:w-1/2 flex-col flex">
+            <div class="w-full flex mb-2 my-4 md:mt-0">
+              Shareable Profile Information:
+            </div>
+            <div class="w-full flex flex-row space-x-4">
+              <div class="form-group w-1/2">
+                <label for="username" class="flex text-sm"><a target="_blank" href="https://oc.app/community/mldkd-vqaaa-aaaar-av5cq-cai/channel/230276105428323899255565868449599995147/?ref=zv6hh-xaaaa-aaaar-ac35q-cai"><OpenchatIcon className="w-4 mr-1" /></a>OpenChat</label>  
+                <p class="display-value">{$profile.openChatUsername} &nbsp;</p>
+              </div>
+              <div class="form-group w-1/2">
+                <label for="displayName" class="block text-sm">Email</label>  
+                <p class="display-value">{$profile.emailAddress} &nbsp;</p>
+              </div>
+            </div>
+            <div class="w-full flex flex-row space-x-4 mt-4">
+              <div class="form-group w-1/2">
+                <label for="username" class="block text-sm">Phone Number</label>  
+                <p class="display-value">{$profile.phoneNumber} &nbsp;</p>
+              </div>
+              <div class="form-group w-1/2">
+                <label for="username" class="block text-sm">Other</label>  
+                <p class="display-value">{$profile.phoneNumber} &nbsp;</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   {/if}
-
 {/if}

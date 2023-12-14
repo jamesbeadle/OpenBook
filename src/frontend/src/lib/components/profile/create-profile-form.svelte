@@ -7,6 +7,7 @@
     import { writable, type Writable } from 'svelte/store';
     
     export let profile: Writable<ProfileDTO | null> = writable(null);
+    export let profileCreated: () => void;
   
     $: newUsername = $profile?.username ?? "";
     $: newDisplayName = $profile?.displayName ?? "";
@@ -44,13 +45,14 @@
           preferredPaymentCurrency: $profile.preferredPaymentCurrency
         };
   
-        await userStore.updateProfile(updateProfileDTO);
+        await userStore.createProfile(updateProfileDTO);
         userStore.sync();
         toastsShow({
           text: 'Profile updated.',
           level: 'success',
           duration: 2000,
         });
+        profileCreated();
       } catch (error) {
         toastsError({
           msg: { text: 'Error updating profile.' },

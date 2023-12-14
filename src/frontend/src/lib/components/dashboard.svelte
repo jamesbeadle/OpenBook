@@ -76,9 +76,9 @@
       <p class="text-2xl">Welcome to OpenBook</p>
       <p>
         OpenBook is a decentralised business management tool for organisations
-        of all sizes:
+        of all sizes.
       </p>
-      <button class="book-btn mt-4">Create Organisation</button>
+      <button class="book-btn mt-4 disabled">Create Organisation</button>
       <button class="book-btn mt-4 disabled">Find Existing</button>
     {/if}
   </div>

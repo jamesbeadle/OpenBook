@@ -83,13 +83,13 @@ function createUserStore() {
     }
   }
 
-  async function createProfile(): Promise<any> {
+  async function createProfile(profileDTO: UpdateProfileDTO): Promise<any> {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,
         process.env.BACKEND_CANISTER_ID ?? '',
       );
-      const result = await identityActor.createProfile();
+      const result = await identityActor.createProfile(profileDTO);
       return result;
     } catch (error) {
       console.error('Error updating username:', error);

@@ -14,7 +14,6 @@
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
-  font-size: 1em;
   cursor: pointer;
   text-align: center;
   display: block;
@@ -75,8 +74,14 @@ input[type='file'] {
   border-color: #66e094;
 }
 
+.display-value{
+  @apply w-full px-4 py-2 border rounded-md mt-2;
+  background-color: #25282E;
+  border-color: #454B56 !important;
+}
+
 input {
-  background-color: #2e323a !important;
+  background-color: #25282E !important;
 }
 
 /* Extra small devices (portrait phones, less than 480px) */
