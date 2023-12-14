@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import { debounce } from 'lodash-es';
   import { userStore } from '$lib/stores/user-store';
   import { toastsError, toastsShow } from '$lib/stores/toasts-store';
   import { busyStore } from '@dfinity/gix-components';
@@ -11,6 +13,38 @@
 
   export let profile: Writable<ProfileDTO | null> = writable(null);
   export let profileCreated: () => void;
+
+  let usernameCheckStatus: string | null = null;
+  let usernameInputValue = '';
+  let usernameChecking = false; 
+
+  const debouncedCheck = debounce(checkUsernameAvailability, 300);
+
+  function handleUsernameInput(event: Event) {
+    const target = event.currentTarget as HTMLInputElement;
+    if (target) {
+      updateProfileField('username', target.value);
+      usernameInputValue = target.value;
+      usernameCheckStatus = 'checking'; 
+      usernameChecking = true;
+      debouncedCheck(target.value);
+    }
+  }
+
+  async function checkUsernameAvailability(username: string) {
+    usernameCheckStatus = 'checking';
+    usernameChecking = true;
+    try {
+      const isAvailable = await userStore.checkUsernameAvailability(username);
+      usernameCheckStatus = isAvailable ? 'available' : 'unavailable';
+      usernameChecking = false;
+    } catch (error) {
+      console.error('Error checking username:', error);
+      usernameCheckStatus = 'unavailable';
+      usernameChecking = false;
+    }
+  }
+
 
   $: newUsername = $profile?.username ?? '';
   $: newDisplayName = $profile?.displayName ?? '';
@@ -92,12 +126,24 @@
         <label for="username" class="block text-sm">Username</label>
         <input
           type="text"
-          class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2"
+          class={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2 ${
+            usernameCheckStatus === 'available'
+              ? 'border-green-500'
+              : usernameCheckStatus === 'unavailable'
+              ? 'border-red-500'
+              : 'border-gray-300'
+          }`}
           placeholder="Choose a username"
-          on:input={(e) =>
-            updateProfileField('username', e.currentTarget.value)}
-          bind:value={$profile.username}
+          on:input={handleUsernameInput}
+          bind:value={usernameInputValue}
         />
+        {#if usernameChecking}
+          <div class="text-sm text-gray-500 animate-pulse mt-2">Checking...</div>
+        {:else if usernameCheckStatus === 'available'}
+          <div class="text-sm text-green-500 mt-2">Available</div>
+        {:else if usernameCheckStatus === 'unavailable'}
+          <div class="text-sm text-red-500 mt-2">Unavailable</div>
+        {/if}
       </div>
       <div class="form-group w-1/2">
         <label for="displayName" class="block text-sm">Display Name</label>
@@ -142,9 +188,7 @@
           bind:value={$profile.profession}
         />
       </div>
-      <div class="form-group w-1/2">
-        
-      </div>
+      <div class="form-group w-1/2" />
     </div>
     <div class="items-center flex space-x-4 mt-6 mb-4">
       <button

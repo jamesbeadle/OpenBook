@@ -210,10 +210,13 @@
             <div class="w-full flex flex-row space-x-4 mt-4">
               <div class="form-group w-1/2">
                 <label for="profession" class="block text-sm">Profession</label>
-                <p class="display-value">{$profile.profession}</p>
+                <p class="display-value">
+                  {$profile.profession.length == 0
+                    ? ' '
+                    : $profile.profession}&nbsp;
+                </p>
               </div>
-              <div class="form-group w-1/2">
-              </div>
+              <div class="form-group w-1/2" />
             </div>
           </div>
           <div class="w-full md:w-1/2 flex-col flex">

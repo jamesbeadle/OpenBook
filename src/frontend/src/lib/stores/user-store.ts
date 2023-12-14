@@ -130,6 +130,21 @@ function createUserStore() {
     }
   }
 
+  async function checkUsernameAvailability(username: string): Promise<any> {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        process.env.BACKEND_CANISTER_ID ?? '',
+      );
+      const result = await identityActor.isUsernameAvailable(username);
+      set(result);
+      return result;
+    } catch (error) {
+      console.error('Error getting profile:', error);
+      throw error;
+    }
+  }
+
   async function updateProfilePicture(picture: File): Promise<any> {
     try {
       const maxPictureSize = 1000;
@@ -168,6 +183,7 @@ function createUserStore() {
     updateProfilePicture,
     createProfile,
     getProfileFromLocalStorage,
+    checkUsernameAvailability,
   };
 }
 

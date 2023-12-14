@@ -171,6 +171,10 @@ actor Self {
     };
   };
 
+  public shared func isUsernameAvailable(username : Text) : async Bool {
+    return profilesInstance.isUsernameAvailable(username);
+  };
+
   public shared ({ caller }) func updateProfilePicture(updatedProfilePicture : Blob) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
 

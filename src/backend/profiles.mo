@@ -77,7 +77,7 @@ module {
       username : Text,
       firstName : Text,
       lastName : Text,
-      profession: Text
+      profession : Text,
     ) : () {
       if (userProfiles.get(principalName) == null) {
         let newProfile : T.Profile = {
@@ -342,6 +342,35 @@ module {
           return #ok(());
         };
       };
+    };
+
+    public func isUsernameAvailable(username : Text) : Bool {
+
+      if (Text.size(username) < 0 or Text.size(username) > 16) {
+        return false;
+      };
+
+      let isAlphanumeric = func(s : Text) : Bool {
+        let chars = Text.toIter(s);
+        for (c in chars) {
+          if (not ((c >= 'a' and c <= 'z') or (c >= 'A' and c <= 'Z') or (c >= '0' and c <= '9'))) {
+            return false;
+          };
+        };
+        return true;
+      };
+
+      if (not isAlphanumeric(username)) {
+        return false;
+      };
+
+      for (profile in userProfiles.vals()) {
+        if (profile.username == username) {
+          return false;
+        };
+      };
+
+      return true;
     };
 
   };

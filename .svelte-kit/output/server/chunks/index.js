@@ -3346,7 +3346,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "6y5ja1"
+  version_hash: "jp4abh"
 };
 function get_hooks() {
   return {};
@@ -3822,6 +3822,7 @@ const idlFactory = ({ IDL }) => {
   return IDL.Service({
     "createProfile": IDL.Func([UpdateProfileDTO], [Result], []),
     "getProfile": IDL.Func([], [ProfileDTO], ["query"]),
+    "isUsernameAvailable": IDL.Func([IDL.Text], [IDL.Bool], []),
     "updateProfileDetail": IDL.Func([UpdateProfileDTO], [Result], []),
     "updateProfilePicture": IDL.Func([IDL.Vec(IDL.Nat8)], [Result], [])
   });
@@ -3978,6 +3979,20 @@ function createUserStore() {
       throw error2;
     }
   }
+  async function checkUsernameAvailability(username) {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        { "__CANDID_UI_CANISTER_ID": "dfdal-2uaaa-aaaaa-qaama-cai", "BACKEND_CANISTER_ID": "cpmcr-yeaaa-aaaaa-qaala-cai", "FRONTEND_CANISTER_ID": "cinef-v4aaa-aaaaa-qaalq-cai", "DFX_NETWORK": "local" }.BACKEND_CANISTER_ID ?? ""
+      );
+      const result = await identityActor.isUsernameAvailable(username);
+      set(result);
+      return result;
+    } catch (error2) {
+      console.error("Error getting profile:", error2);
+      throw error2;
+    }
+  }
   async function updateProfilePicture(picture) {
     try {
       const maxPictureSize = 1e3;
@@ -4013,7 +4028,8 @@ function createUserStore() {
     getProfile,
     updateProfilePicture,
     createProfile,
-    getProfileFromLocalStorage
+    getProfileFromLocalStorage,
+    checkUsernameAvailability
   };
 }
 const userStore = createUserStore();
