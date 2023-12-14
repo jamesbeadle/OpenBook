@@ -3346,7 +3346,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "jp4abh"
+  version_hash: "1bpx5cl"
 };
 function get_hooks() {
   return {};
@@ -3830,7 +3830,7 @@ const idlFactory = ({ IDL }) => {
 class ActorFactory {
   static createActor(idlFactory2, canisterId = "", identity = null, options2 = null) {
     const hostOptions = {
-      host: "http://127.0.0.1:8080",
+      host: `https://${canisterId}.icp-api.io`,
       identity
     };
     if (!options2) {
@@ -3843,7 +3843,7 @@ class ActorFactory {
       options2.agentOptions.host = hostOptions.host;
     }
     const agent = new HttpAgent({ ...options2.agentOptions });
-    if ({ "__CANDID_UI_CANISTER_ID": "dfdal-2uaaa-aaaaa-qaama-cai", "BACKEND_CANISTER_ID": "cpmcr-yeaaa-aaaaa-qaala-cai", "FRONTEND_CANISTER_ID": "cinef-v4aaa-aaaaa-qaalq-cai", "DFX_NETWORK": "local" }.NODE_ENV !== "production") {
+    if ({ "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.NODE_ENV !== "production") {
       agent.fetchRootKey().catch((err) => {
         console.warn(
           "Unable to fetch root key. Ensure your local replica is running"
@@ -3903,10 +3903,9 @@ function createUserStore() {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,
-        { "__CANDID_UI_CANISTER_ID": "dfdal-2uaaa-aaaaa-qaama-cai", "BACKEND_CANISTER_ID": "cpmcr-yeaaa-aaaaa-qaala-cai", "FRONTEND_CANISTER_ID": "cinef-v4aaa-aaaaa-qaalq-cai", "DFX_NETWORK": "local" }.BACKEND_CANISTER_ID ?? ""
+        { "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.BACKEND_CANISTER_ID ?? ""
       );
       let updatedProfileDataObj = await identityActor.getProfile();
-      console.log(updatedProfileDataObj);
       if (!updatedProfileDataObj) {
         await identityActor.createProfile();
         updatedProfileDataObj = await identityActor.getProfile();
@@ -3942,7 +3941,7 @@ function createUserStore() {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,
-        { "__CANDID_UI_CANISTER_ID": "dfdal-2uaaa-aaaaa-qaama-cai", "BACKEND_CANISTER_ID": "cpmcr-yeaaa-aaaaa-qaala-cai", "FRONTEND_CANISTER_ID": "cinef-v4aaa-aaaaa-qaalq-cai", "DFX_NETWORK": "local" }.BACKEND_CANISTER_ID ?? ""
+        { "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.BACKEND_CANISTER_ID ?? ""
       );
       const result = await identityActor.createProfile(profileDTO);
       return result;
@@ -3955,9 +3954,23 @@ function createUserStore() {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,
-        { "__CANDID_UI_CANISTER_ID": "dfdal-2uaaa-aaaaa-qaama-cai", "BACKEND_CANISTER_ID": "cpmcr-yeaaa-aaaaa-qaala-cai", "FRONTEND_CANISTER_ID": "cinef-v4aaa-aaaaa-qaalq-cai", "DFX_NETWORK": "local" }.BACKEND_CANISTER_ID ?? ""
+        { "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.BACKEND_CANISTER_ID ?? ""
       );
-      const result = await identityActor.updateProfile(updatedProfile);
+      const result = await identityActor.updateProfileDetail(updatedProfile);
+      sync();
+      return result;
+    } catch (error2) {
+      console.error("Error updating profile:", error2);
+      throw error2;
+    }
+  }
+  async function updateShareableProfileInfo(updatedProfile) {
+    try {
+      const identityActor = await ActorFactory.createIdentityActor(
+        authStore,
+        { "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.BACKEND_CANISTER_ID ?? ""
+      );
+      const result = await identityActor.updateProfileDetail(updatedProfile);
       sync();
       return result;
     } catch (error2) {
@@ -3969,7 +3982,7 @@ function createUserStore() {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,
-        { "__CANDID_UI_CANISTER_ID": "dfdal-2uaaa-aaaaa-qaama-cai", "BACKEND_CANISTER_ID": "cpmcr-yeaaa-aaaaa-qaala-cai", "FRONTEND_CANISTER_ID": "cinef-v4aaa-aaaaa-qaalq-cai", "DFX_NETWORK": "local" }.BACKEND_CANISTER_ID ?? ""
+        { "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.BACKEND_CANISTER_ID ?? ""
       );
       const result = await identityActor.getProfile();
       set(result);
@@ -3983,10 +3996,9 @@ function createUserStore() {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,
-        { "__CANDID_UI_CANISTER_ID": "dfdal-2uaaa-aaaaa-qaama-cai", "BACKEND_CANISTER_ID": "cpmcr-yeaaa-aaaaa-qaala-cai", "FRONTEND_CANISTER_ID": "cinef-v4aaa-aaaaa-qaalq-cai", "DFX_NETWORK": "local" }.BACKEND_CANISTER_ID ?? ""
+        { "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.BACKEND_CANISTER_ID ?? ""
       );
       const result = await identityActor.isUsernameAvailable(username);
-      set(result);
       return result;
     } catch (error2) {
       console.error("Error getting profile:", error2);
@@ -4007,7 +4019,7 @@ function createUserStore() {
         try {
           const identityActor = await ActorFactory.createIdentityActor(
             authStore,
-            { "__CANDID_UI_CANISTER_ID": "dfdal-2uaaa-aaaaa-qaama-cai", "BACKEND_CANISTER_ID": "cpmcr-yeaaa-aaaaa-qaala-cai", "FRONTEND_CANISTER_ID": "cinef-v4aaa-aaaaa-qaalq-cai", "DFX_NETWORK": "local" }.BACKEND_CANISTER_ID ?? ""
+            { "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.BACKEND_CANISTER_ID ?? ""
           );
           const result = await identityActor.updateProfilePicture(uint8Array);
           sync();
@@ -4024,11 +4036,12 @@ function createUserStore() {
   return {
     subscribe: subscribe2,
     sync,
-    updateProfile,
-    getProfile,
-    updateProfilePicture,
     createProfile,
+    getProfile,
     getProfileFromLocalStorage,
+    updateProfile,
+    updateProfilePicture,
+    updateShareableProfileInfo,
     checkUsernameAvailability
   };
 }
@@ -4069,7 +4082,7 @@ const Dashboard_header = create_ssr_component(($$result, $$props, $$bindings, sl
   currentBorder = (route) => $page.url.pathname === route ? "active-border" : "";
   $$unsubscribe_page();
   $$unsubscribe_userGetProfilePicture();
-  return `<div class="w-full p-4 top-bar flex justify-between items-center"><h1>${escape(activeTitle)}</h1> <div class="relative inline-block"><button${add_attribute("class", `h-full flex items-center border rounded-full ${currentBorder("/profile")}`, 0)}><img${add_attribute("src", $userGetProfilePicture, 0)} alt="Profile" class="h-8 rounded-full profile-pic" aria-label="Toggle Profile"></button> <div${add_attribute("class", `absolute right-0 top-full w-48 bg-black rounded-b-md rounded-l-md shadow-lg z-50 profile-dropdown ${showProfileDropdown ? "block" : "hidden"}`, 0)}><ul class=""><li><a href="/profile" class="flex items-center h-full w-full nav-underline"><span class="flex items-center h-full w-full"><img${add_attribute("src", $userGetProfilePicture, 0)} alt="logo" class="w-8 h-8 my-2 ml-4 mr-2 rounded-full"> <p class="w-full min-w-[125px] max-w-[125px] truncate" data-svelte-h="svelte-cig3zx">Profile</p></span></a></li> <li><button class="flex items-center justify-center px-4 pb-2 pt-1 text-white rounded-md shadow focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50 nav-button">Disconnect
+  return `<div class="w-full p-4 top-bar flex justify-between items-center"><h1>${escape(activeTitle)}</h1> <div class="relative inline-block"><button${add_attribute("class", `h-full flex items-center border rounded-full ${currentBorder("/profile")}`, 0)}><img${add_attribute("src", $userGetProfilePicture, 0)} alt="Profile" class="h-8 rounded-full profile-pic" aria-label="Toggle Profile"></button> <div${add_attribute("class", `absolute right-0 top-full w-48 bg-black rounded-b-md rounded-l-md shadow-lg z-50 profile-dropdown ${showProfileDropdown ? "block" : "hidden"}`, 0)}><ul class=""><li><a href="/profile" class="flex items-center h-full w-full nav-underline"><span class="flex items-center h-full w-full"><img${add_attribute("src", $userGetProfilePicture, 0)} alt="logo" class="w-8 h-8 my-2 ml-4 mr-2 rounded-full"> <p class="w-full min-w-[125px] max-w-[125px] truncate" data-svelte-h="svelte-cig3zx">Profile</p></span></a></li> <li><button class="flex items-center justify-center px-4 pb-2 pt-1 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50 nav-button">Disconnect
             ${validate_component(Wallet_icon, "WalletIcon").$$render($$result, { className: "ml-2 h-6 w-6 mt-1" }, {}, {})}</button></li></ul></div></div></div>`;
 });
 const Expand_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
@@ -4143,7 +4156,7 @@ const Page$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   $$unsubscribe_authSignedInStore();
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `${$authSignedInStore ? `<div class="flex flex-row h-screen w-full">${validate_component(Dashboard, "Dashboard").$$render($$result, {}, {}, {})}</div>` : `${validate_component(Landing, "Landing").$$render($$result, {}, {}, {})}`}`;
+      return `${$authSignedInStore ? `<div class="flex flex-row h-full md:h-screen w-full">${validate_component(Dashboard, "Dashboard").$$render($$result, {}, {}, {})}</div>` : `<div class="flex flex-row h-screen w-full">${validate_component(Landing, "Landing").$$render($$result, {}, {}, {})}</div>`}`;
     }
   })}`;
 });

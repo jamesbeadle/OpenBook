@@ -242,96 +242,103 @@ export function getDateFromBigInt(dateMS: bigint): string {
 }
 
 export function isUsernameValid(username: string): boolean {
-  if(!username === undefined){
+  if (!username === undefined) {
     return false;
   }
   const alphanumericRegex = /^[a-zA-Z0-9]+$/;
-  return username.length > 0 && username.length <= 16 && alphanumericRegex.test(username);
+  return (
+    username.length > 0 &&
+    username.length <= 16 &&
+    alphanumericRegex.test(username)
+  );
 }
 
 export function isDisplayNameValid(displayName: string): boolean {
-  if(!displayName === undefined){
+  if (!displayName === undefined) {
     return false;
   }
   const alphanumericSpaceRegex = /^[a-zA-Z0-9 ]+$/;
-  return displayName.length > 0 && displayName.length <= 30 && alphanumericSpaceRegex.test(displayName);
+  return (
+    displayName.length > 0 &&
+    displayName.length <= 30 &&
+    alphanumericSpaceRegex.test(displayName)
+  );
 }
 
 export function isNameValid(name: string): boolean {
-  if(!name === undefined){
+  if (!name === undefined) {
     return false;
   }
-  if(name.length == 0){
+  if (name.length == 0) {
     return true;
-  }
-  else{
+  } else {
     const alphanumericSpaceDashRegex = /^[a-zA-Z0-9 \-]+$/;
     return name.length <= 30 && alphanumericSpaceDashRegex.test(name);
   }
 }
 
 export function isOpenChatUsernameValid(openChatUsername: string): boolean {
-  if(!openChatUsername === undefined){
+  if (!openChatUsername === undefined) {
     return false;
   }
-  if(openChatUsername.length == 0){
+  if (openChatUsername.length == 0) {
     return true;
-  }
-  else{
+  } else {
     const alphanumericRegex = /^[a-zA-Z0-9]+$/;
-    return openChatUsername.length >= 5 && openChatUsername.length <= 13 && alphanumericRegex.test(openChatUsername);
+    return (
+      openChatUsername.length >= 5 &&
+      openChatUsername.length <= 13 &&
+      alphanumericRegex.test(openChatUsername)
+    );
   }
 }
 
 export function isEmailValid(email: string): boolean {
-  if(!email === undefined){
+  if (!email === undefined) {
     return false;
   }
-  if(email.length == 0){
+  if (email.length == 0) {
     return true;
-  }
-  else{
+  } else {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return email.length <= 254 && emailRegex.test(email);
   }
 }
 
 export function isPhoneValid(phone: string): boolean {
-  if(!phone === undefined){
+  if (!phone === undefined) {
     return false;
   }
-  if(phone.length == 0){
+  if (phone.length == 0) {
     return true;
-  }
-  else{
+  } else {
     const phoneRegex = /^[a-zA-Z0-9 +()-]+$/;
     return phone.length <= 30 && phoneRegex.test(phone);
   }
 }
 
 export function isOtherContactValid(otherContact: string): boolean {
-  if(!otherContact === undefined){
+  if (!otherContact === undefined) {
     return false;
   }
-  if(otherContact.length == 0){
+  if (otherContact.length == 0) {
     return true;
-  }
-  else{
+  } else {
     const otherContactRegex = /^[a-zA-Z0-9 +()-@]+$/;
     return otherContact.length <= 30 && otherContactRegex.test(otherContact);
   }
 }
 
 export function isProfessionValid(profession: string): boolean {
-  if(profession === undefined){
+  if (profession === undefined) {
     return false;
   }
-  if(profession.length == 0){
+  if (profession.length == 0) {
     return true;
-  }
-  else{
+  } else {
     const alphanumericSpaceDashRegex = /^[a-zA-Z0-9 \-]+$/;
-    return profession.length <= 50 && alphanumericSpaceDashRegex.test(profession);
+    return (
+      profession.length <= 50 && alphanumericSpaceDashRegex.test(profession)
+    );
   }
 }
-

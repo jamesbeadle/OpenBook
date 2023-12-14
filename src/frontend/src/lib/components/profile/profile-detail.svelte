@@ -17,7 +17,7 @@
   let newUser = false;
   let showUpdateModal = false;
   let showShareableUpdateModal = false;
-  
+
   let unsubscribeUserProfile: () => void;
 
   $: profileSrc =
@@ -38,7 +38,7 @@
         if (value.principal === '') {
           newUser = true;
         }
-        console.log(value)
+        console.log(value);
         setProfile(value);
         joinedDate = getDateFromBigInt(value.createDate);
       });
@@ -122,14 +122,13 @@
     showUpdateModal = false;
   }
 
-  function toggleShareableUpdateModal(){
+  function toggleShareableUpdateModal() {
     showShareableUpdateModal = !showShareableUpdateModal;
   }
 
- 
   async function copyTextAndShowToast() {
     try {
-      const textToCopy = $profile ? $profile.principal : "";
+      const textToCopy = $profile ? $profile.principal : '';
       await navigator.clipboard.writeText(textToCopy);
       toastsShow({
         text: 'Copied to clipboard.',
@@ -140,40 +139,40 @@
       console.error('Failed to copy:', err);
     }
   }
-
 </script>
 
 {#if isLoading}
   <Spinner />
 {:else}
+  {#if $profile && showUpdateModal}
+    <Modal visible={showUpdateModal} on:nnsClose={toggleUpdateModal}>
+      <div class="p-4 md:p-1">
+        <div class="flex justify-between items-center my-2">
+          <h3 class="default-header">Update Public Profile Information</h3>
+          <button class="times-button" on:click={toggleUpdateModal}
+            >&times;</button
+          >
+        </div>
 
-{#if $profile && showUpdateModal}
-  <Modal visible={showUpdateModal} on:nnsClose={toggleUpdateModal}>
-    <div class="p-4">
-      <div class="flex justify-between items-center my-2">
-        <h3 class="default-header">Update Public Profile Information</h3>
-        <button class="times-button" on:click={toggleUpdateModal}>&times;</button>
+        <CreateProfileForm {profile} {profileUpdated} {profileCreated} />
       </div>
+    </Modal>
+  {/if}
 
-      <CreateProfileForm
-        profile={profile}
-        {profileUpdated}
-        {profileCreated}
-      />
-    </div>
-  </Modal>
-{/if}
-
-
-{#if showShareableUpdateModal}
-  <ShareableUpdateModal {profile} {toggleShareableUpdateModal} {showShareableUpdateModal} shareableInfoUpdated={toggleShareableUpdateModal}/>
-{/if}
+  {#if showShareableUpdateModal}
+    <ShareableUpdateModal
+      {profile}
+      {toggleShareableUpdateModal}
+      {showShareableUpdateModal}
+      shareableInfoUpdated={toggleShareableUpdateModal}
+    />
+  {/if}
 
   {#if newUser || !$profile}
     <h3 class="default-header">Create Your OpenBook Profile</h3>
     <CreateProfileForm {profile} {profileCreated} {profileUpdated} />
   {:else}
-    <div class="flex-1 flex-col m-4">
+    <div class="flex-1 flex-col m-1 md:mx-1">
       <div class="w-full flex flex-col md:flex-row">
         <div class="flex flex-col">
           <p class="mb-2 inputHeader">Profile Image</p>
@@ -202,14 +201,17 @@
           </div>
           <p class="text-xs">Maximimum Size 500KB.</p>
         </div>
-        <div class="flex flex-1 md:p-4 flex-col md:flex-row md:space-x-16 w-full md:px-8">
+        <div
+          class="flex flex-1 md:p-4 flex-col md:flex-row md:space-x-4 w-full md:px-4 md:pr-0"
+        >
           <div class="w-full md:w-1/2 flex-col flex mt-4">
             <div class="w-full flex my-4 md:mt-0 mb-4 items-center">
-              <div class="w-2/3 text-sm">
-                Public Profile Information:
-              </div>
+              <div class="w-2/3 text-sm">Public Profile Information:</div>
               <div class="w-1/3 flex justify-end">
-                <button on:click={toggleUpdateModal} class="book-btn px-4 py-2 rounded-md md:text-xxs">
+                <button
+                  on:click={toggleUpdateModal}
+                  class="book-btn px-4 py-2 rounded-md md:text-xxs"
+                >
                   Update
                 </button>
               </div>
@@ -247,20 +249,19 @@
             <div class="w-full flex flex-row space-x-4 mt-4">
               <div class="form-group w-1/2">
                 <label for="profession" class="inputHeader">Profession</label>
-                <p class="display-value">{$profile.profession}&nbsp;
-                </p>
+                <p class="display-value">{$profile.profession}&nbsp;</p>
               </div>
-              <div class="form-group w-1/2">
-              </div>
+              <div class="form-group w-1/2" />
             </div>
           </div>
           <div class="w-full md:w-1/2 flex-col flex mt-4">
             <div class="w-full flex my-4 md:mt-0 mb-4 items-center">
-              <div class="w-2/3 text-xs">
-                Shareable Profile Information:
-              </div>
+              <div class="w-2/3 text-xs">Shareable Profile Information:</div>
               <div class="w-1/3 flex justify-end">
-                <button on:click={toggleShareableUpdateModal} class="book-btn px-4 py-2 rounded-md md:text-xxs">
+                <button
+                  on:click={toggleShareableUpdateModal}
+                  class="book-btn px-4 py-2 rounded-md md:text-xxs"
+                >
                   Update
                 </button>
               </div>
@@ -293,12 +294,15 @@
             </div>
           </div>
         </div>
-        <div class="w-full flex flex-row space-x-4 mt-8">
-          <button class="w-full text-left flex items-center text-xs" on:click={copyTextAndShowToast}>
-            Principal: {$profile.principal}
-            <CopyIcon className="w-4" fill='#FFFFFF' />
-          </button>
-        </div>
+      </div>
+      <div class="w-full flex flex-row space-x-4 mt-8 md:mt-0">
+        <button
+          class="w-full text-left flex items-center text-xs"
+          on:click={copyTextAndShowToast}
+        >
+          Principal: {$profile.principal}
+          <CopyIcon className="w-4" fill="#FFFFFF" />
+        </button>
       </div>
     </div>
   {/if}

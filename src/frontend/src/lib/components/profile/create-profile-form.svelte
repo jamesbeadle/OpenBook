@@ -8,7 +8,12 @@
     ProfileDTO,
     UpdateProfileDTO,
   } from '../../../../../declarations/backend/backend.did';
-  import { isDisplayNameValid, isNameValid, isUsernameValid, isProfessionValid } from '$lib/utils/helpers';
+  import {
+    isDisplayNameValid,
+    isNameValid,
+    isUsernameValid,
+    isProfessionValid,
+  } from '$lib/utils/helpers';
   import { writable, type Writable } from 'svelte/store';
 
   export let profile: Writable<ProfileDTO | null> = writable(null);
@@ -21,13 +26,13 @@
   let firstNameInputValue = '';
   let lastNameInputValue = '';
   let professionInputValue = '';
-  let usernameChecking = false; 
+  let usernameChecking = false;
 
   const debouncedCheck = debounce(checkUsernameAvailability, 300);
 
   onMount(async () => {
-    console.log("here")
-    console.log($profile)
+    console.log('here');
+    console.log($profile);
     usernameInputValue = $profile?.username ?? '';
     displayNameInputValue = $profile?.displayName ?? '';
     firstNameInputValue = $profile?.firstName ?? '';
@@ -40,7 +45,7 @@
     if (target) {
       updateProfileField('username', target.value);
       usernameInputValue = target.value;
-      usernameCheckStatus = 'checking'; 
+      usernameCheckStatus = 'checking';
       usernameChecking = true;
       debouncedCheck(target.value);
     }
@@ -79,7 +84,7 @@
   }
 
   async function checkUsernameAvailability(username: string) {
-    if(username.length == 0){
+    if (username.length == 0) {
       usernameCheckStatus = '';
       usernameChecking = false;
       return;
@@ -88,7 +93,7 @@
     usernameChecking = true;
     try {
       const isAvailable = await userStore.checkUsernameAvailability(username);
-      if(usernameInputValue.length == 0){
+      if (usernameInputValue.length == 0) {
         usernameCheckStatus = '';
         usernameChecking = false;
         return;
@@ -102,13 +107,12 @@
     }
   }
 
-
   $: newUsername = $profile?.username ?? '';
   $: newDisplayName = $profile?.displayName ?? '';
   $: newFirstName = $profile?.firstName ?? '';
   $: newLastName = $profile?.lastName ?? '';
   $: newProfession = $profile?.profession ?? '';
-  
+
   $: isSubmitDisabled =
     $profile === null ||
     !isUsernameValid(newUsername) ||
@@ -118,8 +122,6 @@
     !isProfessionValid(newProfession) ||
     usernameChecking ||
     usernameCheckStatus === 'unavailable';
-
-
 
   async function updateProfileDetail() {
     busyStore.startBusy({
@@ -147,23 +149,20 @@
       };
 
       let result = null;
-      if($profile.principal.length == 0){
+      if ($profile.principal.length == 0) {
         result = await userStore.createProfile(updateProfileDTO);
         profileCreated();
-      }
-      else{
+      } else {
         result = await userStore.updateProfile(updateProfileDTO);
         profileUpdated();
       }
-      console.log(result)
+      console.log(result);
       userStore.sync();
       toastsShow({
         text: 'Profile updated.',
         level: 'success',
         duration: 2000,
       });
-
-
     } catch (error) {
       toastsError({
         msg: { text: 'Error updating profile.' },
@@ -175,7 +174,10 @@
     }
   }
 
-  function updateProfileField(field: keyof ProfileDTO, value: string | null | undefined) {
+  function updateProfileField(
+    field: keyof ProfileDTO,
+    value: string | null | undefined,
+  ) {
     if (field === 'username') {
       newUsername = value ?? '';
     } else if (field === 'displayName') {
@@ -188,12 +190,11 @@
       newProfession = value ?? '';
     }
   }
-
 </script>
 
 {#if $profile}
   <div class="flex flex-col">
-   <p class="text-sm text-amber-600 my-2">
+    <p class="text-sm text-amber-600 my-2">
       The information your provide in this form will be public.
     </p>
   </div>
@@ -219,7 +220,9 @@
           maxlength="16"
         />
         {#if usernameChecking}
-          <div class="text-sm text-gray-500 animate-pulse mt-2">Checking...</div>
+          <div class="text-sm text-gray-500 animate-pulse mt-2">
+            Checking...
+          </div>
         {:else if usernameCheckStatus === 'available'}
           <div class="text-sm text-green-500 mt-2">Available</div>
         {:else if usernameCheckStatus === 'unavailable'}
@@ -280,8 +283,6 @@
       <div class="form-group w-1/2" />
     </div>
     <div class="items-center flex space-x-4 mt-6 mb-4">
-
-      
       {#if !$profile || $profile.principal.length == 0}
         <button
           class={`book-btn ${isSubmitDisabled ? 'disabled' : ''}`}
@@ -301,7 +302,6 @@
           Update Profile
         </button>
       {/if}
-      
     </div>
   </form>
 {/if}

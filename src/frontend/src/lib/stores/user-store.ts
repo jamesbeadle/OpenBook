@@ -114,7 +114,9 @@ function createUserStore() {
     }
   }
 
-  async function updateShareableProfileInfo(updatedProfile: UpdateProfileDTO): Promise<any> {
+  async function updateShareableProfileInfo(
+    updatedProfile: UpdateProfileDTO,
+  ): Promise<any> {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,
