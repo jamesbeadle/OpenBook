@@ -15,8 +15,9 @@
   import { goto } from '$app/navigation';
   import IcpDirectory from './directory/directory.svelte';
   import WhitepaperIcon from '$lib/icons/whitepaper-icon.svelte';
+  import HomeIcon from '$lib/icons/home-icon.svelte';
 
-  let activeSection = 0;
+  let activeSection = -1;
   let sections = ['projects', 'contacts'];
 
   function selectSection(sectionIndex: number) {
@@ -36,6 +37,10 @@
     }
   });
 
+  function loadHome() {
+    goto('/');
+  }
+
   function loadDirectory() {
     goto('/directory');
   }
@@ -53,11 +58,23 @@
   <a href="/">
     <Logo className="w-6" />
   </a>
+  <button on:click={loadHome}>
+    <HomeIcon
+      className="side-nav-icon"
+      fill={currentRoute === '/' ? '#FFFFFF' : '#8C8C8C'}
+    />
+  </button>
   <button on:click={loadDirectory}>
-    <IcpIcon className="side-nav-icon" fill={'#FFFFFF'} />
+    <IcpIcon
+      className="side-nav-icon"
+      fill={currentRoute === '/directory' ? '#FFFFFF' : '#8C8C8C'}
+    />
   </button>
   <button on:click={loadWhitepaper}>
-    <WhitepaperIcon className="side-nav-icon" fill={'#FFFFFF'} />
+    <WhitepaperIcon
+      className="side-nav-icon"
+      fill={activeSection == 1 ? '#FFFFFF' : '#8C8C8C'}
+    />
   </button>
   {#if activeRole === 0}
     <button on:click={() => selectSection(0)}>
@@ -102,10 +119,13 @@
         OpenBook is a decentralised business management tool for organisations
         of all sizes.
       </p>
-      
-      <button on:click={loadProfile} class="book-btn mt-4">Create Profile</button>
-      <button class="book-btn mt-4 disabled text-xs">Create Organisation (soon)</button>
-      <button class="book-btn mt-4 disabled text-xs">Find Existing (soon)</button>
+
+      <button on:click={loadProfile} class="book-btn mt-4"
+        >Create Profile</button
+      >
+      <button class="book-btn mt-4 disabled text-xs"
+        >Create Organisation (soon)</button
+      >
     {/if}
   </div>
 </div>

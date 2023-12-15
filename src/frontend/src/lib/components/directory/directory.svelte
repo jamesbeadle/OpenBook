@@ -25,6 +25,7 @@
       filters.profession,
       currentPage,
     );
+    totalPages = Math.ceil(Number(directoryResult.totalEntries) / 25);
     isLoading = false;
   }
 
@@ -130,14 +131,23 @@
     {/each}
   </div>
 
-  <div class="pagination">
-    {#each Array(directoryResult.totalEntries) as _, page (page + 1)}
-      <button
-        on:click={() => goToPage(page + 1)}
-        disabled={page + 1 === currentPage}
-      >
-        Page {page + 1}
-      </button>
-    {/each}
+  <div class="pagination flex items-center justify-center space-x-4">
+    <button
+      class="book-btn {currentPage === 1 ? 'disabled' : ''}"
+      on:click={() => goToPage(currentPage - 1)}
+      disabled={currentPage === 1}
+    >
+      &lt;
+    </button>
+
+    <span>Page {currentPage} / {totalPages}</span>
+
+    <button
+      class="book-btn {currentPage === totalPages ? 'disabled' : ''}"
+      on:click={() => goToPage(currentPage + 1)}
+      disabled={currentPage === totalPages}
+    >
+      &gt;
+    </button>
   </div>
 {/if}

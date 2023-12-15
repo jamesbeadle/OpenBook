@@ -212,10 +212,10 @@
           </div>
           <p class="text-xs">Maximimum Size 500KB.</p>
         </div>
-        <div
-          class="flex flex-1 flex-col md:flex-row md:space-x-4 w-full md:px-4 md:pr-0"
-        >
-          <div class="w-full md:w-1/2 flex-col flex mt-4 md:mt-0">
+        <div class="flex flex-1 flex-col md:flex-row w-full md:px-4 md:pr-0">
+          <div
+            class="w-full md:w-1/2 flex-col flex mt-4 md:mt-0 md:mx-2 lg:mx-4 xl:mx-8"
+          >
             <div class="w-full flex my-4 md:mt-0 mb-4 items-center">
               <div class="hidden md:flex w-2/3 default-header">
                 Public Profile Information:
@@ -226,7 +226,7 @@
               <div class="w-1/3 flex justify-end">
                 <button
                   on:click={toggleUpdateModal}
-                  class="book-btn px-4 py-2 rounded-md md:text-xxs"
+                  class="book-btn px-4 py-2 rounded-md md:text-xxs lg:text-sm xl:text-base"
                 >
                   Update
                 </button>
@@ -290,7 +290,9 @@
               </div>
             </div>
           </div>
-          <div class="w-full md:w-1/2 flex-col flex mt-4 md:mt-0">
+          <div
+            class="w-full md:w-1/2 flex-col flex mt-4 md:mt-0 md:mx-2 lg:mx-4 xl:mx-8"
+          >
             <div class="w-full flex my-4 md:mt-0 mb-4 items-center">
               <div class="hidden md:flex w-2/3 default-header">
                 Shareable Profile Information:
@@ -301,7 +303,7 @@
               <div class="w-1/3 flex justify-end">
                 <button
                   on:click={toggleShareableUpdateModal}
-                  class="book-btn px-4 py-2 rounded-md md:text-xxs"
+                  class="book-btn px-4 py-2 rounded-md md:text-xxs lg:text-sm xl:text-base"
                 >
                   Update
                 </button>
