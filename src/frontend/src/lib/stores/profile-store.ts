@@ -15,15 +15,14 @@ function createProfileStore() {
     professionFilter: string,
     currentPage: number,
   ) {
-    let updatedPlayersData = await actor.getProfiles(
+    let updatedProfilesData = await actor.getProfiles(
       usernameFilter,
       firstNameFilter,
       lastNameFilter,
       professionFilter,
       currentPage,
     );
-    console.log(updatedPlayersData);
-    return updatedPlayersData as DirectoryDTO;
+    return updatedProfilesData as DirectoryDTO;
   }
 
   return {

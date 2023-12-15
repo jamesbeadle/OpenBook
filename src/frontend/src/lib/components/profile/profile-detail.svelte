@@ -145,9 +145,9 @@
 {:else}
   {#if $profile && showUpdateModal}
     <Modal visible={showUpdateModal} on:nnsClose={toggleUpdateModal}>
-      <div class="p-4 md:p-1">
-        <div class="flex justify-between items-center my-2">
-          <h3 class="default-header">Update Public Profile Information</h3>
+      <div class="m-4">
+        <div class="flex justify-between items-center">
+          <h3>Update Public Profile Information</h3>
           <button class="times-button" on:click={toggleUpdateModal}
             >&times;</button
           >

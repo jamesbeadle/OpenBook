@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import type { DirectoryDTO } from '../../../../../declarations/backend/backend.did';
   import { profilesStore } from '$lib/stores/profile-store';
-  import { Spinner } from '@dfinity/gix-components';
+  import { Spinner, busyStore } from '@dfinity/gix-components';
   import LogoIcon from '$lib/icons/logo-icon.svelte';
 
   let directoryResult: DirectoryDTO;
@@ -25,17 +25,20 @@
       filters.profession,
       currentPage,
     );
-    //TOTAL PAGES
-    console.log(directoryResult);
+    isLoading = false;
   }
 
   onMount(async () => {
     try {
+      busyStore.startBusy({
+        initiator: 'fetch-profiles',
+        text: 'Fetch profiles...',
+      });
       await fetchProfiles();
     } catch (error) {
       console.error('Error loading directory:', error);
     } finally {
-      isLoading = false;
+      busyStore.stopBusy('fetch-profiles');
     }
   });
 
@@ -59,9 +62,7 @@
 
 <h1>OpenBook Directory</h1>
 
-{#if isLoading}
-  <Spinner />
-{:else}
+{#if !isLoading}
   <div class="filters flex flex-col w-full h-full">
     <div class="flex flex-col md:flex-row md:space-x-4 mt-2 md:mt-4">
       <div class="w-full md:w-1/2 mb-2 md:mb-0">
@@ -104,9 +105,11 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-8 gap-4 mt-4">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
     {#each directoryResult.profiles as profile}
-      <div class="card rounded-lg shadow-md overflow-hidden m-4 directory-card">
+      <div
+        class="card rounded-t-md shadow-md overflow-hidden m-4 directory-card"
+      >
         <img
           class="w-full h-48 object-cover"
           src={blobToSrc(profile.profilePicture)}

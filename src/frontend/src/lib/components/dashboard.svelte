@@ -14,6 +14,7 @@
   import ProfileDetail from './profile/profile-detail.svelte';
   import { goto } from '$app/navigation';
   import IcpDirectory from './directory/directory.svelte';
+  import WhitepaperIcon from '$lib/icons/whitepaper-icon.svelte';
 
   let activeSection = 0;
   let sections = ['projects', 'contacts'];
@@ -38,6 +39,10 @@
   function loadDirectory() {
     goto('/directory');
   }
+
+  function loadWhitepaper() {
+    goto('/whitepaper');
+  }
 </script>
 
 <nav class="p-4 h-full side-nav flex flex-col">
@@ -46,6 +51,9 @@
   </a>
   <button on:click={loadDirectory}>
     <IcpIcon className="side-nav-icon" fill={'#FFFFFF'} />
+  </button>
+  <button on:click={loadWhitepaper}>
+    <WhitepaperIcon className="side-nav-icon" fill={'#FFFFFF'} />
   </button>
   {#if activeRole === 0}
     <button on:click={() => selectSection(0)}>
