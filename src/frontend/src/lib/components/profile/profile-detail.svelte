@@ -308,15 +308,15 @@
             </div>
             <div class="w-full flex flex-row space-x-4 mt-4">
               <div class="flex flex-col w-1/2">
-                <label for="username" class="inputHeader">Phone Number</label>
+                <label for="phoneNumber" class="inputHeader">Phone Number</label>
                 <p class="display-value-wrapper">
                   <span class="truncated-display-value">{$profile.phoneNumber}&nbsp;</span>
                 </p>
               </div>
               <div class="flex flex-col w-1/2">
-                <label for="username" class="inputHeader">Other</label>
+                <label for="otherContact" class="inputHeader">Other</label>
                 <p class="display-value-wrapper">
-                  <span class="truncated-display-value">{$profile.username}&nbsp;</span>
+                  <span class="truncated-display-value">{$profile.otherContact}&nbsp;</span>
                 </p>
               </div>
             </div>
