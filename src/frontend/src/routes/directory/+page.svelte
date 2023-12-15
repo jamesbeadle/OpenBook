@@ -19,7 +19,7 @@
 </script>
 
 <Layout>
-  <div class="flex flex-row h-screen w-full">
+  <div class="flex flex-row h-full w-full">
     {#if $authSignedInStore}
       <Dashboard />
     {:else}

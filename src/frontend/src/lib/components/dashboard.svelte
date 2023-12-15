@@ -43,6 +43,10 @@
   function loadWhitepaper() {
     goto('/whitepaper');
   }
+
+  function loadProfile() {
+    goto('/profile');
+  }
 </script>
 
 <nav class="p-4 h-full side-nav flex flex-col">
@@ -76,7 +80,7 @@
 </nav>
 <div class="w-full">
   <DashboardHeader />
-  <div class="flex-1 overflow-y-auto p-4">
+  <div class="flex-1 p-4">
     {#if currentRoute === '/profile'}
       <ProfileDetail />
     {/if}
@@ -98,8 +102,10 @@
         OpenBook is a decentralised business management tool for organisations
         of all sizes.
       </p>
-      <button class="book-btn mt-4 disabled">Create Organisation</button>
-      <button class="book-btn mt-4 disabled">Find Existing</button>
+      
+      <button on:click={loadProfile} class="book-btn mt-4">Create Profile</button>
+      <button class="book-btn mt-4 disabled text-xs">Create Organisation (soon)</button>
+      <button class="book-btn mt-4 disabled text-xs">Find Existing (soon)</button>
     {/if}
   </div>
 </div>
