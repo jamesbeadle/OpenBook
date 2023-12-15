@@ -4,7 +4,7 @@ import { parse, serialize } from "cookie";
 import * as set_cookie_parser from "set-cookie-parser";
 import { nonNullish } from "@dfinity/utils";
 import "dompurify";
-import { HttpAgent, Actor } from "@dfinity/agent";
+import "@dfinity/agent";
 import { AuthClient } from "@dfinity/auth-client";
 let base = "";
 let assets = base;
@@ -1819,7 +1819,7 @@ function get_data(event, options2, nodes, global) {
   let promise_id = 1;
   let count = 0;
   const { iterator, push, done } = create_async_iterator();
-  function replacer2(thing) {
+  function replacer(thing) {
     if (typeof thing?.then === "function") {
       const id = promise_id++;
       count += 1;
@@ -1839,7 +1839,7 @@ function get_data(event, options2, nodes, global) {
           count -= 1;
           let str;
           try {
-            str = devalue.uneval({ id, data, error: error2 }, replacer2);
+            str = devalue.uneval({ id, data, error: error2 }, replacer);
           } catch (e) {
             error2 = await handle_error_and_jsonify(
               event,
@@ -1847,7 +1847,7 @@ function get_data(event, options2, nodes, global) {
               new Error(`Failed to serialize promise while rendering ${event.route.id}`)
             );
             data = void 0;
-            str = devalue.uneval({ id, data, error: error2 }, replacer2);
+            str = devalue.uneval({ id, data, error: error2 }, replacer);
           }
           push(`<script>${global}.resolve(${str})<\/script>
 `);
@@ -1862,7 +1862,7 @@ function get_data(event, options2, nodes, global) {
     const strings = nodes.map((node) => {
       if (!node)
         return "null";
-      return `{"type":"data","data":${devalue.uneval(node.data, replacer2)},${stringify_uses(node)}${node.slash ? `,"slash":${JSON.stringify(node.slash)}` : ""}}`;
+      return `{"type":"data","data":${devalue.uneval(node.data, replacer)},${stringify_uses(node)}${node.slash ? `,"slash":${JSON.stringify(node.slash)}` : ""}}`;
     });
     return {
       data: `[${strings.join(",")}]`,
@@ -3346,7 +3346,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "l2yc4a"
+  version_hash: "dswbi7"
 };
 function get_hooks() {
   return {};
@@ -3662,15 +3662,6 @@ const ThemeToggle_svelte_svelte_type_style_lang = "";
 const Toast_svelte_svelte_type_style_lang = "";
 const Toasts_svelte_svelte_type_style_lang = "";
 const WizardTransition_svelte_svelte_type_style_lang = "";
-const Layout_svelte_svelte_type_style_lang = "";
-const css$1 = {
-  code: "main.svelte-vmfccd{flex:1;display:flex;flex-direction:column}",
-  map: null
-};
-const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  $$result.css.add(css$1);
-  return `${``} ${validate_component(BusyScreen, "BusyScreen").$$render($$result, {}, {}, {})}`;
-});
 const localIdentityCanisterId = {}.VITE_INTERNET_IDENTITY_CANISTER_ID;
 const AUTH_MAX_TIME_TO_LIVE = BigInt(
   60 * 60 * 1e3 * 1e3 * 1e3 * 24 * 14
@@ -3748,6 +3739,15 @@ const initAuthStore = () => {
   };
 };
 const authStore = initAuthStore();
+const Layout_svelte_svelte_type_style_lang = "";
+const css$1 = {
+  code: "main.svelte-vmfccd{flex:1;display:flex;flex-direction:column}",
+  map: null
+};
+const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  $$result.css.add(css$1);
+  return `${``} ${validate_component(BusyScreen, "BusyScreen").$$render($$result, {}, {}, {})}`;
+});
 const adminPrincipal = "nn75s-ayupf-j6mj3-kluyb-wjj7y-eang2-dwzzr-cfdxk-etbw7-cgwnb-lqe";
 const authSignedInStore = derived(
   authStore,
@@ -3757,299 +3757,6 @@ derived(
   authStore,
   ({ identity }) => identity !== null && identity !== void 0 && identity.getPrincipal().toString() === adminPrincipal
 );
-function replacer(key2, value) {
-  if (typeof value === "bigint") {
-    return value.toString();
-  } else {
-    return value;
-  }
-}
-const idlFactory = ({ IDL }) => {
-  const List = IDL.Rec();
-  const CurrencyId = IDL.Nat16;
-  const UpdateProfileDTO = IDL.Record({
-    "username": IDL.Text,
-    "displayName": IDL.Text,
-    "termsAccepted": IDL.Bool,
-    "preferredPaymentCurrency": CurrencyId,
-    "openChatUsername": IDL.Text,
-    "profession": IDL.Text,
-    "otherContact": IDL.Text,
-    "emailAddress": IDL.Text,
-    "phoneNumber": IDL.Text,
-    "userDefinedWallet": IDL.Text,
-    "lastName": IDL.Text,
-    "firstName": IDL.Text
-  });
-  const Error2 = IDL.Variant({
-    "DecodeError": IDL.Null,
-    "NotAllowed": IDL.Null,
-    "NotFound": IDL.Null,
-    "NotAuthorized": IDL.Null,
-    "InvalidData": IDL.Null,
-    "AlreadyExists": IDL.Null
-  });
-  const Result = IDL.Variant({ "ok": IDL.Null, "err": Error2 });
-  const OrganisationId = IDL.Nat32;
-  const OrganisationDTO = IDL.Record({
-    "id": OrganisationId,
-    "logo": IDL.Text,
-    "name": IDL.Text,
-    "banner": IDL.Text,
-    "lastModified": IDL.Int64,
-    "friendlyName": IDL.Text
-  });
-  List.fill(IDL.Opt(IDL.Tuple(OrganisationDTO, List)));
-  const ProfileDTO = IDL.Record({
-    "principal": IDL.Text,
-    "username": IDL.Text,
-    "displayName": IDL.Text,
-    "termsAccepted": IDL.Bool,
-    "preferredPaymentCurrency": CurrencyId,
-    "openChatUsername": IDL.Text,
-    "profession": IDL.Text,
-    "createDate": IDL.Int,
-    "lastModified": IDL.Int64,
-    "otherContact": IDL.Text,
-    "emailAddress": IDL.Text,
-    "phoneNumber": IDL.Text,
-    "profilePicture": IDL.Vec(IDL.Nat8),
-    "userDefinedWallet": IDL.Text,
-    "organisations": List,
-    "lastName": IDL.Text,
-    "firstName": IDL.Text
-  });
-  return IDL.Service({
-    "createProfile": IDL.Func([UpdateProfileDTO], [Result], []),
-    "getProfile": IDL.Func([], [ProfileDTO], ["query"]),
-    "isUsernameAvailable": IDL.Func([IDL.Text], [IDL.Bool], []),
-    "updateProfileDetail": IDL.Func([UpdateProfileDTO], [Result], []),
-    "updateProfilePicture": IDL.Func([IDL.Vec(IDL.Nat8)], [Result], [])
-  });
-};
-class ActorFactory {
-  static createActor(idlFactory2, canisterId = "", identity = null, options2 = null) {
-    const hostOptions = {
-      host: `https://${canisterId}.icp-api.io`,
-      identity
-    };
-    if (!options2) {
-      options2 = {
-        agentOptions: hostOptions
-      };
-    } else if (!options2.agentOptions) {
-      options2.agentOptions = hostOptions;
-    } else {
-      options2.agentOptions.host = hostOptions.host;
-    }
-    const agent = new HttpAgent({ ...options2.agentOptions });
-    if ({ "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.NODE_ENV !== "production") {
-      agent.fetchRootKey().catch((err) => {
-        console.warn(
-          "Unable to fetch root key. Ensure your local replica is running"
-        );
-        console.error(err);
-      });
-    }
-    return Actor.createActor(idlFactory2, {
-      agent,
-      canisterId,
-      ...options2?.actorOptions
-    });
-  }
-  static createIdentityActor(authStore2, canisterId) {
-    let unsubscribe;
-    return new Promise((resolve, reject) => {
-      unsubscribe = authStore2.subscribe((store) => {
-        if (store.identity) {
-          resolve(store.identity);
-        }
-      });
-    }).then((identity) => {
-      unsubscribe();
-      return ActorFactory.createActor(idlFactory, canisterId, identity);
-    });
-  }
-}
-function createUserStore() {
-  const { subscribe: subscribe2, set } = writable(null);
-  function uint8ArrayToBase64(bytes) {
-    const binary = Array.from(bytes).map((byte) => String.fromCharCode(byte)).join("");
-    return btoa(binary);
-  }
-  function base64ToUint8Array(base642) {
-    const binary_string = atob(base642);
-    const len = binary_string.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; i++) {
-      bytes[i] = binary_string.charCodeAt(i);
-    }
-    return bytes;
-  }
-  function getProfileFromLocalStorage() {
-    const storedData = localStorage.getItem("user_profile_data");
-    if (storedData) {
-      const profileData = JSON.parse(storedData);
-      if (profileData && typeof profileData.profilePicture === "string") {
-        profileData.profilePicture = base64ToUint8Array(
-          profileData.profilePicture
-        );
-      }
-      return profileData;
-    }
-    return null;
-  }
-  async function sync() {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        { "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.BACKEND_CANISTER_ID ?? ""
-      );
-      let updatedProfileDataObj = await identityActor.getProfile();
-      if (!updatedProfileDataObj) {
-        await identityActor.createProfile();
-        updatedProfileDataObj = await identityActor.getProfile();
-      }
-      let updatedProfileData = updatedProfileDataObj;
-      if (updatedProfileData && updatedProfileData.profilePicture instanceof Uint8Array) {
-        const base64Picture = uint8ArrayToBase64(
-          updatedProfileData.profilePicture
-        );
-        localStorage.setItem(
-          "user_profile_data",
-          JSON.stringify(
-            {
-              ...updatedProfileData,
-              profilePicture: base64Picture
-            },
-            replacer
-          )
-        );
-      } else {
-        localStorage.setItem(
-          "user_profile_data",
-          JSON.stringify(updatedProfileData, replacer)
-        );
-      }
-      set(updatedProfileData);
-    } catch (error2) {
-      console.error("Error fetching user profile:", error2);
-      throw error2;
-    }
-  }
-  async function createProfile(profileDTO) {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        { "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.BACKEND_CANISTER_ID ?? ""
-      );
-      const result = await identityActor.createProfile(profileDTO);
-      return result;
-    } catch (error2) {
-      console.error("Error updating username:", error2);
-      throw error2;
-    }
-  }
-  async function updateProfile(updatedProfile) {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        { "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.BACKEND_CANISTER_ID ?? ""
-      );
-      const result = await identityActor.updateProfileDetail(updatedProfile);
-      sync();
-      return result;
-    } catch (error2) {
-      console.error("Error updating profile:", error2);
-      throw error2;
-    }
-  }
-  async function updateShareableProfileInfo(updatedProfile) {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        { "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.BACKEND_CANISTER_ID ?? ""
-      );
-      const result = await identityActor.updateProfileDetail(updatedProfile);
-      sync();
-      return result;
-    } catch (error2) {
-      console.error("Error updating profile:", error2);
-      throw error2;
-    }
-  }
-  async function getProfile() {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        { "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.BACKEND_CANISTER_ID ?? ""
-      );
-      const result = await identityActor.getProfile();
-      set(result);
-      return result;
-    } catch (error2) {
-      console.error("Error getting profile:", error2);
-      throw error2;
-    }
-  }
-  async function checkUsernameAvailability(username) {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        { "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.BACKEND_CANISTER_ID ?? ""
-      );
-      const result = await identityActor.isUsernameAvailable(username);
-      return result;
-    } catch (error2) {
-      console.error("Error getting profile:", error2);
-      throw error2;
-    }
-  }
-  async function updateProfilePicture(picture) {
-    try {
-      const maxPictureSize = 1e3;
-      if (picture.size > maxPictureSize * 1024) {
-        return null;
-      }
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(picture);
-      reader.onloadend = async () => {
-        const arrayBuffer = reader.result;
-        const uint8Array = new Uint8Array(arrayBuffer);
-        try {
-          const identityActor = await ActorFactory.createIdentityActor(
-            authStore,
-            { "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.BACKEND_CANISTER_ID ?? ""
-          );
-          const result = await identityActor.updateProfilePicture(uint8Array);
-          sync();
-          return result;
-        } catch (error2) {
-          console.error(error2);
-        }
-      };
-    } catch (error2) {
-      console.error("Error updating username:", error2);
-      throw error2;
-    }
-  }
-  return {
-    subscribe: subscribe2,
-    sync,
-    createProfile,
-    getProfile,
-    getProfileFromLocalStorage,
-    updateProfile,
-    updateProfilePicture,
-    updateShareableProfileInfo,
-    checkUsernameAvailability
-  };
-}
-const userStore = createUserStore();
-const userGetProfilePicture = derived(
-  userStore,
-  (user) => user !== null && user !== void 0 && user.profilePicture !== void 0 && user.profilePicture.length > 0 ? URL.createObjectURL(new Blob([new Uint8Array(user.profilePicture)])) : "profile_placeholder.png"
-);
 const Wallet_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { className = "" } = $$props;
   if ($$props.className === void 0 && $$bindings.className && className !== void 0)
@@ -4058,10 +3765,12 @@ const Wallet_icon = create_ssr_component(($$result, $$props, $$bindings, slots) 
 });
 const Dashboard_header = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let currentBorder;
+  let profileSrc;
+  let $profile, $$unsubscribe_profile;
   let $page, $$unsubscribe_page;
-  let $userGetProfilePicture, $$unsubscribe_userGetProfilePicture;
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
-  $$unsubscribe_userGetProfilePicture = subscribe(userGetProfilePicture, (value) => $userGetProfilePicture = value);
+  let profile = writable(null);
+  $$unsubscribe_profile = subscribe(profile, (value) => $profile = value);
   let showProfileDropdown = false;
   let { activeTitle = "OpenBook" } = $$props;
   onDestroy(() => {
@@ -4080,9 +3789,10 @@ const Dashboard_header = create_ssr_component(($$result, $$props, $$bindings, sl
   if ($$props.activeTitle === void 0 && $$bindings.activeTitle && activeTitle !== void 0)
     $$bindings.activeTitle(activeTitle);
   currentBorder = (route) => $page.url.pathname === route ? "active-border" : "";
+  profileSrc = $profile && $profile?.profilePicture && $profile?.profilePicture?.length > 0 ? URL.createObjectURL(new Blob([new Uint8Array($profile.profilePicture)])) : "profile_placeholder.png";
+  $$unsubscribe_profile();
   $$unsubscribe_page();
-  $$unsubscribe_userGetProfilePicture();
-  return `<div class="w-full p-4 top-bar flex justify-between items-center"><h1>${escape(activeTitle)}</h1> <div class="relative inline-block"><button${add_attribute("class", `h-full flex items-center border rounded-full ${currentBorder("/profile")}`, 0)}><img${add_attribute("src", $userGetProfilePicture, 0)} alt="Profile" class="h-8 rounded-full profile-pic" aria-label="Toggle Profile"></button> <div${add_attribute("class", `absolute right-0 top-full w-48 bg-black rounded-b-md rounded-l-md shadow-lg z-50 profile-dropdown ${showProfileDropdown ? "block" : "hidden"}`, 0)}><ul class=""><li><a href="/profile" class="flex items-center h-full w-full nav-underline"><span class="flex items-center h-full w-full"><img${add_attribute("src", $userGetProfilePicture, 0)} alt="logo" class="w-8 h-8 my-2 ml-4 mr-2 rounded-full"> <p class="w-full min-w-[125px] max-w-[125px] truncate" data-svelte-h="svelte-cig3zx">Profile</p></span></a></li> <li><button class="flex items-center justify-center px-4 pb-2 pt-1 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50 nav-button">Disconnect
+  return `<div class="w-full p-4 top-bar flex justify-between items-center"><h1>${escape(activeTitle)}</h1> <div class="relative inline-block"><button${add_attribute("class", `h-full flex items-center border rounded-full ${currentBorder("/profile")}`, 0)}><img${add_attribute("src", profileSrc, 0)} alt="Profile" class="h-8 rounded-full profile-pic" aria-label="Toggle Profile"></button> <div${add_attribute("class", `absolute right-0 top-full w-48 bg-black rounded-b-md rounded-l-md shadow-lg z-50 profile-dropdown ${showProfileDropdown ? "block" : "hidden"}`, 0)}><ul class=""><li><a href="/profile" class="flex items-center h-full w-full nav-underline"><span class="flex items-center h-full w-full"><img${add_attribute("src", profileSrc, 0)} alt="logo" class="w-8 h-8 my-2 ml-4 mr-2 rounded-full"> <p class="w-full min-w-[125px] max-w-[125px] truncate" data-svelte-h="svelte-cig3zx">Profile</p></span></a></li> <li><button class="flex items-center justify-center px-4 pb-2 pt-1 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50 nav-button">Disconnect
             ${validate_component(Wallet_icon, "WalletIcon").$$render($$result, { className: "ml-2 h-6 w-6 mt-1" }, {}, {})}</button></li></ul></div></div></div>`;
 });
 const Expand_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {

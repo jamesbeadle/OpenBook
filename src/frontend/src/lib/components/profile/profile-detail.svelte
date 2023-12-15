@@ -38,7 +38,6 @@
         if (value.principal === '') {
           newUser = true;
         }
-        console.log(value);
         setProfile(value);
         joinedDate = getDateFromBigInt(value.createDate);
       });

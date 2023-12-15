@@ -3,6 +3,7 @@
   import '../app.css';
 
   import { BusyScreen, Toasts } from '@dfinity/gix-components';
+  import { authStore } from '$lib/stores/auth-store';
   let isLoading = true;
 
   onMount(async () => {
@@ -20,6 +21,7 @@
 
       await Promise.all(promises);
 
+      await authStore.sync();
       // Remove spinner
       const spinner = document.querySelector('body > #app-spinner');
       spinner?.remove();

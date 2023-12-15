@@ -1,24 +1,43 @@
 <script lang="ts">
-  import { page } from '$app/stores';
-  import { authStore, type AuthSignInParams } from '$lib/stores/auth-store';
-  import { toastsError } from '$lib/stores/toasts-store';
   import { onMount, onDestroy } from 'svelte';
+  import { page } from '$app/stores';
   import { goto } from '$app/navigation';
-  import { userGetProfilePicture } from '$lib/derived/user.derived';
+  import { writable, type Writable } from 'svelte/store';
+  import { userStore } from '$lib/stores/user-store';
+  import { authStore } from '$lib/stores/auth-store';
+  import { toastsError } from '$lib/stores/toasts-store';
+  import type { ProfileDTO } from '../../../../declarations/backend/backend.did';
   import WalletIcon from '$lib/icons/wallet-icon.svelte';
 
+  let profile: Writable<ProfileDTO | null> = writable(null);
   let showProfileDropdown = false;
   let unsubscribeLogin: () => void;
   export let activeTitle = 'OpenBook';
+  let unsubscribeUserProfile: () => void;
 
   $: currentBorder = (route: string) =>
     $page.url.pathname === route ? 'active-border' : '';
+
+  $: profileSrc =
+    $profile && $profile?.profilePicture && $profile?.profilePicture?.length > 0
+      ? URL.createObjectURL(new Blob([new Uint8Array($profile.profilePicture)]))
+      : 'profile_placeholder.png';
 
   onMount(async () => {
     if (typeof window !== 'undefined') {
       document.addEventListener('click', closeDropdownOnClickOutside);
     }
     try {
+      userStore.sync();
+
+      unsubscribeUserProfile = userStore.subscribe((value) => {
+        console.log(value);
+        if (!value) {
+          return;
+        }
+        console.log(value);
+        setProfile(value);
+      });
     } catch (error) {
       toastsError({
         msg: { text: 'Error syncing authentication.' },
@@ -27,6 +46,12 @@
       console.error('Error syncing authentication:', error);
     }
   });
+
+  function setProfile(updatedProfile: any) {
+    if (updatedProfile) {
+      profile.set(updatedProfile);
+    }
+  }
 
   onDestroy(() => {
     unsubscribeLogin?.();
@@ -69,7 +94,7 @@
       )}`}
     >
       <img
-        src={$userGetProfilePicture}
+        src={profileSrc}
         alt="Profile"
         class="h-8 rounded-full profile-pic"
         aria-label="Toggle Profile"
@@ -87,11 +112,14 @@
             class="flex items-center h-full w-full nav-underline"
           >
             <span class="flex items-center h-full w-full">
-              <img
-                src={$userGetProfilePicture}
-                alt="logo"
-                class="w-8 h-8 my-2 ml-4 mr-2 rounded-full"
-              />
+              {#key profileSrc}
+                <img
+                  src={profileSrc}
+                  alt="logo"
+                  class="w-8 h-8 my-2 ml-4 mr-2 rounded-full"
+                />
+              {/key}
+
               <p class="w-full min-w-[125px] max-w-[125px] truncate">Profile</p>
             </span>
           </a>
