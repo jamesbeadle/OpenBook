@@ -69,7 +69,7 @@ input[type='file'] {
   @apply text-xs xs:text-sm sm:text-lg;
 }
 .default-header {
-  @apply text-xs xs:text-sm sm:text-lg;
+  @apply text-xs xs:text-sm sm:text-lg md:text-xxs;
 }
 .book-btn {
   @apply bg-customGreen px-4 py-2 rounded-md text-center text-black;
@@ -109,13 +109,13 @@ input[type='file'] {
 }
 
 .display-value-wrapper {
-  @apply flex w-full border rounded-md px-2 md:px-1 py-2 mt-2 ;
+  @apply flex w-full border rounded-md px-2 py-2 mt-2 ;
   background-color: #25282e;
   border-color: #454b56 !important;
 }
 
 .truncated-display-value {
-  @apply text-xxs sm:text-sm md:text-xxs lg:text-sm xl:text-base truncate max-w-[80px] xs:max-w-none;
+  @apply text-xxs sm:text-sm md:text-xxs lg:text-sm xl:text-base truncate max-w-[80px] xs:max-w-none md:max-w-[100px] lg:max-w-none;
 }
 
 .wide-truncated-display-value {

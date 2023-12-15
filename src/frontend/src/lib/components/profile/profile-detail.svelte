@@ -172,10 +172,18 @@
     <h3 class="default-header">Create Your OpenBook Profile</h3>
     <CreateProfileForm {profile} {profileCreated} {profileUpdated} />
   {:else}
-    <div class="flex-1 flex-col m-1 md:mx-1">
+    <div class="flex-1 flex-col m-1 md:mx-1 text-xxs sm:text-sm md:text-xxs lg:text-xs ">
+      <div class="w-full flex flex-col sm:flex-row mt-8 md:mt-0 items-center md:mb-4">
+        <span class="w-full sm:w-auto">Principal:&nbsp;</span>
+        <button
+          class="w-full text-left flex items-center my-2 xs:my-0"
+          on:click={copyTextAndShowToast}
+        >
+            {$profile.principal}<CopyIcon className="w-7 xs:w-6" fill="#FFFFFF" /> 
+        </button>
+      </div>
       <div class="w-full flex flex-col md:flex-row">
         <div class="flex flex-col">
-          <p class="mb-2 inputHeader">Profile Image</p>
           <div class="w-full md:w-36 flex flex-col">
             {#key profileSrc}
               <img
@@ -202,9 +210,9 @@
           <p class="text-xs">Maximimum Size 500KB.</p>
         </div>
         <div
-          class="flex flex-1 md:p-4 flex-col md:flex-row md:space-x-4 w-full md:px-4 md:pr-0"
+          class="flex flex-1 flex-col md:flex-row md:space-x-4 w-full md:px-4 md:pr-0"
         >
-          <div class="w-full md:w-1/2 flex-col flex mt-4">
+          <div class="w-full md:w-1/2 flex-col flex mt-4 md:mt-0">
             <div class="w-full flex my-4 md:mt-0 mb-4 items-center">
               <div class="hidden md:flex w-2/3 default-header">Public Profile Information:</div>
               <div class="md:hidden w-2/3 default-header">Public Profile Info</div>
@@ -257,16 +265,15 @@
               </div>
             </div>
             <div class="w-full flex flex-row space-x-4 mt-4">
-              <div class="flex flex-col w-full md:w-1/2">
+              <div class="flex flex-col w-full">
                 <label for="profession" class="inputHeader">Profession</label>
                 <p class="display-value-wrapper">
                   <span class="wide-truncated-display-value">{$profile.profession}&nbsp;</span>
                 </p>
               </div>
-              <div class="hidden md:flex w-1/2" />
             </div>
           </div>
-          <div class="w-full md:w-1/2 flex-col flex mt-4">
+          <div class="w-full md:w-1/2 flex-col flex mt-4 md:mt-0">
             <div class="w-full flex my-4 md:mt-0 mb-4 items-center">
               <div class="hidden md:flex w-2/3 default-header">Shareable Profile Information:</div>
               <div class="md:hidden w-2/3 default-header">Shareable Profile Info:</div>
@@ -315,15 +322,6 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="w-full flex flex-row space-x-4 mt-8 md:mt-0">
-        <button
-          class="w-full text-left flex items-center text-xs"
-          on:click={copyTextAndShowToast}
-        >
-          Principal: {$profile.principal}
-          <CopyIcon className="w-4" fill="#FFFFFF" />
-        </button>
       </div>
     </div>
   {/if}
