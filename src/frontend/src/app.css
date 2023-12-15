@@ -68,6 +68,9 @@ input[type='file'] {
 .default-text {
   @apply text-xs xs:text-sm sm:text-lg;
 }
+.default-header {
+  @apply text-xs xs:text-sm sm:text-lg;
+}
 .book-btn {
   @apply bg-customGreen px-4 py-2 rounded-md text-center text-black;
 }
@@ -105,14 +108,26 @@ input[type='file'] {
   border-color: #66e094;
 }
 
-.display-value {
-  @apply w-full px-4 md:px-1 py-2 border rounded-md mt-2 text-xxs sm:text-sm md:text-xxs lg:text-sm xl:text-base;
+.display-value-wrapper {
+  @apply flex w-full border rounded-md px-2 md:px-1 py-2 mt-2 ;
   background-color: #25282e;
   border-color: #454b56 !important;
 }
 
+.truncated-display-value {
+  @apply text-xxs sm:text-sm md:text-xxs lg:text-sm xl:text-base truncate max-w-[80px] xs:max-w-none;
+}
+
+.wide-truncated-display-value {
+  @apply text-xxs sm:text-sm md:text-xxs lg:text-sm xl:text-base truncate max-w-[200px] xs:max-w-none;
+}
+
+.display-value {
+  @apply text-xxs sm:text-sm md:text-xxs lg:text-sm xl:text-base truncate;
+}
+
 .inputHeader {
-  @apply flex text-sm md:text-xxs;
+  @apply flex text-xs md:text-xxs;
 }
 
 /* global.css */

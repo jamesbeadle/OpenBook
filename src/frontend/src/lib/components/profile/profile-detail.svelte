@@ -206,7 +206,8 @@
         >
           <div class="w-full md:w-1/2 flex-col flex mt-4">
             <div class="w-full flex my-4 md:mt-0 mb-4 items-center">
-              <div class="w-2/3 text-sm">Public Profile Information:</div>
+              <div class="hidden md:flex w-2/3 default-header">Public Profile Information:</div>
+              <div class="md:hidden w-2/3 default-header">Public Profile Info</div>
               <div class="w-1/3 flex justify-end">
                 <button
                   on:click={toggleUpdateModal}
@@ -217,46 +218,58 @@
               </div>
             </div>
             <div class="w-full flex flex-row space-x-4">
-              <div class="form-group w-1/2">
+              <div class="flex flex-col w-1/2">
                 <label for="username" class="inputHeader"
                   >Username
                   <span>
                     <div class="text-xs text-red-500 ml-1">*</div>
                   </span>
                 </label>
-                <p class="display-value">{$profile.username}</p>
+                <p class="display-value-wrapper">
+                  <span class="truncated-display-value">{$profile.username}&nbsp;</span>
+                </p>
               </div>
-              <div class="form-group w-1/2">
+              <div class="flex flex-col w-1/2 md:w-1/2">
                 <label for="displayName" class="inputHeader"
                   >Display Name
                   <span>
                     <div class="text-xs text-red-500 ml-1">*</div>
                   </span>
                 </label>
-                <p class="display-value">{$profile.displayName}</p>
+                <p class="display-value-wrapper">
+                  <span class="truncated-display-value">{$profile.displayName}</span>
+                </p>
               </div>
             </div>
             <div class="w-full flex flex-row space-x-4 mt-4">
-              <div class="form-group w-1/2">
+              <div class="flex flex-col w-1/2">
                 <label for="firstName" class="inputHeader">First Name</label>
-                <p class="display-value">{$profile.firstName}&nbsp;</p>
+                
+                <p class="display-value-wrapper">
+                  <span class="truncated-display-value">{$profile.firstName}&nbsp;</span>
+                </p>
               </div>
-              <div class="form-group w-1/2">
+              <div class="flex flex-col w-1/2">
                 <label for="lastName" class="inputHeader">Last Name</label>
-                <p class="display-value">{$profile.lastName}&nbsp;</p>
+                <p class="display-value-wrapper">
+                  <span class="truncated-display-value">{$profile.lastName}&nbsp;</span>
+                </p>
               </div>
             </div>
             <div class="w-full flex flex-row space-x-4 mt-4">
-              <div class="form-group w-1/2">
+              <div class="flex flex-col w-full md:w-1/2">
                 <label for="profession" class="inputHeader">Profession</label>
-                <p class="display-value">{$profile.profession}&nbsp;</p>
+                <p class="display-value-wrapper">
+                  <span class="wide-truncated-display-value">{$profile.profession}&nbsp;</span>
+                </p>
               </div>
-              <div class="form-group w-1/2" />
+              <div class="hidden md:flex w-1/2" />
             </div>
           </div>
           <div class="w-full md:w-1/2 flex-col flex mt-4">
             <div class="w-full flex my-4 md:mt-0 mb-4 items-center">
-              <div class="w-2/3 text-xs">Shareable Profile Information:</div>
+              <div class="hidden md:flex w-2/3 default-header">Shareable Profile Information:</div>
+              <div class="md:hidden w-2/3 default-header">Shareable Profile Info:</div>
               <div class="w-1/3 flex justify-end">
                 <button
                   on:click={toggleShareableUpdateModal}
@@ -267,29 +280,37 @@
               </div>
             </div>
             <div class="w-full flex flex-row space-x-4">
-              <div class="form-group w-1/2">
-                <label for="username" class="inputHeader"
+              <div class="flex flex-col w-1/2">
+                <label for="openChatUsername" class="inputHeader"
                   ><a
                     target="_blank"
                     href="https://oc.app/community/mldkd-vqaaa-aaaar-av5cq-cai/channel/230276105428323899255565868449599995147/?ref=zv6hh-xaaaa-aaaar-ac35q-cai"
                     ><OpenchatIcon className="w-4 mr-1" /></a
                   >OpenChat</label
                 >
-                <p class="display-value">{$profile.openChatUsername} &nbsp;</p>
+                <p class="display-value-wrapper">
+                  <span class="truncated-display-value">{$profile.openChatUsername}&nbsp;</span>
+                </p>
               </div>
-              <div class="form-group w-1/2">
+              <div class="flex flex-col w-1/2">
                 <label for="displayName" class="inputHeader">Email</label>
-                <p class="display-value">{$profile.emailAddress} &nbsp;</p>
+                <p class="display-value-wrapper">
+                  <span class="truncated-display-value">{$profile.emailAddress}&nbsp;</span>
+                </p>
               </div>
             </div>
             <div class="w-full flex flex-row space-x-4 mt-4">
-              <div class="form-group w-1/2">
+              <div class="flex flex-col w-1/2">
                 <label for="username" class="inputHeader">Phone Number</label>
-                <p class="display-value">{$profile.phoneNumber} &nbsp;</p>
+                <p class="display-value-wrapper">
+                  <span class="truncated-display-value">{$profile.phoneNumber}&nbsp;</span>
+                </p>
               </div>
-              <div class="form-group w-1/2">
+              <div class="flex flex-col w-1/2">
                 <label for="username" class="inputHeader">Other</label>
-                <p class="display-value">{$profile.otherContact} &nbsp;</p>
+                <p class="display-value-wrapper">
+                  <span class="truncated-display-value">{$profile.username}&nbsp;</span>
+                </p>
               </div>
             </div>
           </div>
