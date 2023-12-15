@@ -189,6 +189,19 @@ actor Self {
     };
   };
 
+  public shared query func getProfiles(usernameFilter: Text, firstNameFilter: Text, lastNameFilter: Text, professionFilter: Text, currentPage: Int) : async DTO.DirectoryDTO {
+    
+    let fetchedProfiles = profilesInstance.fetchProfiles(usernameFilter, firstNameFilter, lastNameFilter, professionFilter, currentPage);
+    let totalEntries = profilesInstance.countProfiles(usernameFilter, firstNameFilter, lastNameFilter, professionFilter);
+    
+    let directoryDTO: DTO.DirectoryDTO = {
+      profiles = fetchedProfiles;
+      totalEntries = totalEntries;
+      currentPage = currentPage;
+    };
+    return directoryDTO;
+  };
+
   //Stable Variables
   private stable var stable_profiles : [(Text, T.Profile)] = [];
   private stable var stable_profilePictures : [(Text, Blob)] = [];

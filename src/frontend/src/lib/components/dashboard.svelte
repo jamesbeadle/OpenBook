@@ -12,6 +12,8 @@
   import Logo from '$lib/icons/logo-icon.svelte';
   import ValueIcon from '$lib/icons/value-icon.svelte';
   import ProfileDetail from './profile/profile-detail.svelte';
+  import { goto } from '$app/navigation';
+  import IcpDirectory from './directory/icp-directory.svelte';
 
   let activeSection = 0;
   let sections = ['projects', 'contacts'];
@@ -32,12 +34,23 @@
       isLoading = false;
     }
   });
+
+  function loadDirectory(){
+    goto('/directory');
+  }
+
 </script>
 
 <nav class="p-4 h-full side-nav flex flex-col">
   <a href="/">
     <Logo className="w-6" />
   </a>
+  <button on:click={loadDirectory}>
+    <IcpIcon
+      className="side-nav-icon"
+      fill={'#FFFFFF'}
+    />
+  </button>
   {#if activeRole === 0}
     <button on:click={() => selectSection(0)}>
       <IcpIcon
@@ -62,6 +75,9 @@
   <div class="flex-1 overflow-y-auto p-4">
     {#if currentRoute === '/profile'}
       <ProfileDetail />
+    {/if}
+    {#if currentRoute === '/directory'}
+      <IcpDirectory />
     {/if}
     {#if activeRole === 0}
       <Owner />
