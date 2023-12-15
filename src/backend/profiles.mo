@@ -377,17 +377,18 @@ module {
       return true;
     };
 
-    public func fetchProfiles(usernameFilter: Text, firstNameFilter: Text, lastNameFilter: Text, professionFilter: Text, currentPage: Int, pageSize: Int) : [DTOs.DirectoryProfileDTO] {
+    public func fetchProfiles(usernameFilter : Text, firstNameFilter : Text, lastNameFilter : Text, professionFilter : Text, currentPage : Int, pageSize : Int) : [DTOs.DirectoryProfileDTO] {
       let profilesList = Iter.toList(userProfiles.vals());
-      let filteredProfiles = List.filter(profilesList, func (profile : T.Profile) : Bool {
-        Text.contains(profile.username, #text usernameFilter) and
-        Text.contains(profile.firstName, #text firstNameFilter) and
-        Text.contains(profile.lastName, #text lastNameFilter) and
-        Text.contains(profile.profession, #text professionFilter)
-      });
+      let filteredProfiles = List.filter(
+        profilesList,
+        func(profile : T.Profile) : Bool {
+          Text.contains(profile.username, #text usernameFilter) and Text.contains(profile.firstName, #text firstNameFilter) and Text.contains(profile.lastName, #text lastNameFilter) and Text.contains(profile.profession, #text professionFilter)
+        },
+      );
 
-      let sortedProfiles = Array.sort(List.toArray(filteredProfiles),
-        func(a :T.Profile, b : T.Profile) : Order.Order {
+      let sortedProfiles = Array.sort(
+        List.toArray(filteredProfiles),
+        func(a : T.Profile, b : T.Profile) : Order.Order {
           if (a.createDate < b.createDate) { return #less };
           if (a.createDate == b.createDate) { return #equal };
           return #greater;
@@ -398,21 +399,21 @@ module {
       let endIndex = Int.min(startIndex + pageSize, List.size(filteredProfiles));
 
       var profileBuffer = Buffer.fromArray<DTOs.DirectoryProfileDTO>([]);
-      var currentIndex: Nat = 0;
+      var currentIndex : Nat = 0;
       var iter = List.fromArray(sortedProfiles);
 
       label indexLoop while (currentIndex < endIndex) {
         switch (iter) {
           case (?(profile, rest)) {
             if (currentIndex >= startIndex) {
-              var profilePicture: Blob = Blob.fromArray([]);
-              switch(userProfilePictures.get(profile.principal)){
-                case (null){};
-                case (?foundPicture){
+              var profilePicture : Blob = Blob.fromArray([]);
+              switch (userProfilePictures.get(profile.principal)) {
+                case (null) {};
+                case (?foundPicture) {
                   profilePicture := foundPicture;
-                }
+                };
               };
-              let dto: DTOs.DirectoryProfileDTO = {
+              let dto : DTOs.DirectoryProfileDTO = {
                 principal = profile.principal;
                 username = profile.username;
                 firstName = profile.firstName;
@@ -426,21 +427,21 @@ module {
             currentIndex := currentIndex + 1;
             iter := rest;
           };
-          case null { break indexLoop; };
+          case null { break indexLoop };
         };
       };
 
       return Buffer.toArray(profileBuffer);
     };
 
-    public func countProfiles(usernameFilter: Text, firstNameFilter: Text, lastNameFilter: Text, professionFilter: Text) : Int {
-      let profilesList = Iter.toList(userProfiles.vals()); 
-      let filteredProfiles = List.filter(profilesList, func (profile : T.Profile) : Bool {
-        Text.contains(profile.username, #text usernameFilter) and
-        Text.contains(profile.firstName, #text firstNameFilter) and
-        Text.contains(profile.lastName, #text lastNameFilter) and
-        Text.contains(profile.profession, #text professionFilter)
-      });
+    public func countProfiles(usernameFilter : Text, firstNameFilter : Text, lastNameFilter : Text, professionFilter : Text) : Int {
+      let profilesList = Iter.toList(userProfiles.vals());
+      let filteredProfiles = List.filter(
+        profilesList,
+        func(profile : T.Profile) : Bool {
+          Text.contains(profile.username, #text usernameFilter) and Text.contains(profile.firstName, #text firstNameFilter) and Text.contains(profile.lastName, #text lastNameFilter) and Text.contains(profile.profession, #text professionFilter)
+        },
+      );
       return List.size(filteredProfiles);
     };
   };

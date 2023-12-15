@@ -53,18 +53,18 @@ module DTOs {
   };
 
   public type DirectoryDTO = {
-    profiles: [DirectoryProfileDTO];
-    totalEntries: Int;
-    currentPage: Int;
+    profiles : [DirectoryProfileDTO];
+    totalEntries : Int;
+    currentPage : Int;
   };
 
   public type DirectoryProfileDTO = {
-    principal: Text;
-    username: Text;
-    profilePicture: Blob;
-    firstName: Text;
-    lastName: Text;
-    profession: Text;
+    principal : Text;
+    username : Text;
+    profilePicture : Blob;
+    firstName : Text;
+    lastName : Text;
+    profession : Text;
   };
 
   public type BankingDashboardDTO = {};

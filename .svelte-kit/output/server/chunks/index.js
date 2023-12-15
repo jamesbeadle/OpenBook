@@ -4,7 +4,7 @@ import { parse, serialize } from "cookie";
 import * as set_cookie_parser from "set-cookie-parser";
 import { nonNullish } from "@dfinity/utils";
 import "dompurify";
-import "@dfinity/agent";
+import { HttpAgent, Actor } from "@dfinity/agent";
 import { AuthClient } from "@dfinity/auth-client";
 let base = "";
 let assets = base;
@@ -910,6 +910,9 @@ function setContext(key2, context) {
 function getContext(key2) {
   return get_current_component().$$.context.get(key2);
 }
+function ensure_array_like(array_like_or_iterator) {
+  return array_like_or_iterator?.length !== void 0 ? array_like_or_iterator : Array.from(array_like_or_iterator);
+}
 const ATTR_REGEX = /[&"]/g;
 const CONTENT_REGEX = /[&<]/g;
 function escape(value, is_attr = false) {
@@ -925,6 +928,14 @@ function escape(value, is_attr = false) {
     last = i + 1;
   }
   return escaped + str.substring(last);
+}
+function each(items, fn) {
+  items = ensure_array_like(items);
+  let str = "";
+  for (let i = 0; i < items.length; i += 1) {
+    str += fn(items[i], i);
+  }
+  return str;
 }
 const missing_component = {
   $$render: () => ""
@@ -3346,7 +3357,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "dswbi7"
+  version_hash: "myybo9"
 };
 function get_hooks() {
   return {};
@@ -3757,6 +3768,131 @@ derived(
   authStore,
   ({ identity }) => identity !== null && identity !== void 0 && identity.getPrincipal().toString() === adminPrincipal
 );
+const idlFactory = ({ IDL }) => {
+  const List = IDL.Rec();
+  const CurrencyId = IDL.Nat16;
+  const UpdateProfileDTO = IDL.Record({
+    "username": IDL.Text,
+    "displayName": IDL.Text,
+    "termsAccepted": IDL.Bool,
+    "preferredPaymentCurrency": CurrencyId,
+    "openChatUsername": IDL.Text,
+    "profession": IDL.Text,
+    "otherContact": IDL.Text,
+    "emailAddress": IDL.Text,
+    "phoneNumber": IDL.Text,
+    "userDefinedWallet": IDL.Text,
+    "lastName": IDL.Text,
+    "firstName": IDL.Text
+  });
+  const Error2 = IDL.Variant({
+    "DecodeError": IDL.Null,
+    "NotAllowed": IDL.Null,
+    "NotFound": IDL.Null,
+    "NotAuthorized": IDL.Null,
+    "InvalidData": IDL.Null,
+    "AlreadyExists": IDL.Null
+  });
+  const Result = IDL.Variant({ "ok": IDL.Null, "err": Error2 });
+  const OrganisationId = IDL.Nat32;
+  const OrganisationDTO = IDL.Record({
+    "id": OrganisationId,
+    "logo": IDL.Text,
+    "name": IDL.Text,
+    "banner": IDL.Text,
+    "lastModified": IDL.Int64,
+    "friendlyName": IDL.Text
+  });
+  List.fill(IDL.Opt(IDL.Tuple(OrganisationDTO, List)));
+  const ProfileDTO = IDL.Record({
+    "principal": IDL.Text,
+    "username": IDL.Text,
+    "displayName": IDL.Text,
+    "termsAccepted": IDL.Bool,
+    "preferredPaymentCurrency": CurrencyId,
+    "openChatUsername": IDL.Text,
+    "profession": IDL.Text,
+    "createDate": IDL.Int,
+    "lastModified": IDL.Int64,
+    "otherContact": IDL.Text,
+    "emailAddress": IDL.Text,
+    "phoneNumber": IDL.Text,
+    "profilePicture": IDL.Vec(IDL.Nat8),
+    "userDefinedWallet": IDL.Text,
+    "organisations": List,
+    "lastName": IDL.Text,
+    "firstName": IDL.Text
+  });
+  const DirectoryProfileDTO = IDL.Record({
+    "principal": IDL.Text,
+    "username": IDL.Text,
+    "profession": IDL.Text,
+    "profilePicture": IDL.Vec(IDL.Nat8),
+    "lastName": IDL.Text,
+    "firstName": IDL.Text
+  });
+  const DirectoryDTO = IDL.Record({
+    "totalEntries": IDL.Int,
+    "currentPage": IDL.Int,
+    "profiles": IDL.Vec(DirectoryProfileDTO)
+  });
+  return IDL.Service({
+    "createProfile": IDL.Func([UpdateProfileDTO], [Result], []),
+    "getProfile": IDL.Func([], [ProfileDTO], ["query"]),
+    "getProfiles": IDL.Func(
+      [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Int],
+      [DirectoryDTO],
+      ["query"]
+    ),
+    "isUsernameAvailable": IDL.Func([IDL.Text], [IDL.Bool], []),
+    "updateProfileDetail": IDL.Func([UpdateProfileDTO], [Result], []),
+    "updateProfilePicture": IDL.Func([IDL.Vec(IDL.Nat8)], [Result], [])
+  });
+};
+class ActorFactory {
+  static createActor(idlFactory2, canisterId = "", identity = null, options2 = null) {
+    const hostOptions = {
+      host: "http://127.0.0.1:8080",
+      identity
+    };
+    if (!options2) {
+      options2 = {
+        agentOptions: hostOptions
+      };
+    } else if (!options2.agentOptions) {
+      options2.agentOptions = hostOptions;
+    } else {
+      options2.agentOptions.host = hostOptions.host;
+    }
+    const agent = new HttpAgent({ ...options2.agentOptions });
+    if ({ "__CANDID_UI_CANISTER_ID": "dfdal-2uaaa-aaaaa-qaama-cai", "BACKEND_CANISTER_ID": "cpmcr-yeaaa-aaaaa-qaala-cai", "FRONTEND_CANISTER_ID": "cinef-v4aaa-aaaaa-qaalq-cai", "DFX_NETWORK": "local" }.NODE_ENV !== "production") {
+      agent.fetchRootKey().catch((err) => {
+        console.warn(
+          "Unable to fetch root key. Ensure your local replica is running"
+        );
+        console.error(err);
+      });
+    }
+    return Actor.createActor(idlFactory2, {
+      agent,
+      canisterId,
+      ...options2?.actorOptions
+    });
+  }
+  static createIdentityActor(authStore2, canisterId) {
+    let unsubscribe;
+    return new Promise((resolve, reject) => {
+      unsubscribe = authStore2.subscribe((store) => {
+        if (store.identity) {
+          resolve(store.identity);
+        }
+      });
+    }).then((identity) => {
+      unsubscribe();
+      return ActorFactory.createActor(idlFactory, canisterId, identity);
+    });
+  }
+}
 const Wallet_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { className = "" } = $$props;
   if ($$props.className === void 0 && $$bindings.className && className !== void 0)
@@ -3836,19 +3972,79 @@ const Profile_detail = create_ssr_component(($$result, $$props, $$bindings, slot
   $$unsubscribe_profile();
   return `${`${validate_component(Spinner, "Spinner").$$render($$result, {}, {}, {})}`}`;
 });
+function createProfileStore() {
+  let actor = ActorFactory.createActor(
+    idlFactory,
+    { "__CANDID_UI_CANISTER_ID": "dfdal-2uaaa-aaaaa-qaama-cai", "BACKEND_CANISTER_ID": "cpmcr-yeaaa-aaaaa-qaala-cai", "FRONTEND_CANISTER_ID": "cinef-v4aaa-aaaaa-qaalq-cai", "DFX_NETWORK": "local" }.BACKEND_CANISTER_ID
+  );
+  async function getProfiles(usernameFilter, firstNameFilter, lastNameFilter, professionFilter, currentPage) {
+    let updatedPlayersData = await actor.getProfiles(
+      usernameFilter,
+      firstNameFilter,
+      lastNameFilter,
+      professionFilter,
+      currentPage
+    );
+    return updatedPlayersData;
+  }
+  return {
+    getProfiles
+  };
+}
+createProfileStore();
+let totalPages = 1;
+function blobToSrc(blob) {
+  if (blob.length == 0) {
+    return "profile_placeholder.png";
+  }
+  return URL.createObjectURL(new Blob([new Uint8Array(blob)]));
+}
+const Directory = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let profiles = [];
+  let currentPage = 1;
+  let filters = {
+    username: "",
+    firstName: "",
+    lastName: "",
+    profession: ""
+  };
+  return `<h1 data-svelte-h="svelte-12ucp9m">OpenBook Directory</h1> <div class="filters"><input type="text" placeholder="Username"${add_attribute("value", filters.username, 0)}> <input type="text" placeholder="First Name"${add_attribute("value", filters.firstName, 0)}> <input type="text" placeholder="Last Name"${add_attribute("value", filters.lastName, 0)}> <input type="text" placeholder="Profession"${add_attribute("value", filters.profession, 0)}></div> <table><thead data-svelte-h="svelte-th1cdc"><tr><th>Image</th> <th>Name</th> <th>Profession</th></tr></thead> <tbody>${each(profiles, (profile) => {
+    return `<tr><td><img${add_attribute("src", blobToSrc(profile.profilePicture), 0)}${add_attribute("alt", profile.username, 0)}></td> <td>${escape(profile.firstName)} ${escape(profile.lastName)}</td> <td>${escape(profile.profession)}</td> </tr>`;
+  })}</tbody></table> <div class="pagination">${each(Array(totalPages), (_, page2) => {
+    return `<button ${page2 + 1 === currentPage ? "disabled" : ""}>${escape(page2 + 1)} </button>`;
+  })}</div>`;
+});
 const Dashboard = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let currentRoute;
   let $page, $$unsubscribe_page;
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
   currentRoute = $page.url.pathname;
   $$unsubscribe_page();
-  return `<nav class="p-4 h-full side-nav flex flex-col"><a href="/">${validate_component(Logo_icon, "Logo").$$render($$result, { className: "w-6" }, {}, {})}</a> ${``} <div class="pull-down">${validate_component(Expand_icon, "ExpandIcon").$$render($$result, { fill: "#555555" }, {}, {})}</div></nav> <div class="w-full">${validate_component(Dashboard_header, "DashboardHeader").$$render($$result, {}, {}, {})} <div class="flex-1 overflow-y-auto p-4">${currentRoute === "/profile" ? `${validate_component(Profile_detail, "ProfileDetail").$$render($$result, {}, {}, {})}` : ``} ${``} ${``} ${``} ${currentRoute === "/" ? `<p class="text-2xl" data-svelte-h="svelte-11g1yv3">Welcome to OpenBook</p> <p data-svelte-h="svelte-53rjjq">OpenBook is a decentralised business management tool for organisations
+  return `<nav class="p-4 h-full side-nav flex flex-col"><a href="/">${validate_component(Logo_icon, "Logo").$$render($$result, { className: "w-6" }, {}, {})}</a> <button>${validate_component(Icp_icon, "IcpIcon").$$render(
+    $$result,
+    {
+      className: "side-nav-icon",
+      fill: "#FFFFFF"
+    },
+    {},
+    {}
+  )}</button> ${``} <div class="pull-down">${validate_component(Expand_icon, "ExpandIcon").$$render($$result, { fill: "#555555" }, {}, {})}</div></nav> <div class="w-full">${validate_component(Dashboard_header, "DashboardHeader").$$render($$result, {}, {}, {})} <div class="flex-1 overflow-y-auto p-4">${currentRoute === "/profile" ? `${validate_component(Profile_detail, "ProfileDetail").$$render($$result, {}, {}, {})}` : ``} ${currentRoute === "/directory" ? `${validate_component(Directory, "IcpDirectory").$$render($$result, {}, {}, {})}` : ``} ${``} ${``} ${``} ${currentRoute === "/" ? `<p class="text-2xl" data-svelte-h="svelte-11g1yv3">Welcome to OpenBook</p> <p data-svelte-h="svelte-53rjjq">OpenBook is a decentralised business management tool for organisations
         of all sizes.</p> <button class="book-btn mt-4 disabled" data-svelte-h="svelte-1f7hr6b">Create Organisation</button> <button class="book-btn mt-4 disabled" data-svelte-h="svelte-18itbrx">Find Existing</button>` : ``}</div></div>`;
 });
 const Landing = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `<div class="relative md:w-auto w-full h-full overflow-hidden md:overflow-visible" data-svelte-h="svelte-14qlssr"><img src="home.png" alt="" class="hidden-image aspect-w-16 md:h-full w-full md:w-auto object-cover object-middle"></div> <div class="md:flex-1 flex flex-col justify-center items-center p-4 md:p-12 my-16 md:my-2"><div class="md:flex-1 flex flex-col justify-center items-center p-4 md:p-12 my-16 md:my-2 space-y-8">${validate_component(Logo_icon, "Logo").$$render($$result, { className: "w-24" }, {}, {})} <p data-svelte-h="svelte-xf904x">Welcome Back</p> <p class="hidden" data-svelte-h="svelte-8vrkqj">Please connect to continue</p> <div class="flex flex-row space-x-2"><button class="book-btn min-w-[150px]" data-svelte-h="svelte-k8064b">Connect</button> <a href="/whitepaper" class="book-btn min-w-[150px]" data-svelte-h="svelte-vlfr5f">Whitepaper</a></div> <p class="text-center" data-svelte-h="svelte-5t7oxk">Welcome to OpenBook, the future of business management at your fingertips!
       Experience the ease of decentralised business management, secure
       transaction management and real-time insights.</p></div></div>`;
+});
+const Page$3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $authSignedInStore, $$unsubscribe_authSignedInStore;
+  $$unsubscribe_authSignedInStore = subscribe(authSignedInStore, (value) => $authSignedInStore = value);
+  $$unsubscribe_authSignedInStore();
+  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+    default: () => {
+      return `<div class="flex flex-row h-screen w-full">${$authSignedInStore ? `${validate_component(Dashboard, "Dashboard").$$render($$result, {}, {}, {})}` : `${validate_component(Landing, "Landing").$$render($$result, {}, {}, {})}`}</div>`;
+    }
+  })}`;
 });
 const Page$2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $authSignedInStore, $$unsubscribe_authSignedInStore;
@@ -3994,13 +4190,14 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 export {
   Error$1 as E,
   Layout$1 as L,
-  Page$2 as P,
+  Page$3 as P,
   Server as S,
   set_building as a,
   set_private_env as b,
   set_public_env as c,
-  Page$1 as d,
-  Page as e,
+  Page$2 as d,
+  Page$1 as e,
+  Page as f,
   get_hooks as g,
   options as o,
   set_assets as s

@@ -35,10 +35,9 @@
     }
   });
 
-  function loadDirectory(){
+  function loadDirectory() {
     goto('/directory');
   }
-
 </script>
 
 <nav class="p-4 h-full side-nav flex flex-col">
@@ -46,10 +45,7 @@
     <Logo className="w-6" />
   </a>
   <button on:click={loadDirectory}>
-    <IcpIcon
-      className="side-nav-icon"
-      fill={'#FFFFFF'}
-    />
+    <IcpIcon className="side-nav-icon" fill={'#FFFFFF'} />
   </button>
   {#if activeRole === 0}
     <button on:click={() => selectSection(0)}>
