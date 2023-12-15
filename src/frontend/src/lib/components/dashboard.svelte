@@ -13,7 +13,7 @@
   import ValueIcon from '$lib/icons/value-icon.svelte';
   import ProfileDetail from './profile/profile-detail.svelte';
   import { goto } from '$app/navigation';
-  import IcpDirectory from './directory/icp-directory.svelte';
+  import IcpDirectory from './directory/directory.svelte';
 
   let activeSection = 0;
   let sections = ['projects', 'contacts'];

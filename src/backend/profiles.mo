@@ -12,6 +12,8 @@ import Time "mo:base/Time";
 import Int64 "mo:base/Int64";
 import Int "mo:base/Int";
 import Buffer "mo:base/Buffer";
+import Array "mo:base/Array";
+import Order "mo:base/Order";
 import DTOs "DTOs";
 
 module {
@@ -384,14 +386,20 @@ module {
         Text.contains(profile.profession, #text professionFilter)
       });
 
+      let sortedProfiles = Array.sort(List.toArray(filteredProfiles),
+        func(a :T.Profile, b : T.Profile) : Order.Order {
+          if (a.createDate < b.createDate) { return #less };
+          if (a.createDate == b.createDate) { return #equal };
+          return #greater;
+        },
+      );
 
       let startIndex = (currentPage - 1) * pageSize;
       let endIndex = Int.min(startIndex + pageSize, List.size(filteredProfiles));
 
       var profileBuffer = Buffer.fromArray<DTOs.DirectoryProfileDTO>([]);
       var currentIndex: Nat = 0;
-      var iter = filteredProfiles;
-      
+      var iter = List.fromArray(sortedProfiles);
 
       label indexLoop while (currentIndex < endIndex) {
         switch (iter) {
