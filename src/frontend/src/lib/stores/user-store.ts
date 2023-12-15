@@ -32,7 +32,6 @@ function createUserStore() {
     if (storedData) {
       const profileData: ProfileDTO = JSON.parse(storedData);
       if (profileData && typeof profileData.profilePicture === 'string') {
-        // Decode the Base64 string back to a Uint8Array
         profileData.profilePicture = base64ToUint8Array(
           profileData.profilePicture,
         );

@@ -102,7 +102,6 @@
       };
 
       let result = await userStore.updateShareableProfileInfo(updateProfileDTO);
-      console.log(result);
       shareableInfoUpdated();
       userStore.sync();
       toastsShow({
@@ -142,9 +141,9 @@
   on:nnsClose={toggleShareableUpdateModal}
 >
   {#if $profile}
-    <div class="p-4">
+    <div class="m-4">
       <div class="flex justify-between items-center my-2">
-        <h3 class="default-header">Update Public Profile Information</h3>
+        <h3>Update Shareable Profile Information</h3>
         <button class="times-button" on:click={toggleShareableUpdateModal}
           >&times;</button
         >

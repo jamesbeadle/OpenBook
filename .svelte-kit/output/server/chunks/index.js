@@ -4,7 +4,7 @@ import { parse, serialize } from "cookie";
 import * as set_cookie_parser from "set-cookie-parser";
 import { nonNullish } from "@dfinity/utils";
 import "dompurify";
-import "@dfinity/agent";
+import { HttpAgent, Actor } from "@dfinity/agent";
 import { AuthClient } from "@dfinity/auth-client";
 let base = "";
 let assets = base;
@@ -3346,7 +3346,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "dswbi7"
+  version_hash: "id5ml7"
 };
 function get_hooks() {
   return {};
@@ -3757,6 +3757,131 @@ derived(
   authStore,
   ({ identity }) => identity !== null && identity !== void 0 && identity.getPrincipal().toString() === adminPrincipal
 );
+const idlFactory = ({ IDL }) => {
+  const List = IDL.Rec();
+  const CurrencyId = IDL.Nat16;
+  const UpdateProfileDTO = IDL.Record({
+    "username": IDL.Text,
+    "displayName": IDL.Text,
+    "termsAccepted": IDL.Bool,
+    "preferredPaymentCurrency": CurrencyId,
+    "openChatUsername": IDL.Text,
+    "profession": IDL.Text,
+    "otherContact": IDL.Text,
+    "emailAddress": IDL.Text,
+    "phoneNumber": IDL.Text,
+    "userDefinedWallet": IDL.Text,
+    "lastName": IDL.Text,
+    "firstName": IDL.Text
+  });
+  const Error2 = IDL.Variant({
+    "DecodeError": IDL.Null,
+    "NotAllowed": IDL.Null,
+    "NotFound": IDL.Null,
+    "NotAuthorized": IDL.Null,
+    "InvalidData": IDL.Null,
+    "AlreadyExists": IDL.Null
+  });
+  const Result = IDL.Variant({ "ok": IDL.Null, "err": Error2 });
+  const OrganisationId = IDL.Nat32;
+  const OrganisationDTO = IDL.Record({
+    "id": OrganisationId,
+    "logo": IDL.Text,
+    "name": IDL.Text,
+    "banner": IDL.Text,
+    "lastModified": IDL.Int64,
+    "friendlyName": IDL.Text
+  });
+  List.fill(IDL.Opt(IDL.Tuple(OrganisationDTO, List)));
+  const ProfileDTO = IDL.Record({
+    "principal": IDL.Text,
+    "username": IDL.Text,
+    "displayName": IDL.Text,
+    "termsAccepted": IDL.Bool,
+    "preferredPaymentCurrency": CurrencyId,
+    "openChatUsername": IDL.Text,
+    "profession": IDL.Text,
+    "createDate": IDL.Int,
+    "lastModified": IDL.Int64,
+    "otherContact": IDL.Text,
+    "emailAddress": IDL.Text,
+    "phoneNumber": IDL.Text,
+    "profilePicture": IDL.Vec(IDL.Nat8),
+    "userDefinedWallet": IDL.Text,
+    "organisations": List,
+    "lastName": IDL.Text,
+    "firstName": IDL.Text
+  });
+  const DirectoryProfileDTO = IDL.Record({
+    "principal": IDL.Text,
+    "username": IDL.Text,
+    "profession": IDL.Text,
+    "profilePicture": IDL.Vec(IDL.Nat8),
+    "lastName": IDL.Text,
+    "firstName": IDL.Text
+  });
+  const DirectoryDTO = IDL.Record({
+    "totalEntries": IDL.Int,
+    "currentPage": IDL.Int,
+    "profiles": IDL.Vec(DirectoryProfileDTO)
+  });
+  return IDL.Service({
+    "createProfile": IDL.Func([UpdateProfileDTO], [Result], []),
+    "getProfile": IDL.Func([], [ProfileDTO], ["query"]),
+    "getProfiles": IDL.Func(
+      [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Int],
+      [DirectoryDTO],
+      ["query"]
+    ),
+    "isUsernameAvailable": IDL.Func([IDL.Text], [IDL.Bool], []),
+    "updateProfileDetail": IDL.Func([UpdateProfileDTO], [Result], []),
+    "updateProfilePicture": IDL.Func([IDL.Vec(IDL.Nat8)], [Result], [])
+  });
+};
+class ActorFactory {
+  static createActor(idlFactory2, canisterId = "", identity = null, options2 = null) {
+    const hostOptions = {
+      host: `https://${canisterId}.icp-api.io`,
+      identity
+    };
+    if (!options2) {
+      options2 = {
+        agentOptions: hostOptions
+      };
+    } else if (!options2.agentOptions) {
+      options2.agentOptions = hostOptions;
+    } else {
+      options2.agentOptions.host = hostOptions.host;
+    }
+    const agent = new HttpAgent({ ...options2.agentOptions });
+    if ({ "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.NODE_ENV !== "production") {
+      agent.fetchRootKey().catch((err) => {
+        console.warn(
+          "Unable to fetch root key. Ensure your local replica is running"
+        );
+        console.error(err);
+      });
+    }
+    return Actor.createActor(idlFactory2, {
+      agent,
+      canisterId,
+      ...options2?.actorOptions
+    });
+  }
+  static createIdentityActor(authStore2, canisterId) {
+    let unsubscribe;
+    return new Promise((resolve, reject) => {
+      unsubscribe = authStore2.subscribe((store) => {
+        if (store.identity) {
+          resolve(store.identity);
+        }
+      });
+    }).then((identity) => {
+      unsubscribe();
+      return ActorFactory.createActor(idlFactory, canisterId, identity);
+    });
+  }
+}
 const Wallet_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { className = "" } = $$props;
   if ($$props.className === void 0 && $$bindings.className && className !== void 0)
@@ -3836,19 +3961,94 @@ const Profile_detail = create_ssr_component(($$result, $$props, $$bindings, slot
   $$unsubscribe_profile();
   return `${`${validate_component(Spinner, "Spinner").$$render($$result, {}, {}, {})}`}`;
 });
+function createProfileStore() {
+  let actor = ActorFactory.createActor(
+    idlFactory,
+    { "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.BACKEND_CANISTER_ID
+  );
+  async function getProfiles(usernameFilter, firstNameFilter, lastNameFilter, professionFilter, currentPage) {
+    let updatedProfilesData = await actor.getProfiles(
+      usernameFilter,
+      firstNameFilter,
+      lastNameFilter,
+      professionFilter,
+      currentPage
+    );
+    return updatedProfilesData;
+  }
+  return {
+    getProfiles
+  };
+}
+createProfileStore();
+const Directory = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  return `<h1 data-svelte-h="svelte-12ucp9m">OpenBook Directory</h1> ${``}`;
+});
+const Whitepaper_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { className = "" } = $$props;
+  let { fill = "#FFFFFF" } = $$props;
+  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
+    $$bindings.className(className);
+  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
+    $$bindings.fill(fill);
+  return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><path d="M11.362 2C15.518 2 14 8 14 8C14 8 20 6.35 20 10.457V22H4V2H11.362ZM12.189 0H2V24H22V9.614C22 7.223 15.352 0 12.189 0ZM17 13H7V12H17V13ZM17 15H7V16H17V15ZM14 18H7V19H14V18Z"${add_attribute("fill", fill, 0)}></path></svg>`;
+});
+const Home_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { className = "" } = $$props;
+  let { fill = "#FFFFFF" } = $$props;
+  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
+    $$bindings.className(className);
+  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
+    $$bindings.fill(fill);
+  return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><path fill="none"${add_attribute("stroke", fill, 0)} stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path fill="none"${add_attribute("stroke", fill, 0)} stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 22V12h6v10"></path></svg>`;
+});
 const Dashboard = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let currentRoute;
   let $page, $$unsubscribe_page;
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
   currentRoute = $page.url.pathname;
   $$unsubscribe_page();
-  return `<nav class="p-4 h-full side-nav flex flex-col"><a href="/">${validate_component(Logo_icon, "Logo").$$render($$result, { className: "w-6" }, {}, {})}</a> ${``} <div class="pull-down">${validate_component(Expand_icon, "ExpandIcon").$$render($$result, { fill: "#555555" }, {}, {})}</div></nav> <div class="w-full">${validate_component(Dashboard_header, "DashboardHeader").$$render($$result, {}, {}, {})} <div class="flex-1 overflow-y-auto p-4">${currentRoute === "/profile" ? `${validate_component(Profile_detail, "ProfileDetail").$$render($$result, {}, {}, {})}` : ``} ${``} ${``} ${``} ${currentRoute === "/" ? `<p class="text-2xl" data-svelte-h="svelte-11g1yv3">Welcome to OpenBook</p> <p data-svelte-h="svelte-53rjjq">OpenBook is a decentralised business management tool for organisations
-        of all sizes.</p> <button class="book-btn mt-4 disabled" data-svelte-h="svelte-1f7hr6b">Create Organisation</button> <button class="book-btn mt-4 disabled" data-svelte-h="svelte-18itbrx">Find Existing</button>` : ``}</div></div>`;
+  return `<nav class="p-4 h-full side-nav flex flex-col"><a href="/">${validate_component(Logo_icon, "Logo").$$render($$result, { className: "w-6" }, {}, {})}</a> <button>${validate_component(Home_icon, "HomeIcon").$$render(
+    $$result,
+    {
+      className: "side-nav-icon",
+      fill: currentRoute === "/" ? "#FFFFFF" : "#8C8C8C"
+    },
+    {},
+    {}
+  )}</button> <button>${validate_component(Icp_icon, "IcpIcon").$$render(
+    $$result,
+    {
+      className: "side-nav-icon",
+      fill: currentRoute === "/directory" ? "#FFFFFF" : "#8C8C8C"
+    },
+    {},
+    {}
+  )}</button> <button>${validate_component(Whitepaper_icon, "WhitepaperIcon").$$render(
+    $$result,
+    {
+      className: "side-nav-icon",
+      fill: "#8C8C8C"
+    },
+    {},
+    {}
+  )}</button> ${``} <div class="pull-down">${validate_component(Expand_icon, "ExpandIcon").$$render($$result, { fill: "#555555" }, {}, {})}</div></nav> <div class="w-full">${validate_component(Dashboard_header, "DashboardHeader").$$render($$result, {}, {}, {})} <div class="flex-1 p-4">${currentRoute === "/profile" ? `${validate_component(Profile_detail, "ProfileDetail").$$render($$result, {}, {}, {})}` : ``} ${currentRoute === "/directory" ? `${validate_component(Directory, "IcpDirectory").$$render($$result, {}, {}, {})}` : ``} ${``} ${``} ${``} ${currentRoute === "/" ? `<p class="text-2xl" data-svelte-h="svelte-11g1yv3">Welcome to OpenBook</p> <p data-svelte-h="svelte-53rjjq">OpenBook is a decentralised business management tool for organisations
+        of all sizes.</p> <button class="book-btn mt-4" data-svelte-h="svelte-shnzvf">Create Profile</button> <button class="book-btn mt-4 disabled text-xs" data-svelte-h="svelte-1b189a6">Create Organisation (soon)</button>` : ``}</div></div>`;
 });
 const Landing = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `<div class="relative md:w-auto w-full h-full overflow-hidden md:overflow-visible" data-svelte-h="svelte-14qlssr"><img src="home.png" alt="" class="hidden-image aspect-w-16 md:h-full w-full md:w-auto object-cover object-middle"></div> <div class="md:flex-1 flex flex-col justify-center items-center p-4 md:p-12 my-16 md:my-2"><div class="md:flex-1 flex flex-col justify-center items-center p-4 md:p-12 my-16 md:my-2 space-y-8">${validate_component(Logo_icon, "Logo").$$render($$result, { className: "w-24" }, {}, {})} <p data-svelte-h="svelte-xf904x">Welcome Back</p> <p class="hidden" data-svelte-h="svelte-8vrkqj">Please connect to continue</p> <div class="flex flex-row space-x-2"><button class="book-btn min-w-[150px]" data-svelte-h="svelte-k8064b">Connect</button> <a href="/whitepaper" class="book-btn min-w-[150px]" data-svelte-h="svelte-vlfr5f">Whitepaper</a></div> <p class="text-center" data-svelte-h="svelte-5t7oxk">Welcome to OpenBook, the future of business management at your fingertips!
       Experience the ease of decentralised business management, secure
       transaction management and real-time insights.</p></div></div>`;
+});
+const Page$3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $authSignedInStore, $$unsubscribe_authSignedInStore;
+  $$unsubscribe_authSignedInStore = subscribe(authSignedInStore, (value) => $authSignedInStore = value);
+  $$unsubscribe_authSignedInStore();
+  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+    default: () => {
+      return `<div class="flex flex-row h-screen w-full">${$authSignedInStore ? `${validate_component(Dashboard, "Dashboard").$$render($$result, {}, {}, {})}` : `${validate_component(Landing, "Landing").$$render($$result, {}, {}, {})}`}</div>`;
+    }
+  })}`;
 });
 const Page$2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $authSignedInStore, $$unsubscribe_authSignedInStore;
@@ -3856,7 +4056,7 @@ const Page$2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   $$unsubscribe_authSignedInStore();
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<div class="flex flex-row h-screen w-full">${$authSignedInStore ? `${validate_component(Dashboard, "Dashboard").$$render($$result, {}, {}, {})}` : `${validate_component(Landing, "Landing").$$render($$result, {}, {}, {})}`}</div>`;
+      return `<div class="flex flex-row h-full w-full">${$authSignedInStore ? `${validate_component(Dashboard, "Dashboard").$$render($$result, {}, {}, {})}` : `${validate_component(Landing, "Landing").$$render($$result, {}, {}, {})}`}</div>`;
     }
   })}`;
 });
@@ -3936,18 +4136,40 @@ const Roadmap_icon = create_ssr_component(($$result, $$props, $$bindings, slots)
     $$bindings.fill(fill);
   return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><g clip-path="url(#clip0_15_154)"><path d="M5 9C6.654 9 8 10.346 8 12C8 13.654 6.654 15 5 15C3.346 15 2 13.654 2 12C2 10.346 3.346 9 5 9ZM5 7C2.238 7 0 9.239 0 12C0 14.761 2.238 17 5 17C7.762 17 10 14.761 10 12C10 9.239 7.762 7 5 7ZM20 16C18.835 16 17.796 16.506 17.065 17.301L11.577 14.374C11.347 15.01 11.028 15.603 10.633 16.138L16.121 19.065C16.049 19.366 16 19.676 16 20C16 22.209 17.791 24 20 24C22.209 24 24 22.209 24 20C24 17.791 22.209 16 20 16ZM20 22C18.897 22 18 21.103 18 20C18 18.897 18.897 18 20 18C21.103 18 22 18.897 22 20C22 21.103 21.103 22 20 22ZM20 0C17.791 0 16 1.791 16 4C16 4.324 16.049 4.634 16.121 4.935L10.633 7.862C11.028 8.398 11.346 8.99 11.577 9.626L17.065 6.699C17.796 7.494 18.835 8 20 8C22.209 8 24 6.209 24 4C24 1.791 22.209 0 20 0ZM20 6C18.897 6 18 5.103 18 4C18 2.897 18.897 2 20 2C21.103 2 22 2.897 22 4C22 5.103 21.103 6 20 6Z"${add_attribute("fill", fill, 0)}></path></g><defs><clipPath id="clip0_15_154"><rect width="24" height="24"${add_attribute("fill", fill, 0)}></rect></clipPath></defs></svg>`;
 });
+const Vision_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { className = "" } = $$props;
+  let { fill = "#FFFFFF" } = $$props;
+  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
+    $$bindings.className(className);
+  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
+    $$bindings.fill(fill);
+  return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3"${add_attribute("stroke", fill, 0)} stroke-width="2"></circle><path d="M20.188 10.9343C20.5762 11.4056 20.7703 11.6412 20.7703 12C20.7703 12.3588 20.5762 12.5944 20.188 13.0657C18.7679 14.7899 15.6357 18 12 18C8.36427 18 5.23206 14.7899 3.81197 13.0657C3.42381 12.5944 3.22973 12.3588 3.22973 12C3.22973 11.6412 3.42381 11.4056 3.81197 10.9343C5.23206 9.21014 8.36427 6 12 6C15.6357 6 18.7679 9.21014 20.188 10.9343Z"${add_attribute("stroke", fill, 0)} stroke-width="2"></path></svg>`;
+});
 const _page_svelte_svelte_type_style_lang = "";
 const css = {
   code: ".side-nav.svelte-13ks2f8{background-color:#1a1a1d;border-right:1px solid #2e323a}",
   map: null
 };
 const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let currentRoute;
+  let $page, $$unsubscribe_page;
+  $$unsubscribe_page = subscribe(page, (value) => $page = value);
   let activeSection = 0;
   let sections = ["vision", "value", "roadmap", "mvp", "team"];
   $$result.css.add(css);
+  currentRoute = $page.url.pathname;
+  $$unsubscribe_page();
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<div class="flex h-full"><nav class="p-4 h-full side-nav flex flex-col svelte-13ks2f8"><a href="/">${validate_component(Logo_icon, "Logo").$$render($$result, { className: "w-6" }, {}, {})}</a> <button>${validate_component(Icp_icon, "IcpIcon").$$render(
+      return `<div class="flex h-full"><nav class="p-4 h-full side-nav flex flex-col svelte-13ks2f8"><a href="/">${validate_component(Logo_icon, "Logo").$$render($$result, { className: "w-6" }, {}, {})}</a> <button>${validate_component(Home_icon, "HomeIcon").$$render(
+        $$result,
+        {
+          className: "side-nav-icon",
+          fill: currentRoute === "/" ? "#FFFFFF" : "#8C8C8C"
+        },
+        {},
+        {}
+      )}</button> <button>${validate_component(Vision_icon, "VisionIcon").$$render(
         $$result,
         {
           className: "side-nav-icon",
@@ -3994,13 +4216,14 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 export {
   Error$1 as E,
   Layout$1 as L,
-  Page$2 as P,
+  Page$3 as P,
   Server as S,
   set_building as a,
   set_private_env as b,
   set_public_env as c,
-  Page$1 as d,
-  Page as e,
+  Page$2 as d,
+  Page$1 as e,
+  Page as f,
   get_hooks as g,
   options as o,
   set_assets as s

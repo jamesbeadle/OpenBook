@@ -31,8 +31,6 @@
   const debouncedCheck = debounce(checkUsernameAvailability, 300);
 
   onMount(async () => {
-    console.log('here');
-    console.log($profile);
     usernameInputValue = $profile?.username ?? '';
     displayNameInputValue = $profile?.displayName ?? '';
     firstNameInputValue = $profile?.firstName ?? '';
@@ -156,7 +154,6 @@
         result = await userStore.updateProfile(updateProfileDTO);
         profileUpdated();
       }
-      console.log(result);
       userStore.sync();
       toastsShow({
         text: 'Profile updated.',

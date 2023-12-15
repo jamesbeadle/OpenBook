@@ -9,7 +9,7 @@
   },
   "_index.js": {
     "css": [
-      "_app/immutable/assets/index.38fd7e96.css"
+      "_app/immutable/assets/index.718f7110.css"
     ],
     "file": "chunks/index.js",
     "imports": [
@@ -20,7 +20,7 @@
     "file": "chunks/vendor.js"
   },
   "index.css": {
-    "file": "_app/immutable/assets/index.38fd7e96.css",
+    "file": "_app/immutable/assets/index.718f7110.css",
     "src": "index.css"
   },
   "node_modules/@dfinity/gix-components/dist/assets/logo-nns.svg": {
@@ -74,6 +74,14 @@
     ],
     "isEntry": true,
     "src": "src/frontend/src/routes/+page.svelte"
+  },
+  "src/frontend/src/routes/directory/+page.svelte": {
+    "file": "entries/pages/directory/_page.svelte.js",
+    "imports": [
+      "_index.js"
+    ],
+    "isEntry": true,
+    "src": "src/frontend/src/routes/directory/+page.svelte"
   },
   "src/frontend/src/routes/profile/+page.svelte": {
     "file": "entries/pages/profile/_page.svelte.js",

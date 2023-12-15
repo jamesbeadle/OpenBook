@@ -10,7 +10,12 @@ import Debug "mo:base/Debug";
 import List "mo:base/List";
 import Time "mo:base/Time";
 import Int64 "mo:base/Int64";
+import Int "mo:base/Int";
+import Buffer "mo:base/Buffer";
+import Array "mo:base/Array";
+import Order "mo:base/Order";
 import DTOs "DTOs";
+import Prim "mo:prim";
 
 module {
   public class Profiles() {
@@ -161,7 +166,10 @@ module {
       };
 
       for (profile in userProfiles.vals()) {
-        if (profile.username == username) {
+
+        let lowercaseUsername = Text.map(profile.username, Prim.charToLower);
+        let lowercaseNewUsername = Text.map(username, Prim.charToLower);
+        if (lowercaseUsername == lowercaseNewUsername) {
           return false;
         };
       };
@@ -365,7 +373,9 @@ module {
       };
 
       for (profile in userProfiles.vals()) {
-        if (profile.username == username) {
+        let lowercaseUsername = Text.map(profile.username, Prim.charToLower);
+        let lowercaseNewUsername = Text.map(username, Prim.charToLower);
+        if (lowercaseUsername == lowercaseNewUsername) {
           return false;
         };
       };
@@ -373,5 +383,91 @@ module {
       return true;
     };
 
+    public func fetchProfiles(usernameFilter : Text, firstNameFilter : Text, lastNameFilter : Text, professionFilter : Text, currentPage : Int, pageSize : Int) : [DTOs.DirectoryProfileDTO] {
+      let profilesList = Iter.toList(userProfiles.vals());
+      let filteredProfiles = List.filter(
+        profilesList,
+        func(profile : T.Profile) : Bool {
+          let lowerCaseProfile = {
+            username = Text.map(profile.username, Prim.charToLower);
+            firstName = Text.map(profile.firstName, Prim.charToLower);
+            lastName = Text.map(profile.lastName, Prim.charToLower);
+            profession = Text.map(profile.profession, Prim.charToLower);
+          };
+
+          let username = Text.map(usernameFilter, Prim.charToLower);
+          let usernamePattern = #text username;
+
+          let firstName = Text.map(firstNameFilter, Prim.charToLower);
+          let firstNamePattern = #text firstName;
+
+          let lastName = Text.map(lastNameFilter, Prim.charToLower);
+          let lastNamePattern = #text lastName;
+
+          let profession = Text.map(professionFilter, Prim.charToLower);
+          let professionPattern = #text profession;
+
+          (username == "" or Text.contains(lowerCaseProfile.username, usernamePattern)) and (firstName == "" or Text.contains(lowerCaseProfile.firstName, firstNamePattern)) and (lastName == "" or Text.contains(lowerCaseProfile.lastName, lastNamePattern)) and (profession == "" or Text.contains(lowerCaseProfile.profession, professionPattern));
+        },
+      );
+
+      let sortedProfiles = Array.sort(
+        List.toArray(filteredProfiles),
+        func(a : T.Profile, b : T.Profile) : Order.Order {
+          if (a.createDate < b.createDate) { return #less };
+          if (a.createDate == b.createDate) { return #equal };
+          return #greater;
+        },
+      );
+
+      let startIndex = (currentPage - 1) * pageSize;
+      let endIndex = Int.min(startIndex + pageSize, List.size(filteredProfiles));
+
+      var profileBuffer = Buffer.fromArray<DTOs.DirectoryProfileDTO>([]);
+      var currentIndex : Nat = 0;
+      var iter = List.fromArray(sortedProfiles);
+
+      label indexLoop while (currentIndex < endIndex) {
+        switch (iter) {
+          case (?(profile, rest)) {
+            if (currentIndex >= startIndex) {
+              var profilePicture : Blob = Blob.fromArray([]);
+              switch (userProfilePictures.get(profile.principal)) {
+                case (null) {};
+                case (?foundPicture) {
+                  profilePicture := foundPicture;
+                };
+              };
+              let dto : DTOs.DirectoryProfileDTO = {
+                principal = profile.principal;
+                username = profile.username;
+                firstName = profile.firstName;
+                lastName = profile.lastName;
+                profession = profile.profession;
+                displayName = profile.displayName;
+                profilePicture = profilePicture;
+              };
+              profileBuffer.add(dto);
+            };
+            currentIndex := currentIndex + 1;
+            iter := rest;
+          };
+          case null { break indexLoop };
+        };
+      };
+
+      return Buffer.toArray(profileBuffer);
+    };
+
+    public func countProfiles(usernameFilter : Text, firstNameFilter : Text, lastNameFilter : Text, professionFilter : Text) : Int {
+      let profilesList = Iter.toList(userProfiles.vals());
+      let filteredProfiles = List.filter(
+        profilesList,
+        func(profile : T.Profile) : Bool {
+          Text.contains(profile.username, #text usernameFilter) and Text.contains(profile.firstName, #text firstNameFilter) and Text.contains(profile.lastName, #text lastNameFilter) and Text.contains(profile.profession, #text professionFilter)
+        },
+      );
+      return List.size(filteredProfiles);
+    };
   };
 };

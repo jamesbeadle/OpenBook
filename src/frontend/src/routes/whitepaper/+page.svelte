@@ -16,9 +16,18 @@
   import RoadmapIcon from '$lib/icons/roadmap-icon.svelte';
   import Layout from '../Layout.svelte';
   import Roadmap from '$lib/components/whitepaper/roadmap.svelte';
+  import VisionIcon from '$lib/icons/vision-icon.svelte';
+  import { page } from '$app/stores';
+  import { goto } from '$app/navigation';
+  import HomeIcon from '$lib/icons/home-icon.svelte';
+  $: currentRoute = $page.url.pathname;
 
   let activeSection = 0;
   let sections = ['vision', 'value', 'roadmap', 'mvp', 'team'];
+
+  function loadHome() {
+    goto('/');
+  }
 
   function selectSection(sectionIndex: number) {
     activeSection = sectionIndex;
@@ -41,8 +50,14 @@
       <a href="/">
         <Logo className="w-6" />
       </a>
+      <button on:click={loadHome}>
+        <HomeIcon
+          className="side-nav-icon"
+          fill={currentRoute === '/' ? '#FFFFFF' : '#8C8C8C'}
+        />
+      </button>
       <button on:click={() => selectSection(0)}>
-        <IcpIcon
+        <VisionIcon
           className="side-nav-icon"
           fill={activeSection == 0 ? '#FFFFFF' : '#8C8C8C'}
         />

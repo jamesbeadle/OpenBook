@@ -7,4 +7,10 @@
     practical understanding of the complexities involved in creating tailored
     financial solutions.
   </p>
+  <p>
+    OpenBook is designed by DfinityDesigner, a seasoned designer responsible for
+    designing major IC projects like OpenChat. His experience ensures each
+    feature is designed with the user's experience paramount.
+  </p>
+  <p>Other team members will be announced in the coming months.</p>
 </div>

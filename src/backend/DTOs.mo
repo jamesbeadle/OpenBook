@@ -1,4 +1,5 @@
 import List "mo:base/List";
+import Blob "mo:base/Blob";
 import T "types";
 
 module DTOs {
@@ -49,6 +50,21 @@ module DTOs {
     logo : Text;
     banner : Text;
     lastModified : Int64;
+  };
+
+  public type DirectoryDTO = {
+    profiles : [DirectoryProfileDTO];
+    totalEntries : Int;
+    currentPage : Int;
+  };
+
+  public type DirectoryProfileDTO = {
+    principal : Text;
+    username : Text;
+    profilePicture : Blob;
+    firstName : Text;
+    lastName : Text;
+    profession : Text;
   };
 
   public type BankingDashboardDTO = {};
