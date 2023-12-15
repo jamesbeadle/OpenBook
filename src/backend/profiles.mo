@@ -15,6 +15,7 @@ import Buffer "mo:base/Buffer";
 import Array "mo:base/Array";
 import Order "mo:base/Order";
 import DTOs "DTOs";
+import Prim "mo:prim";
 
 module {
   public class Profiles() {
@@ -165,7 +166,10 @@ module {
       };
 
       for (profile in userProfiles.vals()) {
-        if (profile.username == username) {
+
+        let lowercaseUsername = Text.map(profile.username, Prim.charToLower);
+        let lowercaseNewUsername = Text.map(username, Prim.charToLower);
+        if (lowercaseUsername == lowercaseNewUsername) {
           return false;
         };
       };
@@ -369,7 +373,9 @@ module {
       };
 
       for (profile in userProfiles.vals()) {
-        if (profile.username == username) {
+        let lowercaseUsername = Text.map(profile.username, Prim.charToLower);
+        let lowercaseNewUsername = Text.map(username, Prim.charToLower);
+        if (lowercaseUsername == lowercaseNewUsername) {
           return false;
         };
       };
@@ -382,9 +388,29 @@ module {
       let filteredProfiles = List.filter(
         profilesList,
         func(profile : T.Profile) : Bool {
-          Text.contains(profile.username, #text usernameFilter) and Text.contains(profile.firstName, #text firstNameFilter) and Text.contains(profile.lastName, #text lastNameFilter) and Text.contains(profile.profession, #text professionFilter)
+          Debug.print(debug_show "profile");
+          Debug.print(debug_show profile);
+          let lowerCaseProfile = {
+            username = Text.map(profile.username, Prim.charToLower);
+            firstName = Text.map(profile.firstName, Prim.charToLower);
+            lastName = Text.map(profile.lastName, Prim.charToLower);
+            profession = Text.map(profile.profession, Prim.charToLower);
+          };
+          Debug.print(debug_show "lowerCaseProfile");
+          Debug.print(debug_show lowerCaseProfile);
+          let lowerCaseFilters = {
+            username = Text.map(usernameFilter, Prim.charToLower);
+            firstName = Text.map(firstNameFilter, Prim.charToLower);
+            lastName = Text.map(lastNameFilter, Prim.charToLower);
+            profession = Text.map(professionFilter, Prim.charToLower);
+          };
+          Debug.print(debug_show "lowerCaseFilters");
+          Debug.print(debug_show lowerCaseFilters);
+          (lowerCaseFilters.username == "" or Text.compare(lowerCaseProfile.username, lowerCaseFilters.username) == #equal) and (lowerCaseFilters.firstName == "" or Text.compare(lowerCaseProfile.firstName, lowerCaseFilters.firstName) == #equal) and (lowerCaseFilters.lastName == "" or Text.compare(lowerCaseProfile.lastName, lowerCaseFilters.lastName) == #equal) and (lowerCaseFilters.profession == "" or Text.compare(lowerCaseProfile.profession, lowerCaseFilters.profession) == #equal);
         },
       );
+      Debug.print(debug_show "filteredProfiles");
+      Debug.print(debug_show filteredProfiles);
 
       let sortedProfiles = Array.sort(
         List.toArray(filteredProfiles),
@@ -395,6 +421,8 @@ module {
         },
       );
 
+      Debug.print(debug_show "sortedProfiles");
+      Debug.print(debug_show sortedProfiles);
       let startIndex = (currentPage - 1) * pageSize;
       let endIndex = Int.min(startIndex + pageSize, List.size(filteredProfiles));
 

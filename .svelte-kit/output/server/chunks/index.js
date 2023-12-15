@@ -910,9 +910,6 @@ function setContext(key2, context) {
 function getContext(key2) {
   return get_current_component().$$.context.get(key2);
 }
-function ensure_array_like(array_like_or_iterator) {
-  return array_like_or_iterator?.length !== void 0 ? array_like_or_iterator : Array.from(array_like_or_iterator);
-}
 const ATTR_REGEX = /[&"]/g;
 const CONTENT_REGEX = /[&<]/g;
 function escape(value, is_attr = false) {
@@ -928,14 +925,6 @@ function escape(value, is_attr = false) {
     last = i + 1;
   }
   return escaped + str.substring(last);
-}
-function each(items, fn) {
-  items = ensure_array_like(items);
-  let str = "";
-  for (let i = 0; i < items.length; i += 1) {
-    str += fn(items[i], i);
-  }
-  return str;
 }
 const missing_component = {
   $$render: () => ""
@@ -3357,7 +3346,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "myybo9"
+  version_hash: "11h6g9g"
 };
 function get_hooks() {
   return {};
@@ -3852,7 +3841,7 @@ const idlFactory = ({ IDL }) => {
 class ActorFactory {
   static createActor(idlFactory2, canisterId = "", identity = null, options2 = null) {
     const hostOptions = {
-      host: "http://127.0.0.1:8080",
+      host: `https://${canisterId}.icp-api.io`,
       identity
     };
     if (!options2) {
@@ -3865,7 +3854,7 @@ class ActorFactory {
       options2.agentOptions.host = hostOptions.host;
     }
     const agent = new HttpAgent({ ...options2.agentOptions });
-    if ({ "__CANDID_UI_CANISTER_ID": "dfdal-2uaaa-aaaaa-qaama-cai", "BACKEND_CANISTER_ID": "cpmcr-yeaaa-aaaaa-qaala-cai", "FRONTEND_CANISTER_ID": "cinef-v4aaa-aaaaa-qaalq-cai", "DFX_NETWORK": "local" }.NODE_ENV !== "production") {
+    if ({ "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.NODE_ENV !== "production") {
       agent.fetchRootKey().catch((err) => {
         console.warn(
           "Unable to fetch root key. Ensure your local replica is running"
@@ -3975,7 +3964,7 @@ const Profile_detail = create_ssr_component(($$result, $$props, $$bindings, slot
 function createProfileStore() {
   let actor = ActorFactory.createActor(
     idlFactory,
-    { "__CANDID_UI_CANISTER_ID": "dfdal-2uaaa-aaaaa-qaama-cai", "BACKEND_CANISTER_ID": "cpmcr-yeaaa-aaaaa-qaala-cai", "FRONTEND_CANISTER_ID": "cinef-v4aaa-aaaaa-qaalq-cai", "DFX_NETWORK": "local" }.BACKEND_CANISTER_ID
+    { "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.BACKEND_CANISTER_ID
   );
   async function getProfiles(usernameFilter, firstNameFilter, lastNameFilter, professionFilter, currentPage) {
     let updatedPlayersData = await actor.getProfiles(
@@ -3992,27 +3981,8 @@ function createProfileStore() {
   };
 }
 createProfileStore();
-let totalPages = 1;
-function blobToSrc(blob) {
-  if (blob.length == 0) {
-    return "profile_placeholder.png";
-  }
-  return URL.createObjectURL(new Blob([new Uint8Array(blob)]));
-}
 const Directory = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let profiles = [];
-  let currentPage = 1;
-  let filters = {
-    username: "",
-    firstName: "",
-    lastName: "",
-    profession: ""
-  };
-  return `<h1 data-svelte-h="svelte-12ucp9m">OpenBook Directory</h1> <div class="filters"><input type="text" placeholder="Username"${add_attribute("value", filters.username, 0)}> <input type="text" placeholder="First Name"${add_attribute("value", filters.firstName, 0)}> <input type="text" placeholder="Last Name"${add_attribute("value", filters.lastName, 0)}> <input type="text" placeholder="Profession"${add_attribute("value", filters.profession, 0)}></div> <table><thead data-svelte-h="svelte-th1cdc"><tr><th>Image</th> <th>Name</th> <th>Profession</th></tr></thead> <tbody>${each(profiles, (profile) => {
-    return `<tr><td><img${add_attribute("src", blobToSrc(profile.profilePicture), 0)}${add_attribute("alt", profile.username, 0)}></td> <td>${escape(profile.firstName)} ${escape(profile.lastName)}</td> <td>${escape(profile.profession)}</td> </tr>`;
-  })}</tbody></table> <div class="pagination">${each(Array(totalPages), (_, page2) => {
-    return `<button ${page2 + 1 === currentPage ? "disabled" : ""}>${escape(page2 + 1)} </button>`;
-  })}</div>`;
+  return `<h1 data-svelte-h="svelte-12ucp9m">OpenBook Directory</h1> ${`${validate_component(Spinner, "Spinner").$$render($$result, {}, {}, {})}`}`;
 });
 const Dashboard = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let currentRoute;

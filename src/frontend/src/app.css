@@ -114,6 +114,12 @@ input[type='file'] {
   border-color: #454b56 !important;
 }
 
+.directory-card {
+  background-color: #25282e !important;
+  border: 1px solid #454b56;
+  color: white !important;
+}
+
 .truncated-display-value {
   @apply text-xxs sm:text-sm md:text-xxs lg:text-sm xl:text-base truncate max-w-[80px] xs:max-w-none md:max-w-[100px] lg:max-w-none;
 }

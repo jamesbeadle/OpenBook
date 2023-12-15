@@ -1,6 +1,6 @@
 import { ActorFactory } from '$lib/utils/actor-factory';
 import { idlFactory } from '../../../../declarations/backend';
-import type { DirectoryDTO, ProfileDTO } from '../../../../declarations/backend/backend.did';
+import type { DirectoryDTO } from '../../../../declarations/backend/backend.did';
 
 function createProfileStore() {
   let actor: any = ActorFactory.createActor(
