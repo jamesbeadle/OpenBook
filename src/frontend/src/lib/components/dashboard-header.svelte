@@ -31,11 +31,9 @@
       userStore.sync();
 
       unsubscribeUserProfile = userStore.subscribe((value) => {
-        console.log(value);
         if (!value) {
           return;
         }
-        console.log(value);
         setProfile(value);
       });
     } catch (error) {

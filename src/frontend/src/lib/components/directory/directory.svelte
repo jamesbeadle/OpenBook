@@ -25,6 +25,7 @@
       filters.profession,
       currentPage,
     );
+    //TOTAL PAGES
     console.log(directoryResult);
   }
 
@@ -38,14 +39,14 @@
     }
   });
 
-  function search() {
+  async function search() {
     currentPage = 1;
-    fetchProfiles();
+    await fetchProfiles();
   }
 
-  function goToPage(page: number) {
+  async function goToPage(page: number) {
     currentPage = page;
-    fetchProfiles();
+    await fetchProfiles();
   }
 
   function blobToSrc(blob: Uint8Array | number[]): string {
@@ -61,7 +62,7 @@
 {#if isLoading}
   <Spinner />
 {:else}
-  <div class="filters flex flex-col w-full">
+  <div class="filters flex flex-col w-full h-full">
     <div class="flex flex-col md:flex-row md:space-x-4 mt-2 md:mt-4">
       <div class="w-full md:w-1/2 mb-2 md:mb-0">
         <input
@@ -103,7 +104,7 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+  <div class="grid grid-cols-1 md:grid-cols-4 xl:grid-cols-8 gap-4 mt-4">
     {#each directoryResult.profiles as profile}
       <div class="card rounded-lg shadow-md overflow-hidden m-4 directory-card">
         <img

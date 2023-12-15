@@ -22,6 +22,7 @@ function createProfileStore() {
       professionFilter,
       currentPage,
     );
+    console.log(updatedPlayersData);
     return updatedPlayersData as DirectoryDTO;
   }
 

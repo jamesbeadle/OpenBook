@@ -102,7 +102,6 @@
       };
 
       let result = await userStore.updateShareableProfileInfo(updateProfileDTO);
-      console.log(result);
       shareableInfoUpdated();
       userStore.sync();
       toastsShow({
