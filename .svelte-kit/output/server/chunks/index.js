@@ -910,6 +910,9 @@ function setContext(key2, context) {
 function getContext(key2) {
   return get_current_component().$$.context.get(key2);
 }
+function ensure_array_like(array_like_or_iterator) {
+  return array_like_or_iterator?.length !== void 0 ? array_like_or_iterator : Array.from(array_like_or_iterator);
+}
 const ATTR_REGEX = /[&"]/g;
 const CONTENT_REGEX = /[&<]/g;
 function escape(value, is_attr = false) {
@@ -925,6 +928,14 @@ function escape(value, is_attr = false) {
     last = i + 1;
   }
   return escaped + str.substring(last);
+}
+function each(items, fn) {
+  items = ensure_array_like(items);
+  let str = "";
+  for (let i = 0; i < items.length; i += 1) {
+    str += fn(items[i], i);
+  }
+  return str;
 }
 const missing_component = {
   $$render: () => ""
@@ -3346,7 +3357,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "id5ml7"
+  version_hash: "1cal2bf"
 };
 function get_hooks() {
   return {};
@@ -3829,7 +3840,7 @@ const idlFactory = ({ IDL }) => {
     "createProfile": IDL.Func([UpdateProfileDTO], [Result], []),
     "getProfile": IDL.Func([], [ProfileDTO], ["query"]),
     "getProfiles": IDL.Func(
-      [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Int],
+      [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Int, IDL.Text],
       [DirectoryDTO],
       ["query"]
     ),
@@ -3966,13 +3977,14 @@ function createProfileStore() {
     idlFactory,
     { "BACKEND_CANISTER_ID": "eur5j-5iaaa-aaaal-qcrva-cai", "FRONTEND_CANISTER_ID": "etq35-qqaaa-aaaal-qcrvq-cai", "DFX_NETWORK": "ic" }.BACKEND_CANISTER_ID
   );
-  async function getProfiles(usernameFilter, firstNameFilter, lastNameFilter, professionFilter, currentPage) {
+  async function getProfiles(usernameFilter2, firstNameFilter, lastNameFilter, professionFilter2, currentPage, directoryStartFilter) {
     let updatedProfilesData = await actor.getProfiles(
-      usernameFilter,
+      usernameFilter2,
       firstNameFilter,
       lastNameFilter,
-      professionFilter,
-      currentPage
+      professionFilter2,
+      currentPage,
+      directoryStartFilter
     );
     return updatedProfilesData;
   }
@@ -3980,9 +3992,66 @@ function createProfileStore() {
     getProfiles
   };
 }
-createProfileStore();
+const profilesStore = createProfileStore();
+const directoryFilter = writable("A");
+const usernameFilter = writable("");
+const firstNameFitler = writable("");
+const lastNameFitler = writable("");
+const professionFilter = writable("");
+function blobToSrc(blob) {
+  if (blob.length == 0) {
+    return "profile_placeholder.png";
+  }
+  return URL.createObjectURL(new Blob([new Uint8Array(blob)]));
+}
 const Directory = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<h1 data-svelte-h="svelte-12ucp9m">OpenBook Directory</h1> ${``}`;
+  let $directoryFilter, $$unsubscribe_directoryFilter;
+  let $professionFilter, $$unsubscribe_professionFilter;
+  let $lastNameFitler, $$unsubscribe_lastNameFitler;
+  let $firstNameFitler, $$unsubscribe_firstNameFitler;
+  let $usernameFilter, $$unsubscribe_usernameFilter;
+  $$unsubscribe_directoryFilter = subscribe(directoryFilter, (value) => $directoryFilter = value);
+  $$unsubscribe_professionFilter = subscribe(professionFilter, (value) => $professionFilter = value);
+  $$unsubscribe_lastNameFitler = subscribe(lastNameFitler, (value) => $lastNameFitler = value);
+  $$unsubscribe_firstNameFitler = subscribe(firstNameFitler, (value) => $firstNameFitler = value);
+  $$unsubscribe_usernameFilter = subscribe(usernameFilter, (value) => $usernameFilter = value);
+  let directoryResult;
+  let currentPage = 1;
+  let totalPages = 1;
+  let isLoading = true;
+  async function fetchProfiles() {
+    directoryResult = await profilesStore.getProfiles($usernameFilter, $firstNameFitler, $lastNameFitler, $professionFilter, currentPage, $directoryFilter);
+    totalPages = Math.ceil(Number(directoryResult.totalEntries) / 25);
+    isLoading = false;
+  }
+  async function getProfiles() {
+    try {
+      busyStore.startBusy({
+        initiator: "fetch-profiles",
+        text: "Fetch profiles..."
+      });
+      await fetchProfiles();
+    } catch (error2) {
+      console.error("Error loading directory:", error2);
+    } finally {
+      busyStore.stopBusy("fetch-profiles");
+    }
+  }
+  {
+    {
+      if ($directoryFilter !== "") {
+        getProfiles();
+      }
+    }
+  }
+  $$unsubscribe_directoryFilter();
+  $$unsubscribe_professionFilter();
+  $$unsubscribe_lastNameFitler();
+  $$unsubscribe_firstNameFitler();
+  $$unsubscribe_usernameFilter();
+  return `<h1 data-svelte-h="svelte-12ucp9m">OpenBook Directory</h1> ${!isLoading ? `<div class="filters flex flex-col w-full h-full"><div class="flex flex-col md:flex-row md:space-x-4 mt-2 md:mt-4"><div class="w-full md:w-1/2 mb-2 md:mb-0"><input class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2" type="text" placeholder="Username"${add_attribute("value", $usernameFilter, 0)}></div> <div class="w-full md:w-1/2 mb-2 md:mb-0"><input class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2" type="text" placeholder="First Name"${add_attribute("value", $firstNameFitler, 0)}></div></div> <div class="flex flex-col md:flex-row md:space-x-4 md:mt-4"><div class="w-full md:w-1/2 mb-2 md:mb-0"><input class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2" type="text" placeholder="Last Name"${add_attribute("value", $lastNameFitler, 0)}></div> <div class="w-full md:w-1/2 mb-2 md:mb-0"><input class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2" type="text" placeholder="Profession"${add_attribute("value", $professionFilter, 0)}></div></div> <div class="flex flex-row mt-2 md:mt-4"><button class="book-btn" data-svelte-h="svelte-1xkd8vn">Search</button></div></div> <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">${each(directoryResult.profiles, (profile) => {
+    return `<div class="card rounded-t-md shadow-md overflow-hidden m-4 directory-card"><img class="w-full h-48 object-cover"${add_attribute("src", blobToSrc(profile.profilePicture), 0)}${add_attribute("alt", profile.username, 0)}> <div class="p-4"><h2 class="text-lg font-bold">${escape(profile.firstName)} ${escape(profile.lastName)}</h2> <p class="text-sm flex items-center">${validate_component(Logo_icon, "LogoIcon").$$render($$result, { className: "w-2 mr-1" }, {}, {})} ${escape(profile.username)}</p> <p class="text-sm">${escape(profile.profession)}</p></div> </div>`;
+  })}</div> <div class="pagination flex items-center justify-center space-x-4"><button class="${"book-btn " + escape("disabled", true)}" ${"disabled"}>&lt;</button> <span>Page ${escape(currentPage)} / ${escape(totalPages)}</span> <button class="${"book-btn " + escape(currentPage === totalPages ? "disabled" : "", true)}" ${currentPage === totalPages ? "disabled" : ""}>&gt;</button></div>` : ``}`;
 });
 const Whitepaper_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { className = "" } = $$props;
@@ -4002,13 +4071,126 @@ const Home_icon = create_ssr_component(($$result, $$props, $$bindings, slots) =>
     $$bindings.fill(fill);
   return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><path fill="none"${add_attribute("stroke", fill, 0)} stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path fill="none"${add_attribute("stroke", fill, 0)} stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 22V12h6v10"></path></svg>`;
 });
+const Directory_nav = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let $$unsubscribe_professionFilter;
+  let $$unsubscribe_directoryFilter;
+  $$unsubscribe_professionFilter = subscribe(professionFilter, (value) => value);
+  $$unsubscribe_directoryFilter = subscribe(directoryFilter, (value) => value);
+  $$unsubscribe_professionFilter();
+  $$unsubscribe_directoryFilter();
+  return `<div class="flex flex-col space-y-1 items-center mt-4 text-sm"><button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn-active"}`,
+    0
+  )}>A</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>B</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>C</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>D</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>E</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>F</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>G</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>H</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>I</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>J</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>K</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>L</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>M</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>N</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>O</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>P</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>Q</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>R</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>S</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>T</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>U</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>V</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>W</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>X</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>Y</button> <button${add_attribute(
+    "class",
+    ` ${"directory-nav-btn"}`,
+    0
+  )}>Z</button></div>`;
+});
 const Dashboard = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let currentRoute;
   let $page, $$unsubscribe_page;
   $$unsubscribe_page = subscribe(page, (value) => $page = value);
   currentRoute = $page.url.pathname;
   $$unsubscribe_page();
-  return `<nav class="p-4 h-full side-nav flex flex-col"><a href="/">${validate_component(Logo_icon, "Logo").$$render($$result, { className: "w-6" }, {}, {})}</a> <button>${validate_component(Home_icon, "HomeIcon").$$render(
+  return `<nav class="p-4 h-full side-nav flex flex-col items-center"><a href="/">${validate_component(Logo_icon, "Logo").$$render($$result, { className: "w-6" }, {}, {})}</a> <button>${validate_component(Home_icon, "HomeIcon").$$render(
     $$result,
     {
       className: "side-nav-icon",
@@ -4024,7 +4206,7 @@ const Dashboard = create_ssr_component(($$result, $$props, $$bindings, slots) =>
     },
     {},
     {}
-  )}</button> <button>${validate_component(Whitepaper_icon, "WhitepaperIcon").$$render(
+  )}</button> ${currentRoute === "/" ? `<button>${validate_component(Whitepaper_icon, "WhitepaperIcon").$$render(
     $$result,
     {
       className: "side-nav-icon",
@@ -4032,7 +4214,7 @@ const Dashboard = create_ssr_component(($$result, $$props, $$bindings, slots) =>
     },
     {},
     {}
-  )}</button> ${``} <div class="pull-down">${validate_component(Expand_icon, "ExpandIcon").$$render($$result, { fill: "#555555" }, {}, {})}</div></nav> <div class="w-full">${validate_component(Dashboard_header, "DashboardHeader").$$render($$result, {}, {}, {})} <div class="flex-1 p-4">${currentRoute === "/profile" ? `${validate_component(Profile_detail, "ProfileDetail").$$render($$result, {}, {}, {})}` : ``} ${currentRoute === "/directory" ? `${validate_component(Directory, "IcpDirectory").$$render($$result, {}, {}, {})}` : ``} ${``} ${``} ${``} ${currentRoute === "/" ? `<p class="text-2xl" data-svelte-h="svelte-11g1yv3">Welcome to OpenBook</p> <p data-svelte-h="svelte-53rjjq">OpenBook is a decentralised business management tool for organisations
+  )}</button>` : ``} ${``} ${currentRoute === "/directory" ? `${validate_component(Directory_nav, "DirectoryNav").$$render($$result, {}, {}, {})}` : ``} <div class="pull-down">${validate_component(Expand_icon, "ExpandIcon").$$render($$result, { fill: "#555555" }, {}, {})}</div></nav> <div class="w-full">${validate_component(Dashboard_header, "DashboardHeader").$$render($$result, {}, {}, {})} <div class="flex-1 p-4">${currentRoute === "/profile" ? `${validate_component(Profile_detail, "ProfileDetail").$$render($$result, {}, {}, {})}` : ``} ${currentRoute === "/directory" ? `${validate_component(Directory, "IcpDirectory").$$render($$result, {}, {}, {})}` : ``} ${``} ${``} ${``} ${currentRoute === "/" ? `<p class="text-2xl" data-svelte-h="svelte-11g1yv3">Welcome to OpenBook</p> <p data-svelte-h="svelte-53rjjq">OpenBook is a decentralised business management tool for organisations
         of all sizes.</p> <button class="book-btn mt-4" data-svelte-h="svelte-shnzvf">Create Profile</button> <button class="book-btn mt-4 disabled text-xs" data-svelte-h="svelte-1b189a6">Create Organisation (soon)</button>` : ``}</div></div>`;
 });
 const Landing = create_ssr_component(($$result, $$props, $$bindings, slots) => {

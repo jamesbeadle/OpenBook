@@ -4,32 +4,43 @@
   import { profilesStore } from '$lib/stores/profile-store';
   import { Spinner, busyStore } from '@dfinity/gix-components';
   import LogoIcon from '$lib/icons/logo-icon.svelte';
+  import {
+    directoryFilter,
+    firstNameFitler,
+    lastNameFitler,
+    professionFilter,
+    usernameFilter,
+  } from '$lib/stores/filter-store';
 
   let directoryResult: DirectoryDTO;
   let currentPage = 1;
   let totalPages = 1;
   let isLoading = true;
 
-  let filters = {
-    username: '',
-    firstName: '',
-    lastName: '',
-    profession: '',
-  };
-
   async function fetchProfiles() {
     directoryResult = await profilesStore.getProfiles(
-      filters.username,
-      filters.firstName,
-      filters.lastName,
-      filters.profession,
+      $usernameFilter,
+      $firstNameFitler,
+      $lastNameFitler,
+      $professionFilter,
       currentPage,
+      $directoryFilter,
     );
     totalPages = Math.ceil(Number(directoryResult.totalEntries) / 25);
     isLoading = false;
   }
 
+  $: {
+    if ($directoryFilter !== '') {
+      getProfiles();
+    }
+  }
+
   onMount(async () => {
+    await getProfiles();
+  });
+
+  async function getProfiles() {
     try {
       busyStore.startBusy({
         initiator: 'fetch-profiles',
@@ -41,10 +52,11 @@
     } finally {
       busyStore.stopBusy('fetch-profiles');
     }
-  });
+  }
 
   async function search() {
     currentPage = 1;
+    $directoryFilter = '';
     await fetchProfiles();
   }
 
@@ -71,7 +83,7 @@
           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2"
           type="text"
           placeholder="Username"
-          bind:value={filters.username}
+          bind:value={$usernameFilter}
         />
       </div>
       <div class="w-full md:w-1/2 mb-2 md:mb-0">
@@ -79,7 +91,7 @@
           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2"
           type="text"
           placeholder="First Name"
-          bind:value={filters.firstName}
+          bind:value={$firstNameFitler}
         />
       </div>
     </div>
@@ -89,7 +101,7 @@
           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2"
           type="text"
           placeholder="Last Name"
-          bind:value={filters.lastName}
+          bind:value={$lastNameFitler}
         />
       </div>
       <div class="w-full md:w-1/2 mb-2 md:mb-0">
@@ -97,7 +109,7 @@
           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2"
           type="text"
           placeholder="Profession"
-          bind:value={filters.profession}
+          bind:value={$professionFilter}
         />
       </div>
     </div>

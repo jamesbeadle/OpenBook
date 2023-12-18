@@ -78,6 +78,14 @@ input[type='file'] {
   @apply bg-gray-500;
 }
 
+.directory-nav-btn-active {
+  @apply bg-customGreen px-3 py-1 rounded-sm text-center text-black;
+}
+
+.directory-nav-btn {
+  @apply px-3 py-1 rounded-sm text-center;
+}
+
 .book-cancel-btn {
   background-color: aliceblue;
 }

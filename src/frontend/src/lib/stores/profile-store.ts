@@ -14,6 +14,7 @@ function createProfileStore() {
     lastNameFilter: string,
     professionFilter: string,
     currentPage: number,
+    directoryStartFilter: string,
   ) {
     let updatedProfilesData = await actor.getProfiles(
       usernameFilter,
@@ -21,6 +22,7 @@ function createProfileStore() {
       lastNameFilter,
       professionFilter,
       currentPage,
+      directoryStartFilter,
     );
     return updatedProfilesData as DirectoryDTO;
   }

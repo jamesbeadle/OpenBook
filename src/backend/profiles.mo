@@ -14,6 +14,7 @@ import Int "mo:base/Int";
 import Buffer "mo:base/Buffer";
 import Array "mo:base/Array";
 import Order "mo:base/Order";
+import Char "mo:base/Char";
 import DTOs "DTOs";
 import Prim "mo:prim";
 
@@ -383,31 +384,38 @@ module {
       return true;
     };
 
-    public func fetchProfiles(usernameFilter : Text, firstNameFilter : Text, lastNameFilter : Text, professionFilter : Text, currentPage : Int, pageSize : Int) : [DTOs.DirectoryProfileDTO] {
+    public func fetchProfiles(usernameFilter : Text, firstNameFilter : Text, lastNameFilter : Text, professionFilter : Text, currentPage : Int, pageSize : Int, directoryFilter : Text) : [DTOs.DirectoryProfileDTO] {
       let profilesList = Iter.toList(userProfiles.vals());
       let filteredProfiles = List.filter(
         profilesList,
         func(profile : T.Profile) : Bool {
-          let lowerCaseProfile = {
-            username = Text.map(profile.username, Prim.charToLower);
-            firstName = Text.map(profile.firstName, Prim.charToLower);
-            lastName = Text.map(profile.lastName, Prim.charToLower);
-            profession = Text.map(profile.profession, Prim.charToLower);
+          let lowercaseDirectoryFilter = Text.map(directoryFilter, Prim.charToLower);
+          if (Text.notEqual(lowercaseDirectoryFilter, "")) {
+            (Text.startsWith(Text.map(profile.username, Prim.charToLower), #text lowercaseDirectoryFilter));
+          } else {
+
+            let lowerCaseProfile = {
+              username = Text.map(profile.username, Prim.charToLower);
+              firstName = Text.map(profile.firstName, Prim.charToLower);
+              lastName = Text.map(profile.lastName, Prim.charToLower);
+              profession = Text.map(profile.profession, Prim.charToLower);
+            };
+
+            let username = Text.map(usernameFilter, Prim.charToLower);
+            let usernamePattern = #text username;
+
+            let firstName = Text.map(firstNameFilter, Prim.charToLower);
+            let firstNamePattern = #text firstName;
+
+            let lastName = Text.map(lastNameFilter, Prim.charToLower);
+            let lastNamePattern = #text lastName;
+
+            let profession = Text.map(professionFilter, Prim.charToLower);
+            let professionPattern = #text profession;
+
+            (username == "" or Text.contains(lowerCaseProfile.username, usernamePattern)) and (firstName == "" or Text.contains(lowerCaseProfile.firstName, firstNamePattern)) and (lastName == "" or Text.contains(lowerCaseProfile.lastName, lastNamePattern)) and (profession == "" or Text.contains(lowerCaseProfile.profession, professionPattern));
+
           };
-
-          let username = Text.map(usernameFilter, Prim.charToLower);
-          let usernamePattern = #text username;
-
-          let firstName = Text.map(firstNameFilter, Prim.charToLower);
-          let firstNamePattern = #text firstName;
-
-          let lastName = Text.map(lastNameFilter, Prim.charToLower);
-          let lastNamePattern = #text lastName;
-
-          let profession = Text.map(professionFilter, Prim.charToLower);
-          let professionPattern = #text profession;
-
-          (username == "" or Text.contains(lowerCaseProfile.username, usernamePattern)) and (firstName == "" or Text.contains(lowerCaseProfile.firstName, firstNamePattern)) and (lastName == "" or Text.contains(lowerCaseProfile.lastName, lastNamePattern)) and (profession == "" or Text.contains(lowerCaseProfile.profession, professionPattern));
         },
       );
 

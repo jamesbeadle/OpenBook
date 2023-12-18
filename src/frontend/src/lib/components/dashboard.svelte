@@ -16,6 +16,7 @@
   import IcpDirectory from './directory/directory.svelte';
   import WhitepaperIcon from '$lib/icons/whitepaper-icon.svelte';
   import HomeIcon from '$lib/icons/home-icon.svelte';
+  import DirectoryNav from './directory/directory-nav.svelte';
 
   let activeSection = -1;
   let sections = ['projects', 'contacts'];
@@ -52,9 +53,11 @@
   function loadProfile() {
     goto('/profile');
   }
+
+  function onDirectoryNavSelection(selection: Text) {}
 </script>
 
-<nav class="p-4 h-full side-nav flex flex-col">
+<nav class="p-4 h-full side-nav flex flex-col items-center">
   <a href="/">
     <Logo className="w-6" />
   </a>
@@ -70,12 +73,16 @@
       fill={currentRoute === '/directory' ? '#FFFFFF' : '#8C8C8C'}
     />
   </button>
-  <button on:click={loadWhitepaper}>
-    <WhitepaperIcon
-      className="side-nav-icon"
-      fill={activeSection == 1 ? '#FFFFFF' : '#8C8C8C'}
-    />
-  </button>
+
+  {#if currentRoute === '/'}
+    <button on:click={loadWhitepaper}>
+      <WhitepaperIcon
+        className="side-nav-icon"
+        fill={activeSection == 1 ? '#FFFFFF' : '#8C8C8C'}
+      />
+    </button>
+  {/if}
+
   {#if activeRole === 0}
     <button on:click={() => selectSection(0)}>
       <IcpIcon
@@ -89,6 +96,9 @@
         fill={activeSection == 1 ? '#FFFFFF' : '#8C8C8C'}
       />
     </button>
+  {/if}
+  {#if currentRoute === '/directory'}
+    <DirectoryNav />
   {/if}
 
   <div class="pull-down">
