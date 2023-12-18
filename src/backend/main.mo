@@ -191,7 +191,7 @@ actor Self {
 
   public shared query func getProfiles(usernameFilter : Text, firstNameFilter : Text, lastNameFilter : Text, professionFilter : Text, currentPage : Int, startFilter : Text) : async DTO.DirectoryDTO {
     let fetchedProfiles = profilesInstance.fetchProfiles(usernameFilter, firstNameFilter, lastNameFilter, professionFilter, currentPage, 25, startFilter);
-    let totalEntries = profilesInstance.countProfiles(usernameFilter, firstNameFilter, lastNameFilter, professionFilter);
+    let totalEntries = profilesInstance.countProfiles(usernameFilter, firstNameFilter, lastNameFilter, professionFilter, startFilter);
 
     let directoryDTO : DTO.DirectoryDTO = {
       profiles = fetchedProfiles;

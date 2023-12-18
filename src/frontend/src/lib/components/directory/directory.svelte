@@ -54,6 +54,12 @@
     }
   }
 
+  function handleKeyUp(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      search();
+    }
+  }
+
   async function search() {
     currentPage = 1;
     $directoryFilter = '';
@@ -84,6 +90,7 @@
           type="text"
           placeholder="Username"
           bind:value={$usernameFilter}
+          on:keyup={handleKeyUp}
         />
       </div>
       <div class="w-full md:w-1/2 mb-2 md:mb-0">
@@ -92,6 +99,7 @@
           type="text"
           placeholder="First Name"
           bind:value={$firstNameFitler}
+          on:keyup={handleKeyUp}
         />
       </div>
     </div>
@@ -102,6 +110,7 @@
           type="text"
           placeholder="Last Name"
           bind:value={$lastNameFitler}
+          on:keyup={handleKeyUp}
         />
       </div>
       <div class="w-full md:w-1/2 mb-2 md:mb-0">
@@ -110,6 +119,7 @@
           type="text"
           placeholder="Profession"
           bind:value={$professionFilter}
+          on:keyup={handleKeyUp}
         />
       </div>
     </div>

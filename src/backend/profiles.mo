@@ -467,12 +467,17 @@ module {
       return Buffer.toArray(profileBuffer);
     };
 
-    public func countProfiles(usernameFilter : Text, firstNameFilter : Text, lastNameFilter : Text, professionFilter : Text) : Int {
+    public func countProfiles(usernameFilter : Text, firstNameFilter : Text, lastNameFilter : Text, professionFilter : Text, directoryFilter : Text) : Int {
       let profilesList = Iter.toList(userProfiles.vals());
       let filteredProfiles = List.filter(
         profilesList,
         func(profile : T.Profile) : Bool {
-          Text.contains(profile.username, #text usernameFilter) and Text.contains(profile.firstName, #text firstNameFilter) and Text.contains(profile.lastName, #text lastNameFilter) and Text.contains(profile.profession, #text professionFilter)
+          let lowercaseDirectoryFilter = Text.map(directoryFilter, Prim.charToLower);
+          if (Text.notEqual(lowercaseDirectoryFilter, "")) {
+            (Text.startsWith(Text.map(profile.username, Prim.charToLower), #text lowercaseDirectoryFilter));
+          } else {
+            Text.contains(profile.username, #text usernameFilter) and Text.contains(profile.firstName, #text firstNameFilter) and Text.contains(profile.lastName, #text lastNameFilter) and Text.contains(profile.profession, #text professionFilter)
+          };
         },
       );
       return List.size(filteredProfiles);
