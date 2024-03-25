@@ -13,6 +13,7 @@ module Types {
   public type ContactId = Nat32;
   public type OrganisationMemberId = Nat32;
   public type CurrencyId = Nat16;
+  public type PrincipalId = Text;
 
   public type Error = {
     #NotFound;
