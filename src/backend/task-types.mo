@@ -10,6 +10,9 @@ module TaskTypes {
         history: [TaskChangeEvent];
         milestones: [Milestone];
         comments: [Comment];
+        tags: [Text];
+        startDate: Int;
+        endDate: Int;
     };
 
     public type Status = {
@@ -39,11 +42,16 @@ module TaskTypes {
     };
 
     public type Milestone = {
-
+        id: Nat16;
+        title: Text;
+        startDate: Int;
+        endDate: Int;
     };
 
     public type Comment = {
-
+        userId: T.PrincipalId;
+        detail: Text;
+        date: Int;
     };
 
 
