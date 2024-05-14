@@ -1,4 +1,4 @@
-import T "data_types/accounts-types";
+import T "data-types/accounts-types";
 module Constants {
 
   public let CURRENCIES: [T.Currency] = [

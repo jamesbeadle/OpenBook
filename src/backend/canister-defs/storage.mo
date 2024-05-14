@@ -1,28 +1,13 @@
-import T "../types";
-import DTOs "../DTOs";
-import List "mo:base/List";
-import Cycles "mo:base/ExperimentalCycles";
-import Timer "mo:base/Timer";
-import Principal "mo:base/Principal";
-import Iter "mo:base/Iter";
-import Array "mo:base/Array";
-import Order "mo:base/Order";
-import Text "mo:base/Text";
-import TrieMap "mo:base/TrieMap";
-import Buffer "mo:base/Buffer";
-import Nat8 "mo:base/Nat8";
-import Option "mo:base/Option";
-import Result "mo:base/Result";
-import Utilities "../utils/utilities";
-import Environment "../utils/Environment";
 
 actor class _StorageCanister() {
 
 //define the max size of an object
 //define all the blobs 
 //access methods etc
-
-
+  get();
+  add();
+  update();
+  remove();
 
 //todo confirm with openfpl cycles etc
   private stable let cyclesCheckInterval : Nat = Utilities.getHour() * 24;
@@ -30,15 +15,6 @@ actor class _StorageCanister() {
   private stable var activeGroupIndex : Nat8 = 0;
   private stable var totalManagers = 0;
 
-  public shared ({ caller }) func updateTeamSelection(teamUpdateDTO : DTOs.TeamUpdateDTO, transfersAvailable : Nat8, monthlyBonuses : Nat8, newBankBalance : Nat16) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    assert principalId == Environment.BACKEND_CANISTER_ID;
-
-    let managerBuffer = Buffer.fromArray<T.Manager>([]);
-    let managerGroupIndex = managerGroupIndexes.get(teamUpdateDTO.principalId);
-    
-  };
 
   system func preupgrade() {
     stable_manager_group_indexes := Iter.toArray(managerGroupIndexes.entries());

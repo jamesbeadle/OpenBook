@@ -1,4 +1,4 @@
-import T "types";
+import T "data-types/types";
 import Text "mo:base/Text";
 import Blob "mo:base/Blob";
 import Account "Account";

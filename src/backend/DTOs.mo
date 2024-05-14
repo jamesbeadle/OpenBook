@@ -1,6 +1,6 @@
 import List "mo:base/List";
 import Blob "mo:base/Blob";
-import T "types";
+import OB "data-types/openbook-types";
 
 module DTOs {
 
@@ -25,7 +25,7 @@ module DTOs {
     createDate : Int;
     lastModified : Int64;
     userDefinedWallet : Text;
-    preferredPaymentCurrency : T.CurrencyId;
+    preferredPaymentCurrency : OB.CurrencyId;
   };
 
   public type UpdateProfileDTO = {
@@ -40,11 +40,11 @@ module DTOs {
     otherContact : Text;
     termsAccepted : Bool;
     userDefinedWallet : Text;
-    preferredPaymentCurrency : T.CurrencyId;
+    preferredPaymentCurrency : OB.CurrencyId;
   };
 
   public type OrganisationDTO = {
-    id : T.OrganisationId;
+    id : OB.OrganisationId;
     name : Text;
     friendlyName : Text;
     logo : Text;

@@ -1,5 +1,5 @@
 import DTO "DTOs";
-import T "data_types/types";
+import T "data-types/types";
 import List "mo:base/List";
 import Result "mo:base/Result";
 import Principal "mo:base/Principal";
@@ -12,6 +12,7 @@ actor Self {
 
   private let organisationManager = OrganisationManager.OrganisationManager();
   private let profileManager = ProfileManager.ProfileManager();
+  private stable var storageCanisterIds: [T.CanisterId] = [];
 
   public shared ({ caller }) func createOrganisation(dto: DTOs.CreateOrganisationDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
@@ -54,6 +55,8 @@ actor Self {
     
     await organisationManager.removeService(principalId, dto);
   };
+
+  //TODO: Implement storage functions CRUD
 
   //TODO: Implement cycles checking when implemented on OpenFPL
 
