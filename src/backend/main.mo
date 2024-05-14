@@ -87,19 +87,27 @@ actor Self {
   };
 
   public shared ({ caller }) func getUserOrganisations(dto: ODTOs.GetUserOrganisationsDTO) : async Result.Result<ODTOs.UserOrganisationsDTO, T.Error> {
-    return #err(#NotFound);
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return await organisationManager.getUserOrganisations(principalId, dto);
   };
 
   public shared ({ caller }) func getOrganisation(dto: ODTOs.GetOrganisationDTO) : async Result.Result<ODTOs.OrganisationDTO, T.Error> {
-    return #err(#NotFound);    
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return await organisationManager.getOrganisation(principalId, dto);
   };
 
   public shared ({ caller }) func updateOrganisationDetail(dto: ODTOs.UpdateOrganisationDetailDTO) : async Result.Result<(), T.Error> {
-    return #err(#NotFound);    
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return await organisationManager.updateOrganisationDetail(principalId, dto);
   };
 
   public shared ({ caller }) func deleteOrganisation(dto: ODTOs.DeleteOrganisationDTO) : async Result.Result<(), T.Error> {
-    return #err(#NotFound);    
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    return await organisationManager.deleteOrganisation(principalId, dto);
   };
 
   //December 2023 initial profile launch
