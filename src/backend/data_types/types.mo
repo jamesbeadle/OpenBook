@@ -3,7 +3,9 @@ import TaxTypes "tax-types";
 
 module Types {
 
-  public type OrganisationId = Nat32;
+  public type PrincipalId = Text;
+  public type CanisterId = Text;
+  
   public type ServiceId = Nat16;
   public type ServiceAgreementId = Nat32;
   public type AccountCodeId = Nat16;
@@ -13,7 +15,6 @@ module Types {
   public type ContactId = Nat32;
   public type OrganisationMemberId = Nat32;
   public type CurrencyId = Nat16;
-  public type PrincipalId = Text;
 
   public type Error = {
     #NotFound;

@@ -237,4 +237,228 @@ module AccountsTypes {
         description: Text;
     };
 
+
+
+
+  public type Customer = {
+    id : CustomerId;
+    name : Text;
+    legalName : Text;
+    mainAddressId : AddressId;
+    mainContactId : ContactId;
+    assetAccounts : AssetAccount;
+    salesTaxId : Text;
+    paymentTermDays : Nat16;
+    contactMethod : ContactMethod;
+    accountManager : CustomerId;
+    primaryAddressId : AddressId;
+    primaryContactId : ContactId;
+    addresses : [Address];
+    contacts : [Contact];
+
+  };
+
+  public type CustomerStatus = {
+    #Active;
+    #OnHold;
+    #Inactive;
+  };
+
+  public type Supplier = {
+    id : SupplierId;
+    name : Text;
+    legalName : Text;
+    mainAddressId : AddressId;
+    mainContactId : ContactId;
+    assetAccounts : AssetAccount;
+    salesTaxId : Text;
+    paymentTermDays : Nat16;
+    contactMethod : ContactMethod;
+    accountManager : CustomerId;
+    primaryAddressId : AddressId;
+    primaryContactId : ContactId;
+    addresses : [Address];
+    contacts : [Contact];
+    paymentOptions : [AssetAccount];
+  };
+
+  public type TaxReference = {
+    taxType : TaxType;
+    referenceNumber : Text;
+  };
+
+
+  public type TaxType = {
+    #UK : [TaxTypes.UKTaxType];
+    #USA : [TaxTypes.USTaxType];
+  };
+
+
+
+  public type AssetAccount = {
+    accountType : AssetAccountType;
+    accountId : Nat32;
+    name : Text;
+    lastModified : Int64;
+  };
+
+  public type AssetAccountType = {
+    #TokenWallet;
+    #BankAccount;
+  };
+
+  public type TokenWallet = {
+    id : Nat32;
+    account : Text;
+    principal : Text;
+    lastModified : Int64;
+  };
+
+  public type BankAccount = {
+    id : Nat32;
+    details : [BankDetail];
+    lastModified : Int64;
+  };
+
+  public type BankDetail = {
+    description : Text;
+    value : Text;
+    lastModified : Int64;
+  };
+
+  public type Transaction = {
+    id : Nat32;
+    description : Text;
+    accountCodeId : AccountCodeId;
+    currency : Currency;
+    debit : Nat;
+    credit : Nat;
+    transactionType : TransactionType;
+    contraId : Nat32;
+    timestamp : Int64;
+  };
+
+  public type Currency = {
+    id : CurrencyId;
+    name : Text;
+    currencyType : CurrencyType;
+    symbol : Text;
+    icon : Text;
+    canister : Text;
+  };
+
+  public type CurrencyType = {
+    #Fiat;
+    #Token;
+  };
+
+  public type TransactionType = {
+    #SalesInvoice;
+    #SalesCreditNote;
+    #SalesReceipt;
+    #CustomerRefund;
+    #PurchaseInvoice;
+    #PurchaseCreditNote;
+    #SupplierPayment;
+    #CashPurchase;
+    #DiscountReceived;
+    #DiscountGiven;
+    #JournalEntry;
+    #BankDeposit;
+    #BankWithdrawal;
+    #FundTransfer;
+    #AssetPurchase;
+    #AssetDisposal;
+    #AssetDepreciation;
+    #InventoryAdjustment;
+    #PayrollDisbursement;
+    #TaxPayment;
+    #TaxRebate;
+    #LoanRepayment;
+    #LoanDisbursement;
+    #InterestIncome;
+    #InterestExpense;
+    #DividendReceipt;
+    #WriteOff;
+    #ReconciliationAdjustment;
+  };
+
+  public type ChartOfAccounts = {
+    accounts : List.List<GeneralLedgerAccount>;
+
+  };
+
+  public type GeneralLedgerAccount = {
+    group : AccountGroup;
+    subGroup : AccountSubGroup;
+    name : Text;
+  };
+
+  public type AccountGroup = {
+    #Assets;
+    #Liabilities;
+    #Equity;
+    #Income;
+    #Expenses;
+  };
+
+  public type AccountSubGroup = {
+    // Assets
+    #CashAndCashEquivalents;
+    #ShortTermInvestments;
+    #AccountsReceivable;
+    #Inventory;
+    #PrepaidExpenses;
+    #FixedAssets;
+    #AccumulatedDepreciation;
+    #LongTermInvestments;
+    #Goodwill;
+    #OtherIntangibleAssets;
+    #DeferredIncomeTaxes;
+    #OtherNonCurrentAssets;
+
+    // Liabilities
+    #AccountsPayable;
+    #AccruedExpenses;
+    #ShortTermDebt;
+    #CurrentPortionOfLongTermDebt;
+    #UnearnedRevenue;
+    #LongTermDebt;
+    #PensionLiabilities;
+    #DeferredRevenue;
+    #DeferredIncomeTaxesLiability;
+    #OtherLongTermLiabilities;
+
+    // Equity
+    #CommonStock;
+    #PreferredStock;
+    #AdditionalPaidInCapital;
+    #TreasuryStock;
+    #RetainedEarnings;
+    #AccumulatedOtherComprehensiveIncome;
+
+    // Income
+    #SalesRevenue;
+    #ServiceRevenue;
+    #InterestIncome;
+    #DividendIncome;
+    #RentalIncome;
+    #RoyaltyIncome;
+    #CapitalGains;
+
+    // Expenses
+    #CostOfSales;
+    #OperatingExpenses;
+    #GeneralAndAdministrativeExpenses;
+    #SellingAndMarketingExpenses;
+    #ResearchAndDevelopmentExpenses;
+    #DepreciationAndAmortizationExpenses;
+    #InterestExpense;
+    #IncomeTaxExpense;
+    #ForeignExchangeLoss;
+    #ImpairmentLosses;
+    #RestructuringCosts;
+  };
+
+
 };

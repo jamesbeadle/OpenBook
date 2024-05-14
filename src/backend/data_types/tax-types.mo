@@ -1,5 +1,3 @@
-import List "mo:base/List";
-
 module TaxTypes {
 
   public type UKTaxType = {

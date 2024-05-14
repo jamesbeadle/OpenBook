@@ -1,5 +1,5 @@
 import DTO "DTOs";
-import T "types";
+import T "data_types/types";
 import List "mo:base/List";
 import Result "mo:base/Result";
 import Principal "mo:base/Principal";

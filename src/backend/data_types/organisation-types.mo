@@ -1,34 +1,25 @@
-import T "../types";
+import T "types";
+import Book "openbook-types";
 
 module OrganisationTypes {
 
-    public type User = {
-        id: T.PrincipalId;
-        name: Text;
-        role: UserRole;
-        added: Int;
-    };
-
     public type Organisation = {
-        id: Text;
+        id: T.OrganisationId;
+        owner: T.PrincipalId;
         name: Text;
-        departments: [Department];
-        costCenters: [CostCenter];
-        users: [User];
-    };
-
-    public type AccountingPeriod = {
-        period: Period;
-        closed: Bool;
-        createdBy: T.PrincipalId;
-        created: Int;
-    };
-
-    public type AccountingPackage = {
-        organisation: Organisation;
-        generalLedger: GeneralLedger;
-        periods: [AccountingPeriod];
-        taxRates: [TaxRateDetail];
+        friendlyName : Text;
+        referenceNumber : Text;
+        logo : ?Blob;
+        banner : ?Blob;
+        serviceAgreements: [Book.ServiceAgreement];
+        members : [OrganisationMember];
+        mainAddressId : ?AddressId;
+        mainContactId : ?ContactId;
+        addresses : [Address];
+        contacts : [Contact];
+        auditHistory : [AuditRecord];
+        lastModified : ?Int64;
+        added: Int;
     };
 
     public type UserRole = {
@@ -58,5 +49,48 @@ module OrganisationTypes {
         #ProjectMember;
     };
 
+
+
+    public type Profile = {
+        principal : Text;
+        username : Text;
+        firstName : Text;
+        lastName : Text;
+        displayName : Text;
+        profession : Text;
+        openChatUsername : Text;
+        emailAddress : Text;
+        phoneNumber : Text;
+        otherContact : Text;
+        termsAccepted : Bool;
+        profilePictureCanisterId : Text;
+        organisations : [OrganisationId];
+        createDate : Int;
+        auditHistory : List.List<AuditRecord>;
+        lastModified : Int64;
+        userDefinedWallet : Text;
+        preferredPaymentCurrency : CurrencyId;
+    };
+
+    public type OrganisationMember = {
+        id : OrganisationMemberId;
+        principalId : Text;
+        role : Role;
+        lastModified : Int64;
+    };
+
+
+
+  public type Department = {
+
+  };
+
+  public type CostCenter = {
+
+  };
+
+  public type FinanceAgreement = {
+
+  };
 
 };
