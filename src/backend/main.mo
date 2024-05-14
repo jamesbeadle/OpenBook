@@ -1,5 +1,4 @@
 import Blob "mo:base/Blob";
-import List "mo:base/List";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Text "mo:base/Text";
