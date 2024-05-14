@@ -3,9 +3,16 @@ import List "mo:base/List";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Text "mo:base/Text";
-import DTOs "dtos/DTOs";
+
+import PD "dtos/profile-dtos";
+import OD "dtos/organisation-dtos";
+import SD "dtos/sales-dtos";
+import RD "dtos/recruitment-dtos";
+import TD "dtos/task-dtos";
+
 import OT "data-types/old-types";
 import T "data-types/types";
+
 import OrganisationManager "managers/organisation-manager";
 import ProfileManager "managers/profile-manager";
 
@@ -19,7 +26,7 @@ actor Self {
 
   //TODO: Update all profile functions
 
-  public shared query func listProfiles(dto: DTOs.ListProfilesDTO) : async DTOs.DirectoryDTO {
+  public shared query func listProfiles(dto: PD.ListProfilesFiltersDTO) : async PD.ProfilesListDTO {
     let fetchedProfiles = profilesInstance.fetchProfiles(usernameFilter, firstNameFilter, lastNameFilter, professionFilter, currentPage, 25, startFilter);
     let totalEntries = profilesInstance.countProfiles(usernameFilter, firstNameFilter, lastNameFilter, professionFilter, startFilter);
 
@@ -31,16 +38,16 @@ actor Self {
     return directoryDTO;
   };
 
-  public shared ({ caller }) func createProfile(profileDTO : DTOs.UpdateProfileDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func createProfile(profileDTO : PD.CreateProfileDTO) : async Result.Result<(), T.Error> {
   };
 
-  public shared query ({ caller }) func getProfile() : async DTOs.ProfileDTO {
+  public shared query ({ caller }) func getProfile() : async PD.ProfileDTO {
   };
 
-  public shared ({ caller }) func updateProfileDetail(updatedProfile : DTOs.UpdateProfileDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func updateProfileDetail(updatedProfile : PD.UpdateProfileDTO) : async Result.Result<(), T.Error> {
   };
 
-  public shared ({ caller }) func updateProfilePicture(updatedProfilePicture : Blob) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func updateProfilePicture(dto : PD.UpdateProfilePictureDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
 
     var existingProfile = profilesInstance.getProfile(Principal.toText(caller));
@@ -54,8 +61,9 @@ actor Self {
     };
   };
 
-  public shared func isUsernameAvailable(username : Text) : async Bool {
-    return profilesInstance.isUsernameAvailable(username);
+  public shared ({ caller }) func isUsernameAvailable(username : Text) : async Bool {
+    assert not Principal.isAnonymous(caller);
+   return profilesInstance.isUsernameAvailable(username);
   };
 
 
