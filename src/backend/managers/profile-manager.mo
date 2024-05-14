@@ -23,7 +23,7 @@ import Prim "mo:prim";
 
 module {
   public class ProfileManager() {
-    private var profiles: [(T.PrincipalId, T.SmallProfile)] = [];
+    private var profiles: [(T.PrincipalId, T.Profile)] = [];
 
     private var userProfiles : HashMap.HashMap<Text, T.Profile> = HashMap.HashMap<Text, T.Profile>(100, Text.equal, Text.hash);
     private var userProfilePictures : HashMap.HashMap<Text, Blob> = HashMap.HashMap<Text, Blob>(100, Text.equal, Text.hash);

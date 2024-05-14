@@ -3,40 +3,41 @@ import List "mo:base/List";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Text "mo:base/Text";
-
-import T "data-types/types";
-import OT "data-types/old-types";
 import DTOs "dtos/DTOs";
-
+import OT "data-types/old-types";
+import T "data-types/types";
 import OrganisationManager "managers/organisation-manager";
 import ProfileManager "managers/profile-manager";
 
 actor Self {
+  private stable var stable_organisation_canister_ids: [T.CanisterId] = [];
+  private stable var stable_profiles: [(T.PrincipalId, T.Profile)] = [];
+  private stable var stable_storage_canister_ids: [T.CanisterId] = [];
   
-  //TODO: Add Organisational Manager stable variables
-  //TODO: Add profile manager stable variables
-  private stable var storageCanisterIds: [T.CanisterId] = [];
-  
-  //TODO: REMOVE THESE AS NOW MULTICANISTER ARCHITECTURE AFTER THEY HAVE BEEN MOVED
-  private stable var stable_profiles : [(Text, OT.Profile)] = [];
-  private stable var stable_profilePictures : [(Text, Blob)] = [];
-
   private let organisationManager = OrganisationManager.OrganisationManager();
   private let profileManager = ProfileManager.ProfileManager();
 
-
   //TODO: Update all profile functions
-  public shared query ({ caller }) func getProfile() : async DTOs.ProfileDTO {
+
+  public shared query func listProfiles(dto: DTOs.ListProfilesDTO) : async DTOs.DirectoryDTO {
+    let fetchedProfiles = profilesInstance.fetchProfiles(usernameFilter, firstNameFilter, lastNameFilter, professionFilter, currentPage, 25, startFilter);
+    let totalEntries = profilesInstance.countProfiles(usernameFilter, firstNameFilter, lastNameFilter, professionFilter, startFilter);
+
+    let directoryDTO : DTOs.DirectoryDTO = {
+      profiles = fetchedProfiles;
+      totalEntries = totalEntries;
+      currentPage = currentPage;
+    };
+    return directoryDTO;
   };
 
   public shared ({ caller }) func createProfile(profileDTO : DTOs.UpdateProfileDTO) : async Result.Result<(), T.Error> {
   };
 
-  public shared ({ caller }) func updateProfileDetail(updatedProfile : DTOs.UpdateProfileDTO) : async Result.Result<(), T.Error> {
+  public shared query ({ caller }) func getProfile() : async DTOs.ProfileDTO {
   };
 
-  public shared func isUsernameAvailable(username : Text) : async Bool {
-    return profilesInstance.isUsernameAvailable(username);
+  public shared ({ caller }) func updateProfileDetail(updatedProfile : DTOs.UpdateProfileDTO) : async Result.Result<(), T.Error> {
   };
 
   public shared ({ caller }) func updateProfilePicture(updatedProfilePicture : Blob) : async Result.Result<(), T.Error> {
@@ -53,16 +54,8 @@ actor Self {
     };
   };
 
-  public shared query func getProfiles(usernameFilter : Text, firstNameFilter : Text, lastNameFilter : Text, professionFilter : Text, currentPage : Int, startFilter : Text) : async DTOs.DirectoryDTO {
-    let fetchedProfiles = profilesInstance.fetchProfiles(usernameFilter, firstNameFilter, lastNameFilter, professionFilter, currentPage, 25, startFilter);
-    let totalEntries = profilesInstance.countProfiles(usernameFilter, firstNameFilter, lastNameFilter, professionFilter, startFilter);
-
-    let directoryDTO : DTOs.DirectoryDTO = {
-      profiles = fetchedProfiles;
-      totalEntries = totalEntries;
-      currentPage = currentPage;
-    };
-    return directoryDTO;
+  public shared func isUsernameAvailable(username : Text) : async Bool {
+    return profilesInstance.isUsernameAvailable(username);
   };
 
 
@@ -276,6 +269,17 @@ actor Self {
 
 
   //December 2023 initial profile launch
+  //TODO: REMOVE THESE AS NOW MULTICANISTER ARCHITECTURE AFTER THEY HAVE BEEN MOVED
+  
+  private stable var stable_profiles : [(Text, OT.Profile)] = [];
+  private stable var stable_profilePictures : [(Text, Blob)] = [];
+
+  public func transferProfiles(){
+    //TODO
+    //transfer the profiles into the profile canister architecture using profile picture blob storage
+  };
+
+
 
 
   //Stable Variables

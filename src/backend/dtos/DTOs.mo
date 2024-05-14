@@ -102,4 +102,13 @@ module DTOs {
   public type RepaidAgreementsListDTO = {};
   public type CreateFinanceAgreementDTO = {};
 
+  public type ListProfilesDTO = {
+    usernameFilter : Text;
+    firstNameFilter : Text;
+    lastNameFilter : Text;
+    professionFilter : Text;
+    currentPage : Int;
+    startFilter : Text;
+  }
+
 };
