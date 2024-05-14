@@ -11,6 +11,13 @@ import Profiles "profiles";
 
 actor Self {
 
+  //user profile index canister
+
+  //indexes
+  //userProfileIndex
+    //users need a quick way to get their profile canister id 
+      //store business canister membership information in the profile
+        
   let profilesInstance = Profiles.Profiles();
 
   public shared query ({ caller }) func getProfile() : async DTO.ProfileDTO {
