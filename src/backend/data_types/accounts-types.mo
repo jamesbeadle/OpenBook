@@ -1,9 +1,8 @@
 
+import T "../types";
+
 module AccountsTypes {
-    
 
-
-    public type PrincipalId = Text;
     public type AccountCode = Nat32;
     public type CostCenter = Text;
     public type Department = Text;
@@ -53,7 +52,7 @@ module AccountsTypes {
         description: Text;
         transactionType: TransactionType;
         detail: TransactionDetail;
-        addedBy: PrincipalId;
+        addedBy: T.PrincipalId;
         added: Int;
         balance: Float;
     };
@@ -199,37 +198,37 @@ module AccountsTypes {
         description: Text;
         quantity: Float;
         unitPrice: Float;
-        taxRate: TaxRate;
+        taxRate: TaxRateDetail;
     };
 
     public type ReceiptItem = {
         description: Text;
         amount: Float;
-        taxRate: TaxRate;
+        taxRate: TaxRateDetail;
     };
 
     public type CreditItem = {
         description: Text;
         amount: Float;
-        taxRate: TaxRate;
+        taxRate: TaxRateDetail;
     };
 
     public type ReturnItem = {
         description: Text;
         amount: Float;
-        taxRate: TaxRate;
+        taxRate: TaxRateDetail;
     };
 
     public type RefundItem = {
         description: Text;
         amount: Float;
-        taxRate: TaxRate;
+        taxRate: TaxRateDetail;
     };
 
     public type PaymentItem = {
         description: Text;
         amount: Float;
-        taxRate: TaxRate;
+        taxRate: TaxRateDetail;
     };
 
     public type TaxRateDetail = {
@@ -237,44 +236,5 @@ module AccountsTypes {
         rate: Float;
         description: Text;
     };
-
-    public type UserRole = {
-        #Admin;
-        #Accountant;
-        #Auditor;
-        #Manager;
-        #User;
-    };
-
-    public type User = {
-        id: PrincipalId;
-        name: Text;
-        role: UserRole;
-        added: Int;
-    };
-
-    public type Organization = {
-        id: Text;
-        name: Text;
-        departments: [Department];
-        costCenters: [CostCenter];
-        users: [User];
-    };
-
-    public type AccountingPeriod = {
-        period: Period;
-        closed: Bool;
-        createdBy: PrincipalId;
-        created: Int;
-    };
-
-    public type AccountingPackage = {
-        organization: Organization;
-        generalLedger: GeneralLedger;
-        periods: [AccountingPeriod];
-        taxRates: [TaxRateDetail];
-    };
-
-
 
 };
