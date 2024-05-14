@@ -1,6 +1,8 @@
 
 
 import T "../data-types/types";
+import OT "../data-types/old-types";
+import OB "../data-types/openbook-types";
 
 import Text "mo:base/Text";
 import Blob "mo:base/Blob";
@@ -23,9 +25,9 @@ import Prim "mo:prim";
 
 module {
   public class ProfileManager() {
-    private var profiles: [(T.PrincipalId, T.Profile)] = [];
+    private var profiles: [(T.PrincipalId, OT.Profile)] = [];
 
-    private var userProfiles : HashMap.HashMap<Text, T.Profile> = HashMap.HashMap<Text, T.Profile>(100, Text.equal, Text.hash);
+    private var userProfiles : HashMap.HashMap<Text, OT.Profile> = HashMap.HashMap<Text, OT.Profile>(100, Text.equal, Text.hash);
     private var userProfilePictures : HashMap.HashMap<Text, Blob> = HashMap.HashMap<Text, Blob>(100, Text.equal, Text.hash);
 
   //user profile index canister
@@ -34,8 +36,8 @@ module {
   //userProfileIndex
     //users need a quick way to get their profile canister id 
       //store business canister membership information in the profile
-    public func setData(stable_profiles : [(Text, T.Profile)], stable_profilePictures : [(Text, Blob)]) {
-      userProfiles := HashMap.fromIter<Text, T.Profile>(
+    public func setData(stable_profiles : [(Text, OT.Profile)], stable_profilePictures : [(Text, Blob)]) {
+      userProfiles := HashMap.fromIter<Text, OT.Profile>(
         stable_profiles.vals(),
         stable_profiles.size(),
         Text.equal,
@@ -49,7 +51,7 @@ module {
       );
     };
 
-    public func getProfiles() : [(Text, T.Profile)] {
+    public func getProfiles() : [(Text, OT.Profile)] {
       return Iter.toArray(userProfiles.entries());
     };
 
@@ -57,7 +59,7 @@ module {
       return Iter.toArray(userProfilePictures.entries());
     };
 
-    public func getProfile(principalName : Text) : ?T.Profile {
+    public func getProfile(principalName : Text) : ?OT.Profile {
       return userProfiles.get(principalName);
     };
 
@@ -96,7 +98,7 @@ module {
       profession : Text,
     ) : () {
       if (userProfiles.get(principalName) == null) {
-        let newProfile : T.Profile = {
+        let newProfile : OT.Profile = {
           principal = principalName;
           displayName = displayName;
           username = username;
@@ -110,7 +112,7 @@ module {
           profilePictureCanisterId = "";
           termsAccepted = false;
           createDate = now();
-          auditHistory = List.nil<T.AuditRecord>();
+          auditHistory = List.nil<OB.AuditRecord>();
           lastModified = Int64.fromInt(Time.now());
           organisations = [];
           preferredPaymentCurrency = 1;
@@ -128,7 +130,7 @@ module {
           return #err(#NotFound);
         };
         case (?existingProfile) {
-          let adjustedProfile : T.Profile = {
+          let adjustedProfile : OT.Profile = {
             principal = existingProfile.principal;
             username = updatedProfile.username;
             displayName = updatedProfile.displayName;
@@ -398,7 +400,7 @@ module {
       let profilesList = Iter.toList(userProfiles.vals());
       let filteredProfiles = List.filter(
         profilesList,
-        func(profile : T.Profile) : Bool {
+        func(profile : OT.Profile) : Bool {
           let lowercaseDirectoryFilter = Text.map(directoryFilter, Prim.charToLower);
           if (Text.notEqual(lowercaseDirectoryFilter, "")) {
             (Text.startsWith(Text.map(profile.username, Prim.charToLower), #text lowercaseDirectoryFilter));
@@ -431,7 +433,7 @@ module {
 
       let sortedProfiles = Array.sort(
         List.toArray(filteredProfiles),
-        func(a : T.Profile, b : T.Profile) : Order.Order {
+        func(a : OT.Profile, b : OT.Profile) : Order.Order {
           if (a.createDate < b.createDate) { return #less };
           if (a.createDate == b.createDate) { return #equal };
           return #greater;
@@ -481,7 +483,7 @@ module {
       let profilesList = Iter.toList(userProfiles.vals());
       let filteredProfiles = List.filter(
         profilesList,
-        func(profile : T.Profile) : Bool {
+        func(profile : OT.Profile) : Bool {
           let lowercaseDirectoryFilter = Text.map(directoryFilter, Prim.charToLower);
           if (Text.notEqual(lowercaseDirectoryFilter, "")) {
             (Text.startsWith(Text.map(profile.username, Prim.charToLower), #text lowercaseDirectoryFilter));

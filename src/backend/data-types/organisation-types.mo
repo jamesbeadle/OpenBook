@@ -93,4 +93,14 @@ module OrganisationTypes {
 
     };
 
+    public type PublicProfile = {
+        principalId: T.PrincipalId;
+        firstName : ?Text;
+        lastName : ?Text;
+        profession : Text;
+        storageCanisterId : Text;
+        organisations : [OB.OrganisationId];
+        createDate : Int;
+    };
+
 };
