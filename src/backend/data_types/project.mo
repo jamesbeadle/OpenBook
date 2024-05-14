@@ -5,6 +5,7 @@ module Types {
   public type ProjectId = Nat16;
   public type Project = {
     id: ProjectId;
+    status: ProjectStatus;
     name: Text;
     startDate: ?Int;
     endDate: ?Int;
@@ -14,6 +15,16 @@ module Types {
     groupChatReference: Text;
     addedBy: PrincipalId;
     added: Int;
+  };
+
+  public type ProjectStatus = {
+    #Proposed;
+    #Approved;
+    #NotStarted;
+    #InProgress;
+    #Paused;
+    #Cancelled;
+    #Completed;
   };
 
   public type ProjectMember = {
