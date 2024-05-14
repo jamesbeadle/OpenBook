@@ -18,52 +18,58 @@ import ProfileManager "managers/profile-manager";
 
 actor Self {
   private stable var stable_organisation_canister_ids: [T.CanisterId] = [];
-  private stable var stable_profiles: [(T.PrincipalId, T.Profile)] = [];
+  private stable var stable_profile_canister_ids: [T.CanisterId] = [];
+  private stable var stable_profile_map: [(T.PrincipalId, T.CanisterId)] = [];
   private stable var stable_storage_canister_ids: [T.CanisterId] = [];
   
   private let organisationManager = OrganisationManager.OrganisationManager();
   private let profileManager = ProfileManager.ProfileManager();
 
-  //TODO: Update all profile functions
-
-  public shared query func listProfiles(dto: PD.ListProfilesFiltersDTO) : async PD.ProfilesListDTO {
-    let fetchedProfiles = profilesInstance.fetchProfiles(usernameFilter, firstNameFilter, lastNameFilter, professionFilter, currentPage, 25, startFilter);
-    let totalEntries = profilesInstance.countProfiles(usernameFilter, firstNameFilter, lastNameFilter, professionFilter, startFilter);
-
-    let directoryDTO : DTOs.DirectoryDTO = {
-      profiles = fetchedProfiles;
-      totalEntries = totalEntries;
-      currentPage = currentPage;
-    };
-    return directoryDTO;
+  public shared query func listProfiles(dto: PD.ListProfilesFiltersDTO) : async Result.Result<PD.ProfilesListDTO, T.Error> {
+    return profileManager.listProfiles(dto);
   };
 
-  public shared ({ caller }) func createProfile(profileDTO : PD.CreateProfileDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func createProfile(dto : PD.CreateProfileDTO) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    
+    let existingProfile = profileManager.profileExists(principalId);
+    if(profileExists){
+      return #err(#AlreadyExists);
+    };
+
+    return await profileManager.createProfile(dto);
   };
 
   public shared query ({ caller }) func getProfile() : async PD.ProfileDTO {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    
+    return profileManager.getProfile(principalId);
   };
 
-  public shared ({ caller }) func updateProfileDetail(updatedProfile : PD.UpdateProfileDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func updateProfileDetail(dto : PD.UpdateProfileDTO) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    
+    return profileManager.updateProfile(principalId, dto);
   };
 
   public shared ({ caller }) func updateProfilePicture(dto : PD.UpdateProfilePictureDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
 
-    var existingProfile = profilesInstance.getProfile(Principal.toText(caller));
-    switch (existingProfile) {
-      case (null) {
-        return #err(#NotFound);
-      };
-      case (?foundProfile) {
-        return profilesInstance.updateProfilePicture(Principal.toText(caller), updatedProfilePicture);
-      };
+    let existingProfile = profileManager.profileExists(principalId);
+    if(not profileExists){
+      return #err(#NotFound);
     };
+
+    return profilesInstance.updateProfilePicture(principalId, dto);
   };
 
-  public shared ({ caller }) func isUsernameAvailable(username : Text) : async Bool {
+  public shared ({ caller }) func isUsernameAvailable(username : Text) : Result.Result<Bool, T.Error> {
     assert not Principal.isAnonymous(caller);
-   return profilesInstance.isUsernameAvailable(username);
+    return profilesInstance.isUsernameAvailable(username);
   };
 
 
