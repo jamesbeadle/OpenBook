@@ -14,7 +14,7 @@ module ProjectTypes {
     stages: [ProjectStage];
     groupChatReference: Text;
     addedBy: T.PrincipalId;
-    added: Int;
+    timestamp: Int;
   };
 
   public type ProjectStatus = {
@@ -31,14 +31,14 @@ module ProjectTypes {
     principcalId: T.PrincipalId;
     role: Text;
     addedBy: T.PrincipalId;
-    added: Int;
+    timestamp: Int;
   };
 
   public type ProjectLink = {
     url: Text;
     description: Text;
     addedBy: T.PrincipalId;
-    added: Int;
+    timestamp: Int;
   };
 
   public type ProjectStage = {
@@ -46,7 +46,7 @@ module ProjectTypes {
     name: Text;
     startDate: Int;
     endDate: Int;
-    added: Int;
+    timestamp: Int;
     addedBy: T.PrincipalId;
     milestones: [Milestone];
   };
@@ -58,7 +58,7 @@ module ProjectTypes {
     startDate: Int;
     endDate: Int;
     tasks: [Task];
-    added: Int;
+    timestamp: Int;
     addedBy: T.PrincipalId;
   };
 
@@ -75,7 +75,7 @@ module ProjectTypes {
     expectedDuration: Int;
     actualDuration: Int;
     comments: [Text];
-    added: Int;
+    timestamp: Int;
     addedBy: T.PrincipalId;
   };
 
@@ -87,7 +87,7 @@ module ProjectTypes {
 
   public type TaskComment = {
     comment: Text;
-    added: Int;
+    timestamp: Int;
     addedBy: T.PrincipalId;
   };
 

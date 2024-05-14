@@ -11,7 +11,8 @@ module OpenBookTypes {
   public type AddressId = Nat32;
   public type ContactId = Nat32;
   public type OrganisationMemberId = Nat32;
-  public type CurrencyId = Nat16;
+  public type CurrencyId = Nat32;
+  public type TransactionId = Nat32;
 
   public type ChangeType = {
     #OrganisationDetailUpdated;

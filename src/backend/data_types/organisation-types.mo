@@ -19,7 +19,7 @@ module OrganisationTypes {
         contacts : [OB.Contact];
         auditHistory : [OB.AuditRecord];
         lastModified : ?Int64;
-        added: Int;
+        timestamp: Int;
     };
 
     public type UserRole = {

@@ -1,5 +1,7 @@
 
 import T "types";
+import OB "openbook-types";
+import TaxTypes "tax-types";
 
 module AccountsTypes {
 
@@ -8,10 +10,13 @@ module AccountsTypes {
     public type Department = Text;
     
     public type Currency = {
-        id: Nat32;
+        id: OB.CurrencyId;
         name: Text;
         ticker: Text;
         decimalPlaces: Nat8;
+        currencyType : CurrencyType;
+        canister : Text;
+        symbol: Text;
     };
 
     public type FinancialReport = {
@@ -48,30 +53,49 @@ module AccountsTypes {
     public type Transaction = {
         amount: Float;
         currency: Currency;
-        contra_account: AccountCode;
+        contraTransaction: OB.TransactionId;
+        accountCodeId : OB.AccountCodeId;
         description: Text;
         transactionType: TransactionType;
         detail: TransactionDetail;
         addedBy: T.PrincipalId;
-        added: Int;
+        timestamp: Int;
         balance: Float;
     };
 
     public type TransactionType = {
         #JournalEntry;
-        #SalesInvoice;
-        #SalesReceipt;
-        #SalesCredit;
-        #SalesReturn;
-        #SalesRefund;
-        #PurchaseInvoice;
-        #PurchasePayment;
-        #PurchaseReturn;
-        #PurchaseRefund;
-        #AccountReceipt;
-        #AccountPayment;
         #BankTransfer;
         #CashTransaction;
+        #SalesInvoice;
+        #SalesCreditNote;
+        #SalesReceipt;
+        #SalesReturn;
+        #PurchaseReturn;
+        #PurchaseRefund;
+        #PurchaseInvoice;
+        #PurchaseCreditNote;
+        #PurchasePayment;
+        #CashPurchase;
+        #DiscountReceived;
+        #DiscountGiven;
+        #BankDeposit;
+        #BankWithdrawal;
+        #FundTransfer;
+        #AssetPurchase;
+        #AssetDisposal;
+        #AssetDepreciation;
+        #InventoryAdjustment;
+        #PayrollDisbursement;
+        #TaxPayment;
+        #TaxRebate;
+        #LoanRepayment;
+        #LoanDisbursement;
+        #InterestIncome;
+        #InterestExpense;
+        #DividendReceipt;
+        #WriteOff;
+        #ReconciliationAdjustment;
     };
 
     public type TransactionDetail = {
@@ -238,173 +262,95 @@ module AccountsTypes {
     };
 
 
+    public type Customer = {
+        id : OB.CustomerId;
+        name : Text;
+        legalName : Text;
+        mainAddressId : OB.AddressId;
+        mainContactId : OB.ContactId;
+        assetAccounts : AssetAccount;
+        salesTaxId : Text;
+        paymentTermDays : Nat16;
+        contactMethod : OB.ContactMethod;
+        accountManager : OB.CustomerId;
+        primaryAddressId : OB.AddressId;
+        primaryContactId : OB.ContactId;
+        addresses : [OB.Address];
+        contacts : [OB.Contact];
+    };
+
+    public type AccountStatus = {
+        #Active;
+        #OnHold;
+        #Inactive;
+    };
+
+    public type Supplier = {
+        id : OB.SupplierId;
+        name : Text;
+        legalName : Text;
+        mainAddressId : OB.AddressId;
+        mainContactId : OB.ContactId;
+        assetAccounts : AssetAccount;
+        salesTaxId : Text;
+        paymentTermDays : Nat16;
+        contactMethod : OB.ContactMethod;
+        accountManager : OB.CustomerId;
+        primaryAddressId : OB.AddressId;
+        primaryContactId : OB.ContactId;
+        addresses : [OB.Address];
+        contacts : [OB.Contact];
+        paymentOptions : [AssetAccount];
+    };
+
+    public type TaxReference = {
+        taxType : TaxType;
+        referenceNumber : Text;
+    };
+
+
+    public type TaxType = {
+        #UK : [TaxTypes.UKTaxType];
+        #USA : [TaxTypes.USTaxType];
+    };
 
 
 
+    public type AssetAccount = {
+        accountType : AssetAccountType;
+        accountId : Nat32;
+        name : Text;
+        lastModified : Int64;
+    };
 
+    public type AssetAccountType = {
+        #TokenWallet;
+        #BankAccount;
+    };
 
+    public type TokenWallet = {
+        id : Nat32;
+        account : Text;
+        principal : Text;
+        lastModified : Int64;
+    };
 
+    public type BankAccount = {
+        id : Nat32;
+        details : [BankDetail];
+        lastModified : Int64;
+    };
 
+    public type BankDetail = {
+        description : Text;
+        value : Text;
+        lastModified : Int64;
+    };
 
-
-
-
-
-
-
-
-  public type Customer = {
-    id : CustomerId;
-    name : Text;
-    legalName : Text;
-    mainAddressId : AddressId;
-    mainContactId : ContactId;
-    assetAccounts : AssetAccount;
-    salesTaxId : Text;
-    paymentTermDays : Nat16;
-    contactMethod : ContactMethod;
-    accountManager : CustomerId;
-    primaryAddressId : AddressId;
-    primaryContactId : ContactId;
-    addresses : [Address];
-    contacts : [Contact];
-
-  };
-
-  public type CustomerStatus = {
-    #Active;
-    #OnHold;
-    #Inactive;
-  };
-
-  public type Supplier = {
-    id : SupplierId;
-    name : Text;
-    legalName : Text;
-    mainAddressId : AddressId;
-    mainContactId : ContactId;
-    assetAccounts : AssetAccount;
-    salesTaxId : Text;
-    paymentTermDays : Nat16;
-    contactMethod : ContactMethod;
-    accountManager : CustomerId;
-    primaryAddressId : AddressId;
-    primaryContactId : ContactId;
-    addresses : [Address];
-    contacts : [Contact];
-    paymentOptions : [AssetAccount];
-  };
-
-  public type TaxReference = {
-    taxType : TaxType;
-    referenceNumber : Text;
-  };
-
-
-  public type TaxType = {
-    #UK : [TaxTypes.UKTaxType];
-    #USA : [TaxTypes.USTaxType];
-  };
-
-
-
-  public type AssetAccount = {
-    accountType : AssetAccountType;
-    accountId : Nat32;
-    name : Text;
-    lastModified : Int64;
-  };
-
-  public type AssetAccountType = {
-    #TokenWallet;
-    #BankAccount;
-  };
-
-  public type TokenWallet = {
-    id : Nat32;
-    account : Text;
-    principal : Text;
-    lastModified : Int64;
-  };
-
-  public type BankAccount = {
-    id : Nat32;
-    details : [BankDetail];
-    lastModified : Int64;
-  };
-
-  public type BankDetail = {
-    description : Text;
-    value : Text;
-    lastModified : Int64;
-  };
-
-  public type Transaction = {
-    id : Nat32;
-    description : Text;
-    accountCodeId : AccountCodeId;
-    currency : Currency;
-    debit : Nat;
-    credit : Nat;
-    transactionType : TransactionType;
-    contraId : Nat32;
-    timestamp : Int64;
-  };
-
-  public type Currency = {
-    id : CurrencyId;
-    name : Text;
-    currencyType : CurrencyType;
-    symbol : Text;
-    icon : Text;
-    canister : Text;
-  };
 
   public type CurrencyType = {
     #Fiat;
     #Token;
-  };
-
-  public type TransactionType = {
-    #SalesInvoice;
-    #SalesCreditNote;
-    #SalesReceipt;
-    #CustomerRefund;
-    #PurchaseInvoice;
-    #PurchaseCreditNote;
-    #SupplierPayment;
-    #CashPurchase;
-    #DiscountReceived;
-    #DiscountGiven;
-    #JournalEntry;
-    #BankDeposit;
-    #BankWithdrawal;
-    #FundTransfer;
-    #AssetPurchase;
-    #AssetDisposal;
-    #AssetDepreciation;
-    #InventoryAdjustment;
-    #PayrollDisbursement;
-    #TaxPayment;
-    #TaxRebate;
-    #LoanRepayment;
-    #LoanDisbursement;
-    #InterestIncome;
-    #InterestExpense;
-    #DividendReceipt;
-    #WriteOff;
-    #ReconciliationAdjustment;
-  };
-
-  public type ChartOfAccounts = {
-    accounts : List.List<GeneralLedgerAccount>;
-
-  };
-
-  public type GeneralLedgerAccount = {
-    group : AccountGroup;
-    subGroup : AccountSubGroup;
-    name : Text;
   };
 
   public type AccountGroup = {
