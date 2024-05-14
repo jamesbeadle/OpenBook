@@ -12,6 +12,7 @@ import OrgT "data-types/organisation-types";
 
 import OrganisationManager "managers/organisation-manager";
 import ProfileManager "managers/profile-manager";
+import TreasuryManager "managers/treasury-manager";
 
 actor Self {
   
@@ -26,7 +27,7 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     
-    let existingProfile = profileManager.profileExists(principalId);
+    let profileExists = profileManager.profileExists(principalId);
     if(profileExists){
       return #err(#AlreadyExists);
     };
@@ -34,35 +35,40 @@ actor Self {
     return await profileManager.createProfile(dto);
   };
 
-  public shared query ({ caller }) func getProfile() : async PD.ProfileDTO {
+  public shared ({ caller }) func getProfile() : async ?PD.ProfileDTO {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     
-    return profileManager.getProfile(principalId);
+    return await profileManager.getProfile(principalId);
   };
 
   public shared ({ caller }) func updateProfileDetail(dto : PD.UpdateProfileDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
+
+    let profileExists = profileManager.profileExists(principalId);
+    if(not profileExists){
+      return #err(#NotFound);
+    };
     
-    return profileManager.updateProfile(principalId, dto);
+    return profileManager.updateProfileDetail(principalId, dto);
   };
 
-  public shared ({ caller }) func updateProfilePicture(dto : PD.UpdateProfilePictureDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func updateProfilePicture(dto: PD.UpdateProfilePictureDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
-    let existingProfile = profileManager.profileExists(principalId);
+    let profileExists = profileManager.profileExists(principalId);
     if(not profileExists){
       return #err(#NotFound);
     };
 
-    return profilesInstance.updateProfilePicture(principalId, dto);
+    return profileManager.updateProfilePicture(principalId, dto);
   };
 
   public shared ({ caller }) func isUsernameAvailable(username : Text) : async Result.Result<Bool, T.Error> {
     assert not Principal.isAnonymous(caller);
-    return profilesInstance.isUsernameAvailable(username);
+    return #ok(profileManager.isUsernameAvailable(username));
   };
 
 

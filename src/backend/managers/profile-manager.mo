@@ -2,26 +2,22 @@
 
 import T "../data-types/types";
 import OT "../data-types/old-types";
-import OB "../data-types/openbook-types";
 
 import Text "mo:base/Text";
 import Blob "mo:base/Blob";
 import Account "../utilities/Account";
 import Result "mo:base/Result";
-import { now } "mo:base/Time";
 import HashMap "mo:base/HashMap";
 import Iter "mo:base/Iter";
-import Debug "mo:base/Debug";
 import List "mo:base/List";
-import Time "mo:base/Time";
-import Int64 "mo:base/Int64";
 import Int "mo:base/Int";
 import Buffer "mo:base/Buffer";
 import Array "mo:base/Array";
 import Order "mo:base/Order";
-import Char "mo:base/Char";
 import DTOs "../dtos/DTOs";
 import Prim "mo:prim";
+
+import PD "../dtos/profile-dtos"
 
 module {
   public class ProfileManager() {
@@ -29,6 +25,25 @@ module {
 
     private var userProfiles : HashMap.HashMap<Text, OT.Profile> = HashMap.HashMap<Text, OT.Profile>(100, Text.equal, Text.hash);
     private var userProfilePictures : HashMap.HashMap<Text, Blob> = HashMap.HashMap<Text, Blob>(100, Text.equal, Text.hash);
+
+    public func listProfiles(dto: PD.ListProfilesFiltersDTO) : Result.Result<PD.ProfilesListDTO, T.Error> {
+      return #err(#NotFound);
+    };
+
+    public func profileExists(principalId: T.PrincipalId) : Bool {
+
+      return true;
+    };  
+
+    public func createProfile(dto : PD.CreateProfileDTO) : async Result.Result<(), T.Error> {
+      return #err(#NotFound);
+    };
+
+    public func getProfile(principalName : Text) : async ?PD.ProfileDTO {
+      return userProfiles.get(principalName);
+    };
+
+    
 
   //user profile index canister
 
@@ -59,10 +74,6 @@ module {
       return Iter.toArray(userProfilePictures.entries());
     };
 
-    public func getProfile(principalName : Text) : ?OT.Profile {
-      return userProfiles.get(principalName);
-    };
-
     public func getProfilePicture(principalName : Text) : Blob {
       let profilePicture = userProfilePictures.get(principalName);
       switch (profilePicture) {
@@ -88,7 +99,7 @@ module {
 
       return false;
     };
-
+/*
     public func createProfile(
       principalName : Text,
       displayName : Text,
@@ -122,8 +133,8 @@ module {
         userProfiles.put(principalName, newProfile);
       };
     };
-
-    public func updateProfileDetail(principalName : Text, updatedProfile : DTOs.UpdateProfileDTO) : Result.Result<(), T.Error> {
+*/
+    public func updateProfileDetail(principalName : Text, updatedProfile : PD.UpdateProfileDTO) : Result.Result<(), T.Error> {
       let existingProfile = userProfiles.get(principalName);
       switch (existingProfile) {
         case (null) {
@@ -352,14 +363,16 @@ module {
       return true;
     };
 
-    public func updateProfilePicture(principalName : Text, profilePicture : Blob) : Result.Result<(), T.Error> {
+    public func updateProfilePicture(principalName : T.PrincipalId, dto : PD.UpdateProfilePictureDTO) : Result.Result<(), T.Error> {
       let existingProfile = userProfiles.get(principalName);
       switch (existingProfile) {
         case (null) {
           return #err(#NotFound);
         };
         case (?foundProfile) {
-          userProfilePictures.put(principalName, profilePicture);
+
+
+          //TODO: Replace with multicanister userProfilePictures.put(principalName, profilePicture);
           return #ok(());
         };
       };

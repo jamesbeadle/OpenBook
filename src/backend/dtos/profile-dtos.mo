@@ -1,3 +1,5 @@
+import OB "../data-types/openbook-types";
+
 module ProfileDTOs {
     public type ListProfilesFiltersDTO = {
 
@@ -15,8 +17,21 @@ module ProfileDTOs {
 
     };
 
-    public type UpdateProfileDTO = {
+    
 
+    public type UpdateProfileDTO = {
+        username : Text;
+        displayName : Text;
+        profession : Text;
+        firstName : Text;
+        lastName : Text;
+        openChatUsername : Text;
+        emailAddress : Text;
+        phoneNumber : Text;
+        otherContact : Text;
+        termsAccepted : Bool;
+        userDefinedWallet : Text;
+        preferredPaymentCurrency : OB.CurrencyId;
     };
 
     public type UpdateProfilePictureDTO = {
