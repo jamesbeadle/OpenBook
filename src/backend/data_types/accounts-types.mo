@@ -1,5 +1,5 @@
 
-import T "../types";
+import T "types";
 
 module AccountsTypes {
 
@@ -236,6 +236,19 @@ module AccountsTypes {
         rate: Float;
         description: Text;
     };
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

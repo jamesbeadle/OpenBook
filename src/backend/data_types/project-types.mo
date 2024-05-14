@@ -1,10 +1,10 @@
+import T "types";
+import OB "openbook-types";
 
 module ProjectTypes {
 
-  public type PrincipalId = Text;
-  public type ProjectId = Nat16;
   public type Project = {
-    id: ProjectId;
+    id: OB.ProjectId;
     status: ProjectStatus;
     name: Text;
     startDate: ?Int;
@@ -13,7 +13,7 @@ module ProjectTypes {
     linkTree: [ProjectLink];
     stages: [ProjectStage];
     groupChatReference: Text;
-    addedBy: PrincipalId;
+    addedBy: T.PrincipalId;
     added: Int;
   };
 
@@ -28,16 +28,16 @@ module ProjectTypes {
   };
 
   public type ProjectMember = {
-    principcalId: PrincipalId;
+    principcalId: T.PrincipalId;
     role: Text;
-    addedBy: PrincipalId;
+    addedBy: T.PrincipalId;
     added: Int;
   };
 
   public type ProjectLink = {
     url: Text;
     description: Text;
-    addedBy: PrincipalId;
+    addedBy: T.PrincipalId;
     added: Int;
   };
 
@@ -47,7 +47,7 @@ module ProjectTypes {
     startDate: Int;
     endDate: Int;
     added: Int;
-    addedBy: PrincipalId;
+    addedBy: T.PrincipalId;
     milestones: [Milestone];
   };
 
@@ -59,37 +59,48 @@ module ProjectTypes {
     endDate: Int;
     tasks: [Task];
     added: Int;
-    addedBy: PrincipalId;
+    addedBy: T.PrincipalId;
   };
 
   public type Task = {
+    id: Nat16;
     index: Nat16;
     title: Text;
     description: Text;
     acceptanceCriteria: Text;
     priority: PriorityLevel;
     status: TaskStatus;
-    assignedTo: PrincipalId;
+    visibility: Visibility;
+    assignedTo: T.PrincipalId;
     expectedDuration: Int;
     actualDuration: Int;
     comments: [Text];
     added: Int;
-    addedBy: PrincipalId;
+    addedBy: T.PrincipalId;
+  };
+
+  public type Visibility = {
+      #Private;
+      #Protected;
+      #Public;
   };
 
   public type TaskComment = {
     comment: Text;
     added: Int;
-    addedBy: PrincipalId;
+    addedBy: T.PrincipalId;
   };
 
   public type TaskStatus = {
+    #New;
+    #Draft;
     #Todo;
     #InProgress;
     #InReview;
     #Completed;
     #Blocked;
     #OnHold;
+    #Testing;
     #Cancelled;
   };
 

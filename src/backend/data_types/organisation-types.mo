@@ -1,23 +1,23 @@
 import T "types";
-import Book "openbook-types";
+import OB "openbook-types";
 
 module OrganisationTypes {
 
     public type Organisation = {
-        id: T.OrganisationId;
+        id: OB.OrganisationId;
         owner: T.PrincipalId;
         name: Text;
         friendlyName : Text;
         referenceNumber : Text;
         logo : ?Blob;
         banner : ?Blob;
-        serviceAgreements: [Book.ServiceAgreement];
+        serviceAgreements: [OB.ServiceAgreement];
         members : [OrganisationMember];
-        mainAddressId : ?AddressId;
-        mainContactId : ?ContactId;
-        addresses : [Address];
-        contacts : [Contact];
-        auditHistory : [AuditRecord];
+        mainAddressId : ?OB.AddressId;
+        mainContactId : ?OB.ContactId;
+        addresses : [OB.Address];
+        contacts : [OB.Contact];
+        auditHistory : [OB.AuditRecord];
         lastModified : ?Int64;
         added: Int;
     };
@@ -64,33 +64,33 @@ module OrganisationTypes {
         otherContact : Text;
         termsAccepted : Bool;
         profilePictureCanisterId : Text;
-        organisations : [OrganisationId];
+        organisations : [OB.OrganisationId];
         createDate : Int;
-        auditHistory : List.List<AuditRecord>;
+        auditHistory : [OB.AuditRecord];
         lastModified : Int64;
         userDefinedWallet : Text;
-        preferredPaymentCurrency : CurrencyId;
+        preferredPaymentCurrency : OB.CurrencyId;
     };
 
     public type OrganisationMember = {
-        id : OrganisationMemberId;
+        id : OB.OrganisationMemberId;
         principalId : Text;
-        role : Role;
+        department : OB.Department;
         lastModified : Int64;
     };
 
 
 
-  public type Department = {
+    public type Department = {
 
-  };
+    };
 
-  public type CostCenter = {
+    public type CostCenter = {
 
-  };
+    };
 
-  public type FinanceAgreement = {
+    public type FinanceAgreement = {
 
-  };
+    };
 
 };

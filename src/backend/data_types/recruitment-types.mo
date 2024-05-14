@@ -1,9 +1,6 @@
 module RecruitmentTypes {
 
     public type PrincipalId = Text;
-    public type DateTime = Int;
-    public type Text = String;
-    public type Float = Double;
 
     public type JobPosting = {
         jobId: Text;
@@ -13,8 +10,8 @@ module RecruitmentTypes {
         location: Text;
         employmentType: EmploymentType;
         salaryRange: SalaryRange;
-        postingDate: DateTime;
-        closingDate: DateTime;
+        postingDate: Int;
+        closingDate: Int;
         status: JobStatus;
         postedBy: PrincipalId;
     };
@@ -44,7 +41,7 @@ module RecruitmentTypes {
         applicationId: Text;
         jobId: Text;
         candidateId: Text;
-        applicationDate: DateTime;
+        applicationDate: Int;
         status: ApplicationStatus;
         resume: Text;
         coverLetter: Text;
@@ -76,8 +73,8 @@ module RecruitmentTypes {
     public type WorkExperience = {
         company: Text;
         title: Text;
-        startDate: DateTime;
-        endDate: DateTime;
+        startDate: Int;
+        endDate: Int;
         description: Text;
     };
 
@@ -85,16 +82,16 @@ module RecruitmentTypes {
         institution: Text;
         degree: Text;
         fieldOfStudy: Text;
-        startDate: DateTime;
-        endDate: DateTime;
+        startDate: Int;
+        endDate: Int;
     };
 
     public type Interview = {
         interviewId: Text;
         applicationId: Text;
         interviewerId: PrincipalId;
-        schedule: DateTime;
-        type: InterviewType;
+        schedule: Int;
+        interviewType: InterviewType;
         status: InterviewStatus;
         feedback: Text;
     };
@@ -116,7 +113,7 @@ module RecruitmentTypes {
     public type JobOffer = {
         offerId: Text;
         applicationId: Text;
-        offerDate: DateTime;
+        offerDate: Int;
         salary: SalaryRange;
         benefits: [Text];
         status: OfferStatus;
@@ -132,7 +129,7 @@ module RecruitmentTypes {
     public type EmployeeOnboarding = {
         onboardingId: Text;
         candidateId: Text;
-        startDate: DateTime;
+        startDate: Int;
         assignedTo: PrincipalId;
         tasks: [OnboardingTask];
     };
@@ -141,7 +138,7 @@ module RecruitmentTypes {
         taskId: Text;
         description: Text;
         assignedTo: PrincipalId;
-        dueDate: DateTime;
+        dueDate: Int;
         status: TaskStatus;
     };
 

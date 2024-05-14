@@ -1,5 +1,5 @@
 
-import T "../types";
+import T "types";
 
 module TimesheetTypes {
 
