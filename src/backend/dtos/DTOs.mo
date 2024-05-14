@@ -1,6 +1,6 @@
 import List "mo:base/List";
 import Blob "mo:base/Blob";
-import OB "data-types/openbook-types";
+import OB "../data-types/openbook-types";
 
 module DTOs {
 

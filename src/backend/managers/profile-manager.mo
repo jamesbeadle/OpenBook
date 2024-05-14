@@ -1,7 +1,10 @@
-import T "data-types/types";
+
+
+import T "../data-types/types";
+
 import Text "mo:base/Text";
 import Blob "mo:base/Blob";
-import Account "Account";
+import Account "../utilities/Account";
 import Result "mo:base/Result";
 import { now } "mo:base/Time";
 import HashMap "mo:base/HashMap";
@@ -15,7 +18,7 @@ import Buffer "mo:base/Buffer";
 import Array "mo:base/Array";
 import Order "mo:base/Order";
 import Char "mo:base/Char";
-import DTOs "DTOs";
+import DTOs "../dtos/DTOs";
 import Prim "mo:prim";
 
 module {
