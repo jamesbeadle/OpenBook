@@ -22,6 +22,7 @@ module Types {
     #NotAllowed;
     #DecodeError;
     #InvalidData;
+    #NotEnoughFunds;
   };
 
   public type ChangeType = {

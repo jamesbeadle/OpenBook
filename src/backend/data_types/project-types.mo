@@ -1,5 +1,5 @@
 
-module Types {
+module ProjectTypes {
 
   public type PrincipalId = Text;
   public type ProjectId = Nat16;

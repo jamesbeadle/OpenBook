@@ -6,42 +6,80 @@ import Principal "mo:base/Principal";
 import Blob "mo:base/Blob";
 import Text "mo:base/Text";
 import Profiles "profiles";
+import OrganisationManager "managers/organisation-manager";
 
 actor Self {
 
   private let organisationManager = OrganisationManager.OrganisationManager();
   private let profileManager = ProfileManager.ProfileManager();
 
-  //TODO: Implement cycles checking when implemented on OpenFPL
-
-  //user profile index canister
-
-  //indexes
-  //userProfileIndex
-    //users need a quick way to get their profile canister id 
-      //store business canister membership information in the profile
-
-
-  //Task Management
-
   public shared ({ caller }) func createOrganisation(dto: DTOs.CreateOrganisationDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
-    //TODO
-        //create a new canister
-    //charge the user 1 ICP to create their organisation as a 1 off fee
-
+    let principalId = Principal.toText(principalId);
+    let canAffordFee = treasuryManager.canAffordOrganisation(principalId);
+    if(not canAffordFee){
+      return #err(#NotEnoughFunds)
+    };
+    await treasuryManager.purchaseOrganisation(principalId);
+    await organisationManager.createOrganisation(principalId, dto);
   };
 
 
   public shared ({ caller }) func purchaseService(dto: DTOs.PurchaseServiceDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
-    //TODO
+    let principalId = Principal.toText(principalId);
+    
+    let isOrganisationAdmin = organisationManager.isOrganisationAdmin(principalId, dto.organisationId);
+    if(not isOrganisationAdmin){
+      return #err(#NotAllowed);
+    };
+    
+    let canAffordFee = organisationManager.canAffordService(principalId, dto);
+    if(not canAffordFee){
+      return #err(#NotEnoughFunds)
+    };
+    
+    await treasuryManager.purchaseService(principalId, dto);
+    await organisationManager.addService(principalId, dto);
   };
 
   public shared ({ caller }) func cancelService(dto: DTOs.CancelServiceDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
-    //TODO
+    let principalId = Principal.toText(principalId);
+    
+    let isOrganisationAdmin = organisationManager.isOrganisationAdmin(principalId, dto.organisationId);
+    if(not isOrganisationAdmin){
+      return #err(#NotAllowed);
+    };
+    
+    await organisationManager.removeService(principalId, dto);
   };
+
+  //TODO: Implement cycles checking when implemented on OpenFPL
+
+
+  //sales
+    //add client
+    //add lead
+    //add contact
+    //convert lead
+
+
+  //accounts
+    //add transaction
+    //get report
+
+
+  //recruitment
+    //add cv
+    //add job
+    //
+
+  //timesheet management
+    //add time sheet
+    //add employee
+
+  //Task Management
 
   public shared ({ caller }) func sendInvite(dto: DTOs.SendInviteDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
@@ -165,6 +203,16 @@ actor Self {
   //Add a comment to a task
   //Update the project status if allowed
   //Update the project priority if allowed
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -25,6 +25,12 @@ module {
     private var userProfiles : HashMap.HashMap<Text, T.Profile> = HashMap.HashMap<Text, T.Profile>(100, Text.equal, Text.hash);
     private var userProfilePictures : HashMap.HashMap<Text, Blob> = HashMap.HashMap<Text, Blob>(100, Text.equal, Text.hash);
 
+  //user profile index canister
+
+  //indexes
+  //userProfileIndex
+    //users need a quick way to get their profile canister id 
+      //store business canister membership information in the profile
     public func setData(stable_profiles : [(Text, T.Profile)], stable_profilePictures : [(Text, Blob)]) {
       userProfiles := HashMap.fromIter<Text, T.Profile>(
         stable_profiles.vals(),
