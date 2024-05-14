@@ -1,4 +1,4 @@
-import T "types";
+import T "data-types/types";
 import Text "mo:base/Text";
 import Blob "mo:base/Blob";
 import Account "Account";
@@ -17,7 +17,7 @@ import Order "mo:base/Order";
 import Char "mo:base/Char";
 import DTOs "DTOs";
 import Prim "mo:prim";
-
+//todo: remove
 module {
   public class Profiles() {
 
