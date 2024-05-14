@@ -3,8 +3,8 @@ import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Text "mo:base/Text";
 
-import PD "dtos/profile-dtos";
-import OD "dtos/organisation-dtos";
+import PDTOs "dtos/profile-dtos";
+import ODTOs "dtos/organisation-dtos";
 
 import OT "data-types/old-types";
 import T "data-types/types";
@@ -18,12 +18,13 @@ actor Self {
   
   private let organisationManager = OrganisationManager.OrganisationManager();
   private let profileManager = ProfileManager.ProfileManager();
+  private let treasuryManager = TreasuryManager.TreasuryManager();
 
-  public shared query func listProfiles(dto: PD.ListProfilesFiltersDTO) : async Result.Result<PD.ProfilesListDTO, T.Error> {
+  public shared query func listProfiles(dto: PDTOs.ListProfilesFiltersDTO) : async Result.Result<PDTOs.ProfilesListDTO, T.Error> {
     return profileManager.listProfiles(dto);
   };
 
-  public shared ({ caller }) func createProfile(dto : PD.CreateProfileDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func createProfile(dto : PDTOs.CreateProfileDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     
@@ -35,14 +36,14 @@ actor Self {
     return await profileManager.createProfile(dto);
   };
 
-  public shared ({ caller }) func getProfile() : async ?PD.ProfileDTO {
+  public shared ({ caller }) func getProfile() : async ?PDTOs.ProfileDTO {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     
     return await profileManager.getProfile(principalId);
   };
 
-  public shared ({ caller }) func updateProfileDetail(dto : PD.UpdateProfileDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func updateProfileDetail(dto : PDTOs.UpdateProfileDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
@@ -54,7 +55,7 @@ actor Self {
     return profileManager.updateProfileDetail(principalId, dto);
   };
 
-  public shared ({ caller }) func updateProfilePicture(dto: PD.UpdateProfilePictureDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func updateProfilePicture(dto: PDTOs.UpdateProfilePictureDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
@@ -74,39 +75,32 @@ actor Self {
 
   //Organisation Functions
 
-  public shared ({ caller }) func createOrganisation(dto: OD.CreateOrganisationDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func createOrganisation(dto: ODTOs.CreateOrganisationDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(principalId);
-    let canAffordFee = treasuryManager.canAffordOrganisation(principalId);
+    let principalId = Principal.toText(caller);
+    let canAffordFee = await treasuryManager.canAffordOrganisation(Principal.fromActor(Self), principalId);
     if(not canAffordFee){
       return #err(#NotEnoughFunds)
     };
-    await treasuryManager.purchaseOrganisation(principalId);
+    await treasuryManager.purchaseOrganisation(Principal.fromActor(Self), principalId);
     await organisationManager.createOrganisation(principalId, dto);
   };
 
-  //get user ogranisations
+  public shared ({ caller }) func getUserOrganisations(dto: ODTOs.GetUserOrganisationsDTO) : async Result.Result<ODTOs.UserOrganisationsDTO, T.Error> {
+    return #err(#NotFound);
+  };
 
-  //get organisation
+  public shared ({ caller }) func getOrganisation(dto: ODTOs.GetOrganisationDTO) : async Result.Result<ODTOs.OrganisationDTO, T.Error> {
+    return #err(#NotFound);    
+  };
 
-  //update organisation detail
+  public shared ({ caller }) func updateOrganisationDetail(dto: ODTOs.UpdateOrganisationDetailDTO) : async Result.Result<(), T.Error> {
+    return #err(#NotFound);    
+  };
 
-  //delete organisation
-
-  //storage functions
-
-  //Create an organisation
-    //services will be charged per month
-      //need to check that the orgisations bill is paid
-      //what are the services areas
-        //TaskManagement
-        //Sales
-        //Accounts
-        //HR
-        
-
-
-
+  public shared ({ caller }) func deleteOrganisation(dto: ODTOs.DeleteOrganisationDTO) : async Result.Result<(), T.Error> {
+    return #err(#NotFound);    
+  };
 
   //December 2023 initial profile launch
   //TODO: REMOVE THESE AS NOW MULTICANISTER ARCHITECTURE AFTER THEY HAVE BEEN MOVED
