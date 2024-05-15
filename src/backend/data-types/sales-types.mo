@@ -126,13 +126,4 @@ module SalesTypes {
         order: Int;
     };
 
-    public type SalesPackage = {
-        leads: [Lead];
-        contacts: [Contact];
-        accounts: [Account];
-        opportunities: [Opportunity];
-        activities: [Activity];
-        pipelines: [SalesPipeline];
-    };
-
 };

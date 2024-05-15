@@ -21,17 +21,19 @@ import TD "../dtos/task-dtos";
 
 actor class _OrganisationCanister() {
 
-    private let accountsManager = AccountsManager.AccountsManager();
-    private let projectManager = ProjectManager.ProjectManager();
-    private let salesManager = SalesManager.SalesManager();
-    private let timesheetManager = TimesheetManager.TimesheetManager();
-    private let recruitmentManager = RecruitmentManager.RecruitmentManager();
+    private stable var accounting_canister_id = "";
+    private stable var project_management_canister_id = "";
+    private stable var sales_canister_id = "";
+    private stable var timesheet_canister_id = "";
+    private stable var recruitment_canister_id = "";
 
     private stable var organisation: ?T.Organisation = null;
 
     public shared ({ caller }) func initialise(dto: OrganisationDTOs.CreateOrganisationDTO){
 
     };
+
+    //TODO: Purchase service?
 
 
     //Organisation Management
@@ -313,18 +315,54 @@ actor class _OrganisationCanister() {
       return salesManager.deleteSalesContact(dto);
     };
     
-    //Accounting
 
     //TODO: ALL
     //Accounting Endpoints
+      //add currency
+      //crud general ledger account
+      //crud transaction
+      //crud customer
+      //crud supplier
     
     //Project Management Endpoints
+      //crud project
+      //crud project member
+      //crud project link
+      //crud project stage
+      //crud project stage milestone
+      //crud milestone task
+      //crud task comment
+      //update task visibility
+      //update task status
+      //update task priority
 
     //Sales CRM Endpoints
+      //Convert Lead to Opportunity
+      //Convert Opportunity to Order
+      //Crud Contact
+      //Crud Leads
+      //Crud Opportunity
+      //Crud Account
+      //Crud activity
+      //crud pipeline
+      //crud pipeline stage
+
     
     //Timesheet Management Endpoints
+      //CRUD timesheet
+      //approve timesheet
+      //calculate payroll
+      //pay staff members
     
     //Recruitment Management Endpoints
+      //create profile
+      //upload cv
+      //upload references
+      //search
+      //arrangeInterview
+      //get interviews
+      //update interview
+      //place candidate
 
 
     //todo confirm with openfpl cycles etc
