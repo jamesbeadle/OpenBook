@@ -1,6 +1,6 @@
-import { d } from "../../../chunks/index.js";
+import { j } from "../../../chunks/index.js";
 import "@dfinity/auth-client";
 import "@dfinity/utils";
 export {
-  d as default
+  j as default
 };

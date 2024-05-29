@@ -1,41 +1,39 @@
-import { NodeModulesPolyfillPlugin } from '@esbuild-plugins/node-modules-polyfill';
-import inject from '@rollup/plugin-inject';
-import { sveltekit } from '@sveltejs/kit/vite';
-import { readFileSync } from 'fs';
-import { dirname, join, resolve } from 'path';
-import { fileURLToPath } from 'url';
-import type { UserConfig } from 'vite';
-import { defineConfig, loadEnv } from 'vite';
+import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfill";
+import inject from "@rollup/plugin-inject";
+import { sveltekit } from "@sveltejs/kit/vite";
+import { readFileSync } from "fs";
+import { dirname, join, resolve } from "path";
+import { fileURLToPath } from "url";
+import type { UserConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 
-const file = fileURLToPath(new URL('package.json', import.meta.url));
-const json = readFileSync(file, 'utf8');
+const file = fileURLToPath(new URL("package.json", import.meta.url));
+const json = readFileSync(file, "utf8");
 const { version } = JSON.parse(json);
 
 // npm run dev = local
 // npm run build = local
 // dfx deploy = local
 // dfx deploy --network ic = ic
-// dfx deploy --network staging = staging
-const network = process.env.DFX_NETWORK ?? 'local';
-
+const network = process.env.DFX_NETWORK ?? "local";
 const readCanisterIds = ({
   prefix,
 }: {
   prefix?: string;
 }): Record<string, string> => {
-  const canisterIdsJsonFile = ['ic', 'staging'].includes(network)
-    ? join(process.cwd(), 'canister_ids.json')
-    : join(process.cwd(), '.dfx', 'local', 'canister_ids.json');
+  const canisterIdsJsonFile =
+    network === "ic"
+      ? join(process.cwd(), "canister_ids.json")
+      : join(process.cwd(), ".dfx", "local", "canister_ids.json");
 
   try {
     type Details = {
       ic?: string;
-      staging?: string;
       local?: string;
     };
 
     const config: Record<string, Details> = JSON.parse(
-      readFileSync(canisterIdsJsonFile, 'utf-8'),
+      readFileSync(canisterIdsJsonFile, "utf-8"),
     );
 
     return Object.entries(config).reduce((acc, current: [string, Details]) => {
@@ -43,13 +41,12 @@ const readCanisterIds = ({
 
       return {
         ...acc,
-        [`${prefix ?? ''}${canisterName.toUpperCase()}_CANISTER_ID`]:
+        [`${prefix ?? ""}${canisterName.toUpperCase()}_CANISTER_ID`]:
           canisterDetails[network as keyof Details],
       };
     }, {});
   } catch (e) {
-    console.warn(`Could not get canister ID from ${canisterIdsJsonFile}: ${e}`);
-    return {};
+    throw Error(`Could not get canister ID from ${canisterIdsJsonFile}: ${e}`);
   }
 };
 
@@ -57,7 +54,7 @@ const config: UserConfig = {
   plugins: [sveltekit()],
   resolve: {
     alias: {
-      $declarations: resolve('./src/declarations'),
+      $declarations: resolve("./src/declarations"),
     },
   },
   css: {
@@ -71,37 +68,37 @@ const config: UserConfig = {
     },
   },
   build: {
-    target: 'es2020',
+    target: "es2020",
     rollupOptions: {
       output: {
         manualChunks: (id) => {
           const folder = dirname(id);
 
-          const lazy = ['@dfinity/nns', '@dfinity/nns-proto'];
+          const lazy = ["@dfinity/nns"];
 
           if (
-            ['@sveltejs', 'svelte', '@dfinity/gix-components', ...lazy].find(
+            ["@sveltejs", "svelte", "@dfinity/gix-components", ...lazy].find(
               (lib) => folder.includes(lib),
             ) === undefined &&
-            folder.includes('node_modules')
+            folder.includes("node_modules")
           ) {
-            return 'vendor';
+            return "vendor";
           }
 
           if (
             lazy.find((lib) => folder.includes(lib)) !== undefined &&
-            folder.includes('node_modules')
+            folder.includes("node_modules")
           ) {
-            return 'lazy';
+            return "lazy";
           }
 
-          return 'index';
+          return "index";
         },
       },
       // Polyfill Buffer for production build
       plugins: [
         inject({
-          modules: { Buffer: ['buffer', 'Buffer'] },
+          modules: { Buffer: ["buffer", "Buffer"] },
         }),
       ],
     },
@@ -109,18 +106,23 @@ const config: UserConfig = {
   // proxy /api to port 4943 during development
   server: {
     proxy: {
-      '/api': 'http://localhost:4943',
+      "/api": "http://localhost:8080",
+    },
+    watch: {
+      ignored: ["**/.dfx/**", "**/.github/**"],
     },
   },
   optimizeDeps: {
     esbuildOptions: {
+      // Node.js global to browser globalThis
       define: {
-        global: 'globalThis',
+        global: "globalThis",
       },
+      // Enable esbuild polyfill plugins
       plugins: [
         NodeModulesPolyfillPlugin(),
         {
-          name: 'fix-node-globals-polyfill',
+          name: "fix-node-globals-polyfill",
           setup(build) {
             build.onResolve(
               { filter: /_virtual-process-polyfill_\.js/ },
@@ -132,7 +134,7 @@ const config: UserConfig = {
     },
   },
   worker: {
-    format: 'es',
+    format: "es",
   },
 };
 
@@ -141,21 +143,21 @@ export default defineConfig((): UserConfig => {
   process.env = {
     ...process.env,
     ...loadEnv(
-      network === 'ic'
-        ? 'production'
-        : network === 'staging'
-        ? 'staging'
-        : 'development',
+      network === "ic"
+        ? "production"
+        : network === "staging"
+          ? "staging"
+          : "development",
       process.cwd(),
     ),
-    ...readCanisterIds({ prefix: 'VITE_' }),
+    ...readCanisterIds({ prefix: "VITE_" }),
   };
 
   return {
     ...config,
     // Backwards compatibility for auto generated types of dfx that are meant for webpack and process.env
     define: {
-      'process.env': {
+      "process.env": {
         ...readCanisterIds({}),
         DFX_NETWORK: network,
       },

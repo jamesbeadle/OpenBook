@@ -3,13 +3,13 @@ import {
   AUTH_POPUP_HEIGHT,
   AUTH_POPUP_WIDTH,
   localIdentityCanisterId,
-} from '$lib/constants/app.constants';
-import type { OptionIdentity } from '$lib/types/identity';
-import { createAuthClient } from '$lib/utils/auth.utils';
-import { popupCenter } from '$lib/utils/window.utils';
-import type { AuthClient } from '@dfinity/auth-client';
-import { nonNullish } from '@dfinity/utils';
-import { writable, type Readable } from 'svelte/store';
+} from "$lib/constants/app.constants";
+import type { OptionIdentity } from "$lib/types/identity";
+import { createAuthClient } from "$lib/utils/auth.utils";
+import { popupCenter } from "$lib/utils/window.utils";
+import type { AuthClient } from "@dfinity/auth-client";
+import { nonNullish } from "@dfinity/utils";
+import { writable, type Readable } from "svelte/store";
 
 export interface AuthStoreData {
   identity: OptionIdentity;
@@ -17,16 +17,16 @@ export interface AuthStoreData {
 
 let authClient: AuthClient | undefined | null;
 
-const NNS_IC_ORG_ALTERNATIVE_ORIGIN = 'https://openbook.services';
+const NNS_IC_ORG_ALTERNATIVE_ORIGIN = "https://openbook.services";
 const NNS_IC_APP_DERIVATION_ORIGIN =
-  'https://etq35-qqaaa-aaaal-qcrvq-cai.icp0.io';
+  "https://etq35-qqaaa-aaaal-qcrvq-cai.icp0.io";
 
 const isNnsAlternativeOrigin = () => {
   return window.location.origin === NNS_IC_ORG_ALTERNATIVE_ORIGIN;
 };
 
 export interface AuthSignInParams {
-  domain?: 'ic0.app' | 'internetcomputer.org';
+  domain?: "ic0.app" | "internetcomputer.org";
 }
 
 export interface AuthStore extends Readable<AuthStoreData> {
@@ -59,7 +59,7 @@ const initAuthStore = (): AuthStore => {
 
         const identityProvider = nonNullish(localIdentityCanisterId)
           ? `http://localhost:4943?canisterId=${localIdentityCanisterId}`
-          : `${domain ?? 'https://identity.ic0.app'}`;
+          : `${domain ?? "https://identity.ic0.app"}`;
 
         await authClient?.login({
           maxTimeToLive: AUTH_MAX_TIME_TO_LIVE,

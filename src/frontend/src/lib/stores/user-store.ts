@@ -1,99 +1,63 @@
-import { authStore } from '$lib/stores/auth-store';
-import { replacer } from '$lib/utils/helpers';
-import { writable } from 'svelte/store';
+import { authStore } from "$lib/stores/auth-store";
+import { replacer } from "$lib/utils/helpers";
+import { writable } from "svelte/store";
 import type {
   ProfileDTO,
   UpdateProfileDTO,
-} from '../../../../declarations/backend/backend.did';
-import { ActorFactory } from '../utils/actor-factory';
+} from "../../../../declarations/backend/backend.did";
+import { ActorFactory } from "../utils/actor-factory";
+import { isError } from "$lib/utils/helpers";
 
 function createUserStore() {
   const { subscribe, set } = writable<any>(null);
 
-  function uint8ArrayToBase64(bytes: Uint8Array): string {
-    const binary = Array.from(bytes)
-      .map((byte) => String.fromCharCode(byte))
-      .join('');
-    return btoa(binary);
-  }
-
-  function base64ToUint8Array(base64: string): Uint8Array {
-    const binary_string = atob(base64);
-    const len = binary_string.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; i++) {
-      bytes[i] = binary_string.charCodeAt(i);
-    }
-    return bytes;
-  }
-
-  function getProfileFromLocalStorage(): ProfileDTO | null {
-    const storedData = localStorage.getItem('user_profile_data');
-    if (storedData) {
-      const profileData: ProfileDTO = JSON.parse(storedData);
-      if (profileData && typeof profileData.profilePicture === 'string') {
-        profileData.profilePicture = base64ToUint8Array(
-          profileData.profilePicture,
-        );
-      }
-      return profileData;
-    }
-    return null;
-  }
 
   async function sync() {
+    console.log("here2")
+    let localStorageString = localStorage.getItem("user_profile_data");
+    console.log("string")
+    console.log(localStorageString)
+    if (localStorageString && localStorageString != "undefined") {
+      const localProfile = JSON.parse(localStorageString);
+      set(localProfile);
+      return;
+    }
     try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        process.env.BACKEND_CANISTER_ID ?? '',
-      );
-
-      let updatedProfileDataObj = (await identityActor.getProfile()) as any;
-      if (!updatedProfileDataObj) {
-        await identityActor.createProfile();
-        updatedProfileDataObj = (await identityActor.getProfile()) as any;
-      }
-      let updatedProfileData = updatedProfileDataObj;
-      if (
-        updatedProfileData &&
-        updatedProfileData.profilePicture instanceof Uint8Array
-      ) {
-        const base64Picture = uint8ArrayToBase64(
-          updatedProfileData.profilePicture,
-        );
-        localStorage.setItem(
-          'user_profile_data',
-          JSON.stringify(
-            {
-              ...updatedProfileData,
-              profilePicture: base64Picture,
-            },
-            replacer,
-          ),
-        );
-      } else {
-        localStorage.setItem(
-          'user_profile_data',
-          JSON.stringify(updatedProfileData, replacer),
-        );
-      }
-      set(updatedProfileData);
+      await cacheProfile();
     } catch (error) {
-      console.error('Error fetching user profile:', error);
+      console.error("Error fetching user profile:", error);
       throw error;
     }
+  }
+
+  async function cacheProfile() {
+    const identityActor: any = await ActorFactory.createIdentityActor(
+      authStore,
+      process.env.BACKEND_CANISTER_ID ?? "",
+    );
+
+    let getProfileResponse = await identityActor.getProfile();
+    let error = isError(getProfileResponse);
+    if (error) {
+      console.error("Error fetching user profile");
+      return;
+    }
+
+    let profileData = getProfileResponse.ok;
+
+    set(profileData);
   }
 
   async function createProfile(profileDTO: UpdateProfileDTO): Promise<any> {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,
-        process.env.BACKEND_CANISTER_ID ?? '',
+        process.env.BACKEND_CANISTER_ID ?? "",
       );
       const result = await identityActor.createProfile(profileDTO);
       return result;
     } catch (error) {
-      console.error('Error updating username:', error);
+      console.error("Error updating username:", error);
       throw error;
     }
   }
@@ -102,45 +66,13 @@ function createUserStore() {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,
-        process.env.BACKEND_CANISTER_ID ?? '',
+        process.env.BACKEND_CANISTER_ID ?? "",
       );
       const result = await identityActor.updateProfileDetail(updatedProfile);
       sync();
       return result;
     } catch (error) {
-      console.error('Error updating profile:', error);
-      throw error;
-    }
-  }
-
-  async function updateShareableProfileInfo(
-    updatedProfile: UpdateProfileDTO,
-  ): Promise<any> {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        process.env.BACKEND_CANISTER_ID ?? '',
-      );
-      const result = await identityActor.updateProfileDetail(updatedProfile);
-      sync();
-      return result;
-    } catch (error) {
-      console.error('Error updating profile:', error);
-      throw error;
-    }
-  }
-
-  async function getProfile(): Promise<any> {
-    try {
-      const identityActor = await ActorFactory.createIdentityActor(
-        authStore,
-        process.env.BACKEND_CANISTER_ID ?? '',
-      );
-      const result = await identityActor.getProfile();
-      set(result);
-      return result;
-    } catch (error) {
-      console.error('Error getting profile:', error);
+      console.error("Error updating profile:", error);
       throw error;
     }
   }
@@ -149,12 +81,12 @@ function createUserStore() {
     try {
       const identityActor = await ActorFactory.createIdentityActor(
         authStore,
-        process.env.BACKEND_CANISTER_ID ?? '',
+        process.env.BACKEND_CANISTER_ID ?? "",
       );
       const result = await identityActor.isUsernameAvailable(username);
       return result;
     } catch (error) {
-      console.error('Error getting profile:', error);
+      console.error("Error getting profile:", error);
       throw error;
     }
   }
@@ -174,7 +106,7 @@ function createUserStore() {
         try {
           const identityActor = await ActorFactory.createIdentityActor(
             authStore,
-            process.env.BACKEND_CANISTER_ID ?? '',
+            process.env.BACKEND_CANISTER_ID ?? "",
           );
           const result = await identityActor.updateProfilePicture(uint8Array);
           sync();
@@ -184,7 +116,7 @@ function createUserStore() {
         }
       };
     } catch (error) {
-      console.error('Error updating username:', error);
+      console.error("Error updating username:", error);
       throw error;
     }
   }
@@ -193,11 +125,8 @@ function createUserStore() {
     subscribe,
     sync,
     createProfile,
-    getProfile,
-    getProfileFromLocalStorage,
     updateProfile,
     updateProfilePicture,
-    updateShareableProfileInfo,
     checkUsernameAvailability,
   };
 }

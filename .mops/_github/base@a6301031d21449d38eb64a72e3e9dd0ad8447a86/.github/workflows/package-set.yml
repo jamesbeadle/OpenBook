@@ -1,4 +1,4 @@
-name: 'package-set'
+name: "package-set"
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
   pull_request:
 
 env:
-  vessel_version: 'v0.6.2'
-  moc_version: '0.6.20'
+  vessel_version: "v0.6.2"
+  moc_version: "0.6.20"
 
 jobs:
   verify:
@@ -24,13 +24,13 @@ jobs:
         with:
           repository: dfinity/vessel-package-set
           path: vessel-package-set
-      - name: 'install vessel'
+      - name: "install vessel"
         run: |
           mkdir -p /home/runner/bin
           echo "/home/runner/bin" >> $GITHUB_PATH
           wget --output-document /home/runner/bin/vessel https://github.com/kritzcreek/vessel/releases/download/${{ env.vessel_version }}/vessel-linux64
           chmod +x /home/runner/bin/vessel
-      - name: 'patch package-set'
+      - name: "patch package-set"
         run: |
           cd vessel-package-set
           echo ' # [{name = "base", repo = "file://${{github.workspace}}/base-checkout", version = "${{ github.sha }}", dependencies = [] : List Text }]' >> package-set.dhall

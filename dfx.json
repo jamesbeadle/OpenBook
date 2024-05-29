@@ -2,7 +2,8 @@
   "canisters": {
     "backend": {
       "type": "motoko",
-      "main": "src/backend/main.mo"
+      "main": "src/backend/main.mo",
+      "optimize": "cycles"
     },
     "frontend": {
       "dependencies": ["backend"],
@@ -11,18 +12,6 @@
       },
       "source": ["build/"],
       "type": "assets"
-    },
-    "internet_identity": {
-      "build": "",
-      "candid": "candid/internet_identity.did",
-      "remote": {
-        "id": {
-          "ic": "rdmx6-jaaaa-aaaaa-aaadq-cai",
-          "local": "qhbym-qaaaa-aaaaa-aaafq-cai"
-        }
-      },
-      "type": "custom",
-      "wasm": ""
     }
   },
   "defaults": {

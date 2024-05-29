@@ -10,15 +10,43 @@ import OT "data-types/old-types";
 import T "data-types/types";
 import OrgT "data-types/organisation-types";
 
-import OrganisationManager "managers/organisation-manager";
 import ProfileManager "managers/profile-manager";
 import TreasuryManager "managers/treasury-manager";
 
 actor Self {
   
-  private let organisationManager = OrganisationManager.OrganisationManager();
   private let profileManager = ProfileManager.ProfileManager();
   private let treasuryManager = TreasuryManager.TreasuryManager();
+
+  //get directory
+  
+  public shared func getDirectory(dto: PDTOs.GetDirectoryDTO) : async Result.Result<[PDTOs.ProfileDTO], T.Error>{
+    
+    
+    return #ok(stable_profiles);
+  };
+
+  //get profile
+  
+  //get public profile
+
+  //purchase organisation
+
+
+
+
+  //Admin functions
+
+  public shared func listOGProfiles() : async Result.Result<[(T.PrincipalId, OT.Profile)], T.Error>{
+    return #ok(stable_profiles);
+  };
+
+  //transfer OG Profiles
+
+  //list new profiles paginated
+
+
+
 
   public shared query func listProfiles(dto: PDTOs.ListProfilesFiltersDTO) : async Result.Result<PDTOs.ProfilesListDTO, T.Error> {
     return profileManager.listProfiles(dto);
@@ -36,7 +64,7 @@ actor Self {
     return await profileManager.createProfile(dto);
   };
 
-  public shared ({ caller }) func getProfile() : async ?PDTOs.ProfileDTO {
+  public shared ({ caller }) func getProfile() : async Result.Result<PDTOs.ProfileDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     

@@ -1,22 +1,22 @@
 // src/utils/ActorFactory.ts
-import type { AuthStore } from '$lib/stores/auth-store';
-import type { OptionIdentity } from '$lib/types/identity';
-import { Actor, HttpAgent } from '@dfinity/agent';
-import type { Unsubscriber } from 'svelte/store';
-import { idlFactory as backend } from '../../../../declarations/backend';
+import type { AuthStore } from "$lib/stores/auth-store";
+import type { OptionIdentity } from "$lib/types/identity";
+import { Actor, HttpAgent } from "@dfinity/agent";
+import type { Unsubscriber } from "svelte/store";
+import { idlFactory as backend } from "../../../../declarations/backend";
 
 export class ActorFactory {
   static createActor(
     idlFactory: any,
-    canisterId: string = '',
+    canisterId: string = "",
     identity: OptionIdentity = null,
     options: any = null,
   ) {
     const hostOptions = {
       host:
-        process.env.DFX_NETWORK === 'ic'
+        process.env.DFX_NETWORK === "ic"
           ? `https://${canisterId}.icp-api.io`
-          : 'http://127.0.0.1:8080',
+          : "http://127.0.0.1:8080",
       identity: identity,
     };
 
@@ -32,10 +32,10 @@ export class ActorFactory {
 
     const agent = new HttpAgent({ ...options.agentOptions });
 
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV !== "production") {
       agent.fetchRootKey().catch((err) => {
         console.warn(
-          'Unable to fetch root key. Ensure your local replica is running',
+          "Unable to fetch root key. Ensure your local replica is running",
         );
         console.error(err);
       });

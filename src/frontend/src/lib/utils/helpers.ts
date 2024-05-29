@@ -1,24 +1,36 @@
+
+
+interface ErrorResponse {
+  err: {
+    NotFound?: null;
+  };
+}
+
+export function isError(response: any): response is ErrorResponse {
+  return response && response.err !== undefined;
+}
+
 export function formatUnixDateToReadable(unixNano: number) {
   const date = new Date(unixNano / 1000000);
   const options: Intl.DateTimeFormatOptions = {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   };
 
-  return new Intl.DateTimeFormat('en-UK', options).format(date);
+  return new Intl.DateTimeFormat("en-UK", options).format(date);
 }
 
 export function formatUnixDateToSmallReadable(unixNano: number) {
   const date = new Date(unixNano / 1000000);
   const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
+    year: "numeric",
+    month: "short",
+    day: "numeric",
   };
 
-  return new Intl.DateTimeFormat('en-UK', options).format(date);
+  return new Intl.DateTimeFormat("en-UK", options).format(date);
 }
 
 export function getCountdownTime(unixNano: number) {
@@ -38,7 +50,7 @@ export function getCountdownTime(unixNano: number) {
 }
 
 export function replacer(key: string, value: bigint) {
-  if (typeof value === 'bigint') {
+  if (typeof value === "bigint") {
     return value.toString();
   } else {
     return value;
@@ -51,10 +63,10 @@ export function formatUnixTimeToTime(unixTimeNano: number): string {
 
   let hours = date.getHours();
   const minutes = date.getMinutes();
-  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const ampm = hours >= 12 ? "PM" : "AM";
   hours = hours % 12;
   hours = hours ? hours : 12;
-  const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+  const minutesStr = minutes < 10 ? "0" + minutes : minutes;
 
   return `${hours}:${minutesStr} ${ampm}`;
 }
@@ -62,7 +74,7 @@ export function formatUnixTimeToTime(unixTimeNano: number): string {
 export function convertDateToReadable(nanoseconds: number): string {
   const milliseconds = nanoseconds / 1e6;
   const date = new Date(milliseconds);
-  return date.toLocaleDateString('en-GB');
+  return date.toLocaleDateString("en-GB");
 }
 
 export function calculateAgeFromNanoseconds(nanoseconds: number) {
@@ -83,138 +95,138 @@ export function calculateAgeFromNanoseconds(nanoseconds: number) {
   return age;
 }
 
-import * as FlagIcons from 'svelte-flag-icons';
+import * as FlagIcons from "svelte-flag-icons";
 export function getFlagComponent(countryCode: string) {
   switch (countryCode) {
-    case 'Albania':
+    case "Albania":
       return FlagIcons.Al;
-    case 'Algeria':
+    case "Algeria":
       return FlagIcons.Dz;
-    case 'Argentina':
+    case "Argentina":
       return FlagIcons.Ar;
-    case 'Australia':
+    case "Australia":
       return FlagIcons.Au;
-    case 'Austria':
+    case "Austria":
       return FlagIcons.At;
-    case 'Belgium':
+    case "Belgium":
       return FlagIcons.Be;
-    case 'Bosnia and Herzegovina':
+    case "Bosnia and Herzegovina":
       return FlagIcons.Ba;
-    case 'Brazil':
+    case "Brazil":
       return FlagIcons.Br;
-    case 'Burkina Faso':
+    case "Burkina Faso":
       return FlagIcons.Bf;
-    case 'Cameroon':
+    case "Cameroon":
       return FlagIcons.Cm;
-    case 'Canada':
+    case "Canada":
       return FlagIcons.Ca;
-    case 'Colombia':
+    case "Colombia":
       return FlagIcons.Co;
-    case 'Costa Rica':
+    case "Costa Rica":
       return FlagIcons.Cr;
-    case 'Croatia':
+    case "Croatia":
       return FlagIcons.Hr;
-    case 'Czech Republic':
+    case "Czech Republic":
       return FlagIcons.Cz;
-    case 'Denmark':
+    case "Denmark":
       return FlagIcons.Dk;
-    case 'DR Congo':
+    case "DR Congo":
       return FlagIcons.Cg;
-    case 'Ecuador':
+    case "Ecuador":
       return FlagIcons.Ec;
-    case 'Egypt':
+    case "Egypt":
       return FlagIcons.Eg;
-    case 'England':
+    case "England":
       return FlagIcons.Gb;
-    case 'Estonia':
+    case "Estonia":
       return FlagIcons.Ee;
-    case 'Finland':
+    case "Finland":
       return FlagIcons.Fi;
-    case 'France':
+    case "France":
       return FlagIcons.Fr;
-    case 'Gabon':
+    case "Gabon":
       return FlagIcons.Ga;
-    case 'Germany':
+    case "Germany":
       return FlagIcons.De;
-    case 'Ghana':
+    case "Ghana":
       return FlagIcons.Gh;
-    case 'Greece':
+    case "Greece":
       return FlagIcons.Gr;
-    case 'Grenada':
+    case "Grenada":
       return FlagIcons.Gd;
-    case 'Guinea':
+    case "Guinea":
       return FlagIcons.Gn;
-    case 'Iceland':
+    case "Iceland":
       return FlagIcons.Is;
-    case 'Iran':
+    case "Iran":
       return FlagIcons.Ir;
-    case 'Ireland':
+    case "Ireland":
       return FlagIcons.Ie;
-    case 'Israel':
+    case "Israel":
       return FlagIcons.Il;
-    case 'Italy':
+    case "Italy":
       return FlagIcons.It;
-    case 'Ivory Coast':
+    case "Ivory Coast":
       return FlagIcons.Ci;
-    case 'Jamaica':
+    case "Jamaica":
       return FlagIcons.Jm;
-    case 'Japan':
+    case "Japan":
       return FlagIcons.Jp;
-    case 'Macedonia':
+    case "Macedonia":
       return FlagIcons.Mk;
-    case 'Mali':
+    case "Mali":
       return FlagIcons.Ml;
-    case 'Mexico':
+    case "Mexico":
       return FlagIcons.Mx;
-    case 'Montserrat':
+    case "Montserrat":
       return FlagIcons.Ms;
-    case 'Morocco':
+    case "Morocco":
       return FlagIcons.Ma;
-    case 'Netherlands':
+    case "Netherlands":
       return FlagIcons.Nl;
-    case 'Nigeria':
+    case "Nigeria":
       return FlagIcons.Ne;
-    case 'Northern Ireland':
+    case "Northern Ireland":
       return FlagIcons.Gb;
-    case 'Norway':
+    case "Norway":
       return FlagIcons.No;
-    case 'Paraguay':
+    case "Paraguay":
       return FlagIcons.Py;
-    case 'Poland':
+    case "Poland":
       return FlagIcons.Pl;
-    case 'Portugal':
+    case "Portugal":
       return FlagIcons.Pt;
-    case 'Scotland':
+    case "Scotland":
       return FlagIcons.Gb;
-    case 'Senegal':
+    case "Senegal":
       return FlagIcons.Sn;
-    case 'Serbia':
+    case "Serbia":
       return FlagIcons.Rs;
-    case 'Slovakia':
+    case "Slovakia":
       return FlagIcons.Sk;
-    case 'South Africa':
+    case "South Africa":
       return FlagIcons.Za;
-    case 'South Korea':
+    case "South Korea":
       return FlagIcons.Kr;
-    case 'Spain':
+    case "Spain":
       return FlagIcons.Es;
-    case 'Sweden':
+    case "Sweden":
       return FlagIcons.Se;
-    case 'Switzerland':
+    case "Switzerland":
       return FlagIcons.Ch;
-    case 'Tunisia':
+    case "Tunisia":
       return FlagIcons.Tn;
-    case 'Turkey':
+    case "Turkey":
       return FlagIcons.Tr;
-    case 'Ukraine':
+    case "Ukraine":
       return FlagIcons.Ua;
-    case 'United States':
+    case "United States":
       return FlagIcons.Us;
-    case 'Uruguay':
+    case "Uruguay":
       return FlagIcons.Uy;
-    case 'Wales':
+    case "Wales":
       return FlagIcons.Gb;
-    case 'Zimbabwe':
+    case "Zimbabwe":
       return FlagIcons.Zw;
     default:
       return null;
@@ -225,18 +237,18 @@ export function getDateFromBigInt(dateMS: bigint): string {
   const dateInMilliseconds = Number(dateMS / 1000000n);
   const date = new Date(dateInMilliseconds);
   const monthNames = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
   return `${monthNames[date.getUTCMonth()]} ${date.getUTCFullYear()}`;
 }

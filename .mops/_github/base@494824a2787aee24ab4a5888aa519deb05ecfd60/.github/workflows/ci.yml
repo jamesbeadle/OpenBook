@@ -1,4 +1,4 @@
-name: 'build'
+name: "build"
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
 
 # Remember to update me in package-set.yml as well
 env:
-  vessel_version: 'v0.6.2'
-  moc_version: '0.6.20'
+  vessel_version: "v0.6.2"
+  moc_version: "0.6.20"
 
 jobs:
   tests:
@@ -22,25 +22,25 @@ jobs:
       - uses: cachix/install-nix-action@v16
         with:
           nix_path: nixpkgs=channel:nixos-21.11
-      - name: 'install dependencies'
+      - name: "install dependencies"
         run: |
           nix-env --install wasmtime --file '<nixpkgs>'
           nix-env --install graphviz --file '<nixpkgs>'
-      - name: 'install Motoko binaries'
+      - name: "install Motoko binaries"
         run: |
           wget https://github.com/dfinity/motoko/releases/download/${{ env.moc_version }}/motoko-linux64-${{ env.moc_version }}.tar.gz
           mkdir -p /home/runner/bin
           tar -xzf motoko-linux64-${{ env.moc_version }}.tar.gz -C /home/runner/bin
           echo "/home/runner/bin" >> $GITHUB_PATH
-      - name: 'install vessel'
+      - name: "install vessel"
         run: |
           wget --output-document /home/runner/bin/vessel https://github.com/kritzcreek/vessel/releases/download/${{ env.vessel_version }}/vessel-linux64
           chmod +x /home/runner/bin/vessel
-      - name: 'test'
+      - name: "test"
         run: make -C test
-      - name: 'graph dependencies'
+      - name: "graph dependencies"
         run: python3 doc/module_graph.py | dot -Tsvg > doc/module_graph.svg && file doc/module_graph.svg
-      - name: 'docs'
+      - name: "docs"
         if: github.ref != 'refs/heads/next-moc' && github.base_ref != 'refs/heads/next-moc'
         run: |
           pushd doc

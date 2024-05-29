@@ -1,17 +1,17 @@
-import { authStore, type AuthSignInParams } from '$lib/stores/auth-store';
-import { toastsClean, toastsError, toastsShow } from '$lib/stores/toasts-store';
-import type { ToastMsg } from '$lib/types/toast';
-import { replaceHistory } from '$lib/utils/route.utils';
-import type { ToastLevel } from '@dfinity/gix-components';
-import { busyStore } from '@dfinity/gix-components';
-import { isNullish } from '@dfinity/utils';
+import { authStore, type AuthSignInParams } from "$lib/stores/auth-store";
+import { toastsClean, toastsError, toastsShow } from "$lib/stores/toasts-store";
+import type { ToastMsg } from "$lib/types/toast";
+import { replaceHistory } from "$lib/utils/route.utils";
+import type { ToastLevel } from "@dfinity/gix-components";
+import { busyStore } from "@dfinity/gix-components";
+import { isNullish } from "@dfinity/utils";
 
 export const signIn = async (
   params: AuthSignInParams,
-): Promise<{ success: 'ok' | 'cancelled' | 'error'; err?: unknown }> => {
+): Promise<{ success: "ok" | "cancelled" | "error"; err?: unknown }> => {
   busyStore.startBusy({
-    initiator: 'sign-in',
-    text: 'Connecting...',
+    initiator: "sign-in",
+    text: "Connecting...",
   });
 
   try {
@@ -20,11 +20,11 @@ export const signIn = async (
     // We clean previous messages in case user was signed out automatically before sign-in again.
     toastsClean();
 
-    return { success: 'ok' };
+    return { success: "ok" };
   } catch (err: unknown) {
-    if (err === 'UserInterrupt') {
+    if (err === "UserInterrupt") {
       // We do not display an error if user explicitly cancelled the process of sign-in
-      return { success: 'cancelled' };
+      return { success: "cancelled" };
     }
 
     toastsError({
@@ -32,9 +32,9 @@ export const signIn = async (
       err,
     });
 
-    return { success: 'error', err };
+    return { success: "error", err };
   } finally {
-    busyStore.stopBusy('sign-in');
+    busyStore.stopBusy("sign-in");
   }
 };
 
@@ -43,16 +43,16 @@ export const signOut = (): Promise<void> => logout({});
 export const idleSignOut = async () =>
   logout({
     msg: {
-      text: 'You have been logged out because your session has expired.',
-      level: 'warn',
+      text: "You have been logged out because your session has expired.",
+      level: "warn",
     },
   });
 
 const logout = async ({ msg = undefined }: { msg?: ToastMsg }) => {
   // To mask not operational UI (a side effect of sometimes slow JS loading after window.reload because of service worker and no cache).
   busyStore.startBusy({
-    initiator: 'sign-out',
-    text: 'Disconnecting...',
+    initiator: "sign-out",
+    text: "Disconnecting...",
   });
 
   await authStore.signOut();
@@ -67,12 +67,12 @@ const logout = async ({ msg = undefined }: { msg?: ToastMsg }) => {
   // Information the user want to preserve across sign-in. e.g. if I select the light theme, logout and sign-in again, I am happy if the dapp still uses the light theme.
 
   // We reload the page to make sure all the states are cleared
-  busyStore.stopBusy('sign-out');
+  busyStore.stopBusy("sign-out");
   window.location.reload();
 };
 
-const PARAM_MSG = 'msg';
-const PARAM_LEVEL = 'level';
+const PARAM_MSG = "msg";
+const PARAM_LEVEL = "level";
 
 /**
  * If a message was provided to the logout process - e.g. a message informing the logout happened because the session timed-out - append the information to the url as query params
@@ -104,7 +104,7 @@ export const displayAndCleanLogoutMsg = () => {
 
   // For simplicity reason we assume the level pass as query params is one of the type ToastLevel
   const level: ToastLevel =
-    (urlParams.get(PARAM_LEVEL) as ToastLevel | null) ?? 'success';
+    (urlParams.get(PARAM_LEVEL) as ToastLevel | null) ?? "success";
 
   toastsShow({ text: decodeURI(msg), level });
 

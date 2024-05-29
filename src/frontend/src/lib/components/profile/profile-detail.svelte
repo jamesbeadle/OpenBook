@@ -29,9 +29,11 @@
 
   onMount(async () => {
     try {
+      console.log("here1")
       await userStore.sync();
 
       unsubscribeUserProfile = userStore.subscribe((value) => {
+        console.log(value)
         if (!value) {
           return;
         }
@@ -39,6 +41,7 @@
           newUser = true;
         }
         setProfile(value);
+        console.log(value)
         joinedDate = getDateFromBigInt(value.createDate);
       });
     } catch (error) {
@@ -87,21 +90,23 @@
     try {
       await userStore.updateProfilePicture(file);
       await userStore.sync();
-      const profileData = await userStore.getProfile();
-      setProfile(profileData);
-      if (
-        profileData &&
-        profileData.profilePicture &&
-        profileData.profilePicture.length > 0
-      ) {
-        const blob = new Blob([new Uint8Array(profileData.profilePicture)]);
-        profileSrc = URL.createObjectURL(blob) + '?v=' + new Date().getTime();
-      }
-      toastsShow({
-        text: 'Profile image updated.',
-        level: 'success',
-        duration: 2000,
+      await userStore.subscribe(profileData => {
+        setProfile(profileData);
+        if (
+          profileData &&
+          profileData.profilePicture &&
+          profileData.profilePicture.length > 0
+        ) {
+          const blob = new Blob([new Uint8Array(profileData.profilePicture)]);
+          profileSrc = URL.createObjectURL(blob) + '?v=' + new Date().getTime();
+        }
+        toastsShow({
+          text: 'Profile image updated.',
+          level: 'success',
+          duration: 2000,
+        });
       });
+      
     } catch (error) {
       toastsError({
         msg: { text: 'Error updating profile image.' },

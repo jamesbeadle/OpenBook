@@ -4,7 +4,7 @@ import Time "mo:base/Time";
 import Principal "mo:base/Principal";
 import Blob "mo:base/Blob";
 import Nat "mo:base/Nat";
-import Ledger "../canister-defs/ledger";
+import Ledger "../defs/ledger";
 import Account "../utilities/Account";
 import T "../data-types/types";
 import Environment "../utilities/Environment";

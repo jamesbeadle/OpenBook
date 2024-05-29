@@ -9,11 +9,6 @@ import Buffer "mo:base/Buffer";
 import Nat8 "mo:base/Nat8";
 import Option "mo:base/Option";
 import Result "mo:base/Result";
-import AccountsManager "../managers/accounts-manager";
-import ProjectManager "../managers/project-manager";
-import SalesManager "../managers/sales-manager";
-import TimesheetManager "../managers/timesheet-manager";
-import RecruitmentManager "../managers/recruitment-manager";
 
 import SD "../dtos/sales-dtos";
 import RD "../dtos/recruitment-dtos";

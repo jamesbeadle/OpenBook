@@ -1,7 +1,13 @@
 {
 	"/": [],
+	"/accounting": [],
 	"/directory": [],
+	"/organisations": [],
+	"/organisation": [],
 	"/profile": [],
-	"/tasks": [],
+	"/projects": [],
+	"/recruitment": [],
+	"/sales": [],
+	"/timesheets": [],
 	"/whitepaper": []
 }

@@ -8,26 +8,6 @@ module DTOs {
 
   };
 
-  public type ProfileDTO = {
-    principal : Text;
-    username : Text;
-    displayName : Text;
-    profession : Text;
-    firstName : Text;
-    lastName : Text;
-    openChatUsername : Text;
-    emailAddress : Text;
-    phoneNumber : Text;
-    otherContact : Text;
-    termsAccepted : Bool;
-    profilePicture : Blob;
-    organisations : List.List<DTOs.OrganisationDTO>;
-    createDate : Int;
-    lastModified : Int64;
-    userDefinedWallet : Text;
-    preferredPaymentCurrency : OB.CurrencyId;
-  };
-
   public type OrganisationDTO = {
     id : OB.OrganisationId;
     name : Text;

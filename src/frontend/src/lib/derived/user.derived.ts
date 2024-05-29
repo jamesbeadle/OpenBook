@@ -1,5 +1,5 @@
-import { userStore } from '$lib/stores/user-store';
-import { derived, type Readable } from 'svelte/store';
+import { userStore } from "$lib/stores/user-store";
+import { derived, type Readable } from "svelte/store";
 
 export const userGetProfilePicture: Readable<string> = derived(
   userStore,
@@ -9,5 +9,5 @@ export const userGetProfilePicture: Readable<string> = derived(
     user.profilePicture !== undefined &&
     user.profilePicture.length > 0
       ? URL.createObjectURL(new Blob([new Uint8Array(user.profilePicture)]))
-      : 'profile_placeholder.png',
+      : "profile_placeholder.png",
 );

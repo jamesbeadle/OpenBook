@@ -1,5 +1,5 @@
-import { browser } from '$app/environment';
-import { isNullish } from '@dfinity/utils';
+import { browser } from "$app/environment";
+import { isNullish } from "@dfinity/utils";
 
 export const popupCenter = ({
   width,

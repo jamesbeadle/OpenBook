@@ -17,7 +17,7 @@ import Order "mo:base/Order";
 import DTOs "../dtos/DTOs";
 import Prim "mo:prim";
 
-import PD "../dtos/profile-dtos"
+import PDTOs "../dtos/profile-dtos"
 
 module {
   public class ProfileManager() {
@@ -26,7 +26,10 @@ module {
     private var userProfiles : HashMap.HashMap<Text, OT.Profile> = HashMap.HashMap<Text, OT.Profile>(100, Text.equal, Text.hash);
     private var userProfilePictures : HashMap.HashMap<Text, Blob> = HashMap.HashMap<Text, Blob>(100, Text.equal, Text.hash);
 
-    public func listProfiles(dto: PD.ListProfilesFiltersDTO) : Result.Result<PD.ProfilesListDTO, T.Error> {
+    public func getDirectory(dto: PDTOs.GetDirectoryDTO) : Result.Result<PDTOs.ProfilesListDTO, T.Error> {
+      
+
+      
       return #err(#NotFound);
     };
 
@@ -35,12 +38,38 @@ module {
       return true;
     };  
 
-    public func createProfile(dto : PD.CreateProfileDTO) : async Result.Result<(), T.Error> {
+    public func createProfile(dto : PDTOs.CreateProfileDTO) : async Result.Result<(), T.Error> {
       return #err(#NotFound);
     };
 
-    public func getProfile(principalName : Text) : async ?PD.ProfileDTO {
-      return userProfiles.get(principalName);
+    public func getProfile(principalName : Text) : async Result.Result<PDTOs.ProfileDTO, T.Error> {
+      let profile = userProfiles.get(principalName);
+      switch(profile){
+        case (null){
+          return #err(#NotFound);
+        };
+        case (?foundProfile){
+          return #ok({
+            principal = foundProfile.principal;
+            username = foundProfile.username;
+            displayName = foundProfile.displayName;
+            profession = foundProfile.profession;
+            firstName = foundProfile.firstName;
+            lastName = foundProfile.lastName;
+            openChatUsername = foundProfile.openChatUsername;
+            emailAddress = foundProfile.emailAddress;
+            phoneNumber = foundProfile.phoneNumber;
+            otherContact = foundProfile.otherContact;
+            termsAccepted = foundProfile.termsAccepted;
+            profilePicture = Blob.fromArray([]);
+            organisations = foundProfile.organisations;
+            createDate = foundProfile.createDate;
+            lastModified = foundProfile.lastModified;
+            userDefinedWallet = foundProfile.userDefinedWallet;
+            preferredPaymentCurrency = foundProfile.preferredPaymentCurrency;
+          })
+        }
+      }
     };
 
     
