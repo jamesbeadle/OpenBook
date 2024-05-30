@@ -150,8 +150,6 @@ actor Self {
             activeBucketNumber += 1;
         };
 
-        //save file
-
         let storageBlob: StorageBlob = {
             id = nextFileId;
             owner = owner;
@@ -163,6 +161,501 @@ actor Self {
                 let fileBuffer = Buffer.fromArray<StorageBlob>(bucket1);
                 fileBuffer.add(storageBlob);
                 bucket1 := Buffer.toArray(fileBuffer);
+            };
+            case 2{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket2);
+                fileBuffer.add(storageBlob);
+                bucket2 := Buffer.toArray(fileBuffer);
+            };
+            case 3{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket3);
+                fileBuffer.add(storageBlob);
+                bucket3 := Buffer.toArray(fileBuffer);
+            };
+            case 4{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket4);
+                fileBuffer.add(storageBlob);
+                bucket4 := Buffer.toArray(fileBuffer);
+            };
+            case 5{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket5);
+                fileBuffer.add(storageBlob);
+                bucket5 := Buffer.toArray(fileBuffer);
+            };
+            case 6{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket6);
+                fileBuffer.add(storageBlob);
+                bucket6 := Buffer.toArray(fileBuffer);
+            };
+            case 7{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket7);
+                fileBuffer.add(storageBlob);
+                bucket7 := Buffer.toArray(fileBuffer);
+            };
+            case 8{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket8);
+                fileBuffer.add(storageBlob);
+                bucket8 := Buffer.toArray(fileBuffer);
+            };
+            case 9{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket9);
+                fileBuffer.add(storageBlob);
+                bucket9 := Buffer.toArray(fileBuffer);
+            };
+            case 10{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket10);
+                fileBuffer.add(storageBlob);
+                bucket10 := Buffer.toArray(fileBuffer);
+            };
+            case 11{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket11);
+                fileBuffer.add(storageBlob);
+                bucket11 := Buffer.toArray(fileBuffer);
+            };
+            case 12{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket12);
+                fileBuffer.add(storageBlob);
+                bucket12 := Buffer.toArray(fileBuffer);
+            };
+            case 13{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket13);
+                fileBuffer.add(storageBlob);
+                bucket13 := Buffer.toArray(fileBuffer);
+            };
+            case 14{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket14);
+                fileBuffer.add(storageBlob);
+                bucket14 := Buffer.toArray(fileBuffer);
+            };
+            case 15{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket15);
+                fileBuffer.add(storageBlob);
+                bucket15 := Buffer.toArray(fileBuffer);
+            };
+            case 16{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket16);
+                fileBuffer.add(storageBlob);
+                bucket16 := Buffer.toArray(fileBuffer);
+            };
+            case 17{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket17);
+                fileBuffer.add(storageBlob);
+                bucket17 := Buffer.toArray(fileBuffer);
+            };
+            case 18{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket18);
+                fileBuffer.add(storageBlob);
+                bucket18 := Buffer.toArray(fileBuffer);
+            };
+            case 19{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket19);
+                fileBuffer.add(storageBlob);
+                bucket19 := Buffer.toArray(fileBuffer);
+            };
+            case 20{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket20);
+                fileBuffer.add(storageBlob);
+                bucket20 := Buffer.toArray(fileBuffer);
+            };
+            case 21{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket21);
+                fileBuffer.add(storageBlob);
+                bucket21 := Buffer.toArray(fileBuffer);
+            };
+            case 22{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket22);
+                fileBuffer.add(storageBlob);
+                bucket22 := Buffer.toArray(fileBuffer);
+            };
+            case 23{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket23);
+                fileBuffer.add(storageBlob);
+                bucket23 := Buffer.toArray(fileBuffer);
+            };
+            case 24{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket24);
+                fileBuffer.add(storageBlob);
+                bucket24 := Buffer.toArray(fileBuffer);
+            };
+            case 25{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket25);
+                fileBuffer.add(storageBlob);
+                bucket25 := Buffer.toArray(fileBuffer);
+            };
+            case 26{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket26);
+                fileBuffer.add(storageBlob);
+                bucket26 := Buffer.toArray(fileBuffer);
+            };
+            case 27{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket27);
+                fileBuffer.add(storageBlob);
+                bucket27 := Buffer.toArray(fileBuffer);
+            };
+            case 28{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket28);
+                fileBuffer.add(storageBlob);
+                bucket28 := Buffer.toArray(fileBuffer);
+            };
+            case 29{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket29);
+                fileBuffer.add(storageBlob);
+                bucket29 := Buffer.toArray(fileBuffer);
+            };
+            case 30{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket30);
+                fileBuffer.add(storageBlob);
+                bucket30 := Buffer.toArray(fileBuffer);
+            };
+            case 31{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket31);
+                fileBuffer.add(storageBlob);
+                bucket31 := Buffer.toArray(fileBuffer);
+            };
+            case 32{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket32);
+                fileBuffer.add(storageBlob);
+                bucket32 := Buffer.toArray(fileBuffer);
+            };
+            case 33{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket33);
+                fileBuffer.add(storageBlob);
+                bucket33 := Buffer.toArray(fileBuffer);
+            };
+            case 34{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket34);
+                fileBuffer.add(storageBlob);
+                bucket34 := Buffer.toArray(fileBuffer);
+            };
+            case 35{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket35);
+                fileBuffer.add(storageBlob);
+                bucket35 := Buffer.toArray(fileBuffer);
+            };
+            case 36{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket36);
+                fileBuffer.add(storageBlob);
+                bucket36 := Buffer.toArray(fileBuffer);
+            };
+            case 37{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket37);
+                fileBuffer.add(storageBlob);
+                bucket37 := Buffer.toArray(fileBuffer);
+            };
+            case 38{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket38);
+                fileBuffer.add(storageBlob);
+                bucket38 := Buffer.toArray(fileBuffer);
+            };
+            case 39{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket39);
+                fileBuffer.add(storageBlob);
+                bucket39 := Buffer.toArray(fileBuffer);
+            };
+            case 40{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket40);
+                fileBuffer.add(storageBlob);
+                bucket40 := Buffer.toArray(fileBuffer);
+            };
+            case 41{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket41);
+                fileBuffer.add(storageBlob);
+                bucket41 := Buffer.toArray(fileBuffer);
+            };
+            case 42{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket42);
+                fileBuffer.add(storageBlob);
+                bucket42 := Buffer.toArray(fileBuffer);
+            };
+            case 43{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket43);
+                fileBuffer.add(storageBlob);
+                bucket43 := Buffer.toArray(fileBuffer);
+            };
+            case 44{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket44);
+                fileBuffer.add(storageBlob);
+                bucket44 := Buffer.toArray(fileBuffer);
+            };
+            case 45{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket45);
+                fileBuffer.add(storageBlob);
+                bucket45 := Buffer.toArray(fileBuffer);
+            };
+            case 46{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket46);
+                fileBuffer.add(storageBlob);
+                bucket46 := Buffer.toArray(fileBuffer);
+            };
+            case 47{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket47);
+                fileBuffer.add(storageBlob);
+                bucket47 := Buffer.toArray(fileBuffer);
+            };
+            case 48{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket48);
+                fileBuffer.add(storageBlob);
+                bucket48 := Buffer.toArray(fileBuffer);
+            };
+            case 49{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket49);
+                fileBuffer.add(storageBlob);
+                bucket49 := Buffer.toArray(fileBuffer);
+            };
+            case 50{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket50);
+                fileBuffer.add(storageBlob);
+                bucket50 := Buffer.toArray(fileBuffer);
+            };
+            case 51{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket51);
+                fileBuffer.add(storageBlob);
+                bucket51 := Buffer.toArray(fileBuffer);
+            };
+            case 52{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket52);
+                fileBuffer.add(storageBlob);
+                bucket52 := Buffer.toArray(fileBuffer);
+            };
+            case 53{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket53);
+                fileBuffer.add(storageBlob);
+                bucket53 := Buffer.toArray(fileBuffer);
+            };
+            case 54{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket54);
+                fileBuffer.add(storageBlob);
+                bucket54 := Buffer.toArray(fileBuffer);
+            };
+            case 55{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket55);
+                fileBuffer.add(storageBlob);
+                bucket55 := Buffer.toArray(fileBuffer);
+            };
+            case 56{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket56);
+                fileBuffer.add(storageBlob);
+                bucket56 := Buffer.toArray(fileBuffer);
+            };
+            case 57{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket57);
+                fileBuffer.add(storageBlob);
+                bucket57 := Buffer.toArray(fileBuffer);
+            };
+            case 58{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket58);
+                fileBuffer.add(storageBlob);
+                bucket58 := Buffer.toArray(fileBuffer);
+            };
+            case 59{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket59);
+                fileBuffer.add(storageBlob);
+                bucket59 := Buffer.toArray(fileBuffer);
+            };
+            case 60{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket60);
+                fileBuffer.add(storageBlob);
+                bucket60 := Buffer.toArray(fileBuffer);
+            };
+            case 61{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket61);
+                fileBuffer.add(storageBlob);
+                bucket61 := Buffer.toArray(fileBuffer);
+            };
+            case 62{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket62);
+                fileBuffer.add(storageBlob);
+                bucket62 := Buffer.toArray(fileBuffer);
+            };
+            case 63{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket63);
+                fileBuffer.add(storageBlob);
+                bucket63 := Buffer.toArray(fileBuffer);
+            };
+            case 64{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket64);
+                fileBuffer.add(storageBlob);
+                bucket64 := Buffer.toArray(fileBuffer);
+            };
+            case 65{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket65);
+                fileBuffer.add(storageBlob);
+                bucket65 := Buffer.toArray(fileBuffer);
+            };
+            case 66{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket66);
+                fileBuffer.add(storageBlob);
+                bucket66 := Buffer.toArray(fileBuffer);
+            };
+            case 67{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket67);
+                fileBuffer.add(storageBlob);
+                bucket67 := Buffer.toArray(fileBuffer);
+            };
+            case 68{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket68);
+                fileBuffer.add(storageBlob);
+                bucket68 := Buffer.toArray(fileBuffer);
+            };
+            case 69{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket69);
+                fileBuffer.add(storageBlob);
+                bucket69 := Buffer.toArray(fileBuffer);
+            };
+            case 70{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket70);
+                fileBuffer.add(storageBlob);
+                bucket70 := Buffer.toArray(fileBuffer);
+            };
+            case 71{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket71);
+                fileBuffer.add(storageBlob);
+                bucket71 := Buffer.toArray(fileBuffer);
+            };
+            case 72{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket72);
+                fileBuffer.add(storageBlob);
+                bucket72 := Buffer.toArray(fileBuffer);
+            };
+            case 73{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket73);
+                fileBuffer.add(storageBlob);
+                bucket73 := Buffer.toArray(fileBuffer);
+            };
+            case 74{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket74);
+                fileBuffer.add(storageBlob);
+                bucket74 := Buffer.toArray(fileBuffer);
+            };
+            case 75{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket75);
+                fileBuffer.add(storageBlob);
+                bucket75 := Buffer.toArray(fileBuffer);
+            };
+            case 76{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket76);
+                fileBuffer.add(storageBlob);
+                bucket76 := Buffer.toArray(fileBuffer);
+            };
+            case 77{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket77);
+                fileBuffer.add(storageBlob);
+                bucket77 := Buffer.toArray(fileBuffer);
+            };
+            case 78{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket78);
+                fileBuffer.add(storageBlob);
+                bucket78 := Buffer.toArray(fileBuffer);
+            };
+            case 79{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket79);
+                fileBuffer.add(storageBlob);
+                bucket79 := Buffer.toArray(fileBuffer);
+            };
+            case 80{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket80);
+                fileBuffer.add(storageBlob);
+                bucket80 := Buffer.toArray(fileBuffer);
+            };
+            case 81{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket81);
+                fileBuffer.add(storageBlob);
+                bucket81 := Buffer.toArray(fileBuffer);
+            };
+            case 82{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket82);
+                fileBuffer.add(storageBlob);
+                bucket82 := Buffer.toArray(fileBuffer);
+            };
+            case 83{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket83);
+                fileBuffer.add(storageBlob);
+                bucket83 := Buffer.toArray(fileBuffer);
+            };
+            case 84{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket84);
+                fileBuffer.add(storageBlob);
+                bucket84 := Buffer.toArray(fileBuffer);
+            };
+            case 85{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket85);
+                fileBuffer.add(storageBlob);
+                bucket85 := Buffer.toArray(fileBuffer);
+            };
+            case 86{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket86);
+                fileBuffer.add(storageBlob);
+                bucket86 := Buffer.toArray(fileBuffer);
+            };
+            case 87{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket87);
+                fileBuffer.add(storageBlob);
+                bucket87 := Buffer.toArray(fileBuffer);
+            };
+            case 88{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket88);
+                fileBuffer.add(storageBlob);
+                bucket88 := Buffer.toArray(fileBuffer);
+            };
+            case 89{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket89);
+                fileBuffer.add(storageBlob);
+                bucket89 := Buffer.toArray(fileBuffer);
+            };
+            case 90{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket90);
+                fileBuffer.add(storageBlob);
+                bucket90 := Buffer.toArray(fileBuffer);
+            };
+            case 91{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket91);
+                fileBuffer.add(storageBlob);
+                bucket91 := Buffer.toArray(fileBuffer);
+            };
+            case 92{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket92);
+                fileBuffer.add(storageBlob);
+                bucket92 := Buffer.toArray(fileBuffer);
+            };
+            case 93{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket93);
+                fileBuffer.add(storageBlob);
+                bucket93 := Buffer.toArray(fileBuffer);
+            };
+            case 94{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket94);
+                fileBuffer.add(storageBlob);
+                bucket94 := Buffer.toArray(fileBuffer);
+            };
+            case 95{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket95);
+                fileBuffer.add(storageBlob);
+                bucket95 := Buffer.toArray(fileBuffer);
+            };
+            case 96{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket96);
+                fileBuffer.add(storageBlob);
+                bucket96 := Buffer.toArray(fileBuffer);
+            };
+            case 97{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket97);
+                fileBuffer.add(storageBlob);
+                bucket97 := Buffer.toArray(fileBuffer);
+            };
+            case 98{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket98);
+                fileBuffer.add(storageBlob);
+                bucket98 := Buffer.toArray(fileBuffer);
+            };
+            case 99{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket99);
+                fileBuffer.add(storageBlob);
+                bucket99 := Buffer.toArray(fileBuffer);
+            };
+            case 100{
+                let fileBuffer = Buffer.fromArray<StorageBlob>(bucket100);
+                fileBuffer.add(storageBlob);
+                bucket100 := Buffer.toArray(fileBuffer);
             };
             case _ {};
         };
