@@ -9,12 +9,22 @@ import Buffer "mo:base/Buffer";
 import Nat8 "mo:base/Nat8";
 import Option "mo:base/Option";
 import Result "mo:base/Result";
-
-import SD "../dtos/sales-dtos";
-import RD "../dtos/recruitment-dtos";
-import TD "../dtos/task-dtos";
+import T "../data-types/accounts-types";
 
 actor class _AccountancyCanister() {
+
+    private var transactions: [T.Transaction] = [];
+    private var chartOfAccounts: [T.GeneralLedgerAccount] = [];
+
+    //Data stored in the accountancy canister
+        //All transactions
+        //All suppliers and customers linked back to contact records
+        //chart of accounts
+        //balance of banking accounts with matching of payments etc
+        //
+
+
+
 
     public shared ({ caller }) func initialise(){
 

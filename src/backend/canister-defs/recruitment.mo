@@ -1,6 +1,10 @@
 
 actor class _RecruitmentCanister() {
 
+    //roles
+    //requirements
+    
+
     public shared ({ caller }) func initialise(){
 
     };

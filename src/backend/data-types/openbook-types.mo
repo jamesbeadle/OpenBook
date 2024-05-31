@@ -1,6 +1,17 @@
 
 module OpenBookTypes {
 
+  public type Error = {
+    #NotFound;
+    #AlreadyExists;
+    #NotAuthorized;
+    #NotAllowed;
+    #DecodeError;
+    #InvalidData;
+    #NotEnoughFunds;
+  };
+
+  public type PrincipalId = Text;
   public type OrganisationId = Nat32;
   public type ProjectId = Nat16;
   public type ServiceId = Nat16;
@@ -13,6 +24,38 @@ module OpenBookTypes {
   public type OrganisationMemberId = Nat32;
   public type CurrencyId = Nat32;
   public type TransactionId = Nat32;
+  public type CanisterId = Text;
+  public type BucketNumber = Nat8;
+  public type FileId = Nat32;
+
+  public type Profile = {
+    principal : PrincipalId;
+    username : Text;
+    firstName : Text;
+    lastName : Text;
+    displayName : Text;
+    profession : Text;
+    openChatUsername : Text;
+    emailAddress : Text;
+    phoneNumber : Text;
+    otherContact : Text;
+    termsAccepted : Bool;
+    profilePictureCanisterId : CanisterId;
+    profilePictureBucketNumber: BucketNumber;
+    profilePictureFileId: FileId;
+    organisations : [OrganisationId];
+    createDate : Int;
+    auditHistory : [AuditRecord];
+    lastModified : Int64;
+    userDefinedWallet : Text;
+    preferredPaymentCurrency : CurrencyId;
+  };
+
+  public type PresaleParticipation = {
+    principalId: PrincipalId;
+    bookTokens: Nat64;
+    icpSwapped: Nat64;
+  };
 
   public type ChangeType = {
     #OrganisationDetailUpdated;

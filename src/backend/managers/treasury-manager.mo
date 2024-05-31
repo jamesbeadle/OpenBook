@@ -72,19 +72,6 @@ module {
             });
         };
 
-        public func canAffordOrganisation(defaultAccount: Principal, userId: T.PrincipalId) : async Bool{
-        
-            let source_account = Account.accountIdentifier(defaultAccount, Account.principalToSubaccount(Principal.fromText(userId)));
-            let checkAccount = {
-                owner = Principal.fromBlob(source_account);
-                subaccount = null;
-            };
-
-            let balance = await ledger.icrc1_balance_of(checkAccount);
-
-            return balance >= organisationPrice;
-        };
-
         public func purchaseOrganisation(defaultAccount: Principal, userId: T.PrincipalId) : async (){
             let _ = await ledger.icrc1_transfer({
                 memo = ?Blob.fromArray([]);

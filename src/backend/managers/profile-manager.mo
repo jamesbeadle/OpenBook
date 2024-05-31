@@ -1,6 +1,6 @@
 
 
-import T "../data-types/types";
+import T "../data-types/openbook-types";
 import OT "../data-types/old-types";
 
 import Text "mo:base/Text";
@@ -26,8 +26,10 @@ module {
     private var userProfiles : HashMap.HashMap<Text, OT.Profile> = HashMap.HashMap<Text, OT.Profile>(100, Text.equal, Text.hash);
     private var userProfilePictures : HashMap.HashMap<Text, Blob> = HashMap.HashMap<Text, Blob>(100, Text.equal, Text.hash);
 
+    private var unique_usernames : [(T.PrincipalId, Text)] = [];
     public func getDirectory(dto: PDTOs.GetDirectoryDTO) : Result.Result<PDTOs.ProfilesListDTO, T.Error> {
       
+
 
       
       return #err(#NotFound);
@@ -163,7 +165,7 @@ module {
       };
     };
 */
-    public func updateProfileDetail(principalName : Text, updatedProfile : PD.UpdateProfileDTO) : Result.Result<(), T.Error> {
+    public func updateProfileDetail(principalName : Text, updatedProfile : PDTOs.UpdateProfileDTO) : Result.Result<(), T.Error> {
       let existingProfile = userProfiles.get(principalName);
       switch (existingProfile) {
         case (null) {
@@ -392,7 +394,7 @@ module {
       return true;
     };
 
-    public func updateProfilePicture(principalName : T.PrincipalId, dto : PD.UpdateProfilePictureDTO) : Result.Result<(), T.Error> {
+    public func updateProfilePicture(principalName : T.PrincipalId, dto : PDTOs.UpdateProfilePictureDTO) : Result.Result<(), T.Error> {
       let existingProfile = userProfiles.get(principalName);
       switch (existingProfile) {
         case (null) {

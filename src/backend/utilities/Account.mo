@@ -10,7 +10,7 @@ import Buffer "mo:base/Buffer";
 import Iter "mo:base/Iter";
 import Result "mo:base/Result";
 import Option "mo:base/Option";
-import Types "../data-types/types";
+import Types "../data-types/openbook-types";
 
 module {
 

@@ -10,26 +10,43 @@ import Nat8 "mo:base/Nat8";
 import Option "mo:base/Option";
 import Result "mo:base/Result";
 
-import SD "../dtos/sales-dtos";
-import RD "../dtos/recruitment-dtos";
-import TD "../dtos/task-dtos";
+import T "../data-types/organisation-types";
+
+import Accounts "../dtos/sales-dtos";
+import Sales "../dtos/sales-dtos";
+import Payroll "../dtos/payroll-dtos";
+import Recruitment "../dtos/recruitment-dtos";
+import Project "../dtos/project-dtos";
 
 actor class _OrganisationCanister() {
 
-    private stable var accounting_canister_id = "";
-    private stable var project_management_canister_id = "";
+    private stable var accounts_canister_id = "";
+    private stable var projects_canister_id = "";
     private stable var sales_canister_id = "";
-    private stable var timesheet_canister_id = "";
+    private stable var payroll_canister_id = "";
     private stable var recruitment_canister_id = "";
 
     private stable var organisation: ?T.Organisation = null;
+    private stable var teamMembers: [T.TeamMember] = [];
+    private stable var contacts: [T.Contact] = [];
+
+    private let accountsManager: AccountsManager = AccountsManager.AccountsManager();
+    private let salesManager: SalesManager = AccountsManager.AccountsManager();
+    private let recruitmentManager: RecruitmentManager = AccountsManager.AccountsManager();
+    private let payrollManager: PayrollManager = AccountsManager.AccountsManager();
+    private let projectsManager: ProjectsManager = AccountsManager.AccountsManager();
+
+    
 
     public shared ({ caller }) func initialise(dto: OrganisationDTOs.CreateOrganisationDTO){
 
     };
 
+    //organisation needs endpoints out to each canister so this becomes a god file of everything that can be done
+
     //TODO: Purchase service?
 
+//update org status
 
     //Organisation Management
 

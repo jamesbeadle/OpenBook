@@ -51,26 +51,6 @@ module OrganisationTypes {
 
 
 
-    public type Profile = {
-        principal : Text;
-        username : Text;
-        firstName : Text;
-        lastName : Text;
-        displayName : Text;
-        profession : Text;
-        openChatUsername : Text;
-        emailAddress : Text;
-        phoneNumber : Text;
-        otherContact : Text;
-        termsAccepted : Bool;
-        profilePictureCanisterId : Text;
-        organisations : [OB.OrganisationId];
-        createDate : Int;
-        auditHistory : [OB.AuditRecord];
-        lastModified : Int64;
-        userDefinedWallet : Text;
-        preferredPaymentCurrency : OB.CurrencyId;
-    };
 
     public type OrganisationMember = {
         id : OB.OrganisationMemberId;

@@ -4,16 +4,6 @@ module Types {
   public type PrincipalId = Text;
   public type CanisterId = Text;
 
-  public type Error = {
-    #NotFound;
-    #AlreadyExists;
-    #NotAuthorized;
-    #NotAllowed;
-    #DecodeError;
-    #InvalidData;
-    #NotEnoughFunds;
-  };
-
   public type Country = {
     #Afghanistan;
     #Albania;

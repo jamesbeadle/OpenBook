@@ -1,5 +1,19 @@
+import T "../data-types/project-types";
 
 actor class _ProjectManagementCanister() {
+
+  private let projects: [T.Project] = [];
+
+
+  //crud project
+  //crud milestone
+  //crud task
+
+
+  //data stored in here
+    //all projects
+      //all milestones
+        //all tasks
 
     public shared ({ caller }) func initialise(){
 
