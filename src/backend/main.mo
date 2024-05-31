@@ -2,20 +2,23 @@ import Blob "mo:base/Blob";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Text "mo:base/Text";
+import T "data-types/openbook-types";
 import T_Old "data-types/old-types";
 import ProfileDTOs "dtos/profile-dtos";
 import OrganisationDTOs "dtos/organisation-dtos";
 import PresaleManager "managers/presale-manager";
 import ProfileManager "managers/profile-manager";
 import TreasuryManager "managers/treasury-manager";
+import OrganisationManager "managers/organisation-manager";
 
 actor Self {
   
   private let profileManager = ProfileManager.ProfileManager();
   private let treasuryManager = TreasuryManager.TreasuryManager();
   private let presaleManager = PresaleManager.PresaleManager();
+  private let organisationManager = OrganisationManager.OrganisationManager();
   
-  public shared ({ caller }) func createProfile(dto : PDTOs.CreateProfileDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func createProfile(dto : ProfileDTOs.CreateProfileDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     
@@ -27,14 +30,14 @@ actor Self {
     return await profileManager.createProfile(dto);
   };
 
-  public shared ({ caller }) func getProfile() : async Result.Result<PDTOs.ProfileDTO, T.Error> {
+  public shared ({ caller }) func getProfile() : async Result.Result<ProfileDTOs.ProfileDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     
     return await profileManager.getProfile(principalId);
   };
 
-  public shared ({ caller }) func updateProfile(dto : PDTOs.UpdateProfileDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func updateProfile(dto : ProfileDTOs.UpdateProfileDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
@@ -46,11 +49,11 @@ actor Self {
     return profileManager.updateProfile(principalId, dto);
   };
   
-  public shared ({ caller }) func deleteProfile(dto : PDTOs.DeleteProfileDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func deleteProfile(deletePrincipalId: T.PrincipalId) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
-    assert dto.principalId == principalId;
+    assert deletePrincipalId == principalId;
 
     let profileExists = profileManager.profileExists(principalId);
     if(not profileExists){
@@ -65,18 +68,19 @@ actor Self {
     return #ok(profileManager.isUsernameAvailable(username));
   };
 
-  public shared ({ caller }) func purchaseOrganisation(dto: ODTOs.CreateOrganisationDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func purchaseOrganisation(dto: OrganisationDTOs.CreateOrganisationDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
     let purchaseResult = await treasuryManager.purchaseOrganisation(Principal.fromActor(Self), principalId);
 
     switch(purchaseResult){
-      case (#ok result){
-        return await profileManager.createOrganisation(principalId, dto);
+      case (#Ok result){
+        let organisationId = await organisationManager.createOrganisation(principalId, dto);
+        return await profileManager.addOrganisationToProfile(organisationId);
       };
-      case (#err err_result){
-        return err_result;
+      case (#Err err_result){
+        return #err(#PaymentError);
       }
     };
   };
@@ -116,22 +120,9 @@ actor Self {
 
   };
   
-
-
-
-
-
-
-
-
-
-
-
-
-
   //Admin functions
 
-  public shared func listOGProfiles() : async Result.Result<[(T.PrincipalId, OT.Profile)], T.Error>{
+  public shared func listOGProfiles() : async Result.Result<[(T.PrincipalId, T_Old.Profile)], T.Error>{
     return #ok(stable_profiles);
   };
 
@@ -143,7 +134,7 @@ actor Self {
   //December 2023 initial profile launch
   //TODO: REMOVE THESE AS NOW MULTICANISTER ARCHITECTURE AFTER THEY HAVE BEEN MOVED
   
-  private stable var stable_profiles : [(Text, OT.Profile)] = [];
+  private stable var stable_profiles : [(Text, T_Old.Profile)] = [];
   private stable var stable_profilePictures : [(Text, Blob)] = [];
 
   //TODO: Implement cycles checking when implemented on OpenFPL
@@ -153,10 +144,9 @@ actor Self {
   private stable var stable_profile_canister_ids: [T.CanisterId] = [];
   private stable var stable_profile_map: [(T.PrincipalId, T.CanisterId)] = [];
   private stable var stable_storage_canister_ids: [T.CanisterId] = [];
-  private stable var stable_public_profiles: [OrgT.PublicProfile] = [];
 
-  private stable var unique_usernames : [(T.PrincipalId, Text)] = [];
-  private stable var unique_organisation_names : [(T.PrincipalId, Text)] = [];
+  private stable var unique_usernames : [Text] = [];
+  private stable var unique_organisation_names : [Text] = [];
 
 
   system func preupgrade() {
@@ -199,6 +189,6 @@ actor Self {
   };
 
   public shared ({ caller }) func getPresaleParticipation() : async [T.PresaleParticipation] {
-    
+
   };
 };

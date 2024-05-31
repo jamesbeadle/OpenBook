@@ -1,6 +1,7 @@
 import List "mo:base/List";
 module Types {
 
+  public type PrincipalId = Text;
   public type OrganisationId = Nat32;
   public type CurrencyId = Nat32;
 

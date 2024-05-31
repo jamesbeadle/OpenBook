@@ -72,7 +72,7 @@ module {
             });
         };
 
-        public func purchaseOrganisation(defaultAccount: Principal, userId: T.PrincipalId) : async (){
+        public func purchaseOrganisation(defaultAccount: Principal, userId: T.PrincipalId) : async Ledger.Icrc1TransferResult{
             let _ = await ledger.icrc1_transfer({
                 memo = ?Blob.fromArray([]);
                 from_subaccount = ?Account.principalToSubaccount(Principal.fromText(userId));

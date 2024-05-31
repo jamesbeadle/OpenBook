@@ -9,6 +9,7 @@ module OpenBookTypes {
     #DecodeError;
     #InvalidData;
     #NotEnoughFunds;
+    #PaymentError;
   };
 
   public type PrincipalId = Text;
