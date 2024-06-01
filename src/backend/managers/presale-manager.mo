@@ -1,4 +1,4 @@
-import T "../data-types/openbook-types";
+import T "../data-types/types";
 import Result "mo:base/Result";
 
 

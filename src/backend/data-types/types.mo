@@ -1,206 +1,154 @@
+import Departments "../data-types/organisation-departments";
+import UserRoles "../data-types/user-roles";
+import Principal "mo:base/Principal";
 
-module Types {
+module OpenBookTypes {
 
   public type PrincipalId = Text;
+  public type OrganisationId = Nat32;
+  public type ProjectId = Nat16;
+  public type ServiceId = Nat16;
+  public type ServiceAgreementId = Nat32;
+  public type AccountCodeId = Nat16;
+  public type CustomerId = Nat32;
+  public type SupplierId = Nat32;
+  public type AddressId = Nat32;
+  public type ContactId = Nat32;
+  public type OrganisationMemberId = Nat32;
+  public type CurrencyId = Nat32;
+  public type TransactionId = Nat32;
   public type CanisterId = Text;
+  public type BucketNumber = Nat8;
+  public type FileId = Nat32;
 
-  public type Country = {
-    #Afghanistan;
-    #Albania;
-    #Algeria;
-    #Andorra;
-    #Angola;
-    #AntiguaAndBarbuda;
-    #Argentina;
-    #Armenia;
-    #Australia;
-    #Austria;
-    #Azerbaijan;
-    #Bahamas;
-    #Bahrain;
-    #Bangladesh;
-    #Barbados;
-    #Belarus;
-    #Belgium;
-    #Belize;
-    #Benin;
-    #Bhutan;
-    #Bolivia;
-    #BosniaAndHerzegovina;
-    #Botswana;
-    #Brazil;
-    #Brunei;
-    #Bulgaria;
-    #BurkinaFaso;
-    #Burundi;
-    #CaboVerde;
-    #Cambodia;
-    #Cameroon;
-    #Canada;
-    #CentralAfricanRepublic;
-    #Chad;
-    #Chile;
-    #China;
-    #Colombia;
-    #Comoros;
-    #CongoRepublic;
-    #CongoDemocraticRepublic;
-    #CostaRica;
-    #Croatia;
-    #Cuba;
-    #Cyprus;
-    #CzechRepublic;
-    #Denmark;
-    #Djibouti;
-    #Dominica;
-    #DominicanRepublic;
-    #Ecuador;
-    #Egypt;
-    #ElSalvador;
-    #EquatorialGuinea;
-    #Eritrea;
-    #Estonia;
-    #Eswatini;
-    #Ethiopia;
-    #Fiji;
-    #Finland;
-    #France;
-    #Gabon;
-    #Gambia;
-    #Georgia;
-    #Germany;
-    #Ghana;
-    #Greece;
-    #Grenada;
-    #Guatemala;
-    #Guinea;
-    #GuineaBissau;
-    #Guyana;
-    #Haiti;
-    #Honduras;
-    #Hungary;
-    #Iceland;
-    #India;
-    #Indonesia;
-    #Iran;
-    #Iraq;
-    #Ireland;
-    #Israel;
-    #Italy;
-    #Jamaica;
-    #Japan;
-    #Jordan;
-    #Kazakhstan;
-    #Kenya;
-    #Kiribati;
-    #KoreaNorth;
-    #KoreaSouth;
-    #Kosovo;
-    #Kuwait;
-    #Kyrgyzstan;
-    #Laos;
-    #Latvia;
-    #Lebanon;
-    #Lesotho;
-    #Liberia;
-    #Libya;
-    #Liechtenstein;
-    #Lithuania;
-    #Luxembourg;
-    #Madagascar;
-    #Malawi;
-    #Malaysia;
-    #Maldives;
-    #Mali;
-    #Malta;
-    #MarshallIslands;
-    #Mauritania;
-    #Mauritius;
-    #Mexico;
-    #Micronesia;
-    #Moldova;
-    #Monaco;
-    #Mongolia;
-    #Montenegro;
-    #Morocco;
-    #Mozambique;
-    #Myanmar;
-    #Namibia;
-    #Nauru;
-    #Nepal;
-    #Netherlands;
-    #NewZealand;
-    #Nicaragua;
-    #Niger;
-    #Nigeria;
-    #NorthMacedonia;
-    #Norway;
-    #Oman;
-    #Pakistan;
-    #Palau;
-    #Palestine;
-    #Panama;
-    #PapuaNewGuinea;
-    #Paraguay;
-    #Peru;
-    #Philippines;
-    #Poland;
-    #Portugal;
-    #Qatar;
-    #Romania;
-    #Russia;
-    #Rwanda;
-    #SaintKittsAndNevis;
-    #SaintLucia;
-    #SaintVincentAndTheGrenadines;
-    #Samoa;
-    #SanMarino;
-    #SaoTomeAndPrincipe;
-    #SaudiArabia;
-    #Senegal;
-    #Serbia;
-    #Seychelles;
-    #SierraLeone;
-    #Singapore;
-    #Slovakia;
-    #Slovenia;
-    #SolomonIslands;
-    #Somalia;
-    #SouthAfrica;
-    #SouthSudan;
-    #Spain;
-    #SriLanka;
-    #Sudan;
-    #Suriname;
-    #Sweden;
-    #Switzerland;
-    #Syria;
-    #Taiwan;
-    #Tajikistan;
-    #Tanzania;
-    #Thailand;
-    #TimorLeste;
-    #Togo;
-    #Tonga;
-    #TrinidadAndTobago;
-    #Tunisia;
-    #Turkey;
-    #Turkmenistan;
-    #Tuvalu;
-    #Uganda;
-    #Ukraine;
-    #UnitedArabEmirates;
-    #UK;
-    #USA;
-    #Uruguay;
-    #Uzbekistan;
-    #Vanuatu;
-    #VaticanCity;
-    #Venezuela;
-    #Vietnam;
-    #Yemen;
-    #Zambia;
-    #Zimbabwe;
+  public type Profile = {
+    principal : PrincipalId;
+    username : Text;
+    firstName : Text;
+    lastName : Text;
+    displayName : Text;
+    profession : Text;
+    openChatUsername : Text;
+    emailAddress : Text;
+    phoneNumber : Text;
+    otherContact : Text;
+    termsAccepted : Bool;
+    profilePictureCanisterId : CanisterId;
+    profilePictureBucketNumber: BucketNumber;
+    profilePictureFileId: FileId;
+    organisations : [OrganisationMembership];
+    createDate : Int;
+    auditHistory : [AuditRecord];
+    lastModified : Int64;
+    userDefinedWallet : Text;
+    preferredPaymentCurrency : CurrencyId;
+  };
+
+
+  public type Organisation = {
+    id: OrganisationId;
+    ownerId: PrincipalId;
+    name: Text;
+    friendlyName : Text;
+    referenceNumber : Text;
+    logo : ?Blob;
+    banner : ?Blob;
+    members : [OrganisationMembership];
+    mainAddressId : ?AddressId;
+    mainContactId : ?ContactId;
+    addresses : [Address];
+    contacts : [Contact];
+    auditHistory : [AuditRecord];
+    lastModified : ?Int64;
+    timestamp: Int;
+  };
+
+  public type OrganisationMembership = {
+    principalId: PrincipalId;
+    organisationId: OrganisationId;
+    positions: [OrganisationPosition];
+    joined: Int;
+  };
+
+  public type OrganisationPosition = {
+    role: UserRoles.UserRole;
+    department: Departments.Department;
+    started: Int;
+    ended: Int;
+  };
+
+  public type PresaleParticipation = {
+    principalId: PrincipalId;
+    bookTokens: Nat64;
+    icpSwapped: Nat64;
+  };
+
+  public type ChangeType = {
+    #OrganisationDetailUpdated;
+    #CustomerRecordUpdated;
+    #SupplierRecordUpdated;
+    #ChartOfAccountsUpdated;
+    #OrganisationUserAdded;
+    #OrganisationUserRemoved;
+    #OrganisationUserRoleUpdated;
+  };
+
+
+  public type AuditRecord = {
+    changeType : ChangeType;
+    timestamp : Int64;
+    visibilityLevel : VisibilityLevel;
+  };
+
+  public type VisibilityLevel = {
+    #Private;
+    #Internal;
+    #Public;
+  };
+
+  public type ContactMethod = {
+    #Email;
+    #Phone;
+    #Post;
+    #OpenChat;
+    #Twitter;
+    #Discord;
+    #Telegram;
+    #Other;
+  };
+
+  public type ServiceAgreement = {
+    id : ServiceAgreementId;
+    lastModified : Int;
+  };
+
+  public type Address = {
+    id : AddressId;
+    addressName : Text;
+    addressLines : [Text];
+    lastModified : Int;
+  };
+
+  public type Contact = {
+    id : ContactId;
+    firstName : Text;
+    lastName : Text;
+    email : Text;
+    addressId : AddressId;
+    jobTitle : Text;
+    lastModified : Int;
+  };
+
+
+  public type Error = {
+    #NotFound;
+    #AlreadyExists;
+    #NotAuthorized;
+    #NotAllowed;
+    #DecodeError;
+    #InvalidData;
+    #NotEnoughFunds;
+    #PaymentError;
   };
 
 };

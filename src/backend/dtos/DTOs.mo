@@ -1,6 +1,5 @@
-import List "mo:base/List";
 import Blob "mo:base/Blob";
-import OB "../data-types/openbook-types";
+import T "../data-types/types";
 
 module DTOs {
 
@@ -9,7 +8,7 @@ module DTOs {
   };
 
   public type OrganisationDTO = {
-    id : OB.OrganisationId;
+    id : T.OrganisationId;
     name : Text;
     friendlyName : Text;
     logo : Text;

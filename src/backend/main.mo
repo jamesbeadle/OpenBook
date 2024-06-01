@@ -2,7 +2,8 @@ import Blob "mo:base/Blob";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Text "mo:base/Text";
-import T "data-types/openbook-types";
+import Iter "mo:base/Iter";
+import T "data-types/types";
 import T_Old "data-types/old-types";
 import ProfileDTOs "dtos/profile-dtos";
 import OrganisationDTOs "dtos/organisation-dtos";
@@ -40,13 +41,14 @@ actor Self {
   public shared ({ caller }) func updateProfile(dto : ProfileDTOs.UpdateProfileDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
+    assert dto.principalId == principalId;
 
     let profileExists = profileManager.profileExists(principalId);
     if(not profileExists){
       return #err(#NotFound);
     };
     
-    return profileManager.updateProfile(principalId, dto);
+    return await profileManager.updateProfile(dto);
   };
   
   public shared ({ caller }) func deleteProfile(deletePrincipalId: T.PrincipalId) : async Result.Result<(), T.Error> {
@@ -60,7 +62,7 @@ actor Self {
       return #err(#NotFound);
     };
     
-    return profileManager.deleteProfile(principalId);
+    return await profileManager.deleteProfile(principalId);
   };
 
   public shared ({ caller }) func isUsernameAvailable(username : Text) : async Result.Result<Bool, T.Error> {
@@ -72,12 +74,14 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
+    assert dto.ownerId == principalId;
+
     let purchaseResult = await treasuryManager.purchaseOrganisation(Principal.fromActor(Self), principalId);
 
     switch(purchaseResult){
       case (#Ok result){
-        let organisationId = await organisationManager.createOrganisation(principalId, dto);
-        return await profileManager.addOrganisationToProfile(organisationId);
+        let organisationId = await organisationManager.createOrganisation(dto);
+        return await profileManager.addOrganisationToProfile(principalId, organisationId);
       };
       case (#Err err_result){
         return #err(#PaymentError);
@@ -89,14 +93,22 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
-    return organisationManager.deleteOrganisation(dto.organisationId, principalId);
+    let organisation = await organisationManager.getOrganisation(dto.organisationId);
 
+    switch(organisation){
+      case (null){
+        return #err(#NotFound);
+      };
+      case (?foundOrganisation){
+        assert foundOrganisation.ownerId == principalId;
 
-    
-    //delete the organisation from every users organiastion list
-    //delete the organisation from the organisation list
-    //delete all the organisation canisters
-      //transfer all cycles back to the main cycles wallet
+        for(member in Iter.fromArray(foundOrganisation.members)){
+          let _ = await profileManager.leaveOrganisation(foundOrganisation.id, member.principalId);
+        };
+        
+        return await organisationManager.deleteOrganisation(dto.organisationId);
+      };
+    };
   };
 
   public shared ({ caller }) func isOrganisationNameAvailable(organisationName : Text) : async Result.Result<Bool, T.Error> {

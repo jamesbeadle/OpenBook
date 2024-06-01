@@ -1,6 +1,6 @@
 
 
-import T "../data-types/openbook-types";
+import T "../data-types/types";
 import OT "../data-types/old-types";
 
 import Text "mo:base/Text";
@@ -17,7 +17,7 @@ import Order "mo:base/Order";
 import DTOs "../dtos/DTOs";
 import Prim "mo:prim";
 
-import PDTOs "../dtos/profile-dtos"
+import ProfileDTOs "../dtos/profile-dtos"
 
 module {
   public class ProfileManager() {
@@ -47,6 +47,34 @@ module {
 
     public func setStableUniqueUsernames(stable_unique_usernames: [Text]) : () {
       unique_usernames := stable_unique_usernames;
+    };
+
+    public func profileExists(principalId: T.PrincipalId) : Bool {
+      return false; //todo;
+    };
+
+    public func getProfile(principalId: T.PrincipalId) : async Result.Result<ProfileDTOs.ProfileDTO, T.Error> {
+      return #err(#NotFound); //todo
+    };
+
+    public func createProfile(dto: ProfileDTOs.CreateProfileDTO) : async Result.Result<(), T.Error> {
+      return #err(#NotFound); //todo
+    };
+
+    public func updateProfile(dto: ProfileDTOs.UpdateProfileDTO) : async Result.Result<(), T.Error> {
+      return #err(#NotFound); //todo
+    };
+
+    public func deleteProfile(principalId: T.PrincipalId) : async Result.Result<(), T.Error> {
+      return #err(#NotFound); //todo
+    };
+
+    public func addOrganisationToProfile(principalId: T.PrincipalId, organisationId: T.OrganisationId) : async Result.Result<(), T.Error> {
+      return #err(#NotFound); //todo
+    };
+
+    public func leaveOrganisation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Result.Result<(), T.Error> {
+      return #err(#NotFound);
     };
 
     public func isUsernameValid(username : Text) : Bool {

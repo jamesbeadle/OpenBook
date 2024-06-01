@@ -10,7 +10,7 @@ import Buffer "mo:base/Buffer";
 import Iter "mo:base/Iter";
 import Result "mo:base/Result";
 import Option "mo:base/Option";
-import Types "../data-types/openbook-types";
+import T "../data-types/types";
 
 module {
 
@@ -94,17 +94,17 @@ module {
     return blob;
   };
 
-  public func decode(text : Text) : Result.Result<[Nat8], Types.Error> {
+  public func decode(text : Text) : Result.Result<[Nat8], T.Error> {
     let next = text.chars().next;
-    func parse() : Result.Result<Nat8, Types.Error> {
-      Option.get<Result.Result<Nat8, Types.Error>>(
+    func parse() : Result.Result<Nat8, T.Error> {
+      Option.get<Result.Result<Nat8, T.Error>>(
         do ? {
           let c1 = next()!;
           let c2 = next()!;
-          Result.chain<Nat8, Nat8, Types.Error>(
+          Result.chain<Nat8, Nat8, T.Error>(
             decodeW4(c1),
             func(x1) {
-              Result.chain<Nat8, Nat8, Types.Error>(
+              Result.chain<Nat8, Nat8, T.Error>(
                 decodeW4(c2),
                 func(x2) {
                   #ok(x1 * base + x2);
@@ -133,7 +133,7 @@ module {
     #ok(Array.freeze<Nat8>(array));
   };
 
-  private func decodeW4(char : Char) : Result.Result<Nat8, Types.Error> {
+  private func decodeW4(char : Char) : Result.Result<Nat8, T.Error> {
     for (i in Iter.range(0, 15)) {
       if (symbols[i] == char) {
         return #ok(Nat8.fromNat(i));

@@ -1,6 +1,5 @@
 
 import T "types";
-import OB "openbook-types";
 import TaxTypes "tax-types";
 
 module AccountsTypes {
@@ -10,7 +9,7 @@ module AccountsTypes {
     public type Department = Text;
     
     public type Currency = {
-        id: OB.CurrencyId;
+        id: T.CurrencyId;
         name: Text;
         ticker: Text;
         decimalPlaces: Nat8;
@@ -53,8 +52,8 @@ module AccountsTypes {
     public type Transaction = {
         amount: Float;
         currency: Currency;
-        contraTransaction: OB.TransactionId;
-        accountCodeId : OB.AccountCodeId;
+        contraTransaction: T.TransactionId;
+        accountCodeId : T.AccountCodeId;
         description: Text;
         transactionType: TransactionType;
         detail: TransactionDetail;
@@ -263,20 +262,20 @@ module AccountsTypes {
 
 
     public type Customer = {
-        id : OB.CustomerId;
+        id : T.CustomerId;
         name : Text;
         legalName : Text;
-        mainAddressId : OB.AddressId;
-        mainContactId : OB.ContactId;
+        mainAddressId : T.AddressId;
+        mainContactId : T.ContactId;
         assetAccounts : AssetAccount;
         salesTaxId : Text;
         paymentTermDays : Nat16;
-        contactMethod : OB.ContactMethod;
-        accountManager : OB.CustomerId;
-        primaryAddressId : OB.AddressId;
-        primaryContactId : OB.ContactId;
-        addresses : [OB.Address];
-        contacts : [OB.Contact];
+        contactMethod : T.ContactMethod;
+        accountManager : T.CustomerId;
+        primaryAddressId : T.AddressId;
+        primaryContactId : T.ContactId;
+        addresses : [T.Address];
+        contacts : [T.Contact];
     };
 
     public type AccountStatus = {
@@ -286,20 +285,20 @@ module AccountsTypes {
     };
 
     public type Supplier = {
-        id : OB.SupplierId;
+        id : T.SupplierId;
         name : Text;
         legalName : Text;
-        mainAddressId : OB.AddressId;
-        mainContactId : OB.ContactId;
+        mainAddressId : T.AddressId;
+        mainContactId : T.ContactId;
         assetAccounts : AssetAccount;
         salesTaxId : Text;
         paymentTermDays : Nat16;
-        contactMethod : OB.ContactMethod;
-        accountManager : OB.CustomerId;
-        primaryAddressId : OB.AddressId;
-        primaryContactId : OB.ContactId;
-        addresses : [OB.Address];
-        contacts : [OB.Contact];
+        contactMethod : T.ContactMethod;
+        accountManager : T.CustomerId;
+        primaryAddressId : T.AddressId;
+        primaryContactId : T.ContactId;
+        addresses : [T.Address];
+        contacts : [T.Contact];
         paymentOptions : [AssetAccount];
     };
 

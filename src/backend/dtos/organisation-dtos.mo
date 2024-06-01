@@ -1,7 +1,9 @@
+import T "../data-types/types";
+
 module OrganisationTypes {
     
     public type CreateOrganisationDTO = {
-
+        ownerId: T.PrincipalId;
     };
 
     public type GetUserOrganisationsDTO = {
@@ -25,6 +27,6 @@ module OrganisationTypes {
     };
 
     public type DeleteOrganisationDTO = {
-
+        organisationId: T.OrganisationId;
     };
 };

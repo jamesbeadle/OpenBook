@@ -1,4 +1,4 @@
-import OB "../data-types/openbook-types";
+import T "../data-types/types";
 
 module ProfileDTOs {
     public type GetDirectoryDTO = {
@@ -36,11 +36,11 @@ module ProfileDTOs {
       otherContact : Text;
       termsAccepted : Bool;
       profilePicture : Blob;
-      organisations : [OB.OrganisationId];
+      organisations : [T.OrganisationId];
       createDate : Int;
       lastModified : Int64;
       userDefinedWallet : Text;
-      preferredPaymentCurrency : OB.CurrencyId;
+      preferredPaymentCurrency : T.CurrencyId;
     };
 
     public type CreateProfileDTO = {
@@ -55,12 +55,13 @@ module ProfileDTOs {
       otherContact : Text;
       termsAccepted : Bool;
       profilePicture : Blob;
-      organisations : [OB.OrganisationId];
+      organisations : [T.OrganisationId];
       userDefinedWallet : Text;
-      preferredPaymentCurrency : OB.CurrencyId;
+      preferredPaymentCurrency : T.CurrencyId;
     };
 
     public type UpdateProfileDTO = {
+      principalId: T.PrincipalId;
       username : Text;
       displayName : Text;
       profession : Text;
@@ -72,7 +73,7 @@ module ProfileDTOs {
       otherContact : Text;
       termsAccepted : Bool;
       userDefinedWallet : Text;
-      preferredPaymentCurrency : OB.CurrencyId;
+      preferredPaymentCurrency : T.CurrencyId;
     };
 
     public type UpdateProfilePictureDTO = {
