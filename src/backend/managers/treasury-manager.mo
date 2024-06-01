@@ -84,6 +84,12 @@ module {
         };
 
         public func participateInPresale(defaultAccount: Principal, principalId: T.PrincipalId, icpAmount: Nat64) : async Ledger.Icrc1TransferResult{
+            return #Err(#TooOld);
         };
+
+        public func purchasePresaleAllocation(defaultAccount: Principal, principalId: T.PrincipalId, ownerId: T.PrincipalId, icpAmount: Nat64) : async Ledger.Icrc1TransferResult{
+            return #Err(#TooOld);
+        };
+        
     };
 };

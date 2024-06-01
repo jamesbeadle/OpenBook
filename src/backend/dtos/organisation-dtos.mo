@@ -4,6 +4,7 @@ module OrganisationTypes {
     
     public type CreateOrganisationDTO = {
         ownerId: T.PrincipalId;
+        name: Text;
     };
 
     public type GetUserOrganisationsDTO = {

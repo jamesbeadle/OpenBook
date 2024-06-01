@@ -73,6 +73,20 @@ module DTOs {
     professionFilter : Text;
     currentPage : Int;
     startFilter : Text;
-  }
+  };
+
+  public type PresaleListingDTO = {
+    ownerId: T.PrincipalId;
+    tokens: Nat64;
+    price: Nat64;
+    listedOn: Int;
+  };
+
+  public type PurchasePresaleAllocationDTO = {
+    ownerId: T.PrincipalId;
+    purchaserId: T.PrincipalId;
+    tokens: Nat64;
+    price: Nat64;
+  };
 
 };

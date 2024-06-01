@@ -1,19 +1,27 @@
 import T "../data-types/types";
 import OrganisationDTOs "../dtos/organisation-dtos";
 import Result "mo:base/Result";
+import Text "mo:base/Text";
 
 
 module {
   public class OrganisationManager() {
     
-  private var unique_organisation_names : [Text] = [];
-
-  //add organiastion name
-  //delete organisation
-  //is organiastoin name availabel
+    private var unique_organisation_names : [Text] = [];
     
-    public func createOrganisation(dto: OrganisationDTOs.CreateOrganisationDTO) : async T.OrganisationId {
-      return 0; //todo
+    public func createOrganisation(dto: OrganisationDTOs.CreateOrganisationDTO) : async Result.Result<T.OrganisationId, T.Error> {
+
+      let nameTaken = isOrganisationNameAvailable(dto.name);
+      if(nameTaken){
+        return #err(#AlreadyExists);
+      };
+      
+      if(Text.size(dto.name) < 1 or Text.size(dto.name) > 50){
+        return #err(#InvalidData);
+      };
+
+      //add name to unique organisations
+      return #err(#InvalidData); //todo
     };
 
     public func getOrganisation(organisationId: T.OrganisationId) : async ?T.Organisation {
