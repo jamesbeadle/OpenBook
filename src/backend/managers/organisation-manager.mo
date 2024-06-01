@@ -27,6 +27,14 @@ module {
       return #err(#NotFound);
     };
 
+    public func isOrganisationNameAvailable(organisationName: Text) : Bool {
+      return false; //todo
+    };
+
+    public func acceptOrganisationInvitation(organisationId: T.OrganisationId) : async () {
+
+    };
+
         
 
     public func getStableUniqueOrganisationNames() : [Text] {

@@ -53,8 +53,8 @@ module {
       return false; //todo;
     };
 
-    public func getProfile(principalId: T.PrincipalId) : async Result.Result<ProfileDTOs.ProfileDTO, T.Error> {
-      return #err(#NotFound); //todo
+    public func getProfile(principalId: T.PrincipalId) : async ?ProfileDTOs.ProfileDTO {
+      return null; //todo
     };
 
     public func createProfile(dto: ProfileDTOs.CreateProfileDTO) : async Result.Result<(), T.Error> {
