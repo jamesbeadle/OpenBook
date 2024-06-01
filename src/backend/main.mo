@@ -280,26 +280,46 @@ actor Self {
   };
 
   public shared ({ caller }) func getPresaleParticipation() : async [T.PresaleParticipation] {
-
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    presaleManager.getPresaleParticipation(principalId);
   };
 
-  public shared ({ caller }) func updatePresaleNNSID() : async [T.PresaleParticipation] {
-
+  public shared ({ caller }) func updatePresaleNNSId(newNNSId: Text) : async [T.PresaleParticipation] {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    presaleManager.updatePresaleNNSId(principalId, newNNSId);
   };
 
-  public shared ({ caller }) func listPresaleAllocation() : async Result.Result<(), T.Error>{
-    //list for any price you want in icp
+  public shared ({ caller }) func listPresaleAllocation(listPrice: Nat64) : async Result.Result<(), T.Error>{
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    presaleManager.listPresaleAllocation(principalId, listPrice);
   };
 
-  public shared ({ caller }) func unlistPresaleAllocation() : async Result.Result<(), T.Error>{
+  public shared ({ caller }) func () : async Result.Result<(), T.Error>{
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    presaleManager.unlistPresaleAllocation(principalId);
   };
 
-  public shared ({ caller }) func purchasePresaleAllocation() : async Result.Result<(), T.Error>{
-    //transfer funds and allocation
+  public shared ({ caller }) func purchasePresaleAllocation(ownerId: T.PrincipalId) : async Result.Result<(), T.Error>{
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    let transferResult = await treasuryManager.purchasePresaleAllocation(principalId, ownerId);
+    switch(transferResult){
+      case (#ok transferResult){
+        return await presaleManager.transferPresaleAllocation(principalId, ownerId);
+      };
+      case _ {
+        return #err(#TransferError);
+      }
+    };
   };
 
   public shared ({ caller }) func getPresaleAllocationListings() : async Result.Result<(), T.Error>{
-    //transfer funds and allocation
+    assert not Principal.isAnonymous(caller);
+    return await presaleManager.getPresaleAllocationListings();
   };
   
   //TODO: Implement cycles checking when implemented on OpenFPL

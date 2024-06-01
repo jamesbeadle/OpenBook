@@ -82,5 +82,8 @@ module {
                 created_at_time = ?Nat64.fromNat(Int.abs(Time.now()));
             });
         };
+
+        public func participateInPresale(defaultAccount: Principal, principalId: T.PrincipalId, icpAmount: Nat64) : async Ledger.Icrc1TransferResult{
+        };
     };
 };

@@ -19,6 +19,14 @@ module {
         tokensAvailable -= tokens;
         return #ok;
     };
+
+    public func listPresaleAllocation() {
+      //if exists if not add
+    }
+
+    public func transferPresaleAllocation() {
+      
+    }
     
   };
 };

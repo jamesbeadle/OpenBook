@@ -71,7 +71,7 @@ module {
     };
 
     public func addUser(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Result.Result<(), T.Error> {
-
+      return #err(#NotFound);
     };
 
     public func getStableUniqueOrganisationNames() : [Text] {
