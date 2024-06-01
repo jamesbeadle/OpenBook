@@ -252,48 +252,6 @@ actor Self {
       };
     };
   };
-  
-  //Admin functions
-
-  public shared func listOGProfiles() : async Result.Result<[(T.PrincipalId, T_Old.Profile)], T.Error>{
-    return #ok(stable_profiles);
-  };
-
-  public func transferOGProfiles(){
-    //TODO
-    //transfer the profiles into the profile canister architecture using profile picture blob storage
-  };
-  
-  //December 2023 initial profile launch
-  //TODO: REMOVE THESE AS NOW MULTICANISTER ARCHITECTURE AFTER THEY HAVE BEEN MOVED
-  
-  private stable var stable_profiles : [(Text, T_Old.Profile)] = [];
-  private stable var stable_profilePictures : [(Text, Blob)] = [];
-
-  //TODO: Implement cycles checking when implemented on OpenFPL
-
-  //Stable Variables
-  private stable var stable_organisation_canister_ids: [T.CanisterId] = [];
-  private stable var stable_profile_canister_ids: [T.CanisterId] = [];
-  private stable var stable_profile_map: [(T.PrincipalId, T.CanisterId)] = [];
-  private stable var stable_storage_canister_ids: [T.CanisterId] = [];
-
-  private stable var unique_usernames : [Text] = [];
-  private stable var unique_organisation_names : [Text] = [];
-
-
-  system func preupgrade() {
-    unique_usernames := profileManager.getStableUniqueUsernames();
-    unique_organisation_names := organisationManager.getStableUniqueOrganisationNames();
-  };
-
-  system func postupgrade() {
-    profileManager.setStableUniqueUsernames(unique_usernames);
-    organisationManager.setStableUniqueOrganisationNames(unique_organisation_names);
-  };
-  
-
-  //OpenBook presale information
 
   public shared ({ caller }) func participateInPresale(icpAmount: Nat64) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
@@ -324,4 +282,72 @@ actor Self {
   public shared ({ caller }) func getPresaleParticipation() : async [T.PresaleParticipation] {
 
   };
+
+  public shared ({ caller }) func updatePresaleNNSID() : async [T.PresaleParticipation] {
+
+  };
+
+  public shared ({ caller }) func listPresaleAllocation() : async Result.Result<(), T.Error>{
+    //list for any price you want in icp
+  };
+
+  public shared ({ caller }) func unlistPresaleAllocation() : async Result.Result<(), T.Error>{
+  };
+
+  public shared ({ caller }) func purchasePresaleAllocation() : async Result.Result<(), T.Error>{
+    //transfer funds and allocation
+  };
+
+  public shared ({ caller }) func getPresaleAllocationListings() : async Result.Result<(), T.Error>{
+    //transfer funds and allocation
+  };
+  
+  //TODO: Implement cycles checking when implemented on OpenFPL
+
+  //Stable Variables
+  private stable var stable_organisation_canister_ids: [T.CanisterId] = [];
+  private stable var stable_profile_canister_ids: [T.CanisterId] = [];
+  private stable var stable_profile_map: [(T.PrincipalId, T.CanisterId)] = [];
+  private stable var stable_storage_canister_ids: [T.CanisterId] = [];
+
+  private stable var unique_usernames : [Text] = [];
+  private stable var unique_organisation_names : [Text] = [];
+
+  system func preupgrade() {
+    unique_usernames := profileManager.getStableUniqueUsernames();
+    unique_organisation_names := organisationManager.getStableUniqueOrganisationNames();
+  };
+
+  system func postupgrade() {
+    profileManager.setStableUniqueUsernames(unique_usernames);
+    organisationManager.setStableUniqueOrganisationNames(unique_organisation_names);
+  };
+  
+
+  //OpenBook presale information
+
+
+
+
+
+
+
+
+
+
+
+  
+  /* The below functionality relates to the December 2023 directory launch with all user to be transferred to the new data structure */
+
+  public shared func listOGProfiles() : async Result.Result<[(T.PrincipalId, T_Old.Profile)], T.Error>{
+    return #ok(stable_profiles);
+  };
+
+  public func transferOGProfiles(){
+    //TODO
+    //transfer the profiles into the profile canister architecture using profile picture blob storage
+  };
+    
+  private stable var stable_profiles : [(Text, T_Old.Profile)] = [];
+  private stable var stable_profilePictures : [(Text, Blob)] = [];
 };
