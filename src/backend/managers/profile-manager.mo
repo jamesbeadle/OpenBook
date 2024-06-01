@@ -23,31 +23,8 @@ module {
   public class ProfileManager() {
     private var profile_canister_ids: [T.CanisterId] = [];
     private var profile_canister_index: [(T.PrincipalId, T.CanisterId)] = [];
+    private var active_canister_id: T.CanisterId = "";
     private var unique_usernames : [Text] = [];
-
-    public func getStableProfileCanisterIds() : [T.CanisterId] {
-      return profile_canister_ids;
-    };
-
-    public func setStableProfileCanisterIds(stable_profile_canister_ids: [T.CanisterId]) : () {
-      profile_canister_ids := stable_profile_canister_ids;
-    };
-
-    public func getStableProfileCanisterIndex() : [(T.PrincipalId, T.CanisterId)] {
-      return profile_canister_index;
-    };
-
-    public func setStableProfileCanisterIndex(stable_profile_canister_index: [(T.PrincipalId, T.CanisterId)]) : () {
-      profile_canister_index := stable_profile_canister_index;
-    };
-
-    public func getStableUniqueUsernames() : [Text] {
-      return unique_usernames;
-    };
-
-    public func setStableUniqueUsernames(stable_unique_usernames: [Text]) : () {
-      unique_usernames := stable_unique_usernames;
-    };
 
     public func profileExists(principalId: T.PrincipalId) : Bool {
       return false; //todo;
@@ -323,6 +300,38 @@ module {
       };
 
       return true;
+    };
+
+    public func getStableProfileCanisterIds() : [T.CanisterId] {
+      return profile_canister_ids;
+    };
+
+    public func setStableProfileCanisterIds(stable_profile_canister_ids: [T.CanisterId]) : () {
+      profile_canister_ids := stable_profile_canister_ids;
+    };
+
+    public func getStableProfileCanisterIndex() : [(T.PrincipalId, T.CanisterId)] {
+      return profile_canister_index;
+    };
+
+    public func setStableProfileCanisterIndex(stable_profile_canister_index: [(T.PrincipalId, T.CanisterId)]) : () {
+      profile_canister_index := stable_profile_canister_index;
+    };
+
+    public func getStableUniqueUsernames() : [Text] {
+      return unique_usernames;
+    };
+
+    public func setStableUniqueUsernames(stable_unique_usernames: [Text]) : () {
+      unique_usernames := stable_unique_usernames;
+    };
+
+    public func getStableActiveCanisterId() : T.CanisterId {
+      return active_canister_id; 
+    };
+
+    public func setStableActiveCanisterId(stable_active_canisterId: T.CanisterId) : () {
+      active_canister_id := stable_active_canisterId; 
     };
   };
 };

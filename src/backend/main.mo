@@ -10,6 +10,7 @@ import ProfileDTOs "dtos/profile-dtos";
 import OrganisationDTOs "dtos/organisation-dtos";
 import PresaleManager "managers/presale-manager";
 import ProfileManager "managers/profile-manager";
+import StorageManager "managers/storage-manager";
 import TreasuryManager "managers/treasury-manager";
 import OrganisationManager "managers/organisation-manager";
 
@@ -19,6 +20,7 @@ actor Self {
   private let treasuryManager = TreasuryManager.TreasuryManager();
   private let presaleManager = PresaleManager.PresaleManager();
   private let organisationManager = OrganisationManager.OrganisationManager();
+  private let storageManager = StorageManager.StorageManager();
   
   public shared ({ caller }) func createProfile(dto : ProfileDTOs.CreateProfileDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
@@ -261,23 +263,21 @@ actor Self {
     };
   };
 
+  //Presale Functions
+
   public shared ({ caller }) func participateInPresale(icpAmount: Nat64, tokens: Nat64) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
-    //TODO 
-
-    if(icpAmount >= 1_000_000){
+    if(icpAmount < 1_000_000){
       return #err(#InvalidData);
     };
 
-    if(tokens < 20){
+    if(tokens < 10){
       return #err(#InvalidData);
     };
 
-    let scaledAmount = icpAmount * 10000;
-
-    if (scaledAmount % 5 != 0) {
+    if (tokens % 10 != 0) {
       return #err(#InvalidData);
     };
 
@@ -350,38 +350,38 @@ actor Self {
   
   //TODO: Implement cycles checking when implemented on OpenFPL
 
-  //Stable Variables
+  //TODO: Stable Variables
   private stable var stable_organisation_canister_ids: [T.CanisterId] = [];
   private stable var stable_profile_canister_ids: [T.CanisterId] = [];
-  private stable var stable_profile_map: [(T.PrincipalId, T.CanisterId)] = [];
+  private stable var stable_profile_canister_index: [(T.PrincipalId, T.CanisterId)] = [];
+  private stable var stable_active_profile_canister_id: T.CanisterId = "";
   private stable var stable_storage_canister_ids: [T.CanisterId] = [];
+  private stable var stable_active_storage_canister_id: T.CanisterId = "";
 
-  private stable var unique_usernames : [Text] = [];
-  private stable var unique_organisation_names : [Text] = [];
+  private stable var stable_unique_usernames : [Text] = [];
+  private stable var stable_unique_organisation_names : [Text] = [];
 
   system func preupgrade() {
-    unique_usernames := profileManager.getStableUniqueUsernames();
-    unique_organisation_names := organisationManager.getStableUniqueOrganisationNames();
+    stable_unique_usernames := profileManager.getStableUniqueUsernames();
+    stable_unique_organisation_names := organisationManager.getStableUniqueOrganisationNames();
+    stable_organisation_canister_ids := organisationManager.getStableOrganisationCanisterIds();
+    stable_profile_canister_ids := profileManager.getStableProfileCanisterIds();
+    stable_profile_canister_index := profileManager.getStableProfileCanisterIndex();
+    stable_active_profile_canister_id := profileManager.getStableActiveCanisterId();
+    stable_storage_canister_ids := storageManager.getStableStorageCanisterIds(); 
+    stable_active_storage_canister_id := storageManager.getStableActiveCanisterId();
   };
 
   system func postupgrade() {
-    profileManager.setStableUniqueUsernames(unique_usernames);
-    organisationManager.setStableUniqueOrganisationNames(unique_organisation_names);
+    profileManager.setStableUniqueUsernames(stable_unique_usernames);
+    organisationManager.setStableUniqueOrganisationNames(stable_unique_organisation_names);
+    organisationManager.setStableOrganisationCanisterIds(stable_organisation_canister_ids);
+    profileManager.setStableProfileCanisterIds(stable_profile_canister_ids);
+    profileManager.setStableProfileCanisterIndex(stable_profile_canister_index);
+    profileManager.setStableActiveCanisterId(stable_active_profile_canister_id);
+    storageManager.setStableStorageCanisterIds(stable_storage_canister_ids);
+    storageManager.setStableActiveCanisterId(stable_active_storage_canister_id);
   };
-  
-
-  //OpenBook presale information
-
-
-
-
-
-
-
-
-
-
-
   
   /* The below functionality relates to the December 2023 directory launch with all user to be transferred to the new data structure */
 

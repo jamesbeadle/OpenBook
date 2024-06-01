@@ -28,12 +28,34 @@ module {
 
     public func listPresaleAllocation(principalId: T.PrincipalId, tokens: Nat64, listPrice: Nat64) : async Result.Result<(), T.Error> {
       //if exists if not add
-        return #ok;
+
+      if(listPrice < 1_000_000){
+        return #err(#InvalidData);
+      };
+
+      if(tokens < 10){
+        return #err(#InvalidData);
+      };
+
+      if (tokens % 10 != 0) {
+        return #err(#InvalidData);
+      };
+
+
+      return #ok;
     };
 
     public func unlistPresaleAllocation(principalId: T.PrincipalId, tokens: Nat64) : async Result.Result<(), T.Error> {
       //if exists if not add
-        return #ok;
+      
+      if(tokens < 10){
+        return #err(#InvalidData);
+      };
+
+      if (tokens % 10 != 0) {
+        return #err(#InvalidData);
+      };
+      return #ok;
     };
 
     public func transferPresaleAllocation(principalId: T.PrincipalId, ownerId: T.PrincipalId) : async Result.Result<(), T.Error> {

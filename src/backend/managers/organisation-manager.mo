@@ -8,6 +8,7 @@ module {
   public class OrganisationManager() {
     
     private var unique_organisation_names : [Text] = [];
+    private var organisation_canister_ids: [T.CanisterId] = [];
     
     public func createOrganisation(dto: OrganisationDTOs.CreateOrganisationDTO) : async Result.Result<T.OrganisationId, T.Error> {
 
@@ -90,6 +91,13 @@ module {
       unique_organisation_names := stable_unique_organisation_names;
     };
 
+    public func getStableOrganisationCanisterIds() : [T.CanisterId] {
+      return organisation_canister_ids; 
+    };
+
+    public func setStableOrganisationCanisterIds(stable_organisation_canister_ids: [T.CanisterId]) : () {
+      organisation_canister_ids := stable_organisation_canister_ids; 
+    };
   
   };
 };
