@@ -73,9 +73,32 @@ module {
       return #err(#NotFound); //todo
     };
 
-    public func leaveOrganisation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Result.Result<(), T.Error> {
-      return #err(#NotFound);
+    public func leaveOrganisation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async () {
+      
     };
+
+    public func organisationInviteExists(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Bool{
+      return false;
+    };
+
+    public func acceptOrganisationInvitation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async (){
+
+    };
+
+    public func rejectOrganisationInvitation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async (){
+
+    };
+
+    public func addOrganisationAccessRequest(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async (){
+
+    };
+
+    public func addOrganisation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async (){
+
+    };
+
+    
+    
 
     public func isUsernameValid(username : Text) : Bool {
 

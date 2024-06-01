@@ -35,7 +35,44 @@ module {
 
     };
 
-        
+    public func isUserOrganisationMember(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Bool{
+      return false;
+    };
+
+    public func invitationExists(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Bool{
+      return false;
+    };
+
+    public func acceptInvitation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Result.Result<(), T.Error> {
+      //remove the organisation from the organisation lists
+
+        //delete the canister and transfer the cycles back to openbook
+      return #err(#NotFound);
+    };
+
+    public func rejectInvitation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Result.Result<(), T.Error> {
+      return #err(#NotFound);
+    };
+
+    public func requestAccess(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Result.Result<(), T.Error> {
+      return #err(#NotFound);
+    };
+
+    public func leaveOrganisation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Result.Result<(), T.Error> {
+      return #err(#NotFound);
+    };
+
+    public func isAdmin(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Bool {
+      return false;
+    };
+
+    public func userAccessRequestExists(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Bool {
+      return false;
+    };
+
+    public func addUser(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Result.Result<(), T.Error> {
+
+    };
 
     public func getStableUniqueOrganisationNames() : [Text] {
       return unique_organisation_names;

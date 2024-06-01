@@ -29,4 +29,9 @@ module OrganisationTypes {
     public type DeleteOrganisationDTO = {
         organisationId: T.OrganisationId;
     };
+
+    public type AcceptUserOrganisationRequestDTO = {
+        organisationId: T.OrganisationId;
+        principalId: T.PrincipalId;
+    };
 };

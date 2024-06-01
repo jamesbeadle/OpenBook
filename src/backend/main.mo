@@ -136,19 +136,22 @@ actor Self {
         return #err(#NotFound);
       };
       case (?foundProfile){
+        let isOrganisationMember = await organisationManager.isUserOrganisationMember(organisationId, principalId);
+        assert not isOrganisationMember;
+
+        let invitationExists = await organisationManager.invitationExists(organisationId, principalId);
+        assert invitationExists;
+
+        let organisationInvitationExists = await profileManager.organisationInviteExists(organisationId, principalId);
+        assert organisationInvitationExists;
         
-        assert not organisationManager.isUserOrganisationMember(organisationId, principalId);
-        
-        assert organisationManager.invitationExists(organisationId, principalId);
-        assert profileManager.organisationInviteExists(organisationId, principalId);
-        
-        profileManager.acceptOrganisationInvitation(organisationId, principalId);
-        return organisationManager.acceptInvitation(organisationId, principalId);
+        await profileManager.acceptOrganisationInvitation(organisationId, principalId);
+        return await organisationManager.acceptInvitation(organisationId, principalId);
       };
     };
   };
 
-  public shared ({ caller }) func rejectOrganisationInvitation() : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func rejectOrganisationInvitation(organisationId: T.OrganisationId) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     
@@ -160,18 +163,22 @@ actor Self {
       };
       case (?foundProfile){
         
-        assert not organisationManager.isUserOrganisationMember(organisationId, principalId);
+        let isOrganisationMember = await organisationManager.isUserOrganisationMember(organisationId, principalId);
+        assert not isOrganisationMember;
         
-        assert organisationManager.invitationExists(organisationId, principalId);
-        assert profileManager.organisationInviteExists(organisationId, principalId);
+        let invitationExists = await organisationManager.invitationExists(organisationId, principalId);
+        assert invitationExists;
+
+        let organisationInvitationExists = await profileManager.organisationInviteExists(organisationId, principalId);
+        assert organisationInvitationExists;
         
-        profileManager.rejectOrganisationInvitation(organisationId, principalId);
-        return organisationManager.rejectInvitation(organisationId, principalId);
+        await profileManager.rejectOrganisationInvitation(organisationId, principalId);
+        return await organisationManager.rejectInvitation(organisationId, principalId);
       };
     };
   };
 
-  public shared ({ caller }) func requestOrganisationAccess() : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func requestOrganisationAccess(organisationId: T.OrganisationId) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     
@@ -183,21 +190,22 @@ actor Self {
       };
       case (?foundProfile){
         
-        assert not organisationManager.isUserOrganisationMember(organisationId, principalId);
+        let isOrganisationMember = await organisationManager.isUserOrganisationMember(organisationId, principalId);
+        assert not isOrganisationMember;
         
-        let existingInvitation = organisationManager.invitationExists(organisationId, principalId);
-        if(existingInvitation){
-          profileManager.acceptOrganisationInvitation(organisationId, principalId);
-          return organisationManager.acceptInvitation(organisationId, principalId);
+        let invitationExists = await organisationManager.invitationExists(organisationId, principalId);
+        if(invitationExists){
+          await profileManager.acceptOrganisationInvitation(organisationId, principalId);
+          return await organisationManager.acceptInvitation(organisationId, principalId);
         };
 
-        profileManager.addOrganisationAccessRequest(organisationId, principalId);
-        return organisationManager.requestAccess(organisationId, principalId);
+        await profileManager.addOrganisationAccessRequest(organisationId, principalId);
+        return await organisationManager.requestAccess(organisationId, principalId);
       };
     };
   };
 
-  public shared ({ caller }) func leaveOrganiastion() : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func leaveOrganiastion(organisationId: T.OrganisationId) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     
@@ -209,10 +217,38 @@ actor Self {
       };
       case (?foundProfile){
         
-        assert organisationManager.isUserOrganisationMember(organisationId, principalId);
+        let isOrganisationMember = await organisationManager.isUserOrganisationMember(organisationId, principalId);
+        assert not isOrganisationMember;
         
-        profileManager.leaveOrganisation(organisationId, principalId);
-        return organisationManager.leaveOrganisation(organisationId, principalId);
+        await profileManager.leaveOrganisation(organisationId, principalId);
+        return await organisationManager.leaveOrganisation(organisationId, principalId);
+      };
+    };
+  };
+
+  public shared ({ caller }) func acceptUserOrganisationRequest(dto: OrganisationDTOs.AcceptUserOrganisationRequestDTO) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+
+    let isOrganisationAdmin = await organisationManager.isAdmin(dto.organisationId, principalId);
+    assert isOrganisationAdmin;
+
+    let requestExists = await organisationManager.userAccessRequestExists(dto.organisationId, dto.principalId);
+    assert requestExists;
+    
+    let profile = await profileManager.getProfile(principalId);
+
+    switch(profile){
+      case (null){
+        return #err(#NotFound);
+      };
+      case (?foundProfile){
+        
+        let isOrganisationMember = await organisationManager.isUserOrganisationMember(dto.organisationId, principalId);
+        assert not isOrganisationMember;
+        
+        await profileManager.addOrganisation(dto.organisationId, principalId);
+        return await organisationManager.addUser(organisationId, principalId);
       };
     };
   };
