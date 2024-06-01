@@ -1,4 +1,22 @@
 
+    
+    //Recruitment Management Endpoints
+      //create profile
+      //upload cv
+      //upload references
+      //search
+      //arrangeInterview
+      //get interviews
+      //update interview
+      //place candidate
+
+
+
+
+  //recruitment
+    //add cv
+    //add job
+    //
 actor class _RecruitmentCanister() {
 
     //roles

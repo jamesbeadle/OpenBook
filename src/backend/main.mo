@@ -1,8 +1,8 @@
 import Blob "mo:base/Blob";
+import Iter "mo:base/Iter";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Text "mo:base/Text";
-import Iter "mo:base/Iter";
 import T "data-types/types";
 import T_Old "data-types/old-types";
 import DTOs "dtos/DTOs";
@@ -111,6 +111,7 @@ actor Self {
   public shared ({ caller }) func deleteOrganisation(dto: OrganisationDTOs.DeleteOrganisationDTO) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
+    assert dto.confirmDelete;
 
     let organisation = await organisationManager.getOrganisation(dto.organisationId);
 

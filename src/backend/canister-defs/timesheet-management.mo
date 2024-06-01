@@ -1,4 +1,15 @@
 
+    //Timesheet Management Endpoints
+      //CRUD timesheet
+      //approve timesheet
+      //calculate payroll
+      //pay staff members
+
+
+  //timesheet management
+    //add time sheet
+    //add employee
+
 actor class _TimesheetManagementCanister() {
 
     public shared ({ caller }) func initialise(){

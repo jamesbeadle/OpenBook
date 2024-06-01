@@ -11,6 +11,19 @@ import Option "mo:base/Option";
 import Result "mo:base/Result";
 import T "../data-types/accounts-types";
 
+
+    //TODO: ALL
+    //Accounting Endpoints
+      //add currency
+      //crud general ledger account
+      //crud transaction
+      //crud customer
+      //crud supplier
+
+
+  //accounts
+    //add transaction
+    //get report
 actor class _AccountancyCanister() {
 
     private var transactions: [T.Transaction] = [];
@@ -110,3 +123,4 @@ actor class _AccountancyCanister() {
         return Cycles.balance();
     };
 };
+

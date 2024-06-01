@@ -20,7 +20,10 @@ module OrganisationTypes {
     };
 
     public type OrganisationDTO = {
-
+        id: T.CanisterId;
+        name: Text;
+        ownerId: T.PrincipalId;
+        members: [T.TeamMember];
     };
 
     public type UpdateOrganisationDetailDTO = {
@@ -29,10 +32,19 @@ module OrganisationTypes {
 
     public type DeleteOrganisationDTO = {
         organisationId: T.OrganisationId;
+        confirmDelete: Bool;
     };
 
     public type AcceptUserOrganisationRequestDTO = {
         organisationId: T.OrganisationId;
         principalId: T.PrincipalId;
+    };
+
+    public type ServiceCanisterIdsDTO = {
+        accountsCanisterId: Text;
+        projectsCanisterId: Text;
+        salesCanisterId: Text;
+        payrollCanisterId: Text;
+        recruitementCanisterId: Text;
     };
 };

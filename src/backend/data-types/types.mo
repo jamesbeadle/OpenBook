@@ -1,11 +1,10 @@
 import Departments "../data-types/organisation-departments";
 import UserRoles "../data-types/user-roles";
-import Principal "mo:base/Principal";
 
 module OpenBookTypes {
 
   public type PrincipalId = Text;
-  public type OrganisationId = Nat32;
+  public type OrganisationId = CanisterId;
   public type ProjectId = Nat16;
   public type ServiceId = Nat16;
   public type ServiceAgreementId = Nat32;
@@ -36,7 +35,7 @@ module OpenBookTypes {
     profilePictureCanisterId : CanisterId;
     profilePictureBucketNumber: BucketNumber;
     profilePictureFileId: FileId;
-    organisations : [OrganisationMembership];
+    teamMemberships : [TeamMember];
     createDate : Int;
     auditHistory : [AuditRecord];
     lastModified : Int64;
@@ -53,7 +52,7 @@ module OpenBookTypes {
     referenceNumber : Text;
     logo : ?Blob;
     banner : ?Blob;
-    members : [OrganisationMembership];
+    members : [TeamMember];
     mainAddressId : ?AddressId;
     mainContactId : ?ContactId;
     addresses : [Address];
@@ -63,7 +62,7 @@ module OpenBookTypes {
     timestamp: Int;
   };
 
-  public type OrganisationMembership = {
+  public type TeamMember = {
     principalId: PrincipalId;
     organisationId: OrganisationId;
     positions: [OrganisationPosition];
