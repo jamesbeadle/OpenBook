@@ -58,6 +58,7 @@ module OpenBookTypes {
     addresses : [Address];
     contacts : [Contact];
     auditHistory : [AuditRecord];
+    invites : [OrganisationInvite];
     lastModified : ?Int64;
     createdOn: Int;
   };
@@ -97,6 +98,12 @@ module OpenBookTypes {
     changeType : ChangeType;
     timestamp : Int64;
     visibilityLevel : VisibilityLevel;
+  };
+
+  public type OrganisationInvite = {
+    sentBy: PrincipalId;
+    sentOn: Int;
+    sentTo: PrincipalId;
   };
 
   public type VisibilityLevel = {

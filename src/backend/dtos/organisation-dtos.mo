@@ -28,8 +28,6 @@ module OrganisationTypes {
     public type OrganisationDTO = {
         id: T.CanisterId;
         name: Text;
-        ownerId: T.PrincipalId;
-        members: [T.TeamMember];
     };
 
     public type UpdateOrganisationDetailDTO = {
