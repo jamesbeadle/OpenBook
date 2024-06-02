@@ -1,21 +1,10 @@
 import Array "mo:base/Array";
-import Buffer "mo:base/Buffer";
-import Cycles "mo:base/ExperimentalCycles";
-import Iter "mo:base/Iter";
-import Option "mo:base/Option";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
-import Text "mo:base/Text";
-import Timer "mo:base/Timer";
-import Order "mo:base/Order";
-import Nat8 "mo:base/Nat8";
+import Time "mo:base/Time";
 import T "../data-types/types";
-import Accounts "../dtos/sales-dtos";
-import Payroll "../dtos/payroll-dtos";
-import Project "../dtos/projects-dtos";
-import Recruitment "../dtos/recruitment-dtos";
-import Sales "../dtos/sales-dtos";
 import OrganisationDTOs "../dtos/organisation-dtos";
+import Environment "../utilities/Environment";
 
 actor class _OrganisationCanister() {
 
@@ -26,12 +15,37 @@ actor class _OrganisationCanister() {
     private stable var recruitment_canister_id = "";
 
     private stable var organisation: ?T.Organisation = null;
-    private stable var teamMembers: [T.TeamMember] = [];
-    private stable var contacts: [T.Contact] = [];
+    private stable var admins: [T.PrincipalId] = [];
 
+    public shared ({ caller }) func initialise(dto: OrganisationDTOs.InitialiseOrganisationDTO) : async (){
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      assert principalId == Environment.BACKEND_CANISTER_ID;
+      
+      organisation := ?{
+        addresses = [];
+        auditHistory = [];
+        banner = null;
+        contacts = [];
+        friendlyName = "";
+        id = dto.canisterId;
+        lastModified = null;
+        logo = null;
+        mainAddressId = null;
+        mainContactId = null;
+        members = [];
+        name = dto.name;
+        ownerId = dto.ownerId;
+        referenceNumber = "";
+        createdOn = Time.now();
+      };
+    };
 
-    public shared ({ caller }) func initialise(dto: OrganisationDTOs.CreateOrganisationDTO){
-
+    private func isAdmin(caller : T.PrincipalId) : Bool {
+      switch (Array.find<T.PrincipalId>(admins, func(admin) { admin == caller })) {
+        case null { false };
+        case _ { true };
+      };
     };
 
     public shared ({ caller }) func getServiceCanisterIds() : async OrganisationDTOs.ServiceCanisterIdsDTO {
@@ -44,6 +58,12 @@ actor class _OrganisationCanister() {
       }
     };
 
+    //get organiaston
+      //only people allowed to
+    
+    //get public organiastion
+      //just publoc info
+
     //Organisation Charge Functions
     //Charge Service
     //
@@ -52,7 +72,7 @@ actor class _OrganisationCanister() {
 
     //TODO: Purchase service?
 
-//update org status
+    //update org status
 
     //Organisation Management
 
@@ -60,7 +80,7 @@ actor class _OrganisationCanister() {
         assert not Principal.isAnonymous(caller);
         let principalId = Principal.toText(caller);
         assert isAdmin(principalId);
-        
+        return #ok; //TODO;
         //update the organisations details
 
     };
@@ -68,7 +88,8 @@ actor class _OrganisationCanister() {
     public shared ({ caller }) func updateOrganisationBanner() : async Result.Result<(), T.Error> {
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
-      assert isAdmin(principalId);  
+      assert isAdmin(principalId); 
+      return #ok; //TODO; 
     };
     
 
@@ -80,57 +101,11 @@ actor class _OrganisationCanister() {
 
 
   system func preupgrade() {
-    stable_manager_group_indexes := Iter.toArray(managerGroupIndexes.entries());
+    
   };
 
   system func postupgrade() {
-    for (index in Iter.fromArray(stable_manager_group_indexes)) {
-      managerGroupIndexes.put(index.0, index.1);
-    };
-    switch (cyclesCheckTimerId) {
-      case (null) {};
-      case (?id) {
-        Timer.cancelTimer(id);
-        cyclesCheckTimerId := null;
-      };
-    };
-    cyclesCheckTimerId := ?Timer.setTimer<system>(#nanoseconds(cyclesCheckInterval), checkCanisterCycles);
   };
-
-  private func checkCanisterCycles() : async () {
-
-    let balance = Cycles.balance();
-
-    if (balance < 2_000_000_000_000) {
-      let openfpl_backend_canister = actor (Environment.BACKEND_CANISTER_ID) : actor {
-        requestCanisterTopup : () -> async ();
-      };
-      await openfpl_backend_canister.requestCanisterTopup();
-    };
-    await setCheckCyclesTimer();
-  };
-
-  private func setCheckCyclesTimer() : async () {
-    switch (cyclesCheckTimerId) {
-      case (null) {};
-      case (?id) {
-        Timer.cancelTimer(id);
-        cyclesCheckTimerId := null;
-      };
-    };
-    cyclesCheckTimerId := ?Timer.setTimer<system>(#nanoseconds(cyclesCheckInterval), checkCanisterCycles);
-  };
-
-  public func topupCanister() : async () {
-    let amount = Cycles.available();
-    let _ = Cycles.accept<system>(amount);
-  };
-
-  public func getCyclesBalance() : async Nat {
-    return Cycles.balance();
-  };
-
-  public func getMainCanisterId() : async Text {
-    return Environment.BACKEND_CANISTER_ID;
-  };
+  
+  //TODO: Implement cycle topping up as per OpenFPL
 };

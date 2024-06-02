@@ -1,10 +1,9 @@
 import T "types";
-import OB "openbook-types";
 
 module ProjectTypes {
 
   public type Project = {
-    id: OB.ProjectId;
+    id: T.ProjectId;
     status: ProjectStatus;
     name: Text;
     startDate: ?Int;

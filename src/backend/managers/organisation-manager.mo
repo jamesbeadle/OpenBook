@@ -3,16 +3,35 @@ import OrganisationDTOs "../dtos/organisation-dtos";
 import Result "mo:base/Result";
 import Text "mo:base/Text";
 import Array "mo:base/Array";
-
+import Principal "mo:base/Principal";
+import Management "../utilities/Management";
+import OrganisationCanister "../canister-defs/organisation";
+import Utilities "../utilities/Utilities";
+import Cycles "mo:base/ExperimentalCycles";
+import Option "mo:base/Option";
+import Environment "../utilities/Environment";
 
 module {
   public class OrganisationManager() {
     
     private var unique_organisation_names : [Text] = [];
     private var organisation_canister_ids: [T.CanisterId] = [];
+
+    private var storeCanisterId : ?((canisterId : Text) -> async ()) = null;
+    private var backendCanisterController : ?Principal = null;
+    
+    public func setStoreCanisterIdFunction(
+      _storeCanisterId : (canisterId : Text) -> async (),
+    ) {
+      storeCanisterId := ?_storeCanisterId;
+    };
+    
+    public func setBackendCanisterController(controller : Principal) {
+      backendCanisterController := ?controller;
+    };
     
     public func createOrganisation(dto: OrganisationDTOs.CreateOrganisationDTO) : async Result.Result<T.OrganisationId, T.Error> {
-      //todo
+      
       let nameTaken = isOrganisationNameAvailable(dto.name);
       if(nameTaken){
         return #err(#AlreadyExists);
@@ -22,8 +41,23 @@ module {
         return #err(#InvalidData);
       };
 
-      //add name to unique organisations
-      return #err(#InvalidData); //todo
+      Cycles.add<system>(12_000_000_000_000);
+      let canister = await OrganisationCanister._OrganisationCanister();
+      let IC : Management.Management = actor (Environment.Default);
+      let _ = await Utilities.updateCanister_(canister, backendCanisterController, IC);
+      let canister_principal = Principal.fromActor(canister);
+      let canisterId = Principal.toText(canister_principal);
+      await canister.initialise({name = dto.name; ownerId = dto.ownerId; canisterId});
+      
+      switch (storeCanisterId) {
+        case (null) {
+          return #err(#NotAllowed);
+        };
+        case (?actualFunction) {
+          await actualFunction(canisterId);
+          return #ok(Principal.toText(canister_principal));
+        };
+      };      
     };
 
     public func getOrganisation(organisationId: T.OrganisationId) : async ?OrganisationDTOs.OrganisationDTO {
@@ -65,7 +99,11 @@ module {
     };
 
     public func isOrganisationNameAvailable(organisationName: Text) : Bool {
-      return false; //todo
+      let nameExists = Array.find(unique_organisation_names, 
+      func(name : Text) : Bool {
+        return name == organisationName;
+      },);
+      return Option.isNull(nameExists);
     };
 
     public func acceptOrganisationInvitation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async () {

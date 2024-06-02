@@ -7,6 +7,12 @@ module OrganisationTypes {
         name: Text;
     };
 
+    public type InitialiseOrganisationDTO = {
+        ownerId: T.PrincipalId;
+        name: Text;
+        canisterId: T.CanisterId;
+    };
+
     public type GetUserOrganisationsDTO = {
 
     };

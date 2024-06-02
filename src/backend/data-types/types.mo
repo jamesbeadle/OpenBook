@@ -59,7 +59,7 @@ module OpenBookTypes {
     contacts : [Contact];
     auditHistory : [AuditRecord];
     lastModified : ?Int64;
-    timestamp: Int;
+    createdOn: Int;
   };
 
   public type TeamMember = {
@@ -138,6 +138,13 @@ module OpenBookTypes {
     lastModified : Int;
   };
 
+  public type CanisterTopup = {
+    canisterId: CanisterId;
+    topupTime: Int;
+    icpAmount: Nat64;
+    cyclesAmount: Nat64;
+    xdrRate: Nat64;
+  };
 
   public type Error = {
     #NotFound;

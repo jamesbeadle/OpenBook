@@ -13,6 +13,7 @@ import ProfileManager "managers/profile-manager";
 import StorageManager "managers/storage-manager";
 import TreasuryManager "managers/treasury-manager";
 import OrganisationManager "managers/organisation-manager";
+import CyclesManager "managers/cycles-manager";
 
 actor Self {
   
@@ -21,6 +22,7 @@ actor Self {
   private let presaleManager = PresaleManager.PresaleManager();
   private let organisationManager = OrganisationManager.OrganisationManager();
   private let storageManager = StorageManager.StorageManager();
+  private let cyclesManager = CyclesManager.CyclesManager();
   
   public shared ({ caller }) func createProfile(dto : ProfileDTOs.CreateProfileDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
@@ -352,6 +354,8 @@ actor Self {
   //TODO: Implement cycles checking when implemented on OpenFPL
 
   //TODO: Stable Variables
+  private stable var stable_canister_ids : [Text] = [];
+  private stable var stable_topups : [T.CanisterTopup] = [];
   private stable var stable_organisation_canister_ids: [T.CanisterId] = [];
   private stable var stable_profile_canister_ids: [T.CanisterId] = [];
   private stable var stable_profile_canister_index: [(T.PrincipalId, T.CanisterId)] = [];
@@ -361,7 +365,8 @@ actor Self {
 
   private stable var stable_unique_usernames : [Text] = [];
   private stable var stable_unique_organisation_names : [Text] = [];
-
+  
+  
   system func preupgrade() {
     stable_unique_usernames := profileManager.getStableUniqueUsernames();
     stable_unique_organisation_names := organisationManager.getStableUniqueOrganisationNames();
@@ -374,6 +379,10 @@ actor Self {
   };
 
   system func postupgrade() {
+    cyclesManager.setStableCanisterIds(stable_canister_ids);
+    cyclesManager.setStableTopups(stable_topups);
+    organisationManager.setStoreCanisterIdFunction(cyclesManager.storeCanisterId);
+    organisationManager.setBackendCanisterController(Principal.fromActor(Self));
     profileManager.setStableUniqueUsernames(stable_unique_usernames);
     organisationManager.setStableUniqueOrganisationNames(stable_unique_organisation_names);
     organisationManager.setStableOrganisationCanisterIds(stable_organisation_canister_ids);
@@ -382,6 +391,8 @@ actor Self {
     profileManager.setStableActiveCanisterId(stable_active_profile_canister_id);
     storageManager.setStableStorageCanisterIds(stable_storage_canister_ids);
     storageManager.setStableActiveCanisterId(stable_active_storage_canister_id);
+
+    //TODO: Trigger cycles manager to begin watching canisters, implement on OpenFPL
   };
   
   /* The below functionality relates to the December 2023 directory launch with all user to be transferred to the new data structure */
