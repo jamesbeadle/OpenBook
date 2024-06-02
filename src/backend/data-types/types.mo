@@ -104,6 +104,7 @@ module OpenBookTypes {
     sentBy: PrincipalId;
     sentOn: Int;
     sentTo: PrincipalId;
+    position: OrganisationPosition;
   };
 
   public type VisibilityLevel = {

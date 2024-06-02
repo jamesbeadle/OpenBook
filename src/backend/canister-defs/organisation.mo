@@ -3,6 +3,8 @@ import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Time "mo:base/Time";
 import Option "mo:base/Option";
+import Iter "mo:base/Iter";
+import Buffer "mo:base/Buffer";
 import T "../data-types/types";
 import OrganisationDTOs "../dtos/organisation-dtos";
 import Environment "../utilities/Environment";
@@ -47,32 +49,6 @@ actor class _OrganisationCanister() {
      return isAdminForCaller(principalId);
     };
 
-    private func isAdminForCaller(caller : T.PrincipalId) : Bool {
-      switch (Array.find<T.PrincipalId>(admins, func(admin) { admin == caller })) {
-        case null { false };
-        case _ { true };
-      };
-    };
-
-    private func isTeamMember(callerPrincipalId: T.PrincipalId) : Bool {
-      switch(organisation){
-        case (null){
-          return false;
-        };
-        case (?foundOrganisation){
-          let teamMemberPrincipals = Array.map<T.TeamMember, T.PrincipalId>(foundOrganisation.members, func(member : T.TeamMember) : T.PrincipalId { return member.principalId });
-
-          let teamMember = Array.find<T.PrincipalId>(
-            teamMemberPrincipals,
-            func(memberPrincipalId : T.PrincipalId) : Bool {
-              return callerPrincipalId == memberPrincipalId;
-            },
-          );
-          return Option.isSome(teamMember);
-        }
-      };
-    };
-
     public shared ({ caller }) func getServiceCanisterIds() : async OrganisationDTOs.ServiceCanisterIdsDTO {
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
@@ -108,17 +84,58 @@ actor class _OrganisationCanister() {
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert principalId == Environment.BACKEND_CANISTER_ID;
-      assert isTeamMember(principalId);
+      assert not isTeamMember(callerPrincipalId);
+
       switch(organisation){
         case (null){};
         case (?foundOrganisation){
+          let remainingInvitationsBuffer = Buffer.fromArray<T.OrganisationInvite>([]);
+          let userInvitationsBuffer = Buffer.fromArray<T.OrganisationInvite>([]);
+          for(invitation in Iter.fromArray(foundOrganisation.invites)){
+            if(invitation.sentTo == callerPrincipalId){
+              userInvitationsBuffer.add(invitation);
+            }
+            else
+            {
+              remainingInvitationsBuffer.add(invitation)
+            }
+          };
 
+          let updatedTeamMembersBuffer = Buffer.fromArray<T.TeamMember>(foundOrganisation.members);
+          for(invitation in Iter.fromArray(Buffer.toArray(userInvitationsBuffer))){
+            let newTeamMember: T.TeamMember = {
+              joined = Time.now();
+              organisationId = foundOrganisation.id;
+              positions = [invitation.position];
+              principalId = invitation.sentTo
+            };
+            updatedTeamMembersBuffer.add(newTeamMember);
+          };
 
+          let updatedOrganisation: T.Organisation = {
+            id = foundOrganisation.id;
+            ownerId = foundOrganisation.ownerId;
+            name = foundOrganisation.name;
+            friendlyName = foundOrganisation.friendlyName;
+            referenceNumber = foundOrganisation.referenceNumber;
+            logo = foundOrganisation.logo;
+            banner = foundOrganisation.banner;
+            members = Buffer.toArray(updatedTeamMembersBuffer);
+            mainAddressId = foundOrganisation.mainAddressId;
+            mainContactId = foundOrganisation.mainContactId;
+            addresses = foundOrganisation.addresses;
+            contacts = foundOrganisation.contacts;
+            auditHistory = foundOrganisation.auditHistory;
+            invites = Buffer.toArray(remainingInvitationsBuffer);
+            lastModified = foundOrganisation.lastModified;
+            createdOn = foundOrganisation.createdOn;
+          };
 
+          organisation := ?updatedOrganisation;
         }
       };
     };
-    
+
     public shared ({ caller }) func isUserOrganisationMember (callerPrincipalId: T.PrincipalId) : async Bool{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
@@ -218,12 +235,41 @@ actor class _OrganisationCanister() {
     //activate service
 
 
+
+  private func isAdminForCaller(caller : T.PrincipalId) : Bool {
+    switch (Array.find<T.PrincipalId>(admins, func(admin) { admin == caller })) {
+      case null { false };
+      case _ { true };
+    };
+  };
+
+  private func isTeamMember(callerPrincipalId: T.PrincipalId) : Bool {
+    switch(organisation){
+      case (null){
+        return false;
+      };
+      case (?foundOrganisation){
+        let teamMemberPrincipals = Array.map<T.TeamMember, T.PrincipalId>(foundOrganisation.members, func(member : T.TeamMember) : T.PrincipalId { return member.principalId });
+
+        let teamMember = Array.find<T.PrincipalId>(
+          teamMemberPrincipals,
+          func(memberPrincipalId : T.PrincipalId) : Bool {
+            return callerPrincipalId == memberPrincipalId;
+          },
+        );
+        return Option.isSome(teamMember);
+      }
+    };
+  };
+  
   system func preupgrade() {
     
   };
 
   system func postupgrade() {
   };
+
+  
   
   //TODO: Implement cycle topping up as per OpenFPL
 };
