@@ -21,6 +21,16 @@ actor class _OrganisationCanister() {
     private stable var organisation: ?T.Organisation = null;
     private stable var admins: [T.PrincipalId] = [];
 
+
+      //TODO: add currency
+
+    public shared ({ caller }) func addCurrency(dto: ADTOs.AddCurrencyDTO) : async Result.Result<(), T.Error> {
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      assert hasPermission(principalId);
+      return accountsManager.addCurrency(dto);
+    };
+
     public shared ({ caller }) func initialise(dto: OrganisationDTOs.InitialiseOrganisationDTO) : async (){
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);

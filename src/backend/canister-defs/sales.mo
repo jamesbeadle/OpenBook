@@ -273,3 +273,115 @@ actor Self{
       return salesManager.deleteSalesContact(dto);
     };
 }
+
+
+/*
+
+Sales CRM Module
+Leads
+Leads
+
+GET /api/leads - Retrieve a list of all leads.
+POST /api/leads - Create a new lead.
+GET /api/leads/{id} - Retrieve details of a specific lead.
+PUT /api/leads/{id} - Update details of a specific lead.
+DELETE /api/leads/{id} - Delete a specific lead.
+Lead Statuses
+
+GET /api/lead-statuses - Retrieve a list of all lead statuses.
+POST /api/lead-statuses - Create a new lead status.
+GET /api/lead-statuses/{id} - Retrieve details of a specific lead status.
+PUT /api/lead-statuses/{id} - Update details of a specific lead status.
+DELETE /api/lead-statuses/{id} - Delete a specific lead status.
+Opportunities
+Opportunities
+
+GET /api/opportunities - Retrieve a list of all opportunities.
+POST /api/opportunities - Create a new opportunity.
+GET /api/opportunities/{id} - Retrieve details of a specific opportunity.
+PUT /api/opportunities/{id} - Update details of a specific opportunity.
+DELETE /api/opportunities/{id} - Delete a specific opportunity.
+Opportunity Stages
+
+GET /api/opportunity-stages - Retrieve a list of all opportunity stages.
+POST /api/opportunity-stages - Create a new opportunity stage.
+GET /api/opportunity-stages/{id} - Retrieve details of a specific opportunity stage.
+PUT /api/opportunity-stages/{id} - Update details of a specific opportunity stage.
+DELETE /api/opportunity-stages/{id} - Delete a specific opportunity stage.
+Contacts
+Contacts
+GET /api/contacts - Retrieve a list of all contacts.
+POST /api/contacts - Create a new contact.
+GET /api/contacts/{id} - Retrieve details of a specific contact.
+PUT /api/contacts/{id} - Update details of a specific contact.
+DELETE /api/contacts/{id} - Delete a specific contact.
+Accounts
+Accounts
+GET /api/accounts - Retrieve a list of all accounts.
+POST /api/accounts - Create a new account.
+GET /api/accounts/{id} - Retrieve details of a specific account.
+PUT /api/accounts/{id} - Update details of a specific account.
+DELETE /api/accounts/{id} - Delete a specific account.
+Activities
+Activities
+
+GET /api/activities - Retrieve a list of all activities.
+POST /api/activities - Create a new activity.
+GET /api/activities/{id} - Retrieve details of a specific activity.
+PUT /api/activities/{id} - Update details of a specific activity.
+DELETE /api/activities/{id} - Delete a specific activity.
+Activity Types
+
+GET /api/activity-types - Retrieve a list of all activity types.
+POST /api/activity-types - Create a new activity type.
+GET /api/activity-types/{id} - Retrieve details of a specific activity type.
+PUT /api/activity-types/{id} - Update details of a specific activity type.
+DELETE /api/activity-types/{id} - Delete a specific activity type.
+Sales Pipelines
+Sales Pipelines
+GET /api/sales-pipelines - Retrieve a list of all sales pipelines.
+POST /api/sales-pipelines - Create a new sales pipeline.
+GET /api/sales-pipelines/{id} - Retrieve details of a specific sales pipeline.
+PUT /api/sales-pipelines/{id} - Update details of a specific sales pipeline.
+DELETE /api/sales-pipelines/{id} - Delete a specific sales pipeline.
+Notes
+Notes
+GET /api/notes - Retrieve a list of all notes.
+POST /api/notes - Create a new note.
+GET /api/notes/{id} - Retrieve details of a specific note.
+PUT /api/notes/{id} - Update details of a specific note.
+DELETE /api/notes/{id} - Delete a specific note.
+Files
+Files
+GET /api/files - Retrieve a list of all files.
+POST /api/files - Upload a new file.
+GET /api/files/{id} - Retrieve details of a specific file.
+DELETE /api/files/{id} - Delete a specific file.
+Reports
+Reports
+GET /api/reports/sales - Retrieve sales reports.
+GET /api/reports/leads - Retrieve lead reports.
+GET /api/reports/opportunities - Retrieve opportunity reports.
+GET /api/reports/activities - Retrieve activity reports.
+User and Team Management (Optional for CRM)
+Users
+
+GET /api/users - Retrieve a list of all users.
+POST /api/users - Create a new user.
+GET /api/users/{id} - Retrieve details of a specific user.
+PUT /api/users/{id} - Update details of a specific user.
+DELETE /api/users/{id} - Delete a specific user.
+Teams
+
+GET /api/teams - Retrieve a list of all teams.
+POST /api/teams - Create a new team.
+GET /api/teams/{id} - Retrieve details of a specific team.
+PUT /api/teams/{id} - Update details of a specific team.
+DELETE /api/teams/{id} - Delete a specific team.
+Team Members
+
+GET /api/teams/{team_id}/members - Retrieve a list of all members of a specific team.
+POST /api/teams/{team_id}/members - Add a new member to a specific team.
+DELETE /api/teams/{team_id}/members/{member_id} - Remove a member from a specific team.
+
+*/
