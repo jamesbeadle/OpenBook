@@ -389,6 +389,35 @@ actor class _OrganisationCanister() {
     };
 
 
+
+
+
+    //Contacts
+    
+    public shared query ({ caller }) func listContacts(dto: DTOs.ListContacts) : async Result.Result<DTOs.ListGeneralLedgerAccounts, T.Error>{
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      //assert hasPermission(principalId);
+        return #err(#NotFound);
+    };
+
+    public shared query ({ caller }) func getContact(dto: DTOs.GetContact) : async Result.Result<DTOs.GetGeneralLedgerAccount, T.Error>{
+        return #err(#NotFound);
+    };
+
+    public shared ({ caller }) func createContact(dto: DTOs.CreateContact) : async Result.Result<(), T.Error>{
+        return #err(#NotFound);
+    };
+
+    public shared ({ caller }) func updateContact(dto: DTOs.UpdateContact) : async Result.Result<(), T.Error>{
+        return #err(#NotFound);
+    };
+
+    public shared ({ caller }) func deleteContact(dto: DTOs.DeleteContact) : async Result.Result<(), T.Error>{
+        return #err(#NotFound);
+    };
+
+
     private func isAdminForCaller(caller : T.PrincipalId) : Bool {
       switch (Array.find<T.PrincipalId>(admins, func(admin) { admin == caller })) {
         case null { false };
