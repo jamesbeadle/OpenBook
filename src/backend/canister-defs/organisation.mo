@@ -6,6 +6,7 @@ import Option "mo:base/Option";
 import Iter "mo:base/Iter";
 import Buffer "mo:base/Buffer";
 import T "../data-types/types";
+import DTOs "../dtos/DTOs";
 import OrganisationDTOs "../dtos/organisation-dtos";
 import Environment "../utilities/Environment";
 
@@ -63,10 +64,20 @@ actor class _OrganisationCanister() {
       }
     };
 
+    public shared ({ caller }) func getPublicOrganisation () : async Result.Result<OrganisationDTOs.OrganisationInfoDTO, T.Error>{
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      assert principalId == Environment.BACKEND_CANISTER_ID;
+      return #err(#NotFound); //TODO
+    };
+
     public shared ({ caller }) func getOrganisation () : async ?OrganisationDTOs.OrganisationDTO{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert principalId == Environment.BACKEND_CANISTER_ID;
+
+
+      //TODO: only people allowed to
 
       switch(organisation){
         case (null){
@@ -76,10 +87,13 @@ actor class _OrganisationCanister() {
           return ?{
             id = foundOrganisation.id;
             name = foundOrganisation.name;
+            members = foundOrganisation.members;
+            ownerId = foundOrganisation.ownerId;
           };  
         }
       };
     };
+
     public shared ({ caller }) func acceptOrganisationInvitation (callerPrincipalId: T.PrincipalId) : async (){
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
@@ -165,51 +179,145 @@ actor class _OrganisationCanister() {
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert principalId == Environment.BACKEND_CANISTER_ID;
+
+      switch(organisation){
+        case (null){
+          return #err(#NotFound);
+        };
+        case (?foundOrganisation){
+          switch (Array.find<T.OrganisationInvite>(foundOrganisation.invites, func(invite) { invite.sentTo == callerPrincipalId })) {
+            case null {
+              return #err(#NotFound);
+            };
+            case (?foundInvite) { 
+              let membersBuffer = Buffer.fromArray<T.TeamMember>(foundOrganisation.members);
+              let newMember: T.TeamMember = {
+                joined = Time.now();
+                organisationId = foundOrganisation.id;
+                positions = [foundInvite.position];
+                principalId = callerPrincipalId;
+              };
+              membersBuffer.add(newMember);
+              organisation := ?{
+                addresses = foundOrganisation.addresses;
+                auditHistory = foundOrganisation.auditHistory;
+                banner = foundOrganisation.banner;
+                contacts = foundOrganisation.contacts;
+                createdOn = foundOrganisation.createdOn;
+                friendlyName = foundOrganisation.friendlyName;
+                id = foundOrganisation.id;
+                invites = Array.filter<T.OrganisationInvite>(foundOrganisation.invites, func(invite) { invite.sentTo != callerPrincipalId });
+                lastModified = foundOrganisation.lastModified;
+                logo = foundOrganisation.logo;
+                mainAddressId = foundOrganisation.mainAddressId;
+                mainContactId = foundOrganisation.mainContactId;
+                members = Buffer.toArray(membersBuffer);
+                name = foundOrganisation.name;
+                ownerId = foundOrganisation.ownerId;
+                referenceNumber = foundOrganisation.referenceNumber
+              };
+              return #err(#NotFound);
+             };
+          };
+        }
+      };
     };
+
     public shared ({ caller }) func rejectInvitation (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert principalId == Environment.BACKEND_CANISTER_ID;
+
+      switch(organisation){
+        case (null){
+          return #err(#NotFound);
+        };
+        case (?foundOrganisation){
+          switch (Array.find<T.OrganisationInvite>(foundOrganisation.invites, func(invite) { invite.sentTo == callerPrincipalId })) {
+            case null {
+              return #err(#NotFound);
+            };
+            case (?foundInvite) { 
+              organisation := ?{
+                addresses = foundOrganisation.addresses;
+                auditHistory = foundOrganisation.auditHistory;
+                banner = foundOrganisation.banner;
+                contacts = foundOrganisation.contacts;
+                createdOn = foundOrganisation.createdOn;
+                friendlyName = foundOrganisation.friendlyName;
+                id = foundOrganisation.id;
+                invites = Array.filter<T.OrganisationInvite>(foundOrganisation.invites, func(invite) { invite.sentTo != callerPrincipalId });
+                lastModified = foundOrganisation.lastModified;
+                logo = foundOrganisation.logo;
+                mainAddressId = foundOrganisation.mainAddressId;
+                mainContactId = foundOrganisation.mainContactId;
+                members = foundOrganisation.members;
+                name = foundOrganisation.name;
+                ownerId = foundOrganisation.ownerId;
+                referenceNumber = foundOrganisation.referenceNumber
+              };
+              return #err(#NotFound);
+             };
+          };
+        }
+      };
     };
+
     public shared ({ caller }) func requestAccess (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert principalId == Environment.BACKEND_CANISTER_ID;
-    };
-    public shared ({ caller }) func leaveOrganisation (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
-      assert not Principal.isAnonymous(caller);
-      let principalId = Principal.toText(caller);
-      assert principalId == Environment.BACKEND_CANISTER_ID;
+
+
+      
+      return #ok; //TODO
     };
     public shared ({ caller }) func userAccessRequestExists (callerPrincipalId: T.PrincipalId) : async Bool{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert principalId == Environment.BACKEND_CANISTER_ID;
+      return false; //TODO
     };
-    public shared ({ caller }) func addUser (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
+
+    public shared ({ caller }) func confirmAccessRequest (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert principalId == Environment.BACKEND_CANISTER_ID;
+
+
+      
+      return #ok; //TODO
+    };
+
+    public shared ({ caller }) func rejectAccessRequest (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      assert principalId == Environment.BACKEND_CANISTER_ID;
+
+
+      
+      return #ok; //TODO
+    };
+
+    public shared ({ caller }) func leaveOrganisation (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      assert principalId == Environment.BACKEND_CANISTER_ID;
+      return #ok; //TODO
     };
 
 
-    //get organiaston
-      //only people allowed to
-    
-    //get public organiastion
-      //just publoc info
-
-    //Organisation Charge Functions
-    //Charge Service
-    //
-
-    //organisation needs endpoints out to each canister so this becomes a god file of everything that can be done
-
-    //TODO: Purchase service?
-
-    //update org status
-
     //Organisation Management
+
+    public shared ({ caller }) func updateOrganisationStatus (dto: DTOs.ChargeServiceDTO) : async Result.Result<(), T.Error>{
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      assert principalId == Environment.BACKEND_CANISTER_ID;
+
+
+
+      return #ok; //TODO
+    };
 
     public shared ({ caller }) func updateOrganisationDetails(dto: OrganisationDTOs.UpdateOrganisationDetailDTO) : async Result.Result<(), T.Error> {
         assert not Principal.isAnonymous(caller);
@@ -226,50 +334,85 @@ actor class _OrganisationCanister() {
       assert isAdminForCaller(principalId); 
       return #ok; //TODO; 
     };
+
     
-
-
-    //Todo: Implement dynamic cycles as per OpenFPL
-    //Topup service
-    //Transfer charge
-    //activate service
+    public shared ({ caller }) func chargeService (dto: DTOs.ChargeServiceDTO) : async Result.Result<(), T.Error>{
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      assert principalId == Environment.BACKEND_CANISTER_ID;
 
 
 
-  private func isAdminForCaller(caller : T.PrincipalId) : Bool {
-    switch (Array.find<T.PrincipalId>(admins, func(admin) { admin == caller })) {
-      case null { false };
-      case _ { true };
+      return #ok; //TODO
     };
-  };
+    
+    public shared ({ caller }) func transferCharge (dto: DTOs.ChargeServiceDTO) : async Result.Result<(), T.Error>{
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      assert principalId == Environment.BACKEND_CANISTER_ID;
 
-  private func isTeamMember(callerPrincipalId: T.PrincipalId) : Bool {
-    switch(organisation){
-      case (null){
-        return false;
+
+
+      return #ok; //TODO
+    };
+    
+    public shared ({ caller }) func acceptCharge (dto: DTOs.ChargeServiceDTO) : async Result.Result<(), T.Error>{
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      assert principalId == Environment.BACKEND_CANISTER_ID;
+
+
+
+      return #ok; //TODO
+    };
+      
+
+
+    public shared ({ caller }) func activateService (dto: DTOs.ActivateServiceDTO) : async Result.Result<(), T.Error>{
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      assert principalId == Environment.BACKEND_CANISTER_ID;
+
+
+
+      return #ok; //TODO
+    };
+
+
+    private func isAdminForCaller(caller : T.PrincipalId) : Bool {
+      switch (Array.find<T.PrincipalId>(admins, func(admin) { admin == caller })) {
+        case null { false };
+        case _ { true };
       };
-      case (?foundOrganisation){
-        let teamMemberPrincipals = Array.map<T.TeamMember, T.PrincipalId>(foundOrganisation.members, func(member : T.TeamMember) : T.PrincipalId { return member.principalId });
-
-        let teamMember = Array.find<T.PrincipalId>(
-          teamMemberPrincipals,
-          func(memberPrincipalId : T.PrincipalId) : Bool {
-            return callerPrincipalId == memberPrincipalId;
-          },
-        );
-        return Option.isSome(teamMember);
-      }
     };
-  };
-  
-  system func preupgrade() {
+
+    private func isTeamMember(callerPrincipalId: T.PrincipalId) : Bool {
+      switch(organisation){
+        case (null){
+          return false;
+        };
+        case (?foundOrganisation){
+          let teamMemberPrincipals = Array.map<T.TeamMember, T.PrincipalId>(foundOrganisation.members, func(member : T.TeamMember) : T.PrincipalId { return member.principalId });
+
+          let teamMember = Array.find<T.PrincipalId>(
+            teamMemberPrincipals,
+            func(memberPrincipalId : T.PrincipalId) : Bool {
+              return callerPrincipalId == memberPrincipalId;
+            },
+          );
+          return Option.isSome(teamMember);
+        }
+      };
+    };
     
-  };
+    system func preupgrade() {
+      
+    };
 
-  system func postupgrade() {
-  };
+    system func postupgrade() {
+    };
 
-  
-  
-  //TODO: Implement cycle topping up as per OpenFPL
+    
+    
+    //TODO: Implement cycle topping up as per OpenFPL
 };

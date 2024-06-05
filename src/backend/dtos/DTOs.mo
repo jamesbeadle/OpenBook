@@ -3,7 +3,11 @@ import T "../data-types/types";
 
 module DTOs {
 
-  public type SidebarDTO = {
+  public type ChargeServiceDTO = {
+    charge: Nat64;
+  };
+
+  public type ActivateServiceDTO = {
 
   };
 

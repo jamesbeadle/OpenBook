@@ -261,7 +261,7 @@ actor Self {
         assert not isOrganisationMember;
         
         await profileManager.addOrganisation(dto.organisationId, principalId);
-        return await organisationManager.addUser(dto.organisationId, principalId);
+        return await organisationManager.confirmAccessRequest(dto.organisationId, principalId);
       };
     };
   };

@@ -169,11 +169,11 @@ module {
       return await organisation_canister.userAccessRequestExists(principalId);
     };
 
-    public func addUser(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Result.Result<(), T.Error> {
+    public func confirmAccessRequest(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Result.Result<(), T.Error> {
       let organisation_canister = actor (organisationId) : actor {
-        addUser : (principalId: T.PrincipalId) -> async Result.Result<(), T.Error>;
+        confirmAccessRequest : (principalId: T.PrincipalId) -> async Result.Result<(), T.Error>;
       };
-      return await organisation_canister.addUser(principalId);
+      return await organisation_canister.confirmAccessRequest(principalId);
     };
 
     public func getStableUniqueOrganisationNames() : [Text] {
