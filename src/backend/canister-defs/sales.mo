@@ -1,7 +1,6 @@
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import DTOs "../dtos/sales-dtos";
-import SalesTypes "../data-types/accountancy-types";
 import T "../data-types/types";
 
 actor class _SalesCanister() {
