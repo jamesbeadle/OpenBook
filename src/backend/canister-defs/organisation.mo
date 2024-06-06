@@ -24,7 +24,7 @@ actor class _OrganisationCanister() {
 
       //TODO: add currency
 
-    public shared ({ caller }) func addCurrency(dto: ADTOs.AddCurrencyDTO) : async Result.Result<(), T.Error> {
+    public shared ({ caller }) func addCurrency(dto: DTOs.AddCurrencyDTO) : async Result.Result<(), T.Error> {
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert hasPermission(principalId);
@@ -185,6 +185,7 @@ actor class _OrganisationCanister() {
         }
       };
     };
+
     public shared ({ caller }) func acceptInvitation (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
@@ -282,6 +283,7 @@ actor class _OrganisationCanister() {
       
       return #ok; //TODO
     };
+
     public shared ({ caller }) func userAccessRequestExists (callerPrincipalId: T.PrincipalId) : async Bool{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
