@@ -29,6 +29,10 @@ module OrganisationTypes {
         id: T.CanisterId;
         name: Text;
         ownerId: T.PrincipalId;
+        friendlyName : Text;
+        logo : ?Blob;
+        banner : ?Blob;
+        lastModified : ?Int64;
         members: [T.TeamMember]
     };
 
@@ -54,7 +58,35 @@ module OrganisationTypes {
         recruitementCanisterId: Text;
     };
 
+    public type ChargeServiceDTO = {
+        charge: Nat64;
+    };
+
+    public type ActivateServiceDTO = {
+
+    };
+
     public type OrganisationInfoDTO = {
 
     };
+
+    public type AddCurrencyDTO = {
+        id: T.CurrencyId;
+        decimalPlaces: Nat8;
+        name: Text; 
+        ticker: Text;
+    };
+
+    public type ListContacts = {
+        //todo
+    };
+
+    public type GetContact = {
+        //todo
+    };
+
+    public type CreateContact = {}; //TODO
+    public type UpdateContact = {}; //TODO
+    public type DeleteContact = {}; //TODO
+
 };

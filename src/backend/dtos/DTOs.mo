@@ -3,23 +3,6 @@ import T "../data-types/types";
 
 module DTOs {
 
-  public type ChargeServiceDTO = {
-    charge: Nat64;
-  };
-
-  public type ActivateServiceDTO = {
-
-  };
-
-  public type OrganisationDTO = {
-    id : T.OrganisationId;
-    name : Text;
-    friendlyName : Text;
-    logo : Text;
-    banner : Text;
-    lastModified : Int64;
-  };
-
   public type DirectoryDTO = {
     profiles : [DirectoryProfileDTO];
     totalEntries : Int;

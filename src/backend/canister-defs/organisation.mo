@@ -6,9 +6,9 @@ import Option "mo:base/Option";
 import Iter "mo:base/Iter";
 import Buffer "mo:base/Buffer";
 import T "../data-types/types";
-import DTOs "../dtos/DTOs";
-import OrganisationDTOs "../dtos/organisation-dtos";
+import DTOs "../dtos/organisation-dtos";
 import Environment "../utilities/Environment";
+import CurrencyManager "../managers/currencyManager";
 
 actor class _OrganisationCanister() {
 
@@ -21,17 +21,9 @@ actor class _OrganisationCanister() {
     private stable var organisation: ?T.Organisation = null;
     private stable var admins: [T.PrincipalId] = [];
 
+    private let currencyManager = CurrencyManager.CurrencyManager();
 
-      //TODO: add currency
-
-    public shared ({ caller }) func addCurrency(dto: DTOs.AddCurrencyDTO) : async Result.Result<(), T.Error> {
-      assert not Principal.isAnonymous(caller);
-      let principalId = Principal.toText(caller);
-      assert hasPermission(principalId);
-      return accountsManager.addCurrency(dto);
-    };
-
-    public shared ({ caller }) func initialise(dto: OrganisationDTOs.InitialiseOrganisationDTO) : async (){
+    public shared ({ caller }) func initialise(dto: DTOs.InitialiseOrganisationDTO) : async (){
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert principalId == Environment.BACKEND_CANISTER_ID;
@@ -55,12 +47,20 @@ actor class _OrganisationCanister() {
         createdOn = Time.now();
       };
     };
+
+    public shared ({ caller }) func addCurrency(dto: DTOs.AddCurrencyDTO) : async Result.Result<(), T.Error> {
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      assert await isAdmin(principalId);
+      return await currencyManager.addCurrency(dto);
+    };
+
     public shared ({ caller }) func isAdmin (principalId: T.PrincipalId) : async Bool{
       assert not Principal.isAnonymous(caller);
      return isAdminForCaller(principalId);
     };
 
-    public shared ({ caller }) func getServiceCanisterIds() : async OrganisationDTOs.ServiceCanisterIdsDTO {
+    public shared ({ caller }) func getServiceCanisterIds() : async DTOs.ServiceCanisterIdsDTO {
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert isTeamMember(principalId);
@@ -74,14 +74,14 @@ actor class _OrganisationCanister() {
       }
     };
 
-    public shared ({ caller }) func getPublicOrganisation () : async Result.Result<OrganisationDTOs.OrganisationInfoDTO, T.Error>{
+    public shared ({ caller }) func getPublicOrganisation () : async Result.Result<DTOs.OrganisationInfoDTO, T.Error>{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert principalId == Environment.BACKEND_CANISTER_ID;
       return #err(#NotFound); //TODO
     };
 
-    public shared ({ caller }) func getOrganisation () : async ?OrganisationDTOs.OrganisationDTO{
+    public shared ({ caller }) func getOrganisation () : async ?DTOs.OrganisationDTO{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert principalId == Environment.BACKEND_CANISTER_ID;
@@ -96,9 +96,14 @@ actor class _OrganisationCanister() {
         case (?foundOrganisation){
           return ?{
             id = foundOrganisation.id;
+            
             name = foundOrganisation.name;
             members = foundOrganisation.members;
             ownerId = foundOrganisation.ownerId;
+            banner = foundOrganisation.banner;
+            friendlyName = foundOrganisation.friendlyName;
+            lastModified = foundOrganisation.lastModified;
+            logo = foundOrganisation.logo;
           };  
         }
       };
@@ -331,7 +336,7 @@ actor class _OrganisationCanister() {
       return #ok; //TODO
     };
 
-    public shared ({ caller }) func updateOrganisationDetails(dto: OrganisationDTOs.UpdateOrganisationDetailDTO) : async Result.Result<(), T.Error> {
+    public shared ({ caller }) func updateOrganisationDetails(dto: DTOs.UpdateOrganisationDetailDTO) : async Result.Result<(), T.Error> {
         assert not Principal.isAnonymous(caller);
         let principalId = Principal.toText(caller);
         assert isAdminForCaller(principalId);
@@ -396,14 +401,14 @@ actor class _OrganisationCanister() {
 
     //Contacts
     
-    public shared query ({ caller }) func listContacts(dto: DTOs.ListContacts) : async Result.Result<DTOs.ListGeneralLedgerAccounts, T.Error>{
+    public shared query ({ caller }) func listContacts(dto: DTOs.ListContacts) : async Result.Result<DTOs.ListContacts, T.Error>{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       //assert hasPermission(principalId);
         return #err(#NotFound);
     };
 
-    public shared query ({ caller }) func getContact(dto: DTOs.GetContact) : async Result.Result<DTOs.GetGeneralLedgerAccount, T.Error>{
+    public shared query ({ caller }) func getContact(dto: DTOs.GetContact) : async Result.Result<DTOs.GetContact, T.Error>{
         return #err(#NotFound);
     };
 

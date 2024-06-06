@@ -20,6 +20,13 @@ module OpenBookTypes {
   public type BucketNumber = Nat8;
   public type FileId = Nat32;
 
+  public type Currency = {
+    id: CurrencyId;
+    name: Text;
+    ticker: Text;
+    decimalPlaces: Nat8;
+  };
+
   public type Profile = {
     principal : PrincipalId;
     username : Text;
