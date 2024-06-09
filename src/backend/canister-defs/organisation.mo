@@ -15,7 +15,10 @@ import Utilities "../utilities/Utilities";
 import Cycles "mo:base/ExperimentalCycles";
 import Int "mo:base/Int";
 import Nat "mo:base/Nat";
+import Blob "mo:base/Blob";
 import ContactsManager "../managers/contacts-manager";
+import ICPLedger "../defs/ledger";
+import Account "../utilities/Account";
 
 actor class _OrganisationCanister() {
 
@@ -31,6 +34,10 @@ actor class _OrganisationCanister() {
 
     private let currencyManager = CurrencyManager.CurrencyManager();
     private let contactsManager = ContactsManager.ContactsManager();
+
+    private let ledger : ICPLedger.Interface = actor (ICPLedger.CANISTER_ID);
+    private let ICP_CHARGE_RATE = 100_000_000;
+    let ICP_FEE : Nat = 10_000;
 
     public shared ({ caller }) func initialise(dto: DTOs.InitialiseOrganisation) : async (){
       assert not Principal.isAnonymous(caller);
@@ -619,10 +626,106 @@ actor class _OrganisationCanister() {
       let principalId = Principal.toText(caller);
       assert isAdminForCaller(principalId);
 
-      //TODO: IMPLEMENT CHARGE AND PAYMENT SYSTEM
+      switch(organisation){
+        case (null){
+          return #err(#NotFound);
+        };
+        case (?foundOrganisation){   
+          let purchaseResult = await ledger.icrc1_transfer({
+            memo = ?Blob.fromArray([]);
+            from_subaccount = ?Account.principalToSubaccount(Principal.fromText(foundOrganisation.id));
+            to = {owner = Principal.fromText(Environment.BACKEND_CANISTER_ID); subaccount = ?Account.defaultSubaccount()};
+            amount = dto.icpAmount - ICP_FEE;
+            fee = ?ICP_FEE;
+            created_at_time = ?Nat64.fromNat(Int.abs(Time.now()));
+          });
+          switch(purchaseResult){
+            case (#Err result){
+              return #err(#PaymentError);
+            };
+            case (#Ok result){
 
-      return #ok; //TODO
+              let chargeUnits = dto.icpAmount / ICP_CHARGE_RATE;
+              var chargeInformation: ?T.ChargeInformation = null;
+              switch(foundOrganisation.chargeInformation){
+                case (null){
+                  chargeInformation := ?{
+                    accountancyChargeBalance = 0;
+                    accountancyChargeMax = 0;
+                    accountancyChargeMin = 0;
+                    availableBalance = chargeUnits;
+                    projectsChargeBalance = 0;
+                    projectsChargeMax = 0;
+                    projectsChargeMin = 0;
+                    recruitmentBalance = 0;
+                    recruitmentChargeMax = 0;
+                    recruitmentChargeMin = 0;
+                    salesChargeBalance = 0;
+                    salesChargeMax = 0;
+                    salesChargeMin = 0;
+                    timesheetsChargeBalance = 0;
+                    timesheetsChargeMax = 0;
+                    timesheetsChargeMin = 0;
+                  };
+                };
+                case (?existingChargeInfo){
+                  chargeInformation := ?{
+                    accountancyChargeBalance = existingChargeInfo.accountancyChargeBalance;
+                    accountancyChargeMax = existingChargeInfo.accountancyChargeMax;
+                    accountancyChargeMin = existingChargeInfo.accountancyChargeMin;
+                    availableBalance = existingChargeInfo.availableBalance + chargeUnits;
+                    projectsChargeBalance = existingChargeInfo.projectsChargeBalance;
+                    projectsChargeMax = existingChargeInfo.projectsChargeMax;
+                    projectsChargeMin = existingChargeInfo.projectsChargeMin;
+                    recruitmentBalance = existingChargeInfo.recruitmentBalance;
+                    recruitmentChargeMax = existingChargeInfo.recruitmentChargeMax;
+                    recruitmentChargeMin = existingChargeInfo.recruitmentChargeMin;
+                    salesChargeBalance = existingChargeInfo.salesChargeBalance;
+                    salesChargeMax = existingChargeInfo.salesChargeMax;
+                    salesChargeMin = existingChargeInfo.salesChargeMin;
+                    timesheetsChargeBalance = existingChargeInfo.timesheetsChargeBalance;
+                    timesheetsChargeMax = existingChargeInfo.timesheetsChargeMax;
+                    timesheetsChargeMin = existingChargeInfo.timesheetsChargeMin;
+                  };
 
+                };
+              };
+
+              switch(chargeInformation){
+                case (null){
+                  return #err(#PaymentError);
+                };
+                case (?updatedChargeInformation){
+
+                  let updatedOrganisation: T.Organisation = {
+                    id = foundOrganisation.id;
+                    ownerId = foundOrganisation.ownerId;
+                    name = foundOrganisation.name;
+                    friendlyName = foundOrganisation.friendlyName;
+                    referenceNumber = foundOrganisation.referenceNumber;
+                    logo = foundOrganisation.logo;
+                    banner = foundOrganisation.banner;
+                    members = foundOrganisation.members;
+                    mainAddressId = foundOrganisation.mainAddressId;
+                    mainContactId = foundOrganisation.mainContactId;
+                    addresses = foundOrganisation.addresses;
+                    contacts = foundOrganisation.contacts;
+                    auditHistory = foundOrganisation.auditHistory;
+                    invites = foundOrganisation.invites;
+                    lastModified = foundOrganisation.lastModified;
+                    createdOn = foundOrganisation.createdOn;
+                    accessRequests = foundOrganisation.accessRequests;
+                    chargeInformation = ?updatedChargeInformation;
+                  };
+                  
+                  organisation := ?updatedOrganisation;
+                }
+              };              
+              return #ok;
+            };
+          };
+        }
+      };
     };
 
 

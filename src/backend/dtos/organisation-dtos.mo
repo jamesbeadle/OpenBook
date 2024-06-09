@@ -69,7 +69,7 @@ module OrganisationTypes {
     };
 
     public type PurchaseCharge = {
-        
+        icpAmount: Nat;
     };
 
     public type TransferCharge = {
