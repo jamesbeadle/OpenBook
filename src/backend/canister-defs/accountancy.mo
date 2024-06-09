@@ -1,7 +1,6 @@
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import DTOs "../dtos/accountancy-dtos";
-import AccountancyTypes "../data-types/accountancy-types";
 import T "../data-types/types";
 import GeneralLedgerManager "canister-managers/accountancy/general-ledger-manager";
 import CreditorsManager "canister-managers/accountancy/creditors-manager";
@@ -10,6 +9,7 @@ import StockManager "canister-managers/accountancy/stock-manager";
 import BankingManager "canister-managers/accountancy/banking-manager";
 import ReportingManager "canister-managers/accountancy/reporting-manager";
 import PermissionsManager "canister-managers/accountancy/permissions-manager";
+import AccountancyPermissions "../permissions/accountancy-permissions";
 
 actor class _AccountancyCanister() {
 
@@ -544,7 +544,7 @@ actor class _AccountancyCanister() {
         return reportingManager.getFixedAssetRegister(dto);
     };
 
-    private func hasPermission(principalId: T.PrincipalId, permission: T.AccountancyPermissions) : Bool {
+    private func hasPermission(principalId: T.PrincipalId, permission: AccountancyPermissions.AccountancyPermission) : Bool {
         return permissionsManager.hasPermission(principalId, permission);
     };
     
