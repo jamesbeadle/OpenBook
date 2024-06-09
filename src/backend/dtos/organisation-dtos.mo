@@ -2,30 +2,30 @@ import T "../data-types/types";
 
 module OrganisationTypes {
     
-    public type CreateOrganisationDTO = {
+    public type CreateOrganisation = {
         ownerId: T.PrincipalId;
         name: Text;
     };
 
-    public type InitialiseOrganisationDTO = {
+    public type InitialiseOrganisation = {
         ownerId: T.PrincipalId;
         name: Text;
         canisterId: T.CanisterId;
     };
 
-    public type GetUserOrganisationsDTO = {
+    public type GetUserOrganisations = {
 
     };
 
-    public type UserOrganisationsDTO = {
+    public type UserOrganisations = {
 
     };
 
-    public type GetOrganisationDTO = {
+    public type GetOrganisation = {
 
     };
 
-    public type OrganisationDTO = {
+    public type Organisation = {
         id: T.CanisterId;
         name: Text;
         ownerId: T.PrincipalId;
@@ -36,21 +36,21 @@ module OrganisationTypes {
         members: [T.TeamMember]
     };
 
-    public type UpdateOrganisationDetailDTO = {
+    public type UpdateOrganisationDetail = {
 
     };
 
-    public type DeleteOrganisationDTO = {
+    public type DeleteOrganisation = {
         organisationId: T.OrganisationId;
         confirmDelete: Bool;
     };
 
-    public type AcceptUserOrganisationRequestDTO = {
+    public type AcceptUserOrganisationRequest = {
         organisationId: T.OrganisationId;
         principalId: T.PrincipalId;
     };
 
-    public type ServiceCanisterIdsDTO = {
+    public type ServiceCanisterIds = {
         accountsCanisterId: Text;
         projectsCanisterId: Text;
         salesCanisterId: Text;
@@ -58,19 +58,23 @@ module OrganisationTypes {
         recruitementCanisterId: Text;
     };
 
-    public type ChargeServiceDTO = {
+    public type ChargeService = {
         charge: Nat64;
     };
 
-    public type ActivateServiceDTO = {
+    public type ActivateService = {
 
     };
 
-    public type OrganisationInfoDTO = {
+    public type OrganisationInfo = {
 
     };
 
-    public type AddCurrencyDTO = {
+    public type UpdateOrganisationStatus = {
+
+    };
+
+    public type AddCurrency = {
         id: T.CurrencyId;
         decimalPlaces: Nat8;
         name: Text; 

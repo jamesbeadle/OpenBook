@@ -27,7 +27,7 @@ module {
       nextCurrencyId := stable_next_CurrencyId;
     };
     
-    public func addCurrency(dto: DTOs.AddCurrencyDTO) : async Result.Result<(), T.Error>{
+    public func addCurrency(dto: DTOs.AddCurrency) : async Result.Result<(), T.Error>{
 
       let currencyBuffer = Buffer.fromArray<T.Currency>(currencies);
       currencyBuffer.add({
