@@ -64,6 +64,7 @@ module AccountancyDTOs {
     public type GetBankReconciliation = {};
     public type GetUnreconciledTransactions = {};
     public type ImportTransactions = {};
+    public type GetChartOfAccounts = {};
     public type GetTrialBalance = {};
     public type GetBalanceSheet = {};
     public type GetIncomeStatement = {};
