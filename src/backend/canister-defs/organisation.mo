@@ -8,7 +8,7 @@ import Buffer "mo:base/Buffer";
 import T "../data-types/types";
 import DTOs "../dtos/organisation-dtos";
 import Environment "../utilities/Environment";
-import CurrencyManager "../managers/currencyManager";
+import CurrencyManager "../managers/currency-manager";
 
 actor class _OrganisationCanister() {
 
@@ -48,16 +48,16 @@ actor class _OrganisationCanister() {
       };
     };
 
+    public shared ({ caller }) func isAdmin (principalId: T.PrincipalId) : async Bool{
+      assert not Principal.isAnonymous(caller);
+     return isAdminForCaller(principalId);
+    };
+
     public shared ({ caller }) func addCurrency(dto: DTOs.AddCurrencyDTO) : async Result.Result<(), T.Error> {
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert await isAdmin(principalId);
       return await currencyManager.addCurrency(dto);
-    };
-
-    public shared ({ caller }) func isAdmin (principalId: T.PrincipalId) : async Bool{
-      assert not Principal.isAnonymous(caller);
-     return isAdminForCaller(principalId);
     };
 
     public shared ({ caller }) func getServiceCanisterIds() : async DTOs.ServiceCanisterIdsDTO {
@@ -78,16 +78,31 @@ actor class _OrganisationCanister() {
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert principalId == Environment.BACKEND_CANISTER_ID;
-      return #err(#NotFound); //TODO
+      
+      switch(organisation){
+        case (null){
+          return #err(#NotFound);
+        };
+        case (?foundOrganisation){
+          let dto: DTOs.OrganisationDTO = {
+            id = foundOrganisation.id;
+            name = foundOrganisation.name;
+            ownerId = foundOrganisation.ownerId;
+            friendlyName = foundOrganisation.friendlyName;
+            logo = foundOrganisation.logo;
+            banner = foundOrganisation.banner;
+            lastModified = foundOrganisation.lastModified;
+            members = foundOrganisation.members;
+          };
+          return #ok(dto);
+        }
+      };
     };
 
     public shared ({ caller }) func getOrganisation () : async ?DTOs.OrganisationDTO{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
-      assert principalId == Environment.BACKEND_CANISTER_ID;
-
-
-      //TODO: only people allowed to
+      assert isTeamMember(principalId);
 
       switch(organisation){
         case (null){
@@ -95,8 +110,7 @@ actor class _OrganisationCanister() {
         };
         case (?foundOrganisation){
           return ?{
-            id = foundOrganisation.id;
-            
+            id = foundOrganisation.id;            
             name = foundOrganisation.name;
             members = foundOrganisation.members;
             ownerId = foundOrganisation.ownerId;
@@ -169,7 +183,7 @@ actor class _OrganisationCanister() {
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert principalId == Environment.BACKEND_CANISTER_ID;
-      return isTeamMember(principalId);
+      return isTeamMember(callerPrincipalId);
     };
 
     public shared ({ caller }) func invitationExists (callerPrincipalId: T.PrincipalId) : async Bool{
@@ -283,7 +297,33 @@ actor class _OrganisationCanister() {
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert principalId == Environment.BACKEND_CANISTER_ID;
+      assert not isTeamMember(callerPrincipalId);
 
+      switch(organisation){
+        case (null){};
+        case (?foundOrganisation){
+          
+          let existingRequest = Array.find(organisation.accessRequests, func(request: T.AccessRequest) : Bool {
+            request.requesterPrincipalId == callerPrincipalId
+          });
+
+          if(Option.isSome(existingRequest)){
+            
+          };
+          //access request doesn't already exist
+
+          //add the access request
+
+          let accessRequest: T.AccessRequest = {
+
+          };
+          
+        };
+      }
+
+      //Add an access request to an organisation
+      
+      
 
       
       return #ok; //TODO

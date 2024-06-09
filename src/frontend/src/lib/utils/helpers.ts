@@ -1,5 +1,3 @@
-
-
 interface ErrorResponse {
   err: {
     NotFound?: null;

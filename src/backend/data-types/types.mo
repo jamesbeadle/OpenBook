@@ -68,6 +68,7 @@ module OpenBookTypes {
     invites : [OrganisationInvite];
     lastModified : ?Int64;
     createdOn: Int;
+    accessRequests: [AccessRequest];
   };
 
   public type TeamMember = {
@@ -75,6 +76,11 @@ module OpenBookTypes {
     organisationId: OrganisationId;
     positions: [OrganisationPosition];
     joined: Int;
+  };
+
+  public type AccessRequest = {
+    requesterPrincipalId: PrincipalId;
+    requestTime: Int;
   };
 
   public type OrganisationPosition = {
@@ -156,9 +162,7 @@ module OpenBookTypes {
   public type CanisterTopup = {
     canisterId: CanisterId;
     topupTime: Int;
-    icpAmount: Nat64;
-    cyclesAmount: Nat64;
-    xdrRate: Nat64;
+    cyclesAmount: Nat;
   };
 
   public type Error = {
@@ -171,5 +175,20 @@ module OpenBookTypes {
     #NotEnoughFunds;
     #PaymentError;
   };
+
+  public type EventLogEntry = {
+    eventId: Nat;
+    eventTime: Int;
+    eventType: EventLogEntryType;
+    eventTitle: Text;
+    eventDetail: Text;
+  };
+
+  public type EventLogEntryType = {
+    #SystemCheck;
+    #UnexpectedError;
+    #CanisterTopup;
+    #CanisterCreated;
+  }
 
 };

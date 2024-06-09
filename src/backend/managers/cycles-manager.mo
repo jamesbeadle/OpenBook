@@ -1,32 +1,25 @@
-import Cycles "mo:base/ExperimentalCycles";
-import List "mo:base/List";
-import Timer "mo:base/Timer";
 import Time "mo:base/Time";
+import Buffer "mo:base/Buffer";
+import Nat "mo:base/Nat";
+import Iter "mo:base/Iter";
+import Principal "mo:base/Principal";
 import Environment "../utilities/Environment";
 import T "../data-types/types";
 import Utilities "../utilities/Utilities";
+import Management "../utilities/Management";
 
 module {
 
   public class CyclesManager() {
 
-    private var canisterIds : List.List<Text> = List.fromArray<Text>([Environment.BACKEND_CANISTER_ID]);
     private var topups : [T.CanisterTopup] = [];
 
-    private let cyclesCheckInterval : Nat = Utilities.getHour() * 24;
-    private var cyclesCheckTimerId : ?Timer.TimerId = null;
-    
-    private let cyclesCheckWalletInterval : Nat = Utilities.getHour() * 24;
-    private var cyclesCheckWalletTimerId : ?Timer.TimerId = null;
-    private var nextCyclesCheckTime : Int = 0;
-    private var nextWalletCheckTime : Int = 0;
+    private var recordSystemEvent : ?((eventLog: T.EventLogEntry) -> ()) = null;
 
-    public func getStableCanisterIds() : [Text] {
-      return List.toArray(canisterIds);
-    };
-
-    public func setStableCanisterIds(stable_canister_ids : [Text]) {
-      canisterIds := List.fromArray(stable_canister_ids);
+    public func setRecordSystemEventFunction(
+      _recordSystemEvent : ((eventLog: T.EventLogEntry) -> ()),
+    ) {
+      recordSystemEvent := ?_recordSystemEvent;
     };
 
     public func getStableTopups() : [T.CanisterTopup] {
@@ -37,70 +30,204 @@ module {
       topups := stable_topups;
     };
 
-    public func requestCanisterTopup(canisterPrincipal : Text) : async () {
+    public func checkDynamicCanisterCycles(dynamicCanisterIds: [T.CanisterId]) : async (){
       
-      let canisterId = List.find<Text>(
-        canisterIds,
-        func(text : Text) : Bool {
-          return text == canisterPrincipal;
-        },
-      );
+      for(canisterId in Iter.fromArray(dynamicCanisterIds)){
+        
+        let dynamic_canister = actor (canisterId) : actor {
+          getCyclesBalanace : () -> async Nat;
+        };
 
-      switch (canisterId) {
-        case (null) {};
-        case (?foundId) {
-          let canister_actor = actor (foundId) : actor {
-            topupCanister : () -> async ();
+        let cyclesBalance = await dynamic_canister.getCyclesBalanace();
+
+        if (cyclesBalance < 10_000_000_000_000) {
+          await requestCanisterTopup(canisterId, 10_000_000_000_000);
+        };
+      };
+    };
+
+    /* Add in post sns
+
+    public func checkSNSCanisterCycles() : async (){
+      let root_canister = actor (Environment.SNS_ROOT_CANISTER_ID) : actor {
+        get_sns_canisters_summary : (request: Root.GetSnsCanistersSummaryRequest) -> async Root.GetSnsCanistersSummaryResponse;
+      };
+
+      let summary = await root_canister.get_sns_canisters_summary({update_canister_list = ?false});
+      
+      for(canister in Iter.fromArray(summary.archives)){
+        switch(canister.canister_id){
+          case (null) {};
+          case (?foundCanisterId){
+            let status = canister.status;
+            switch(status){
+              case (null){};
+              case (?foundStatus){
+                if (foundStatus.cycles < 10_000_000_000_000) {
+                  await requestCanisterTopup(Principal.toText(foundCanisterId), 10_000_000_000_000);
+                };
+              }
+            };
           };
-          Cycles.add<system>(2_000_000_000_000);
-          await canister_actor.topupCanister();
-          recordCanisterTopup(foundId, 2_000_000_000_000, );
+        };
+      };
+
+      for(canister in Iter.fromArray(summary.dapps)){
+        switch(canister.canister_id){
+          case (null) {};
+          case (?foundCanisterId){
+            let status = canister.status;
+            switch(status){
+              case (null){};
+              case (?foundStatus){
+                if (foundStatus.cycles < 10_000_000_000_000) {
+                  await requestCanisterTopup(Principal.toText(foundCanisterId), 10_000_000_000_000);
+                };
+              }
+            };
+          };
+        };
+      };
+      
+      switch(summary.governance){
+        case (null){ };
+        case (?canister){
+           switch(canister.canister_id){
+              case (null) {};
+              case (?foundCanisterId){
+                let status = canister.status;
+                switch(status){
+                  case (null){};
+                  case (?foundStatus){
+                    if (foundStatus.cycles < 10_000_000_000_000) {
+                      await requestCanisterTopup(Principal.toText(foundCanisterId), 10_000_000_000_000);
+                    };
+                  }
+                };
+              };
+            };
+        };
+      };
+      
+      switch(summary.index){
+        case (null){ };
+        case (?canister){
+           switch(canister.canister_id){
+              case (null) {};
+              case (?foundCanisterId){
+                let status = canister.status;
+                switch(status){
+                  case (null){};
+                  case (?foundStatus){
+                    if (foundStatus.cycles < 10_000_000_000_000) {
+                      await requestCanisterTopup(Principal.toText(foundCanisterId), 10_000_000_000_000);
+                    };
+                  }
+                };
+              };
+            };
+
+        };
+      };
+      
+      switch(summary.ledger){
+        case (null){ };
+        case (?canister){
+           switch(canister.canister_id){
+              case (null) {};
+              case (?foundCanisterId){
+                let status = canister.status;
+                switch(status){
+                  case (null){};
+                  case (?foundStatus){
+                    if (foundStatus.cycles < 10_000_000_000_000) {
+                      await requestCanisterTopup(Principal.toText(foundCanisterId), 10_000_000_000_000);
+                    };
+                  }
+                };
+              };
+            };
+
+        };
+      };
+      
+      switch(summary.root){
+        case (null){ };
+        case (?canister){
+           switch(canister.canister_id){
+              case (null) {};
+              case (?foundCanisterId){
+                let status = canister.status;
+                switch(status){
+                  case (null){};
+                  case (?foundStatus){
+                    if (foundStatus.cycles < 10_000_000_000_000) {
+                      await requestCanisterTopup(Principal.toText(foundCanisterId), 10_000_000_000_000);
+                    };
+                  }
+                };
+              };
+            };
+
+        };
+      };
+      
+      switch(summary.swap){
+        case (null){ };
+        case (?canister){
+           switch(canister.canister_id){
+              case (null) {};
+              case (?foundCanisterId){
+                let status = canister.status;
+                switch(status){
+                  case (null){};
+                  case (?foundStatus){
+                    if (foundStatus.cycles < 10_000_000_000_000) {
+                      await requestCanisterTopup(Principal.toText(foundCanisterId), 10_000_000_000_000);
+                    };
+                  }
+                };
+              };
+            };
+
         };
       };
     };
+    */
 
-    private func recordCanisterTopup(canisterId: T.CanisterId, cyclesAmount: Nat64){
-
+    public func requestCanisterTopup(canisterPrincipal : Text, cycles: Nat) : async () {
+      let canister_actor = actor (canisterPrincipal) : actor { };
+      let IC : Management.Management = actor (Environment.Default);
+      let _ = await Utilities.topup_canister_(canister_actor, ?Principal.fromText(Environment.BACKEND_CANISTER_ID), IC, cycles);
+      recordCanisterTopup(canisterPrincipal, cycles);
     };
 
-    public func storeCanisterId(canisterId : Text) : async () {
-      let existingCanisterId = List.find<Text>(
-        canisterIds,
-        func(text : Text) : Bool {
-          return text == canisterId;
-        },
-      );
+    private func recordCanisterTopup(canisterId: T.CanisterId, cyclesAmount: Nat){
 
-      switch (existingCanisterId) {
-        case (null) {
-          canisterIds := List.append(canisterIds, List.make(canisterId));
-        };
-        case (?foundId) {};
+      let topup: T.CanisterTopup = {
+        canisterId = canisterId;
+        cyclesAmount = cyclesAmount;
+        topupTime = Time.now();
       };
+
+      let topupBuffer = Buffer.fromArray<T.CanisterTopup>(topups);
+      topupBuffer.add(topup);
+
+      topups := Buffer.toArray(topupBuffer);
+
+      switch(recordSystemEvent){
+        case null{};
+        case (?function){
+          function({
+            eventDetail = "Canister " # canisterId # " was topped up with " # Nat.toText(cyclesAmount) # " cycles."; 
+            eventId = 0;
+            eventTime = Time.now();
+            eventTitle = "Canister Topup";
+            eventType = #CanisterTopup;
+          });
+        }
+      }
+      
     };
-
-
-  private func setCheckCyclesTimer() : async () {
-    switch (cyclesCheckTimerId) {
-      case (null) {};
-      case (?id) {
-        Timer.cancelTimer(id);
-        cyclesCheckTimerId := null;
-      };
-    };
-    nextCyclesCheckTime := Time.now() + cyclesCheckInterval;
-    cyclesCheckTimerId := ?Timer.setTimer<system>(#nanoseconds(cyclesCheckInterval), checkCanisterCycles);
-  };
-
-  private func checkCanisterCycles() : async () {
-
-    let balance = Cycles.balance();
-
-    if (balance < 500_000_000_000) {
-      await requestCanisterTopup(Environment.BACKEND_CANISTER_ID);
-    };
-    await setCheckCyclesTimer();
-  };
-
   };
 };

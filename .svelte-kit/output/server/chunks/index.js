@@ -3481,7 +3481,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1r40nir"
+  version_hash: "al3z12"
 };
 async function get_hooks() {
   return {};
@@ -3658,7 +3658,7 @@ const initBusyStore = () => {
 const busyStore = initBusyStore();
 const busy = derived(busyStore, ($busyStore) => $busyStore.length > 0);
 const busyMessage = derived(busyStore, ($busyStore) => $busyStore.reverse().find(({ text: text2 }) => nonNullish(text2))?.text);
-const css$4 = {
+const css$3 = {
   code: ".medium.svelte-85668t{--spinner-size:30px}.small.svelte-85668t{--spinner-size:calc(var(--line-height-standard) * 1rem)}.tiny.svelte-85668t{--spinner-size:calc(var(--line-height-standard) * 0.5rem)}svg.svelte-85668t{width:var(--spinner-size);height:var(--spinner-size);animation:spinner-linear-rotate 2000ms linear infinite;position:absolute;top:calc(50% - var(--spinner-size) / 2);left:calc(50% - var(--spinner-size) / 2);--radius:45px;--circumference:calc(3.1415926536 * var(--radius) * 2);--start:calc((1 - 0.05) * var(--circumference));--end:calc((1 - 0.8) * var(--circumference))}svg.inline.svelte-85668t{display:inline-block;position:relative}circle.svelte-85668t{stroke-dasharray:var(--circumference);stroke-width:10%;transform-origin:50% 50% 0;transition-property:stroke;animation-name:spinner-stroke-rotate-100;animation-duration:4000ms;animation-timing-function:cubic-bezier(0.35, 0, 0.25, 1);animation-iteration-count:infinite;fill:transparent;stroke:currentColor;transition:stroke-dashoffset 225ms linear}@keyframes spinner-linear-rotate{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}@keyframes spinner-stroke-rotate-100{0%{stroke-dashoffset:var(--start);transform:rotate(0)}12.5%{stroke-dashoffset:var(--end);transform:rotate(0)}12.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(72.5deg)}25%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(72.5deg)}25.0001%{stroke-dashoffset:var(--start);transform:rotate(270deg)}37.5%{stroke-dashoffset:var(--end);transform:rotate(270deg)}37.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(161.5deg)}50%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(161.5deg)}50.0001%{stroke-dashoffset:var(--start);transform:rotate(180deg)}62.5%{stroke-dashoffset:var(--end);transform:rotate(180deg)}62.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(251.5deg)}75%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(251.5deg)}75.0001%{stroke-dashoffset:var(--start);transform:rotate(90deg)}87.5%{stroke-dashoffset:var(--end);transform:rotate(90deg)}87.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(341.5deg)}100%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(341.5deg)}}",
   map: '{"version":3,"file":"Spinner.svelte","sources":["Spinner.svelte"],"sourcesContent":["<!-- adapted source: https://github.com/angular/components/tree/master/src/material/progress-spinner -->\\n<script>export let inline = false;\\nexport let size = \\"medium\\";\\n<\/script>\\n\\n<svg\\n  class:inline\\n  class={size}\\n  preserveAspectRatio=\\"xMidYMid meet\\"\\n  focusable=\\"false\\"\\n  aria-hidden=\\"true\\"\\n  data-tid=\\"spinner\\"\\n  viewBox=\\"0 0 100 100\\"><circle cx=\\"50%\\" cy=\\"50%\\" r=\\"45\\" /></svg\\n>\\n\\n<style>.medium {\\n  --spinner-size: 30px;\\n}\\n\\n.small {\\n  --spinner-size: calc(var(--line-height-standard) * 1rem);\\n}\\n\\n.tiny {\\n  --spinner-size: calc(var(--line-height-standard) * 0.5rem);\\n}\\n\\nsvg {\\n  width: var(--spinner-size);\\n  height: var(--spinner-size);\\n  animation: spinner-linear-rotate 2000ms linear infinite;\\n  position: absolute;\\n  top: calc(50% - var(--spinner-size) / 2);\\n  left: calc(50% - var(--spinner-size) / 2);\\n  --radius: 45px;\\n  --circumference: calc(3.1415926536 * var(--radius) * 2);\\n  --start: calc((1 - 0.05) * var(--circumference));\\n  --end: calc((1 - 0.8) * var(--circumference));\\n}\\nsvg.inline {\\n  display: inline-block;\\n  position: relative;\\n}\\n\\ncircle {\\n  stroke-dasharray: var(--circumference);\\n  stroke-width: 10%;\\n  transform-origin: 50% 50% 0;\\n  transition-property: stroke;\\n  animation-name: spinner-stroke-rotate-100;\\n  animation-duration: 4000ms;\\n  animation-timing-function: cubic-bezier(0.35, 0, 0.25, 1);\\n  animation-iteration-count: infinite;\\n  fill: transparent;\\n  stroke: currentColor;\\n  transition: stroke-dashoffset 225ms linear;\\n}\\n\\n/* -global- */\\n@keyframes -global-spinner-linear-rotate {\\n  0% {\\n    transform: rotate(0deg);\\n  }\\n  100% {\\n    transform: rotate(360deg);\\n  }\\n}\\n/* -global- */\\n@keyframes -global-spinner-stroke-rotate-100 {\\n  0% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotate(0);\\n  }\\n  12.5% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotate(0);\\n  }\\n  12.5001% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotateX(180deg) rotate(72.5deg);\\n  }\\n  25% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotateX(180deg) rotate(72.5deg);\\n  }\\n  25.0001% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotate(270deg);\\n  }\\n  37.5% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotate(270deg);\\n  }\\n  37.5001% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotateX(180deg) rotate(161.5deg);\\n  }\\n  50% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotateX(180deg) rotate(161.5deg);\\n  }\\n  50.0001% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotate(180deg);\\n  }\\n  62.5% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotate(180deg);\\n  }\\n  62.5001% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotateX(180deg) rotate(251.5deg);\\n  }\\n  75% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotateX(180deg) rotate(251.5deg);\\n  }\\n  75.0001% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotate(90deg);\\n  }\\n  87.5% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotate(90deg);\\n  }\\n  87.5001% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotateX(180deg) rotate(341.5deg);\\n  }\\n  100% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotateX(180deg) rotate(341.5deg);\\n  }\\n}</style>\\n"],"names":[],"mappings":"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"}'
 };
@@ -3669,10 +3669,10 @@ const Spinner = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     $$bindings.inline(inline);
   if ($$props.size === void 0 && $$bindings.size && size !== void 0)
     $$bindings.size(size);
-  $$result.css.add(css$4);
+  $$result.css.add(css$3);
   return `  <svg class="${[escape(null_to_empty(size), true) + " svelte-85668t", inline ? "inline" : ""].join(" ").trim()}" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true" data-tid="spinner" viewBox="0 0 100 100"><circle cx="50%" cy="50%" r="45" class="svelte-85668t"></circle></svg>`;
 });
-const css$3 = {
+const css$2 = {
   code: "div.svelte-14plyno{z-index:calc(var(--z-index) + 1000);position:fixed;top:0;right:0;bottom:0;left:0;background:var(--backdrop);color:var(--backdrop-contrast)}.content.svelte-14plyno{display:flex;flex-direction:column;justify-content:center;align-items:center}p.svelte-14plyno{padding-bottom:var(--padding);max-width:calc(var(--section-max-width) / 2)}",
   map: '{"version":3,"file":"BusyScreen.svelte","sources":["BusyScreen.svelte"],"sourcesContent":["<script>import { fade } from \\"svelte/transition\\";\\nimport { busy, busyMessage } from \\"../stores/busy.store\\";\\nimport Spinner from \\"./Spinner.svelte\\";\\nimport { nonNullish } from \\"@dfinity/utils\\";\\n<\/script>\\n\\n<!-- Display spinner and lock UI if busyStore is not empty -->\\n{#if $busy}\\n  <div data-tid=\\"busy\\" transition:fade|global>\\n    <div class=\\"content\\">\\n      {#if nonNullish($busyMessage)}\\n        <p>{$busyMessage}</p>\\n      {/if}\\n      <span>\\n        <Spinner inline />\\n      </span>\\n    </div>\\n  </div>\\n{/if}\\n\\n<style>div {\\n  z-index: calc(var(--z-index) + 1000);\\n  position: fixed;\\n  top: 0;\\n  right: 0;\\n  bottom: 0;\\n  left: 0;\\n  background: var(--backdrop);\\n  color: var(--backdrop-contrast);\\n}\\n\\n.content {\\n  display: flex;\\n  flex-direction: column;\\n  justify-content: center;\\n  align-items: center;\\n}\\n\\np {\\n  padding-bottom: var(--padding);\\n  max-width: calc(var(--section-max-width) / 2);\\n}</style>\\n"],"names":[],"mappings":"AAoBO,kBAAI,CACT,OAAO,CAAE,KAAK,IAAI,SAAS,CAAC,CAAC,CAAC,CAAC,IAAI,CAAC,CACpC,QAAQ,CAAE,KAAK,CACf,GAAG,CAAE,CAAC,CACN,KAAK,CAAE,CAAC,CACR,MAAM,CAAE,CAAC,CACT,IAAI,CAAE,CAAC,CACP,UAAU,CAAE,IAAI,UAAU,CAAC,CAC3B,KAAK,CAAE,IAAI,mBAAmB,CAChC,CAEA,uBAAS,CACP,OAAO,CAAE,IAAI,CACb,cAAc,CAAE,MAAM,CACtB,eAAe,CAAE,MAAM,CACvB,WAAW,CAAE,MACf,CAEA,gBAAE,CACA,cAAc,CAAE,IAAI,SAAS,CAAC,CAC9B,SAAS,CAAE,KAAK,IAAI,mBAAmB,CAAC,CAAC,CAAC,CAAC,CAAC,CAC9C"}'
 };
@@ -3681,7 +3681,7 @@ const BusyScreen = create_ssr_component(($$result, $$props, $$bindings, slots) =
   let $busyMessage, $$unsubscribe_busyMessage;
   $$unsubscribe_busy = subscribe(busy, (value) => $busy = value);
   $$unsubscribe_busyMessage = subscribe(busyMessage, (value) => $busyMessage = value);
-  $$result.css.add(css$3);
+  $$result.css.add(css$2);
   $$unsubscribe_busy();
   $$unsubscribe_busyMessage();
   return ` ${$busy ? `<div data-tid="busy" class="svelte-14plyno"><div class="content svelte-14plyno">${nonNullish($busyMessage) ? `<p class="svelte-14plyno">${escape($busyMessage)}</p>` : ``} <span>${validate_component(Spinner, "Spinner").$$render($$result, { inline: true }, {}, {})}</span></div></div>` : ``}`;
@@ -3836,12 +3836,12 @@ const initAuthStore = () => {
   };
 };
 const authStore = initAuthStore();
-const css$2 = {
+const css$1 = {
   code: "main.svelte-cbh2q9{flex:1;display:flex;flex-direction:column}",
   map: `{"version":3,"file":"Layout.svelte","sources":["Layout.svelte"],"sourcesContent":["<script lang=\\"ts\\">import { onMount } from 'svelte';\\nimport '../app.css';\\nimport { BusyScreen, Toasts } from '@dfinity/gix-components';\\nimport { authStore } from '$lib/stores/auth-store';\\nlet isLoading = true;\\nonMount(async () => {\\n    try {\\n        const images = document.images;\\n        const promises = Array.from(images).map((img) => {\\n            if (img.complete) {\\n                return Promise.resolve();\\n            }\\n            return new Promise((resolve) => {\\n                img.addEventListener('load', resolve);\\n                img.addEventListener('error', resolve);\\n            });\\n        });\\n        await Promise.all(promises);\\n        await authStore.sync();\\n        // Remove spinner\\n        const spinner = document.querySelector('body > #app-spinner');\\n        spinner?.remove();\\n    }\\n    catch (error) {\\n        console.error('Error', error);\\n    }\\n    finally {\\n        isLoading = false;\\n    }\\n});\\n<\/script>\\n\\n{#if !isLoading}\\n  <div class=\\"flex flex-col h-screen justify-between default-text\\">\\n    <main class=\\"page-wrapper\\">\\n      <div class=\\"flex flex-col md:flex-row h-full\\">\\n        <slot />\\n      </div>\\n    </main>\\n    <Toasts />\\n  </div>\\n{/if}\\n\\n<BusyScreen />\\n\\n<style>\\n  main {\\n    flex: 1;\\n    display: flex;\\n    flex-direction: column;\\n  }</style>\\n"],"names":[],"mappings":"AA8CE,kBAAK,CACH,IAAI,CAAE,CAAC,CACP,OAAO,CAAE,IAAI,CACb,cAAc,CAAE,MAClB"}`
 };
 const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  $$result.css.add(css$2);
+  $$result.css.add(css$1);
   return `${``} ${validate_component(BusyScreen, "BusyScreen").$$render($$result, {}, {}, {})}`;
 });
 const adminPrincipal = "nn75s-ayupf-j6mj3-kluyb-wjj7y-eang2-dwzzr-cfdxk-etbw7-cgwnb-lqe";
@@ -3854,7 +3854,8 @@ derived(
   ({ identity }) => identity !== null && identity !== void 0 && identity.getPrincipal().toString() === adminPrincipal
 );
 const idlFactory = ({ IDL }) => {
-  const CreateOrganisationDTO = IDL.Record({});
+  const List = IDL.Rec();
+  const OrganisationId = IDL.Text;
   const Error2 = IDL.Variant({
     "DecodeError": IDL.Null,
     "NotAllowed": IDL.Null,
@@ -3862,16 +3863,51 @@ const idlFactory = ({ IDL }) => {
     "NotFound": IDL.Null,
     "NotAuthorized": IDL.Null,
     "InvalidData": IDL.Null,
-    "AlreadyExists": IDL.Null
+    "AlreadyExists": IDL.Null,
+    "PaymentError": IDL.Null
   });
   const Result = IDL.Variant({ "ok": IDL.Null, "err": Error2 });
-  const CreateProfileDTO = IDL.Record({});
-  const DeleteOrganisationDTO = IDL.Record({});
-  const GetOrganisationDTO = IDL.Record({});
-  const OrganisationDTO = IDL.Record({});
-  const Result_5 = IDL.Variant({ "ok": OrganisationDTO, "err": Error2 });
+  const PrincipalId = IDL.Text;
+  const AcceptUserOrganisationRequestDTO = IDL.Record({
+    "organisationId": OrganisationId,
+    "principalId": PrincipalId
+  });
   const CurrencyId = IDL.Nat32;
-  const OrganisationId = IDL.Nat32;
+  const CreateProfileDTO = IDL.Record({
+    "username": IDL.Text,
+    "displayName": IDL.Text,
+    "termsAccepted": IDL.Bool,
+    "preferredPaymentCurrency": CurrencyId,
+    "openChatUsername": IDL.Text,
+    "profession": IDL.Text,
+    "otherContact": IDL.Text,
+    "emailAddress": IDL.Text,
+    "phoneNumber": IDL.Text,
+    "profilePicture": IDL.Vec(IDL.Nat8),
+    "userDefinedWallet": IDL.Text,
+    "organisations": IDL.Vec(OrganisationId),
+    "lastName": IDL.Text,
+    "firstName": IDL.Text
+  });
+  const DeleteOrganisationDTO = IDL.Record({
+    "organisationId": OrganisationId,
+    "confirmDelete": IDL.Bool
+  });
+  const PresaleListingDTO = IDL.Record({
+    "ownerId": PrincipalId,
+    "listedOn": IDL.Int,
+    "tokens": IDL.Nat64,
+    "price": IDL.Nat64
+  });
+  const Result_4 = IDL.Variant({
+    "ok": IDL.Vec(PresaleListingDTO),
+    "err": Error2
+  });
+  const PresaleParticipation = IDL.Record({
+    "bookTokens": IDL.Nat64,
+    "icpSwapped": IDL.Nat64,
+    "principalId": PrincipalId
+  });
   const ProfileDTO = IDL.Record({
     "principal": IDL.Text,
     "username": IDL.Text,
@@ -3891,15 +3927,64 @@ const idlFactory = ({ IDL }) => {
     "lastName": IDL.Text,
     "firstName": IDL.Text
   });
-  const Result_4 = IDL.Variant({ "ok": ProfileDTO, "err": Error2 });
-  const GetUserOrganisationsDTO = IDL.Record({});
-  const UserOrganisationsDTO = IDL.Record({});
-  const Result_3 = IDL.Variant({ "ok": UserOrganisationsDTO, "err": Error2 });
+  const Result_3 = IDL.Variant({ "ok": ProfileDTO, "err": Error2 });
   const Result_2 = IDL.Variant({ "ok": IDL.Bool, "err": Error2 });
-  const ListProfilesFiltersDTO = IDL.Record({});
-  const ProfilesListDTO = IDL.Record({});
-  const Result_1 = IDL.Variant({ "ok": ProfilesListDTO, "err": Error2 });
-  const UpdateOrganisationDetailDTO = IDL.Record({});
+  const CurrencyId__1 = IDL.Nat32;
+  const ChangeType = IDL.Variant({
+    "ChartOfAccountsUpdated": IDL.Null,
+    "OrganisationUserAdded": IDL.Null,
+    "OrganisationUserRoleUpdated": IDL.Null,
+    "OrganisationUserRemoved": IDL.Null,
+    "OrganisationDetailUpdated": IDL.Null,
+    "CustomerRecordUpdated": IDL.Null,
+    "SupplierRecordUpdated": IDL.Null
+  });
+  const VisibilityLevel = IDL.Variant({
+    "Internal": IDL.Null,
+    "Private": IDL.Null,
+    "Public": IDL.Null
+  });
+  const AuditRecord = IDL.Record({
+    "changeType": ChangeType,
+    "timestamp": IDL.Int64,
+    "visibilityLevel": VisibilityLevel
+  });
+  List.fill(IDL.Opt(IDL.Tuple(AuditRecord, List)));
+  const OrganisationId__1 = IDL.Nat32;
+  const Profile = IDL.Record({
+    "principal": IDL.Text,
+    "username": IDL.Text,
+    "displayName": IDL.Text,
+    "termsAccepted": IDL.Bool,
+    "preferredPaymentCurrency": CurrencyId__1,
+    "openChatUsername": IDL.Text,
+    "profession": IDL.Text,
+    "createDate": IDL.Int,
+    "lastModified": IDL.Int64,
+    "auditHistory": List,
+    "profilePictureCanisterId": IDL.Text,
+    "otherContact": IDL.Text,
+    "emailAddress": IDL.Text,
+    "phoneNumber": IDL.Text,
+    "userDefinedWallet": IDL.Text,
+    "organisations": IDL.Vec(OrganisationId__1),
+    "lastName": IDL.Text,
+    "firstName": IDL.Text
+  });
+  const Result_1 = IDL.Variant({
+    "ok": IDL.Vec(IDL.Tuple(PrincipalId, Profile)),
+    "err": Error2
+  });
+  const CreateOrganisationDTO = IDL.Record({
+    "ownerId": PrincipalId,
+    "name": IDL.Text
+  });
+  const PurchasePresaleAllocationDTO = IDL.Record({
+    "ownerId": PrincipalId,
+    "purchaserId": PrincipalId,
+    "tokens": IDL.Nat64,
+    "price": IDL.Nat64
+  });
   const UpdateProfileDTO = IDL.Record({
     "username": IDL.Text,
     "displayName": IDL.Text,
@@ -3912,30 +3997,44 @@ const idlFactory = ({ IDL }) => {
     "phoneNumber": IDL.Text,
     "userDefinedWallet": IDL.Text,
     "lastName": IDL.Text,
+    "principalId": PrincipalId,
     "firstName": IDL.Text
   });
-  const UpdateProfilePictureDTO = IDL.Record({});
   return IDL.Service({
-    "createOrganisation": IDL.Func([CreateOrganisationDTO], [Result], []),
-    "createProfile": IDL.Func([CreateProfileDTO], [Result], []),
-    "deleteOrganisation": IDL.Func([DeleteOrganisationDTO], [Result], []),
-    "getOrganisation": IDL.Func([GetOrganisationDTO], [Result_5], []),
-    "getProfile": IDL.Func([], [Result_4], []),
-    "getUserOrganisations": IDL.Func(
-      [GetUserOrganisationsDTO],
-      [Result_3],
-      []
-    ),
-    "isUsernameAvailable": IDL.Func([IDL.Text], [Result_2], []),
-    "listProfiles": IDL.Func([ListProfilesFiltersDTO], [Result_1], ["query"]),
-    "transferProfiles": IDL.Func([], [], ["oneway"]),
-    "updateOrganisationDetail": IDL.Func(
-      [UpdateOrganisationDetailDTO],
+    "acceptOrganisationInvitation": IDL.Func([OrganisationId], [Result], []),
+    "acceptUserOrganisationRequest": IDL.Func(
+      [AcceptUserOrganisationRequestDTO],
       [Result],
       []
     ),
-    "updateProfileDetail": IDL.Func([UpdateProfileDTO], [Result], []),
-    "updateProfilePicture": IDL.Func([UpdateProfilePictureDTO], [Result], [])
+    "createProfile": IDL.Func([CreateProfileDTO], [Result], []),
+    "deleteOrganisation": IDL.Func([DeleteOrganisationDTO], [Result], []),
+    "deleteProfile": IDL.Func([PrincipalId], [Result], []),
+    "getPresaleAllocationListings": IDL.Func([], [Result_4], []),
+    "getPresaleParticipation": IDL.Func(
+      [],
+      [IDL.Vec(PresaleParticipation)],
+      []
+    ),
+    "getProfile": IDL.Func([], [Result_3], []),
+    "isOrganisationNameAvailable": IDL.Func([IDL.Text], [Result_2], []),
+    "isUsernameAvailable": IDL.Func([IDL.Text], [Result_2], []),
+    "leaveOrganiastion": IDL.Func([OrganisationId], [Result], []),
+    "listOGProfiles": IDL.Func([], [Result_1], []),
+    "listPresaleAllocation": IDL.Func([IDL.Nat64, IDL.Nat64], [Result], []),
+    "participateInPresale": IDL.Func([IDL.Nat64, IDL.Nat64], [Result], []),
+    "purchaseOrganisation": IDL.Func([CreateOrganisationDTO], [Result], []),
+    "purchasePresaleAllocation": IDL.Func(
+      [PurchasePresaleAllocationDTO],
+      [Result],
+      []
+    ),
+    "rejectOrganisationInvitation": IDL.Func([OrganisationId], [Result], []),
+    "requestOrganisationAccess": IDL.Func([OrganisationId], [Result], []),
+    "transferOGProfiles": IDL.Func([], [], ["oneway"]),
+    "unlistPresaleAllocation": IDL.Func([IDL.Nat64], [Result], []),
+    "updatePresaleNNSId": IDL.Func([IDL.Text], [Result], []),
+    "updateProfile": IDL.Func([UpdateProfileDTO], [Result], [])
   });
 };
 var define_process_env_default$2 = { __CANDID_UI_CANISTER_ID: "gm7ld-quaaa-aaaaa-qaaqa-cai", BACKEND_CANISTER_ID: "dxfxs-weaaa-aaaaa-qaapa-cai", FRONTEND_CANISTER_ID: "dqerg-34aaa-aaaaa-qaapq-cai", DFX_NETWORK: "local" };
@@ -4376,10 +4475,6 @@ const Page$5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     }
   })}`;
 });
-const css$1 = {
-  code: "@media(max-width: 640px){.mobile-stack.svelte-1s5k7ql{display:block !important}}",
-  map: `{"version":3,"file":"+page.svelte","sources":["+page.svelte"],"sourcesContent":["<script lang=\\"ts\\">import { onMount } from 'svelte';\\nimport Layout from '../Layout.svelte';\\nimport { authStore } from '$lib/stores/auth-store';\\nimport { authSignedInStore } from '$lib/derived/auth.derived';\\nlet isLoading = true;\\nonMount(async () => {\\n    try {\\n        await authStore.sync();\\n    }\\n    catch (error) {\\n        console.error('Error fetching homepage data:', error);\\n    }\\n    finally {\\n        isLoading = false;\\n    }\\n});\\nlet tasks = [\\n    {\\n        id: '1',\\n        title: 'Task 1',\\n        status: 'In Progress',\\n        visibility: 'Public',\\n        milestones: 3,\\n        comments: 5,\\n        tags: ['urgent', 'new'],\\n        startDate: '2023-03-01',\\n        endDate: '2023-03-15',\\n        completedDate: null,\\n    },\\n    // Add more tasks as needed\\n];\\nconst formatDateRange = (start, end) => {\\n    const startDate = new Date(start).toLocaleDateString();\\n    const endDate = new Date(end).toLocaleDateString();\\n    return \`\${startDate} - \${endDate}\`;\\n};\\n<\/script>\\n  \\n  <Layout>\\n    {#if $authSignedInStore}\\n\\n        <div class=\\"overflow-x-auto\\">\\n        <table class=\\"min-w-full table-auto\\">\\n            <thead class=\\"border-b\\">\\n            <tr>\\n                <th class=\\"text-left p-4\\">ID</th>\\n                <th class=\\"text-left p-4\\">Title</th>\\n                <th class=\\"text-left p-4\\">Status</th>\\n                <th class=\\"text-left p-4\\">Visibility</th>\\n                <th class=\\"text-left p-4\\">Milestones</th>\\n                <th class=\\"text-left p-4\\">Comments</th>\\n                <th class=\\"text-left p-4\\">Tags</th>\\n                <th class=\\"text-left p-4\\">Dates</th>\\n            </tr>\\n            </thead>\\n            <tbody>\\n            {#each tasks as task}\\n                <tr class=\\"border-b\\">\\n                <td class=\\"p-4\\">{task.id}</td>\\n                <td class=\\"p-4\\">{task.title}</td>\\n                <td class=\\"p-4\\">{task.status}</td>\\n                <td class=\\"p-4\\">\\n                    <span class={\`icon \${task.visibility}\`}></span> <!-- Implement the icon based on your project needs -->\\n                </td>\\n                <td class=\\"p-4\\">{task.milestones}</td>\\n                <td class=\\"p-4\\">{task.comments}</td>\\n                <td class=\\"p-4\\">\\n                    {#each task.tags as tag}\\n                    <span class=\\"inline-block bg-blue-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2\\">{tag}</span>\\n                    {/each}\\n                </td>\\n                <td class=\\"p-4\\">\\n                    {#if task.completedDate}\\n                    Completed: {new Date(task.completedDate).toLocaleDateString()}\\n                    {:else}\\n                    {formatDateRange(task.startDate, task.endDate)}\\n                    {/if}\\n                </td>\\n                </tr>\\n            {/each}\\n            </tbody>\\n        </table>\\n        </div>\\n      \\n    {/if}\\n  </Layout>\\n\\n  <style>\\n    @media (max-width: 640px) {\\n      .mobile-stack {\\n        display: block !important;\\n      }\\n      .mobile-stack > * {\\n        margin-bottom: 0.5rem !important;\\n      }\\n    }</style>\\n  "],"names":[],"mappings":"AAwFI,MAAO,YAAY,KAAK,CAAE,CACxB,4BAAc,CACZ,OAAO,CAAE,KAAK,CAAC,UACjB,CAIF"}`
-};
 const Page$4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $authSignedInStore, $$unsubscribe_authSignedInStore;
   $$unsubscribe_authSignedInStore = subscribe(authSignedInStore, (value) => $authSignedInStore = value);
@@ -4402,12 +4497,11 @@ const Page$4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     const endDate = new Date(end).toLocaleDateString();
     return `${startDate} - ${endDate}`;
   };
-  $$result.css.add(css$1);
   $$unsubscribe_authSignedInStore();
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `${$authSignedInStore ? `<div class="overflow-x-auto"><table class="min-w-full table-auto"><thead class="border-b" data-svelte-h="svelte-1335yiv"><tr><th class="text-left p-4">ID</th> <th class="text-left p-4">Title</th> <th class="text-left p-4">Status</th> <th class="text-left p-4">Visibility</th> <th class="text-left p-4">Milestones</th> <th class="text-left p-4">Comments</th> <th class="text-left p-4">Tags</th> <th class="text-left p-4">Dates</th></tr></thead> <tbody>${each(tasks, (task) => {
-        return `<tr class="border-b"><td class="p-4">${escape(task.id)}</td> <td class="p-4">${escape(task.title)}</td> <td class="p-4">${escape(task.status)}</td> <td class="p-4"><span class="${escape(null_to_empty(`icon ${task.visibility}`), true) + " svelte-1s5k7ql"}"></span> </td> <td class="p-4">${escape(task.milestones)}</td> <td class="p-4">${escape(task.comments)}</td> <td class="p-4">${each(task.tags, (tag) => {
+        return `<tr class="border-b"><td class="p-4">${escape(task.id)}</td> <td class="p-4">${escape(task.title)}</td> <td class="p-4">${escape(task.status)}</td> <td class="p-4"><span${add_attribute("class", `icon ${task.visibility}`, 0)}></span> </td> <td class="p-4">${escape(task.milestones)}</td> <td class="p-4">${escape(task.comments)}</td> <td class="p-4">${each(task.tags, (tag) => {
           return `<span class="inline-block bg-blue-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">${escape(tag)}</span>`;
         })}</td> <td class="p-4">${task.completedDate ? `Completed: ${escape(new Date(task.completedDate).toLocaleDateString())}` : `${escape(formatDateRange(task.startDate, task.endDate))}`}</td> </tr>`;
       })}</tbody></table></div>` : ``}`;

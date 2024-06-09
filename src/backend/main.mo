@@ -3,6 +3,7 @@ import Iter "mo:base/Iter";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Text "mo:base/Text";
+import Debug "mo:base/Debug";
 import T "data-types/types";
 import T_Old "data-types/old-types";
 import DTOs "dtos/DTOs";
@@ -350,11 +351,17 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     return await presaleManager.getPresaleAllocationListings();
   };
-  
-  //TODO: Implement cycles checking when implemented on OpenFPL
+    
+  //Canister cycle topup functions
 
+  public shared ({ caller }) func requestCanisterTopup(cycles: Nat) : async () {
+    Debug.print("IMPORTANT: External canister just requested topup");
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    await cyclesManager.requestCanisterTopup(principalId, cycles);
+  };
+  
   //TODO: Stable Variables
-  private stable var stable_canister_ids : [Text] = [];
   private stable var stable_topups : [T.CanisterTopup] = [];
   private stable var stable_organisation_canister_ids: [T.CanisterId] = [];
   private stable var stable_profile_canister_ids: [T.CanisterId] = [];
@@ -365,7 +372,6 @@ actor Self {
 
   private stable var stable_unique_usernames : [Text] = [];
   private stable var stable_unique_organisation_names : [Text] = [];
-  
   
   system func preupgrade() {
     stable_unique_usernames := profileManager.getStableUniqueUsernames();
@@ -379,9 +385,7 @@ actor Self {
   };
 
   system func postupgrade() {
-    cyclesManager.setStableCanisterIds(stable_canister_ids);
     cyclesManager.setStableTopups(stable_topups);
-    organisationManager.setStoreCanisterIdFunction(cyclesManager.storeCanisterId);
     organisationManager.setBackendCanisterController(Principal.fromActor(Self));
     profileManager.setStableUniqueUsernames(stable_unique_usernames);
     organisationManager.setStableUniqueOrganisationNames(stable_unique_organisation_names);

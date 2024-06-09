@@ -17,6 +17,11 @@
   import WhitepaperIcon from '$lib/icons/whitepaper-icon.svelte';
   import HomeIcon from '$lib/icons/home-icon.svelte';
   import DirectoryNav from './directory/directory-nav.svelte';
+    import AccountancyIcon from '$lib/icons/accountancy-icon.svelte';
+    import SalesIcon from '$lib/icons/sales-icon.svelte';
+    import TimesheetIcon from '$lib/icons/timesheet-icon.svelte';
+    import RecruitmentIcon from '$lib/icons/recruitment-icon.svelte';
+    import TaskIcon from '$lib/icons/task-icon.svelte';
 
   let activeSection = -1;
   let sections = ['projects', 'contacts'];
@@ -54,7 +59,26 @@
     goto('/profile');
   }
 
-  function onDirectoryNavSelection(selection: Text) {}
+  function loadProjects() {
+    goto('/projects');
+  }
+
+  function loadAccounting() {
+    goto('/accounting');
+  }
+
+  function loadSales() {
+    goto('/sales');
+  }
+
+  function loadTimesheets() {
+    goto('/timesheets');
+  }
+
+  function loadRecruitment() {
+    goto('/recruitment');
+  }
+
 </script>
 
 <nav class="p-4 h-full side-nav flex flex-col items-center">
@@ -65,6 +89,36 @@
     <HomeIcon
       className="side-nav-icon"
       fill={currentRoute === '/' ? '#FFFFFF' : '#8C8C8C'}
+    />
+  </button>
+  <button on:click={loadProjects}>
+    <TaskIcon
+      className="side-nav-icon"
+      fill={activeSection == 1 ? '#FFFFFF' : '#8C8C8C'}
+    />
+  </button>
+  <button on:click={loadAccounting}>
+    <AccountancyIcon
+      className="side-nav-icon"
+      fill={activeSection == 1 ? '#FFFFFF' : '#8C8C8C'}
+    />
+  </button>
+  <button on:click={loadSales}>
+    <SalesIcon
+      className="side-nav-icon"
+      fill={activeSection == 1 ? '#FFFFFF' : '#8C8C8C'}
+    />
+  </button>
+  <button on:click={loadTimesheets}>
+    <TimesheetIcon
+      className="side-nav-icon"
+      fill={activeSection == 1 ? '#FFFFFF' : '#8C8C8C'}
+    />
+  </button>
+  <button on:click={loadRecruitment}>
+    <RecruitmentIcon
+      className="side-nav-icon"
+      fill={activeSection == 1 ? '#FFFFFF' : '#8C8C8C'}
     />
   </button>
   <button on:click={loadDirectory}>
@@ -107,7 +161,7 @@
 </nav>
 <div class="w-full">
   <DashboardHeader />
-  <div class="flex-1 p-4">
+  <div class="flex-1 p-8">
     {#if currentRoute === '/profile'}
       <ProfileDetail />
     {/if}

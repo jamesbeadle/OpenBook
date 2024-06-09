@@ -86,15 +86,3 @@
       
     {/if}
   </Layout>
-
-  <style>
-    @media (max-width: 640px) {
-      .mobile-stack {
-        display: block !important;
-      }
-      .mobile-stack > * {
-        margin-bottom: 0.5rem !important;
-      }
-    }
-  </style>
-  

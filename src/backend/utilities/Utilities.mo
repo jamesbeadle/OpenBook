@@ -3,20 +3,16 @@ import Nat32 "mo:base/Nat32";
 import Nat16 "mo:base/Nat16";
 import Nat8 "mo:base/Nat8";
 import Iter "mo:base/Iter";
-import Array "mo:base/Array";
 import Time "mo:base/Time";
 import Nat "mo:base/Nat";
 import Nat64 "mo:base/Nat64";
 import Int64 "mo:base/Int64";
 import Text "mo:base/Text";
-import Int16 "mo:base/Int16";
 import Float "mo:base/Float";
 import Principal "mo:base/Principal";
-import List "mo:base/List";
 import Int "mo:base/Int";
-import Option "mo:base/Option";
-import Debug "mo:base/Debug";
 import Management "Management";
+import Cycles "mo:base/ExperimentalCycles";
 
 module {
 
@@ -228,6 +224,7 @@ module {
     return Int64.toNat64(Float.toInt64(Float.fromInt64(Int64.fromNat64(amount)) * percentage));
   };
 
+
   public func updateCanister_(a : actor {}, backendCanisterController : ?Principal, IC : Management.Management) : async () {
     let cid = { canister_id = Principal.fromActor(a) };
     switch (backendCanisterController) {
@@ -241,24 +238,29 @@ module {
               compute_allocation = null;
               memory_allocation = null;
               freezing_threshold = ?31_540_000;
+              reserved_cycles_limit = null
             };
+            sender_canister_version = null
           }),
         );
       };
     };
   };
-
-
-
-
-
-
-
-
-
-
-
-
+  
+  public func topup_canister_(a : actor {}, backendCanisterController : ?Principal, IC : Management.Management, cycles: Nat) : async () {
+    let cid = { canister_id = Principal.fromActor(a) };
+    switch (backendCanisterController) {
+      case (null) {};
+      case (?controller) {
+        Cycles.add<system>(cycles);
+        await (
+          IC.deposit_cycles({
+            canister_id = cid.canister_id;
+          }),
+        );
+      };
+    };
+  };
 
     public func isUsernameValid(username : Text) : Bool {
 

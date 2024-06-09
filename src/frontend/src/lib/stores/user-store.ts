@@ -11,12 +11,11 @@ import { isError } from "$lib/utils/helpers";
 function createUserStore() {
   const { subscribe, set } = writable<any>(null);
 
-
   async function sync() {
-    console.log("here2")
+    console.log("here2");
     let localStorageString = localStorage.getItem("user_profile_data");
-    console.log("string")
-    console.log(localStorageString)
+    console.log("string");
+    console.log(localStorageString);
     if (localStorageString && localStorageString != "undefined") {
       const localProfile = JSON.parse(localStorageString);
       set(localProfile);
