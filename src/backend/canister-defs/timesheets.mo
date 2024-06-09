@@ -3,13 +3,13 @@ import Result "mo:base/Result";
 import DTOs "../dtos/timesheet-dtos";
 import TimesheetTypes "../data-types/timesheet-types";
 import T "../data-types/types";
+import PermissionsManager "canister-managers/timesheets/permissions-manager";
 
 actor class _TimesheetsCanister() {
 
-    public shared ({ caller }) func initialise(){
+    private let permissionsManager = PermissionsManager.PermissionsManager();
 
-    };
-
+    public shared ({ caller }) func initialise(){};
 
     //Timesheets
     
@@ -46,6 +46,10 @@ actor class _TimesheetsCanister() {
 
     public shared query ({ caller }) func getUserTimeReport(dto: DTOs.GetUserTimeReport) : async Result.Result<(), T.Error>{
         return #err(#NotFound);
+    };
+
+    private func hasPermission(principalId: T.PrincipalId, permission: T.AccountancyPermissions) : Bool {
+        return permissionsManager.hasPermission(principalId, permission);
     };
     
     

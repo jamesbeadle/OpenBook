@@ -9,7 +9,7 @@ import DebtorsManager "canister-managers/accountancy/debtors-manager";
 import StockManager "canister-managers/accountancy/stock-manager";
 import BankingManager "canister-managers/accountancy/banking-manager";
 import ReportingManager "canister-managers/accountancy/reporting-manager";
-import PermissionsManager "canister-managers/permissions-manager";
+import PermissionsManager "canister-managers/accountancy/permissions-manager";
 
 actor class _AccountancyCanister() {
 

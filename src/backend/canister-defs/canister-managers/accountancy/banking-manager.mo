@@ -5,9 +5,7 @@ import Result "mo:base/Result";
 module {
 
   public class BankingManager() {
-
-
-    
+   
     public func getBankAccounts(dto: DTOs.GetBankAccounts) : Result.Result<DTOs.GetBankAccounts, T.Error>{
         return #err(#NotFound); //TODO
     };

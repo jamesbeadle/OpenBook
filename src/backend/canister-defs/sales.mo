@@ -2,12 +2,13 @@ import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import DTOs "../dtos/sales-dtos";
 import T "../data-types/types";
+import PermissionsManager "canister-managers/sales/permissions-manager";
 
 actor class _SalesCanister() {
 
-    public shared ({ caller }) func initialise(){
+    private let permissionsManager = PermissionsManager.PermissionsManager();
 
-    };
+    public shared ({ caller }) func initialise(){};
 
 
     //Clients
@@ -277,6 +278,10 @@ actor class _SalesCanister() {
 
     public shared query ({ caller }) func getSalesActivityReport(dto: DTOs.GetSalesActivityReport) : async Result.Result<DTOs.GetSalesActivityReport, T.Error>{
         return #err(#NotFound);
+    };
+
+    private func hasPermission(principalId: T.PrincipalId, permission: T.AccountancyPermissions) : Bool {
+        return permissionsManager.hasPermission(principalId, permission);
     };
     
 };
