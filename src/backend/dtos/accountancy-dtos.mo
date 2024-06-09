@@ -1,3 +1,5 @@
+import T "../data-types/accountancy-types";
+
 module AccountancyDTOs {
     public type ListGeneralLedgerAccounts = {};
     public type GetGeneralLedgerAccount = {};
@@ -67,7 +69,10 @@ module AccountancyDTOs {
     public type DeleteSupplierPayment = {};
     public type ReconcileBankAccount = {};
     public type GetBankStatement = {};
-    public type GetBankReconciliation = {};
+    public type GetBankReconciliation = {
+        periodId: T.AccountingPeriodId;
+        bankReconciliation: ?BankReconciliation;
+    };
     public type GetUnreconciledTransactions = {};
     public type ImportTransactions = {};
     public type GetChartOfAccounts = {};
@@ -80,6 +85,17 @@ module AccountancyDTOs {
 
     public type AssetAccount = {
 
+    };
+
+    public type BankReconciliation = {
+        reconciliationEndDate: Int;
+        bankStatementBalance: Int;
+        depositsInTransit: [T.Transaction];
+        outstandingPaymentsOut: [T.Transaction];
+        interestPaid: [T.Transaction];
+        bankFees: [T.Transaction];
+        exchangeAdjustments: [T.Transaction];
+        reconciliationAdjustments: [T.Transaction];
     };
 
 }

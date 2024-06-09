@@ -19,6 +19,7 @@ module OpenBookTypes {
   public type CanisterId = Text;
   public type BucketNumber = Nat8;
   public type FileId = Nat32;
+  public type CalendarMonth = Nat8;
 
   public type Currency = {
     id: CurrencyId;

@@ -3,10 +3,33 @@ import T "types";
 import TaxTypes "tax-types";
 
 module AccountsTypes {
-
+    public type AccountingPeriodId = Nat32;
+    public type FinancialYearId = Nat16;
+    public type BankAccountId = Nat32;
     public type AccountCode = Nat32;
     public type CostCenter = Text;
     public type Department = Text;
+
+    public type AccountingPeriod = {
+        id: AccountingPeriodId;
+        year: FinancialYearId;
+        month: T.CalendarMonth;
+    };
+
+    public type FinancialYear = {
+        startYear: Nat16;
+        endYear: Nat16;
+        startMonth: T.CalendarMonth;
+        endMonth: T.CalendarMonth;
+        name: Text;
+        status: AccountingPeriodStatus;
+    };
+
+    public type AccountingPeriodStatus = {
+        #Unopen;
+        #Open;
+        #Closed;
+    };
     
     public type Currency = {
         id: T.CurrencyId;
@@ -335,7 +358,7 @@ module AccountsTypes {
     };
 
     public type BankAccount = {
-        id : Nat32;
+        id : BankAccountId;
         details : [BankDetail];
         lastModified : Int64;
     };
@@ -416,6 +439,18 @@ module AccountsTypes {
     #ForeignExchangeLoss;
     #ImpairmentLosses;
     #RestructuringCosts;
+  };
+
+  public type BankReconciliation = {
+        periodId: AccountingPeriodId;
+        reconciliationEndDate: Int;
+        bankStatementBalance: Int;
+        depositsInTransit: [Transaction];
+        outstandingPaymentsOut: [Transaction];
+        interestPaid: [Transaction];
+        bankFees: [Transaction];
+        exchangeAdjustments: [Transaction];
+        reconciliationAdjustments: [Transaction];
   };
 
 

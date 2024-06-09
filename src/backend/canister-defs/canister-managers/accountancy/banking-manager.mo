@@ -4,12 +4,21 @@ import DTOs "../../../dtos/accountancy-dtos";
 import Result "mo:base/Result";
 import Buffer "mo:base/Buffer";
 import Array "mo:base/Array";
+import TrieMap "mo:base/TrieMap";
+import Utilities "../../../utilities/Utilities";
 
 module {
 
   public class BankingManager() {
 
     private var accounts: [AccountancyTypes.AssetAccount] = [];
+    private var bankReconciliations = TrieMap.TrieMap<AccountancyTypes.AccountingPeriodId, AccountancyTypes.BankReconciliation>(Utilities.eqNat32, Utilities.hashNat32);
+
+
+
+    //map accounting period to reconciliation report
+        //inside the report should be the grouped general ledger transactions for the month
+        //add or minus adjustments
    
     public func getBankAccounts(dto: DTOs.GetBankAccounts) : Result.Result<DTOs.GetBankAccounts, T.Error>{
 
@@ -97,6 +106,42 @@ module {
     };
     
     public func getBankReconciliation(dto: DTOs.GetBankReconciliation) : Result.Result<DTOs.GetBankReconciliation, T.Error>{
+        let bankReconciliation = bankReconciliations.get(dto.periodId);
+        switch(bankReconciliation){
+            case (null){
+                return #err(#NotFound);
+            };
+            case (?foundReconciliation){
+                let reconciliation: DTOs.BankReconciliation = {
+                    //TODO: Add all bank reconciliation items
+                    bankFees = [];
+                    bankStatementBalance= 0;
+                    depositsInTransit = [];
+                    exchangeAdjustments = [];
+                    interestPaid = [];
+                    outstandingPaymentsOut = [];
+                    reconciliationAdjustments = [];
+                    reconciliationEndDate = 0;
+                };
+                let returnDTO: DTOs.GetBankReconciliation = {
+                    periodId = dto.periodId;
+                    bankReconciliation = ?reconciliation;
+                };
+                return #ok(returnDTO);
+            }
+        };
+        //for a period you should be able to get a bank account and the reconciliation report of transactions that balance to the actual period end
+            //monthly
+
+            //matched transactions
+            //unmatched transactions
+
+            //bank balance
+            //general ledger balance
+            //difference
+            //future payments
+            //exchange difference
+
         //KEY OUTPUT
         return #err(#NotFound); //TODO
     };
