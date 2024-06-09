@@ -38,6 +38,7 @@ actor class _OrganisationCanister() {
     private let ledger : ICPLedger.Interface = actor (ICPLedger.CANISTER_ID);
     private let ICP_CHARGE_RATE = 100_000_000;
     let ICP_FEE : Nat = 10_000;
+    let DEFAULT_CYCLES_CHECK_AMOUNT: Nat = 2_000_000_000_000;
 
     public shared ({ caller }) func initialise(dto: DTOs.InitialiseOrganisation) : async (){
       assert not Principal.isAnonymous(caller);
@@ -755,6 +756,7 @@ actor class _OrganisationCanister() {
               var updatedProjectsBalance = foundChargeInfo.projectsChargeBalance;
               var updatedTimesheetsBalance = foundChargeInfo.timesheetsChargeBalance;
               var updatedRecruitmentBalance = foundChargeInfo.recruitmentChargeBalance;
+
               switch(dto.serviceType){
                 case (#Accountancy){
                   updatedAccountancyBalance += dto.transferAmount;
@@ -792,19 +794,11 @@ actor class _OrganisationCanister() {
                 timesheetsChargeMin = foundChargeInfo.timesheetsChargeMin;
               };
 
+              return #ok;
             }
           };
-          
-
-
         }
       };
-
-      //transfer charge amount from available to service
-
-      //TODO: IMPLEMENT CHARGE AND PAYMENT SYSTEM
-
-      return #ok; //TODO
     };
 
     public shared ({ caller }) func transferCharge (dto: DTOs.TransferCharge) : async Result.Result<(), T.Error>{
@@ -812,19 +806,186 @@ actor class _OrganisationCanister() {
       let principalId = Principal.toText(caller);
       assert isAdminForCaller(principalId);
 
-      //TODO: IMPLEMENT CHARGE AND PAYMENT SYSTEM
+      switch(organisation){
+        case (null){
+          return #err(#NotFound);
+        };
+        case (?foundOrganisation){
+          
+          switch(foundOrganisation.chargeInformation){
+            case (null){
+              return #err(#NotAllowed);
+            };
+            case (?foundChargeInfo){
+              let availableCharge = foundChargeInfo.availableBalance;
+              if(availableCharge < dto.transferAmount){
+                return #err(#NotAllowed);
+              };
 
-      return #ok; //TODO
+              var updatedAccountancyBalance = foundChargeInfo.accountancyChargeBalance;
+              var updatedSalesBalance = foundChargeInfo.salesChargeBalance;
+              var updatedProjectsBalance = foundChargeInfo.projectsChargeBalance;
+              var updatedTimesheetsBalance = foundChargeInfo.timesheetsChargeBalance;
+              var updatedRecruitmentBalance = foundChargeInfo.recruitmentChargeBalance;
+              
+              switch(dto.fromService){
+                case (#Accountancy){
+                  if(foundChargeInfo.accountancyChargeBalance < dto.transferAmount){
+                    return #err(#NotAllowed);
+                  };
+                  updatedAccountancyBalance -= dto.transferAmount;
+                };
+                case (#Sales){
+                  if(foundChargeInfo.salesChargeBalance < dto.transferAmount){
+                    return #err(#NotAllowed);
+                  };
+                  updatedSalesBalance -= dto.transferAmount;
+                };
+                case (#Projects){
+                  if(foundChargeInfo.projectsChargeBalance < dto.transferAmount){
+                    return #err(#NotAllowed);
+                  };
+                  updatedProjectsBalance -= dto.transferAmount;
+                };
+                case (#Timesheets){
+                  if(foundChargeInfo.timesheetsChargeBalance < dto.transferAmount){
+                    return #err(#NotAllowed);
+                  };
+                  updatedTimesheetsBalance -= dto.transferAmount;
+                };
+                case (#Recruitment){
+                  if(foundChargeInfo.recruitmentChargeBalance < dto.transferAmount){
+                    return #err(#NotAllowed);
+                  };
+                  updatedRecruitmentBalance -= dto.transferAmount;
+                };
+              };
+              
+              switch(dto.toService){
+                case (#Accountancy){
+                  updatedAccountancyBalance += dto.transferAmount;
+                };
+                case (#Sales){
+                  updatedSalesBalance += dto.transferAmount;
+                };
+                case (#Projects){
+                  updatedProjectsBalance += dto.transferAmount;
+                };
+                case (#Timesheets){
+                  updatedTimesheetsBalance += dto.transferAmount;
+                };
+                case (#Recruitment){
+                  updatedRecruitmentBalance += dto.transferAmount;
+                };
+              };
+
+              let updatedChargeInformation: T.ChargeInformation = {
+                accountancyChargeBalance = updatedAccountancyBalance;
+                accountancyChargeMax = foundChargeInfo.accountancyChargeMax;
+                accountancyChargeMin = foundChargeInfo.accountancyChargeMin;
+                availableBalance = foundChargeInfo.availableBalance - dto.transferAmount;
+                projectsChargeBalance = updatedProjectsBalance;
+                projectsChargeMax = foundChargeInfo.projectsChargeMax;
+                projectsChargeMin = foundChargeInfo.projectsChargeMin;
+                recruitmentChargeBalance = updatedRecruitmentBalance;
+                recruitmentChargeMax = foundChargeInfo.recruitmentChargeMax;
+                recruitmentChargeMin = foundChargeInfo.recruitmentChargeMin;
+                salesChargeBalance = updatedSalesBalance;
+                salesChargeMax = foundChargeInfo.salesChargeMax;
+                salesChargeMin = foundChargeInfo.salesChargeMin;
+                timesheetsChargeBalance = updatedTimesheetsBalance;
+                timesheetsChargeMax = foundChargeInfo.timesheetsChargeMax;
+                timesheetsChargeMin = foundChargeInfo.timesheetsChargeMin;
+              };
+
+              return #ok;
+            }
+          };
+        }
+      };
     };
 
-    public shared ({ caller }) func updateChargeRanges (dto: DTOs.UpdateChargeRanges) : async Result.Result<(), T.Error>{
+    public shared ({ caller }) func updateChargeRanges(dto: DTOs.UpdateChargeRanges) : async Result.Result<(), T.Error>{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert isAdminForCaller(principalId);
 
-      //TODO: IMPLEMENT CHARGE AND PAYMENT SYSTEM
+      switch(organisation){
+        case (null){
+          return #err(#NotFound);
+        };
+        case (?foundOrganisation){
+          
+          switch(foundOrganisation.chargeInformation){
+            case (null){
+              return #err(#NotAllowed);
+            };
+            case (?foundChargeInfo){
+              
+              return #err(#NotAllowed);//TODO
+              //charge range needs to be valid
+                //check the current charge on the proposed range
+                  //current charge % must be > 50% of current cycle balance in cycles 
+                    //so if proposed charge chage is default  100m unit
 
-      return #ok; //TODO
+              var updatedAccountancyChargeMin = foundChargeInfo.accountancyChargeMin;
+              var updatedAccountancyChargeMax = foundChargeInfo.accountancyChargeMax;
+              var updatedSalesChargeMin = foundChargeInfo.salesChargeMin;
+              var updatedSalesChargeMax = foundChargeInfo.salesChargeMax;
+              var updatedProjectsChargeMin = foundChargeInfo.projectsChargeMin;
+              var updatedProjectsChargeMax = foundChargeInfo.projectsChargeMax;
+              var updatedTimesheetsChargeMin = foundChargeInfo.timesheetsChargeMin;
+              var updatedTimesheetsChargeMax = foundChargeInfo.timesheetsChargeMax;
+              var updatedRecruitmentChargeMin = foundChargeInfo.recruitmentChargeMin;
+              var updatedRecruitmentChargeMax = foundChargeInfo.recruitmentChargeMax;
+
+              switch(dto.serviceType){
+                case (#Accountancy){
+                  updatedAccountancyChargeMin := dto.newChargeMin;
+                  updatedAccountancyChargeMax := dto.newChargeMax;
+                };
+                case (#Sales){
+                  updatedSalesChargeMin := dto.newChargeMin;
+                  updatedSalesChargeMax := dto.newChargeMax;
+                };
+                case (#Projects){
+                  updatedProjectsChargeMin := dto.newChargeMin;
+                  updatedProjectsChargeMax := dto.newChargeMax;
+                };
+                case (#Timesheets){
+                  updatedTimesheetsChargeMin := dto.newChargeMin;
+                  updatedTimesheetsChargeMax := dto.newChargeMax;
+                };
+                case (#Recruitment){
+                  updatedRecruitmentChargeMin := dto.newChargeMin;
+                  updatedRecruitmentChargeMax := dto.newChargeMax;
+                };
+              };
+
+              let updatedChargeInformation: T.ChargeInformation = {
+                accountancyChargeBalance = foundChargeInfo.accountancyChargeBalance;
+                accountancyChargeMax = updatedAccountancyChargeMax;
+                accountancyChargeMin = updatedAccountancyChargeMin;
+                availableBalance = foundChargeInfo.availableBalance;
+                projectsChargeBalance = foundChargeInfo.projectsChargeBalance;
+                projectsChargeMax = updatedProjectsChargeMax;
+                projectsChargeMin = updatedProjectsChargeMin;
+                recruitmentChargeBalance = foundChargeInfo.recruitmentChargeBalance;
+                recruitmentChargeMax = updatedRecruitmentChargeMax;
+                recruitmentChargeMin = updatedRecruitmentChargeMin;
+                salesChargeBalance = foundChargeInfo.salesChargeBalance;
+                salesChargeMax = updatedSalesChargeMax;
+                salesChargeMin = updatedSalesChargeMin;
+                timesheetsChargeBalance = foundChargeInfo.timesheetsChargeBalance;
+                timesheetsChargeMax = updatedTimesheetsChargeMax;
+                timesheetsChargeMin = updatedTimesheetsChargeMin;
+              };
+
+              return #ok;
+            }
+          };
+        }
+      };
     };
 
     //Contacts
@@ -957,12 +1118,12 @@ actor class _OrganisationCanister() {
 
       let balance = Cycles.balance();
 
-      if (balance < 2_000_000_000_000) {
+      if (balance < DEFAULT_CYCLES_CHECK_AMOUNT) {
         //TODO: They do need to request cycles from the backend provided they can afford them
         let openfpl_backend_canister = actor (Environment.BACKEND_CANISTER_ID) : actor {
           requestCanisterTopup : (cycles: Nat) -> async ();
         };
-        await openfpl_backend_canister.requestCanisterTopup(2_000_000_000_000);
+        await openfpl_backend_canister.requestCanisterTopup(DEFAULT_CYCLES_CHECK_AMOUNT);
       };
     };  
 

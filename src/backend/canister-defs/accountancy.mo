@@ -3,8 +3,22 @@ import Result "mo:base/Result";
 import DTOs "../dtos/accountancy-dtos";
 import AccountancyTypes "../data-types/accountancy-types";
 import T "../data-types/types";
+import GeneralLedgerManager "canister-managers/accountancy/general-ledger-manager";
+import CreditorsManager "canister-managers/accountancy/creditors-manager";
+import DebtorsManager "canister-managers/accountancy/debtors-manager";
+import StockManager "canister-managers/accountancy/stock-manager";
+import BankingManager "canister-managers/accountancy/banking-manager";
+import ReportingManager "canister-managers/accountancy/reporting-manager";
 
 actor class _AccountancyCanister() {
+
+
+    private let generalLedgerManager = GeneralLedgerManager.GeneralLedgerManager();
+    private let creditorsManager = GeneralLedgerManager.GeneralLedgerManager();
+    private let debtorsManager = GeneralLedgerManager.GeneralLedgerManager();
+    private let stockManager = GeneralLedgerManager.GeneralLedgerManager();
+    private let bankingManager = GeneralLedgerManager.GeneralLedgerManager();
+    private let reportingManager = GeneralLedgerManager.GeneralLedgerManager();
 
     private var transactions: [AccountancyTypes.Transaction] = [];
     private var chartOfAccounts: [AccountancyTypes.GeneralLedgerAccount] = [];

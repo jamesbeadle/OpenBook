@@ -73,11 +73,15 @@ module OrganisationTypes {
     };
 
     public type TransferCharge = {
-
+        fromService: ServiceType;
+        toService: ServiceType;
+        transferAmount: Nat;
     };
 
     public type UpdateChargeRanges = {
-
+        serviceType: ServiceType;
+        newChargeMin: Nat;
+        newChargeMax: Nat;
     };
 
     public type ChargeService = {
