@@ -657,7 +657,7 @@ actor class _OrganisationCanister() {
                     projectsChargeBalance = 0;
                     projectsChargeMax = 0;
                     projectsChargeMin = 0;
-                    recruitmentBalance = 0;
+                    recruitmentChargeBalance = 0;
                     recruitmentChargeMax = 0;
                     recruitmentChargeMin = 0;
                     salesChargeBalance = 0;
@@ -677,7 +677,7 @@ actor class _OrganisationCanister() {
                     projectsChargeBalance = existingChargeInfo.projectsChargeBalance;
                     projectsChargeMax = existingChargeInfo.projectsChargeMax;
                     projectsChargeMin = existingChargeInfo.projectsChargeMin;
-                    recruitmentBalance = existingChargeInfo.recruitmentBalance;
+                    recruitmentChargeBalance = existingChargeInfo.recruitmentChargeBalance;
                     recruitmentChargeMax = existingChargeInfo.recruitmentChargeMax;
                     recruitmentChargeMin = existingChargeInfo.recruitmentChargeMin;
                     salesChargeBalance = existingChargeInfo.salesChargeBalance;
@@ -733,6 +733,74 @@ actor class _OrganisationCanister() {
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert isAdminForCaller(principalId);
+
+      switch(organisation){
+        case (null){
+          return #err(#NotFound);
+        };
+        case (?foundOrganisation){
+          
+          switch(foundOrganisation.chargeInformation){
+            case (null){
+              return #err(#NotAllowed);
+            };
+            case (?foundChargeInfo){
+              let availableCharge = foundChargeInfo.availableBalance;
+              if(availableCharge < dto.transferAmount){
+                return #err(#NotAllowed);
+              };
+
+              var updatedAccountancyBalance = foundChargeInfo.accountancyChargeBalance;
+              var updatedSalesBalance = foundChargeInfo.salesChargeBalance;
+              var updatedProjectsBalance = foundChargeInfo.projectsChargeBalance;
+              var updatedTimesheetsBalance = foundChargeInfo.timesheetsChargeBalance;
+              var updatedRecruitmentBalance = foundChargeInfo.recruitmentChargeBalance;
+              switch(dto.serviceType){
+                case (#Accountancy){
+                  updatedAccountancyBalance += dto.transferAmount;
+                };
+                case (#Sales){
+                  updatedSalesBalance += dto.transferAmount;
+                };
+                case (#Projects){
+                  updatedProjectsBalance += dto.transferAmount;
+                };
+                case (#Timesheets){
+                  updatedTimesheetsBalance += dto.transferAmount;
+                };
+                case (#Recruitment){
+                  updatedRecruitmentBalance += dto.transferAmount;
+                };
+              };
+
+              let updatedChargeInformation: T.ChargeInformation = {
+                accountancyChargeBalance = updatedAccountancyBalance;
+                accountancyChargeMax = foundChargeInfo.accountancyChargeMax;
+                accountancyChargeMin = foundChargeInfo.accountancyChargeMin;
+                availableBalance = foundChargeInfo.availableBalance - dto.transferAmount;
+                projectsChargeBalance = updatedProjectsBalance;
+                projectsChargeMax = foundChargeInfo.projectsChargeMax;
+                projectsChargeMin = foundChargeInfo.projectsChargeMin;
+                recruitmentChargeBalance = updatedRecruitmentBalance;
+                recruitmentChargeMax = foundChargeInfo.recruitmentChargeMax;
+                recruitmentChargeMin = foundChargeInfo.recruitmentChargeMin;
+                salesChargeBalance = updatedSalesBalance;
+                salesChargeMax = foundChargeInfo.salesChargeMax;
+                salesChargeMin = foundChargeInfo.salesChargeMin;
+                timesheetsChargeBalance = updatedTimesheetsBalance;
+                timesheetsChargeMax = foundChargeInfo.timesheetsChargeMax;
+                timesheetsChargeMin = foundChargeInfo.timesheetsChargeMin;
+              };
+
+            }
+          };
+          
+
+
+        }
+      };
+
+      //transfer charge amount from available to service
 
       //TODO: IMPLEMENT CHARGE AND PAYMENT SYSTEM
 

@@ -82,7 +82,7 @@ module OrganisationTypes {
 
     public type ChargeService = {
         serviceType: ServiceType;
-        chargeAmount: Nat64;
+        transferAmount: Nat;
     };
     
     public type ServiceType = {

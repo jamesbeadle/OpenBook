@@ -77,7 +77,7 @@ module OpenBookTypes {
     salesChargeBalance : Nat;
     timesheetsChargeBalance : Nat;
     projectsChargeBalance : Nat;
-    recruitmentBalance : Nat;
+    recruitmentChargeBalance : Nat;
     availableBalance : Nat;
     accountancyChargeMin : Nat;
     accountancyChargeMax : Nat;
