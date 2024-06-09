@@ -1,10 +1,10 @@
 import T "../../../data-types/types";
-import AccountancyPermissions "../../../permissions/accountancy-permissions";
+import TimesheetsPermissions "../../../permissions/timesheets-permissions";
 
 module {
 
   public class PermissionsManager() {
-    public func hasPermission(principalId: T.PrincipalId, permission: AccountancyPermissions.AccountancyPermission) : Bool {
+    public func hasPermission(principalId: T.PrincipalId, permission: TimesheetsPermissions.TimesheetsPermission) : Bool {
         return false; //TODO
     };
 

@@ -26,5 +26,9 @@ module {
     public func deleteCandidate(dto: DTOs.DeleteCandidate) : Result.Result<(), T.Error>{
             return #err(#NotFound); //TODO
     };
+
+    public  func findCandidates(dto: DTOs.FindCandidates) : Result.Result<(), T.Error>{
+            return #err(#NotFound); //TODO
+    };
   }
 };

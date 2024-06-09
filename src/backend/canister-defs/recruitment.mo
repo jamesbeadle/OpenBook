@@ -5,11 +5,25 @@ import T "../data-types/types";
 import RecruitmentPermissions "../permissions/recruitment-permissions";
 import PermissionsManager "canister-managers/recruitment/permissions-manager";
 import CandidatesManager "canister-managers/recruitment/candidates-manager";
+import ClientsManager "canister-managers/recruitment/clients-manager";
+import InterviewsManager "canister-managers/recruitment/interviews-manager";
+import JobApplicationsManager "canister-managers/recruitment/job-applications-manager";
+import JobPostingsManager "canister-managers/recruitment/job-postings-manager";
+import PlacementsManager "canister-managers/recruitment/placements-manager";
+import RecruitersManager "canister-managers/recruitment/recruiters-manager";
+import ReferencesManager "canister-managers/recruitment/references-manager";
 import ResumesManager "canister-managers/recruitment/resumes-manager";
 
 actor class _RecruitmentManagementCanister() {
 
     private let candidatesManager = CandidatesManager.CandidatesManager();
+    private let clientsManager = ClientsManager.ClientsManager();
+    private let interviewsManager = InterviewsManager.InterviewsManager();
+    private let jobApplicationsManager = JobApplicationsManager.JobApplicationsManager();
+    private let jobPostingsManager = JobPostingsManager.JobPostingsManager();
+    private let placementsManager = PlacementsManager.PlacementsManager();
+    private let recruitersManager = RecruitersManager.RecruitersManager();
+    private let referencesManager = ReferencesManager.ReferencesManager();
     private let resumesManager = ResumesManager.ResumesManager();
     private let permissionsManager = PermissionsManager.PermissionsManager();
 
@@ -169,42 +183,42 @@ actor class _RecruitmentManagementCanister() {
         assert not Principal.isAnonymous(caller);
         let principalId = Principal.toText(caller);
         assert hasPermission(principalId, #ListRecruiters);
-        return recruiterManager.listRecruiters(dto);
+        return recruitersManager.listRecruiters(dto);
     };
 
     public shared query ({ caller }) func getRecruiter(dto: DTOs.GetRecruiter) : async Result.Result<DTOs.GetRecruiter, T.Error>{
         assert not Principal.isAnonymous(caller);
         let principalId = Principal.toText(caller);
         assert hasPermission(principalId, #GetRecruiter);
-        return recruiterManager.getRecruiter(dto);
+        return recruitersManager.getRecruiter(dto);
     };
 
     public shared ({ caller }) func createRecruiter(dto: DTOs.CreateRecruiter) : async Result.Result<(), T.Error>{
         assert not Principal.isAnonymous(caller);
         let principalId = Principal.toText(caller);
         assert hasPermission(principalId, #CreateRecruiter);
-        return recruiterManager.createRecruiter(dto);
+        return recruitersManager.createRecruiter(dto);
     };
 
     public shared ({ caller }) func updateRecruiter(dto: DTOs.UpdateRecruiter) : async Result.Result<(), T.Error>{
         assert not Principal.isAnonymous(caller);
         let principalId = Principal.toText(caller);
         assert hasPermission(principalId, #UpdateRecruiter);
-        return recruiterManager.updateRecruiter(dto);
+        return recruitersManager.updateRecruiter(dto);
     };
 
     public shared ({ caller }) func deleteRecruiter(dto: DTOs.DeleteRecruiter) : async Result.Result<(), T.Error>{
         assert not Principal.isAnonymous(caller);
         let principalId = Principal.toText(caller);
         assert hasPermission(principalId, #DeleteRecruiter);
-        return recruiterManager.deleteRecruiter(dto);
+        return recruitersManager.deleteRecruiter(dto);
     };
 
     public shared ({ caller }) func getRecruiterActivity(dto: DTOs.RecruiterActivity) : async Result.Result<(), T.Error>{
         assert not Principal.isAnonymous(caller);
         let principalId = Principal.toText(caller);
         assert hasPermission(principalId, #RecruiterActivity);
-        return recruiterManager.getRecruiterActivity(dto);
+        return recruitersManager.getRecruiterActivity(dto);
     };
     
     //Job Postings
@@ -213,35 +227,35 @@ actor class _RecruitmentManagementCanister() {
         assert not Principal.isAnonymous(caller);
         let principalId = Principal.toText(caller);
         assert hasPermission(principalId, #ListJobPostings);
-        return recruiterManager.listJobPostings(dto);
+        return jobPostingsManager.listJobPostings(dto);
     };
 
     public shared query ({ caller }) func getJobPosting(dto: DTOs.GetJobPosting) : async Result.Result<DTOs.GetJobPosting, T.Error>{
         assert not Principal.isAnonymous(caller);
         let principalId = Principal.toText(caller);
         assert hasPermission(principalId, #GetJobPosting);
-        return recruiterManager.getJobPosting(dto);
+        return jobPostingsManager.getJobPosting(dto);
     };
 
     public shared ({ caller }) func createJobPosting(dto: DTOs.CreateJobPosting) : async Result.Result<(), T.Error>{
         assert not Principal.isAnonymous(caller);
         let principalId = Principal.toText(caller);
         assert hasPermission(principalId, #CreateJobPosting);
-        return recruiterManager.createJobPosting(dto);
+        return jobPostingsManager.createJobPosting(dto);
     };
 
     public shared ({ caller }) func updateJobPosting(dto: DTOs.UpdateJobPosting) : async Result.Result<(), T.Error>{
         assert not Principal.isAnonymous(caller);
         let principalId = Principal.toText(caller);
         assert hasPermission(principalId, #UpdateJobPosting);
-        return recruiterManager.updateJobPosting(dto);
+        return jobPostingsManager.updateJobPosting(dto);
     };
 
     public shared ({ caller }) func deleteJobPosting(dto: DTOs.DeleteJobPosting) : async Result.Result<(), T.Error>{
         assert not Principal.isAnonymous(caller);
         let principalId = Principal.toText(caller);
         assert hasPermission(principalId, #DeleteJobPosting);
-        return recruiterManager.deleteJobPosting(dto);
+        return jobPostingsManager.deleteJobPosting(dto);
     };
     
     //Clients
@@ -287,7 +301,7 @@ actor class _RecruitmentManagementCanister() {
         assert not Principal.isAnonymous(caller);
         let principalId = Principal.toText(caller);
         assert hasPermission(principalId, #ListInterviews);
-        return interviewsManager.deleteClient(dto);
+        return interviewsManager.listInterviews(dto);
     };
 
     public shared query ({ caller }) func getInterview(dto: DTOs.GetInterview) : async Result.Result<DTOs.GetInterview, T.Error>{
@@ -368,7 +382,7 @@ actor class _RecruitmentManagementCanister() {
         assert not Principal.isAnonymous(caller);
         let principalId = Principal.toText(caller);
         assert hasPermission(principalId, #FindJobs);
-        return jobPositingsManager.findJobs(dto);
+        return jobPostingsManager.findJobs(dto);
     };
 
     public shared ({ caller }) func findRecruiters(dto: DTOs.FindRecruiters) : async Result.Result<(), T.Error>{
