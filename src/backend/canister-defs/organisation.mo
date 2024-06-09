@@ -1128,10 +1128,6 @@ actor class _OrganisationCanister() {
     };  
 
     private func checkCanisterCycles(canisterId: T.CanisterId) : async () {
-      
-
-
-
       //call the function on the canister to get the cycles
       //let balance = canister.getCyclesBalance();
 
