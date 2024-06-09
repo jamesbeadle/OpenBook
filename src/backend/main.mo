@@ -85,7 +85,7 @@ actor Self {
     return #ok(profileManager.isUsernameAvailable(username));
   };
 
-  public shared ({ caller }) func purchaseOrganisation(dto: OrganisationDTOs.CreateOrganisationDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func purchaseOrganisation(dto: OrganisationDTOs.CreateOrganisation) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
@@ -111,7 +111,7 @@ actor Self {
     };
   };
 
-  public shared ({ caller }) func deleteOrganisation(dto: OrganisationDTOs.DeleteOrganisationDTO) : async Result.Result<(), T.Error>{
+  public shared ({ caller }) func deleteOrganisation(dto: OrganisationDTOs.DeleteOrganisation) : async Result.Result<(), T.Error>{
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert dto.confirmDelete;
@@ -240,7 +240,7 @@ actor Self {
     };
   };
 
-  public shared ({ caller }) func acceptUserOrganisationRequest(dto: OrganisationDTOs.AcceptUserOrganisationRequestDTO) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func acceptUserOrganisationRequest(dto: OrganisationDTOs.AcceptUserOrganisationRequest) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 

@@ -13,6 +13,10 @@ module OrganisationTypes {
         canisterId: T.CanisterId;
     };
 
+    public type UpdateOrganisationBanner = {
+
+    };
+
     public type GetUserOrganisations = {
 
     };
@@ -37,7 +41,12 @@ module OrganisationTypes {
     };
 
     public type UpdateOrganisationDetail = {
-
+        id: T.OrganisationId;
+        name: ?Text;
+        friendlyName : ?Text;
+        referenceNumber : ?Text;
+        logo : ?Blob;
+        banner : ?Blob;
     };
 
     public type DeleteOrganisation = {
@@ -51,19 +60,43 @@ module OrganisationTypes {
     };
 
     public type ServiceCanisterIds = {
-        accountsCanisterId: Text;
+        accountancyCanisterId: Text;
         projectsCanisterId: Text;
         salesCanisterId: Text;
-        payrollCanisterId: Text;
-        recruitementCanisterId: Text;
+        timesheetsCanisterId: Text;
+        recruitmentCanisterId: Text;
+        storageCanisterId: Text;
+    };
+
+    public type PurchaseCharge = {
+        
+    };
+
+    public type TransferCharge = {
+
+    };
+
+    public type UpdateChargeRanges = {
+
     };
 
     public type ChargeService = {
-        charge: Nat64;
+        serviceType: ServiceType;
+        chargeAmount: Nat64;
+    };
+    
+    public type ServiceType = {
+        #Accountancy;
+        #Sales;
+        #Recruitment;
+        #Projects;
+        #Timesheets;
     };
 
     public type ActivateService = {
-
+        serviceType: ServiceType;
+        minChargeRange: Nat64;
+        maxChargeRange: Nat64;
     };
 
     public type OrganisationInfo = {

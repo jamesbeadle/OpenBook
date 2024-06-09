@@ -34,7 +34,6 @@ actor class _StorageCanister() {
         #InvalidData;
     };
 
-    private stable var profiles: [Profile] = []; //Todo: Calculate the size of a profile and how much information you can store and how many profiles per canister
     private stable var activeBucketNumber: Nat8 = 1; 
     private stable var canisterFull = false;
     private stable var nextFileId: FileId = 1;

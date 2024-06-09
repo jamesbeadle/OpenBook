@@ -30,7 +30,7 @@ module {
       backendCanisterController := ?controller;
     };
     
-    public func createOrganisation(dto: OrganisationDTOs.CreateOrganisationDTO) : async Result.Result<T.OrganisationId, T.Error> {
+    public func createOrganisation(dto: OrganisationDTOs.CreateOrganisation) : async Result.Result<T.OrganisationId, T.Error> {
       
       let nameTaken = isOrganisationNameAvailable(dto.name);
       if(nameTaken){
@@ -60,9 +60,9 @@ module {
       };      
     };
 
-    public func getOrganisation(organisationId: T.OrganisationId) : async ?OrganisationDTOs.OrganisationDTO {
+    public func getOrganisation(organisationId: T.OrganisationId) : async ?OrganisationDTOs.Organisation {
       let organisation_canister = actor (organisationId) : actor {
-        getOrganisation : () -> async ?OrganisationDTOs.OrganisationDTO;
+        getOrganisation : () -> async ?OrganisationDTOs.Organisation;
       };
       return await organisation_canister.getOrganisation();
     };
@@ -77,9 +77,22 @@ module {
         };
         case (?foundOrganisation){
           
-          //Todo: delete the canister and transfer the cycles back to openbook
+          let organisation_canister = actor (organisationId) : actor {
+            getServiceCanisterIds : () -> async OrganisationDTOs.ServiceCanisterIds;
+          };
+          let organisationCanisterIds = await organisation_canister.getServiceCanisterIds();
+          
+          let IC : Management.Management = actor (Environment.Default);
+     
+          await Utilities.delete_canister_(actor (organisationCanisterIds.accountancyCanisterId) : actor { }, ?Principal.fromText(Environment.BACKEND_CANISTER_ID), IC);
+          await Utilities.delete_canister_(actor (organisationCanisterIds.salesCanisterId) : actor { }, ?Principal.fromText(Environment.BACKEND_CANISTER_ID), IC);
+          await Utilities.delete_canister_(actor (organisationCanisterIds.projectsCanisterId) : actor { }, ?Principal.fromText(Environment.BACKEND_CANISTER_ID), IC);
+          await Utilities.delete_canister_(actor (organisationCanisterIds.recruitmentCanisterId) : actor { }, ?Principal.fromText(Environment.BACKEND_CANISTER_ID), IC);
+          await Utilities.delete_canister_(actor (organisationCanisterIds.timesheetsCanisterId) : actor { }, ?Principal.fromText(Environment.BACKEND_CANISTER_ID), IC);
+          await Utilities.delete_canister_(actor (organisationCanisterIds.storageCanisterId) : actor { }, ?Principal.fromText(Environment.BACKEND_CANISTER_ID), IC);
+          await Utilities.delete_canister_(actor (foundOrganisation.id) : actor { }, ?Principal.fromText(Environment.BACKEND_CANISTER_ID), IC);
 
-          unique_organisation_names := Array.filter<T.CanisterId>(
+          unique_organisation_names := Array.filter<Text>(
             unique_organisation_names,
             func(name : Text) : Bool {
               return name != foundOrganisation.name;

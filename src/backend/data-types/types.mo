@@ -69,6 +69,26 @@ module OpenBookTypes {
     lastModified : ?Int64;
     createdOn: Int;
     accessRequests: [AccessRequest];
+    chargeInformation: ?ChargeInformation;
+  };
+
+  public type ChargeInformation = {
+    accountancyChargeBalance : Nat64;
+    salesChargeBalance : Nat64;
+    timesheetsChargeBalance : Nat64;
+    projectsChargeBalance : Nat64;
+    recruitmentBalance : Nat64;
+    availableBalance : Nat64;
+    accountancyChargeMin : Nat64;
+    accountancyChargeMax : Nat64;
+    salesChargeMin : Nat64;
+    salesChargeMax : Nat64;
+    timesheetsChargeMin : Nat64;
+    timesheetsChargeMax : Nat64;
+    projectsChargeMin : Nat64;
+    projectsChargeMax : Nat64;
+    recruitmentChargeMin : Nat64;
+    recruitmentChargeMax : Nat64;
   };
 
   public type TeamMember = {
