@@ -69,18 +69,22 @@ module {
     };
     
     public func getStockLevelsReport(dto: DTOs.GetStockLevelsReport) : Result.Result<DTOs.GetStockLevelsReport, T.Error>{
+        //KEY OUTPUT
             return #err(#NotFound); //TODO
     };
     
     public func getStockValuationReport(dto: DTOs.GetStockValuationReport) : Result.Result<DTOs.GetStockValuationReport, T.Error>{
+        //KEY OUTPUT
             return #err(#NotFound); //TODO
     };
     
     public func getStockMovementReport(dto: DTOs.GetStockMovementReport) : Result.Result<DTOs.GetStockMovementReport, T.Error>{
+        //KEY OUTPUT
             return #err(#NotFound); //TODO
     };
     
     public func getStockAgeingReport(dto: DTOs.GetStockAgeingReport) : Result.Result<DTOs.GetStockAgeingReport, T.Error>{
+        //KEY OUTPUT
             return #err(#NotFound); //TODO
     };
   }

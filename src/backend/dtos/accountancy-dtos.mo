@@ -46,8 +46,14 @@ module AccountancyDTOs {
     public type GetStockValuationReport = {};
     public type GetStockMovementReport = {};
     public type GetStockAgeingReport = {};
-    public type GetBankAccounts = {};
-    public type GetBankAccount = {};
+    public type GetBankAccounts = {
+        page: Nat;
+        pageSize: Nat;
+        entries: [AssetAccount];
+    };
+    public type GetBankAccount = {
+        
+    };
     public type CreateBankAccount = {};
     public type UpdateBankAccount = {};
     public type DeleteBankAccount = {};
@@ -71,5 +77,9 @@ module AccountancyDTOs {
     public type GetCashflowStatement = {};
     public type GetEquityStatement = {};
     public type GetFixedAssetRegister = {};
+
+    public type AssetAccount = {
+
+    };
 
 }

@@ -4,6 +4,7 @@ import DTOs "../dtos/timesheet-dtos";
 import TimesheetTypes "../data-types/timesheet-types";
 import T "../data-types/types";
 import PermissionsManager "canister-managers/timesheets/permissions-manager";
+import TimesheetsPermissions "../permissions/timesheets-permissions";
 
 actor class _TimesheetsCanister() {
 
@@ -48,7 +49,7 @@ actor class _TimesheetsCanister() {
         return #err(#NotFound);
     };
 
-    private func hasPermission(principalId: T.PrincipalId, permission: T.AccountancyPermissions) : Bool {
+    private func hasPermission(principalId: T.PrincipalId, permission: TimesheetsPermissions.TimesheetsPermission) : Bool {
         return permissionsManager.hasPermission(principalId, permission);
     };
     

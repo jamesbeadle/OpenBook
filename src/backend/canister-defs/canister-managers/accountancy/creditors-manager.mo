@@ -37,9 +37,9 @@ module {
     public func deleteSupplierCreditNote(dto: DTOs.DeleteSupplierCreditNote) : Result.Result<(), T.Error>{
         return #err(#NotFound); //TODO
     };
-
     
     public func getAgedCreditors(dto: DTOs.GetAgedCreditors) : Result.Result<DTOs.GetAgedCreditors, T.Error>{
+        //KEY OUTPUT
         return #err(#NotFound); //TODO
     };
   }

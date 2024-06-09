@@ -39,6 +39,7 @@ module {
     };
     
     public func getAgedDebtors(dto: DTOs.GetAgedDebtors) : Result.Result<DTOs.GetAgedDebtors, T.Error>{
+        //KEY OUTPUT
         return #err(#NotFound); //TODO
     };
   }

@@ -2,7 +2,9 @@ import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import DTOs "../dtos/sales-dtos";
 import T "../data-types/types";
+
 import PermissionsManager "canister-managers/sales/permissions-manager";
+import SalesPermissions "../permissions/sales-permissions";
 
 actor class _SalesCanister() {
 
@@ -280,7 +282,7 @@ actor class _SalesCanister() {
         return #err(#NotFound);
     };
 
-    private func hasPermission(principalId: T.PrincipalId, permission: T.AccountancyPermissions) : Bool {
+    private func hasPermission(principalId: T.PrincipalId, permission: SalesPermissions.SalesPermission) : Bool {
         return permissionsManager.hasPermission(principalId, permission);
     };
     

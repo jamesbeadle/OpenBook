@@ -1,13 +1,43 @@
 import T "../../../data-types/types";
+import AccountancyTypes = "../../../data-types/accountancy-types";
 import DTOs "../../../dtos/accountancy-dtos";
 import Result "mo:base/Result";
+import Buffer "mo:base/Buffer";
+import Array "mo:base/Array";
 
 module {
 
   public class BankingManager() {
+
+    private var accounts: [AccountancyTypes.AssetAccount] = [];
    
     public func getBankAccounts(dto: DTOs.GetBankAccounts) : Result.Result<DTOs.GetBankAccounts, T.Error>{
-        return #err(#NotFound); //TODO
+
+        if(dto.pageSize > 100){
+            return #err(#NotAllowed);
+        };
+
+        let bankAccounts = Buffer.fromArray<AccountancyTypes.AssetAccount>(
+            Array.filter<AccountancyTypes.AssetAccount>(accounts, func(account: AccountancyTypes.AssetAccount): Bool{
+                account.accountType == #BankAccount
+            })
+        );
+
+        let start = dto.page * dto.pageSize;
+        let end = start + dto.pageSize;
+
+        if (start >= bankAccounts.size()) {
+            return #err(#NotFound);
+        };
+    
+        let paginatedAccounts = Array.subArray<AccountancyTypes.AssetAccount>(Buffer.toArray(bankAccounts), start, end);
+        let returnDTO: DTOs.GetBankAccounts = {
+            entries = paginatedAccounts;
+            page = dto.page;
+            pageSize = dto.pageSize;
+
+        };
+        return #ok(returnDTO);
     };
     
     public func getBankAccount(dto: DTOs.GetBankAccount) : Result.Result<DTOs.GetBankAccount, T.Error>{
@@ -67,6 +97,7 @@ module {
     };
     
     public func getBankReconciliation(dto: DTOs.GetBankReconciliation) : Result.Result<DTOs.GetBankReconciliation, T.Error>{
+        //KEY OUTPUT
         return #err(#NotFound); //TODO
     };
     

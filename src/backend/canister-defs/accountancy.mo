@@ -13,7 +13,6 @@ import AccountancyPermissions "../permissions/accountancy-permissions";
 
 actor class _AccountancyCanister() {
 
-
     private let generalLedgerManager = GeneralLedgerManager.GeneralLedgerManager();
     private let creditorsManager =CreditorsManager.CreditorsManager();
     private let debtorsManager = DebtorsManager.DebtorsManager();
