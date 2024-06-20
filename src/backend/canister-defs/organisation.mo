@@ -1127,6 +1127,8 @@ actor class _OrganisationCanister() {
       };
     };  
 
+    //TODO: requestCanisterTopup make the same cycle sending setup here
+
     private func checkCanisterCycles(canisterId: T.CanisterId) : async () {
       //call the function on the canister to get the cycles
       //let balance = canister.getCyclesBalance();
