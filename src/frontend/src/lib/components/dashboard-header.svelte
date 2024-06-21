@@ -124,7 +124,7 @@
         </li>
         <li>
           <button
-            class="flex items-center justify-center px-4 pb-2 pt-1 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-opacity-50 nav-button"
+            class="flex items-center justify-center px-4 pb-2 pt-1 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-gray-600 nav-button"
             on:click={handleLogout}
           >
             Disconnect

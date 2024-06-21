@@ -3481,7 +3481,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "al3z12"
+  version_hash: "8a33cv"
 };
 async function get_hooks() {
   return {};
@@ -3868,7 +3868,7 @@ const idlFactory = ({ IDL }) => {
   });
   const Result = IDL.Variant({ "ok": IDL.Null, "err": Error2 });
   const PrincipalId = IDL.Text;
-  const AcceptUserOrganisationRequestDTO = IDL.Record({
+  const AcceptUserOrganisationRequest = IDL.Record({
     "organisationId": OrganisationId,
     "principalId": PrincipalId
   });
@@ -3889,7 +3889,7 @@ const idlFactory = ({ IDL }) => {
     "lastName": IDL.Text,
     "firstName": IDL.Text
   });
-  const DeleteOrganisationDTO = IDL.Record({
+  const DeleteOrganisation = IDL.Record({
     "organisationId": OrganisationId,
     "confirmDelete": IDL.Bool
   });
@@ -3975,7 +3975,7 @@ const idlFactory = ({ IDL }) => {
     "ok": IDL.Vec(IDL.Tuple(PrincipalId, Profile)),
     "err": Error2
   });
-  const CreateOrganisationDTO = IDL.Record({
+  const CreateOrganisation = IDL.Record({
     "ownerId": PrincipalId,
     "name": IDL.Text
   });
@@ -4003,12 +4003,12 @@ const idlFactory = ({ IDL }) => {
   return IDL.Service({
     "acceptOrganisationInvitation": IDL.Func([OrganisationId], [Result], []),
     "acceptUserOrganisationRequest": IDL.Func(
-      [AcceptUserOrganisationRequestDTO],
+      [AcceptUserOrganisationRequest],
       [Result],
       []
     ),
     "createProfile": IDL.Func([CreateProfileDTO], [Result], []),
-    "deleteOrganisation": IDL.Func([DeleteOrganisationDTO], [Result], []),
+    "deleteOrganisation": IDL.Func([DeleteOrganisation], [Result], []),
     "deleteProfile": IDL.Func([PrincipalId], [Result], []),
     "getPresaleAllocationListings": IDL.Func([], [Result_4], []),
     "getPresaleParticipation": IDL.Func(
@@ -4023,13 +4023,14 @@ const idlFactory = ({ IDL }) => {
     "listOGProfiles": IDL.Func([], [Result_1], []),
     "listPresaleAllocation": IDL.Func([IDL.Nat64, IDL.Nat64], [Result], []),
     "participateInPresale": IDL.Func([IDL.Nat64, IDL.Nat64], [Result], []),
-    "purchaseOrganisation": IDL.Func([CreateOrganisationDTO], [Result], []),
+    "purchaseOrganisation": IDL.Func([CreateOrganisation], [Result], []),
     "purchasePresaleAllocation": IDL.Func(
       [PurchasePresaleAllocationDTO],
       [Result],
       []
     ),
     "rejectOrganisationInvitation": IDL.Func([OrganisationId], [Result], []),
+    "requestCanisterTopup": IDL.Func([IDL.Nat], [], []),
     "requestOrganisationAccess": IDL.Func([OrganisationId], [Result], []),
     "transferOGProfiles": IDL.Func([], [], ["oneway"]),
     "unlistPresaleAllocation": IDL.Func([IDL.Nat64], [Result], []),
@@ -4398,6 +4399,51 @@ const Directory_nav = create_ssr_component(($$result, $$props, $$bindings, slots
     0
   )}>Z</button></div>`;
 });
+const Accountancy_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { className = "" } = $$props;
+  let { fill = "#FFFFFF" } = $$props;
+  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
+    $$bindings.className(className);
+  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
+    $$bindings.fill(fill);
+  return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><rect x="3" y="2" width="18" height="20" rx="2" ry="2" stroke="none"${add_attribute("fill", fill, 0)}></rect><rect x="7" y="5" width="10" height="4" stroke="none" fill="white"></rect><rect x="7" y="11" width="2" height="2" fill="white"></rect><rect x="11" y="11" width="2" height="2" fill="white"></rect><rect x="15" y="11" width="2" height="2" fill="white"></rect><rect x="7" y="15" width="2" height="2" fill="white"></rect><rect x="11" y="15" width="2" height="2" fill="white"></rect><rect x="15" y="15" width="2" height="2" fill="white"></rect></svg>`;
+});
+const Sales_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { className = "" } = $$props;
+  let { fill = "#FFFFFF" } = $$props;
+  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
+    $$bindings.className(className);
+  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
+    $$bindings.fill(fill);
+  return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><path d="M7 18c-.83 0-1.5.67-1.5 1.5S6.17 21 7 21s1.5-.67 1.5-1.5S7.83 18 7 18zm10 0c-.83 0-1.5.67-1.5 1.5S16.17 21 17 21s1.5-.67 1.5-1.5S17.83 18 17 18zm-8.22-1.5h9.72l.78-4.5H6.56l-1.1-6H4v-1.5h1.36L5.8 2.33 6.87 2h.56l.45 2.5h10.45L19.5 9H7.22l-.45-2.5H6.15L7.78 16.5zm2.72-9h6.2l.25-1.5H10.25l.25 1.5z"${add_attribute("fill", fill, 0)}></path></svg>`;
+});
+const Timesheet_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { className = "" } = $$props;
+  let { fill = "#FFFFFF" } = $$props;
+  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
+    $$bindings.className(className);
+  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
+    $$bindings.fill(fill);
+  return `<svg${add_attribute("class", className, 0)} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none"${add_attribute("stroke", fill, 0)} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="8"></circle><path d="M12 10V14L15 16"></path><path d="M8 2H16M12 2V6"></path><path d="M17 7L19 5"></path><path d="M7 7L5 5"></path></svg>`;
+});
+const Recruitment_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { className = "" } = $$props;
+  let { fill = "#000000" } = $$props;
+  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
+    $$bindings.className(className);
+  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
+    $$bindings.fill(fill);
+  return `<svg${add_attribute("class", className, 0)} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="6" r="4"${add_attribute("stroke", fill, 0)} stroke-width="2" fill="none"></circle><path d="M8,14 Q12,18 16,14 L12,21 L8,14"${add_attribute("stroke", fill, 0)} stroke-width="2" fill="none"></path><line x1="12" y1="10" x2="12" y2="14"${add_attribute("stroke", fill, 0)} stroke-width="2"></line></svg>`;
+});
+const Task_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  let { className = "" } = $$props;
+  let { fill = "#000000" } = $$props;
+  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
+    $$bindings.className(className);
+  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
+    $$bindings.fill(fill);
+  return `<svg${add_attribute("class", className, 0)} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20"${add_attribute("stroke", fill, 0)} stroke-width="2" fill="none"></rect><polyline points="6 12 10 16 18 8"${add_attribute("stroke", fill, 0)} stroke-width="2" fill="none"></polyline></svg>`;
+});
 const Dashboard = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let currentRoute;
   let $page, $$unsubscribe_page;
@@ -4409,6 +4455,46 @@ const Dashboard = create_ssr_component(($$result, $$props, $$bindings, slots) =>
     {
       className: "side-nav-icon",
       fill: currentRoute === "/" ? "#FFFFFF" : "#8C8C8C"
+    },
+    {},
+    {}
+  )}</button> <button>${validate_component(Task_icon, "TaskIcon").$$render(
+    $$result,
+    {
+      className: "side-nav-icon",
+      fill: "#8C8C8C"
+    },
+    {},
+    {}
+  )}</button> <button>${validate_component(Accountancy_icon, "AccountancyIcon").$$render(
+    $$result,
+    {
+      className: "side-nav-icon",
+      fill: "#8C8C8C"
+    },
+    {},
+    {}
+  )}</button> <button>${validate_component(Sales_icon, "SalesIcon").$$render(
+    $$result,
+    {
+      className: "side-nav-icon",
+      fill: "#8C8C8C"
+    },
+    {},
+    {}
+  )}</button> <button>${validate_component(Timesheet_icon, "TimesheetIcon").$$render(
+    $$result,
+    {
+      className: "side-nav-icon",
+      fill: "#8C8C8C"
+    },
+    {},
+    {}
+  )}</button> <button>${validate_component(Recruitment_icon, "RecruitmentIcon").$$render(
+    $$result,
+    {
+      className: "side-nav-icon",
+      fill: "#8C8C8C"
     },
     {},
     {}
@@ -4428,7 +4514,7 @@ const Dashboard = create_ssr_component(($$result, $$props, $$bindings, slots) =>
     },
     {},
     {}
-  )}</button>` : ``} ${``} ${currentRoute === "/directory" ? `${validate_component(Directory_nav, "DirectoryNav").$$render($$result, {}, {}, {})}` : ``} <div class="pull-down">${validate_component(Expand_icon, "ExpandIcon").$$render($$result, { fill: "#555555" }, {}, {})}</div></nav> <div class="w-full">${validate_component(Dashboard_header, "DashboardHeader").$$render($$result, {}, {}, {})} <div class="flex-1 p-4">${currentRoute === "/profile" ? `${validate_component(Profile_detail, "ProfileDetail").$$render($$result, {}, {}, {})}` : ``} ${currentRoute === "/directory" ? `${validate_component(Directory, "IcpDirectory").$$render($$result, {}, {}, {})}` : ``} ${``} ${``} ${``} ${currentRoute === "/" ? `<p class="text-2xl" data-svelte-h="svelte-11g1yv3">Welcome to OpenBook</p> <p data-svelte-h="svelte-53rjjq">OpenBook is a decentralised business management tool for organisations
+  )}</button>` : ``} ${``} ${currentRoute === "/directory" ? `${validate_component(Directory_nav, "DirectoryNav").$$render($$result, {}, {}, {})}` : ``} <div class="pull-down">${validate_component(Expand_icon, "ExpandIcon").$$render($$result, { fill: "#555555" }, {}, {})}</div></nav> <div class="w-full">${validate_component(Dashboard_header, "DashboardHeader").$$render($$result, {}, {}, {})} <div class="flex-1 p-8">${currentRoute === "/profile" ? `${validate_component(Profile_detail, "ProfileDetail").$$render($$result, {}, {}, {})}` : ``} ${currentRoute === "/directory" ? `${validate_component(Directory, "IcpDirectory").$$render($$result, {}, {}, {})}` : ``} ${``} ${``} ${``} ${currentRoute === "/" ? `<p class="text-2xl" data-svelte-h="svelte-11g1yv3">Welcome to OpenBook</p> <p data-svelte-h="svelte-53rjjq">OpenBook is a decentralised business management tool for organisations
         of all sizes.</p> <button class="book-btn mt-4" data-svelte-h="svelte-shnzvf">Create Profile</button> <button class="book-btn mt-4 disabled text-xs" data-svelte-h="svelte-1b189a6">Create Organisation (soon)</button>` : ``}</div></div>`;
 });
 const Landing = create_ssr_component(($$result, $$props, $$bindings, slots) => {
@@ -4447,7 +4533,7 @@ const Page$a = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   })}`;
 });
 const Page$9 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return ``;
+  return ` <p data-svelte-h="svelte-1tcl1an">Accounting</p>`;
 });
 const Page$8 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $authSignedInStore, $$unsubscribe_authSignedInStore;
@@ -4509,7 +4595,11 @@ const Page$4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   })}`;
 });
 const Page$3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return ``;
+  return ` ${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+    default: () => {
+      return `<div class="flex flex-row h-screen w-full" data-svelte-h="svelte-ml17pj"><p>Recruitment</p></div>`;
+    }
+  })}`;
 });
 const Page$2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return ``;

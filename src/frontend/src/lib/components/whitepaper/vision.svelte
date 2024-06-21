@@ -1,5 +1,5 @@
-<h1 class="text-2xl mb-8 mt-4">Vision</h1>
-<div class="flex flex-col space-y-8 mt-4 mb-4 mb-4">
+<div class="flex flex-col space-y-2">
+  <h1 class="text-2xl">Vision</h1>
   <p>
     Businesses are increasingly turning to Software as a Service (SaaS)
     platforms to manager their internal processes. Platforms like Salesforce &

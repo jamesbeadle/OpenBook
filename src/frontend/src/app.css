@@ -72,14 +72,14 @@ input[type="file"] {
   @apply text-xs xs:text-sm sm:text-lg md:text-xxs lg:text-sm xl:text-base;
 }
 .book-btn {
-  @apply bg-customGreen px-4 py-2 rounded-md text-center text-black;
+  @apply bg-OpenBookGreen px-4 py-2 rounded-md text-center text-black;
 }
 .book-btn.disabled {
   @apply bg-gray-500;
 }
 
 .directory-nav-btn-active {
-  @apply bg-customGreen px-3 py-1 rounded-sm text-center text-black;
+  @apply bg-OpenBookGreen px-3 py-1 rounded-sm text-center text-black;
 }
 
 .directory-nav-btn {
@@ -156,6 +156,11 @@ input[type="file"] {
 
 input {
   background-color: #25282e !important;
+}
+
+.horizontal-divider {
+  min-height: 2px;
+  @apply flex-shrink-0 h-px bg-white self-stretch;
 }
 
 /* Extra small devices (portrait phones, less than 480px) */

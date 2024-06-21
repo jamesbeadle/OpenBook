@@ -1,135 +1,204 @@
 <script lang="ts">
-  import Mvp from '$lib/components/whitepaper/mvp.svelte';
-  import Team from '$lib/components/whitepaper/team.svelte';
-  import Value from '$lib/components/whitepaper/value.svelte';
-  import Vision from '$lib/components/whitepaper/vision.svelte';
-  import BalanceIcon from '$lib/icons/balance-icon.svelte';
-  import CreditorsIcon from '$lib/icons/creditors-icon.svelte';
-  import DebtorsIcon from '$lib/icons/debtors-icon.svelte';
-  import FinancingIcon from '$lib/icons/financing-icon.svelte';
-  import IcpIcon from '$lib/icons/icp-icon.svelte';
-  import Logo from '$lib/icons/logo-icon.svelte';
-  import MvpIcon from '$lib/icons/mvp-icon.svelte';
-  import ProfitIcon from '$lib/icons/profit-icon.svelte';
-  import TeamIcon from '$lib/icons/team-icon.svelte';
-  import ValueIcon from '$lib/icons/value-icon.svelte';
-  import RoadmapIcon from '$lib/icons/roadmap-icon.svelte';
-  import Layout from '../Layout.svelte';
-  import Roadmap from '$lib/components/whitepaper/roadmap.svelte';
-  import VisionIcon from '$lib/icons/vision-icon.svelte';
-  import { page } from '$app/stores';
-  import { goto } from '$app/navigation';
-  import HomeIcon from '$lib/icons/home-icon.svelte';
-  $: currentRoute = $page.url.pathname;
+  import Layout from "../Layout.svelte";
+  import BlackLogoIcon from "$lib/icons/black-logo-icon.svelte";
+  
+  import Vision from "$lib/components/whitepaper/vision.svelte";
+  import Product from "$lib/components/whitepaper/product.svelte";
+  import Revenue from "$lib/components/whitepaper/revenue.svelte";
+  import Tokenomics from "$lib/components/whitepaper/tokenomics.svelte";
+  import DAO from "$lib/components/whitepaper/dao.svelte";
+  import Marketing from "$lib/components/whitepaper/marketing.svelte";
+  import RoadMap from "$lib/components/whitepaper/roadmap.svelte";
+  import Team from "$lib/components/whitepaper/team.svelte";
+  import SystemArchitecture from "$lib/components/whitepaper/system-architecture.svelte";
 
-  let activeSection = 0;
-  let sections = ['vision', 'value', 'roadmap', 'mvp', 'team'];
+  let activeTab = "vision";
 
-  function loadHome() {
-    goto('/');
+  const tabs = [
+    { name: "Vision", component: Vision },
+    { name: "Product", component: Product },
+    { name: "Revenue", component: Revenue },
+    { name: "Tokenomics", component: Tokenomics },
+    { name: "DAO", component: DAO },
+    { name: "Marketing", component: Marketing },
+    { name: "Road Map", component: RoadMap },
+    { name: "Team", component: Team },
+    { name: "System Architecture", component: SystemArchitecture },
+  ];
+
+  function nextTab(): void {
+    const currentIndex = tabs.findIndex(tab => tab.name.toLowerCase() === activeTab);
+    if (currentIndex < tabs.length - 1) {
+      activeTab = tabs[currentIndex + 1].name.toLowerCase();
+    }
   }
 
-  function selectSection(sectionIndex: number) {
-    activeSection = sectionIndex;
+  function prevTab(): void {
+    const currentIndex = tabs.findIndex(tab => tab.name.toLowerCase() === activeTab);
+    if (currentIndex > 0) {
+      activeTab = tabs[currentIndex - 1].name.toLowerCase();
+    }
   }
 
-  function nextSection() {
-    activeSection =
-      activeSection + 1 > sections.length - 1 ? 0 : activeSection + 1;
-  }
-
-  function priorSection() {
-    activeSection =
-      activeSection - 1 < 0 ? sections.length - 1 : activeSection - 1;
+  function isActiveTab(index: number): boolean {
+    return tabs[index].name.toLowerCase() === activeTab;
   }
 </script>
 
 <Layout>
-  <div class="flex h-full">
-    <nav class="p-4 h-full side-nav flex flex-col">
-      <a href="/">
-        <Logo className="w-6" />
-      </a>
-      <button on:click={loadHome}>
-        <HomeIcon
-          className="side-nav-icon"
-          fill={currentRoute === '/' ? '#FFFFFF' : '#8C8C8C'}
-        />
-      </button>
-      <button on:click={() => selectSection(0)}>
-        <VisionIcon
-          className="side-nav-icon"
-          fill={activeSection == 0 ? '#FFFFFF' : '#8C8C8C'}
-        />
-      </button>
-      <button on:click={() => selectSection(1)}>
-        <ValueIcon
-          className="side-nav-icon"
-          fill={activeSection == 1 ? '#FFFFFF' : '#8C8C8C'}
-        />
-      </button>
-      <button on:click={() => selectSection(2)}>
-        <RoadmapIcon
-          className="side-nav-icon"
-          fill={activeSection == 2 ? '#FFFFFF' : '#8C8C8C'}
-        />
-      </button>
-      <button on:click={() => selectSection(3)}>
-        <MvpIcon
-          className="side-nav-icon"
-          fill={activeSection == 3 ? '#FFFFFF' : '#8C8C8C'}
-        />
-      </button>
-      <button on:click={() => selectSection(4)}>
-        <TeamIcon
-          className="side-nav-icon"
-          fill={activeSection == 4 ? '#FFFFFF' : '#8C8C8C'}
-        />
-      </button>
-    </nav>
-    <main class="flex-1">
-      <div class="w-full p-4 px-8 top-bar">
-        <h1>OpenBook Whitepaper</h1>
+  <div class="p-2">
+    <div class="flex flex-col bg-OpenBookGreen rounded-md rounded-b-lg xs:text-lg sm:text-xl">
+      <div class="flex flex-row items-center px-4 border-b border-b-OpenBookGreen justify-between text-black">
+        <div class="flex items-center">
+          <BlackLogoIcon className="w-4 xs:w-6 sm:w-8 mx-1 xs:mx-2 sm:mx-3 my-2" />
+          <p class="p-2 xs:p-3 sm:p-4">OpenBook Whitepaper</p>
+        </div>
       </div>
-      <div class="p-4 px-8">
-        {#if activeSection == 0}
-          <Vision />
-        {/if}
-        {#if activeSection == 1}
-          <Roadmap />
-        {/if}
-        {#if activeSection == 2}
-          <Value />
-        {/if}
-        {#if activeSection == 3}
-          <Mvp />
-        {/if}
-        {#if activeSection == 4}
-          <Team />
-        {/if}
+
+      <div class="w-full bg-OpenBookGray p-4 rounded-b-md flex flex-col text-sm xs:text-base sm:text-lg">
+        
+        {#each tabs as { name, component }}
+          {#if activeTab === name.toLowerCase()}
+            <div class="flex flex-col">
+
+              <div class="flex flex-col sm:hidden text-xs">
+                <div class="flex flex-row">
+                  <button
+                    class="bg-gray-700 w-1/2 text-white py-2 px-4 rounded-l disabled:bg-gray-600"
+                    on:click={prevTab}
+                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}
+                  >
+                    Prior Section
+                  </button>
+                  <button
+                    class="bg-gray-700 w-1/2 text-white py-2 px-4 rounded-r disabled:bg-gray-600"
+                    on:click={nextTab}
+                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}
+                  >
+                    Next Section
+                  </button>
+                </div>
+                <div class="flex flex-row justify-center my-4">
+                  {#each tabs as _, index}
+                    <div class="pip" class:is-active={isActiveTab(index)}></div>
+                  {/each}
+                </div>
+
+              </div>
+
+              <div class="hidden sm:flex flex-col text-xs  my-4">
+                <div class="flex flex-row items-center justify-between">
+                  <button
+                    class="bg-gray-700 text-white py-2 px-4 rounded disabled:bg-gray-600 flex-grow"
+                    on:click={prevTab}
+                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}
+                  >
+                    Prior Section
+                  </button>
+                  <div class="flex-grow flex flex-row justify-center">
+                    {#each tabs as _, index}
+                      <div class="pip" class:is-active={isActiveTab(index)}></div>
+                    {/each}
+                  </div>
+                  <button
+                    class="bg-gray-700 text-white py-2 px-4 rounded disabled:bg-gray-600 flex-grow"
+                    on:click={nextTab}
+                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}
+                  >
+                    Next Section
+                  </button>
+                </div>
+              </div>
+              
+
+              <div class="horizontal-divider" />
+              <div class="flex my-4">
+                <svelte:component this={component} />
+              </div>
+              <div class="horizontal-divider" />
+
+              <div class="flex flex-col sm:hidden">
+                <div class="flex flex-row justify-center my-4">
+                  {#each tabs as _, index}
+                    <div class="pip" class:is-active={isActiveTab(index)}></div>
+                  {/each}
+                </div>
+                
+                
+                <div class="flex flex-col sm:hidden text-xs">
+                  <div class="flex flex-row">
+                    <button
+                      class="bg-gray-700 w-1/2 text-white py-2 px-4 rounded-l disabled:bg-gray-600"
+                      on:click={prevTab}
+                      disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}
+                    >
+                      Prior Section
+                    </button>
+                    <button
+                      class="bg-gray-700 w-1/2 text-white py-2 px-4 rounded-r disabled:bg-gray-600"
+                      on:click={nextTab}
+                      disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}
+                    >
+                      Next Section
+                    </button>
+                  </div>
+  
+                </div>
+                
+              </div>
+
+
+              <div class="hidden sm:flex flex-col text-xs  my-4">
+                <div class="flex flex-row items-center justify-between">
+                  <button
+                    class="bg-gray-700 text-white py-2 px-4 rounded disabled:bg-gray-600 flex-grow"
+                    on:click={prevTab}
+                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}
+                  >
+                    Prior Section
+                  </button>
+                  <div class="flex-grow flex flex-row justify-center">
+                    {#each tabs as _, index}
+                      <div class="pip" class:is-active={isActiveTab(index)}></div>
+                    {/each}
+                  </div>
+                  <button
+                    class="bg-gray-700 text-white py-2 px-4 rounded disabled:bg-gray-600 flex-grow"
+                    on:click={nextTab}
+                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}
+                  >
+                    Next Section
+                  </button>
+                </div>
+              </div>
+
+
+
+            </div>
+          {/if}
+        {/each}
       </div>
-      <div class="flex flex-row space-x-4 px-7 mb-4">
-        <button
-          on:click={priorSection}
-          disabled={activeSection == 0}
-          class="book-btn {activeSection == 0 ? 'disabled' : ''}"
-          >&lt; Prior Section</button
-        >
-        <button
-          on:click={nextSection}
-          disabled={activeSection == sections.length - 1}
-          class="book-btn {activeSection == sections.length - 1
-            ? 'disabled'
-            : ''}">Next Section &gt;</button
-        >
-      </div>
-    </main>
+    </div>
   </div>
 </Layout>
 
 <style>
-  .side-nav {
-    background-color: #1a1a1d;
-    border-right: 1px solid #2e323a;
+  .pip {
+    width: 10px;
+    height: 10px;
+    background-color: gray;
+    border-radius: 50%;
+    margin: 0 2px;
+  }
+  
+  .pip.is-active {
+    @apply bg-OpenBookGreen
+  }
+
+  @media (min-width: 640px) {
+    .pip {
+      width: 12px;
+      height: 12px;
+    }
   }
 </style>

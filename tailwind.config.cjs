@@ -38,7 +38,10 @@ export default {
     },
     extend: {
       colors: {
-        customGreen: "#66E094",
+        OpenBookGreen: "#66E094",
+        OpenBookGray: "#2E323A",
+        OpenBookRed: "#FF403C",
+        OpenBookDarkGreen: "#25362B"
       },
     },
   },
