@@ -64,7 +64,7 @@ module OrganisationTypes {
         projectsCanisterId: Text;
         salesCanisterId: Text;
         timesheetsCanisterId: Text;
-        recruitmentCanisterId: Text;
+        jobsCanisterId: Text;
         storageCanisterId: Text;
     };
 
@@ -92,7 +92,7 @@ module OrganisationTypes {
     public type ServiceType = {
         #Accountancy;
         #Sales;
-        #Recruitment;
+        #Jobs;
         #Projects;
         #Timesheets;
     };

@@ -20,7 +20,7 @@
     import AccountancyIcon from '$lib/icons/accountancy-icon.svelte';
     import SalesIcon from '$lib/icons/sales-icon.svelte';
     import TimesheetIcon from '$lib/icons/timesheet-icon.svelte';
-    import RecruitmentIcon from '$lib/icons/recruitment-icon.svelte';
+    import JobsIcon from '$lib/icons/jobs-icon.svelte';
     import TaskIcon from '$lib/icons/task-icon.svelte';
 
   let activeSection = -1;
@@ -75,8 +75,8 @@
     goto('/timesheets');
   }
 
-  function loadRecruitment() {
-    goto('/recruitment');
+  function loadJobs() {
+    goto('/jobs');
   }
 
 </script>
@@ -115,8 +115,8 @@
       fill={activeSection == 1 ? '#FFFFFF' : '#8C8C8C'}
     />
   </button>
-  <button on:click={loadRecruitment}>
-    <RecruitmentIcon
+  <button on:click={loadJobs}>
+    <JobsIcon
       className="side-nav-icon"
       fill={activeSection == 1 ? '#FFFFFF' : '#8C8C8C'}
     />

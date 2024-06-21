@@ -1,8 +1,8 @@
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
-import DTOs "../dtos/recruitment-dtos";
+import DTOs "../dtos/job-dtos";
 import T "../data-types/types";
-import RecruitmentPermissions "../permissions/recruitment-permissions";
+import JobPermissions "../permissions/job-permissions";
 import PermissionsManager "canister-managers/recruitment/permissions-manager";
 import CandidatesManager "canister-managers/recruitment/candidates-manager";
 import ClientsManager "canister-managers/recruitment/clients-manager";
@@ -14,7 +14,7 @@ import RecruitersManager "canister-managers/recruitment/recruiters-manager";
 import ReferencesManager "canister-managers/recruitment/references-manager";
 import ResumesManager "canister-managers/recruitment/resumes-manager";
 
-actor class _RecruitmentManagementCanister() {
+actor class _JobManagementCanister() {
 
     private let candidatesManager = CandidatesManager.CandidatesManager();
     private let clientsManager = ClientsManager.ClientsManager();

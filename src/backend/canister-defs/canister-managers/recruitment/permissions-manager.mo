@@ -1,10 +1,10 @@
 import T "../../../data-types/types";
-import RecruitmentPermissions "../../../permissions/recruitment-permissions";
+import JobPermissions "../../../permissions/job-permissions";
 
 module {
 
   public class PermissionsManager() {
-    public func hasPermission(principalId: T.PrincipalId, permission: RecruitmentPermissions.RecruitmentPermission) : Bool {
+    public func hasPermission(principalId: T.PrincipalId, permission: JobPermissions.JobPermission) : Bool {
         return false; //TODO
     };
 

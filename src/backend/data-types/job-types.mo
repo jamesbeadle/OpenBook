@@ -1,4 +1,4 @@
-module RecruitmentTypes {
+module JobTypes {
 
     public type PrincipalId = Text;
 
@@ -149,7 +149,7 @@ module RecruitmentTypes {
         #Overdue;
     };
 
-    public type RecruitmentPackage = {
+    public type JobPackage = {
         jobPostings: [JobPosting];
         candidates: [Candidate];
         applications: [JobApplication];

@@ -1,4 +1,4 @@
-module RecruitmentDTOs {
+module JobDTOs {
     public type ListCandidates = {};
     public type GetCandidate = {};
     public type CreateCandidate = {};

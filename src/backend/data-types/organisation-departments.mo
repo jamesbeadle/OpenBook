@@ -24,7 +24,7 @@ module Departments {
     #RiskManagement;
     #Training;
     #HealthAndSafety;
-    #Recruitment;
+    #Jobs;
     #SystemAdministration;
     #Security;
     #TechnicalSupport;

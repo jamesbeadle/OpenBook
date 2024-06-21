@@ -87,7 +87,7 @@ module {
           await Utilities.delete_canister_(actor (organisationCanisterIds.accountancyCanisterId) : actor { }, ?Principal.fromText(Environment.BACKEND_CANISTER_ID), IC);
           await Utilities.delete_canister_(actor (organisationCanisterIds.salesCanisterId) : actor { }, ?Principal.fromText(Environment.BACKEND_CANISTER_ID), IC);
           await Utilities.delete_canister_(actor (organisationCanisterIds.projectsCanisterId) : actor { }, ?Principal.fromText(Environment.BACKEND_CANISTER_ID), IC);
-          await Utilities.delete_canister_(actor (organisationCanisterIds.recruitmentCanisterId) : actor { }, ?Principal.fromText(Environment.BACKEND_CANISTER_ID), IC);
+          await Utilities.delete_canister_(actor (organisationCanisterIds.jobCanisterId) : actor { }, ?Principal.fromText(Environment.BACKEND_CANISTER_ID), IC);
           await Utilities.delete_canister_(actor (organisationCanisterIds.timesheetsCanisterId) : actor { }, ?Principal.fromText(Environment.BACKEND_CANISTER_ID), IC);
           await Utilities.delete_canister_(actor (organisationCanisterIds.storageCanisterId) : actor { }, ?Principal.fromText(Environment.BACKEND_CANISTER_ID), IC);
           await Utilities.delete_canister_(actor (foundOrganisation.id) : actor { }, ?Principal.fromText(Environment.BACKEND_CANISTER_ID), IC);

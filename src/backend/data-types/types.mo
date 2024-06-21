@@ -78,7 +78,7 @@ module OpenBookTypes {
     salesChargeBalance : Nat;
     timesheetsChargeBalance : Nat;
     projectsChargeBalance : Nat;
-    recruitmentChargeBalance : Nat;
+    jobsChargeBalance : Nat;
     availableBalance : Nat;
     accountancyChargeMin : Nat;
     accountancyChargeMax : Nat;
@@ -88,8 +88,8 @@ module OpenBookTypes {
     timesheetsChargeMax : Nat;
     projectsChargeMin : Nat;
     projectsChargeMax : Nat;
-    recruitmentChargeMin : Nat;
-    recruitmentChargeMax : Nat;
+    jobsChargeMin : Nat;
+    jobsChargeMax : Nat;
   };
 
   public type TeamMember = {

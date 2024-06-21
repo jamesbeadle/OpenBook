@@ -1,5 +1,5 @@
 import T "../../../data-types/types";
-import DTOs "../../../dtos/recruitment-dtos";
+import DTOs "../../../dtos/job-dtos";
 import Result "mo:base/Result";
 
 module {

@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import type { DirectoryDTO } from '../../../../../declarations/backend/backend.did';
   import { profilesStore } from '$lib/stores/profile-store';
   import { Spinner, busyStore } from '@dfinity/gix-components';
   import LogoIcon from '$lib/icons/logo-icon.svelte';
@@ -11,6 +10,11 @@
     professionFilter,
     usernameFilter,
   } from '$lib/stores/filter-store';
+
+  interface DirectoryDTO {
+    totalEntries: bigint;
+    profiles: any[]
+  };
 
   let directoryResult: DirectoryDTO;
   let currentPage = 1;

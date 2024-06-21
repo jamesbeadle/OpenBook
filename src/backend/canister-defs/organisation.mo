@@ -26,7 +26,7 @@ actor class _OrganisationCanister() {
     private stable var projects_canister_id = "";
     private stable var sales_canister_id = "";
     private stable var timesheets_canister_id = "";
-    private stable var recruitment_canister_id = "";
+    private stable var jobs_canister_id = "";
     private stable var storage_canister_id = "";
 
     private stable var organisation: ?T.Organisation = null;
@@ -88,7 +88,7 @@ actor class _OrganisationCanister() {
         accountancyCanisterId = accountancy_canister_id;
         timesheetsCanisterId = timesheets_canister_id;
         projectsCanisterId = projects_canister_id;
-        recruitmentCanisterId = recruitment_canister_id;
+        jobsCanisterId = jobs_canister_id;
         salesCanisterId = sales_canister_id;
         storageCanisterId = storage_canister_id;
       }
@@ -658,9 +658,9 @@ actor class _OrganisationCanister() {
                     projectsChargeBalance = 0;
                     projectsChargeMax = 0;
                     projectsChargeMin = 0;
-                    recruitmentChargeBalance = 0;
-                    recruitmentChargeMax = 0;
-                    recruitmentChargeMin = 0;
+                    jobsChargeBalance = 0;
+                    jobsChargeMax = 0;
+                    jobsChargeMin = 0;
                     salesChargeBalance = 0;
                     salesChargeMax = 0;
                     salesChargeMin = 0;
@@ -678,9 +678,9 @@ actor class _OrganisationCanister() {
                     projectsChargeBalance = existingChargeInfo.projectsChargeBalance;
                     projectsChargeMax = existingChargeInfo.projectsChargeMax;
                     projectsChargeMin = existingChargeInfo.projectsChargeMin;
-                    recruitmentChargeBalance = existingChargeInfo.recruitmentChargeBalance;
-                    recruitmentChargeMax = existingChargeInfo.recruitmentChargeMax;
-                    recruitmentChargeMin = existingChargeInfo.recruitmentChargeMin;
+                    jobsChargeBalance = existingChargeInfo.jobsChargeBalance;
+                    jobsChargeMax = existingChargeInfo.jobsChargeMax;
+                    jobsChargeMin = existingChargeInfo.jobsChargeMin;
                     salesChargeBalance = existingChargeInfo.salesChargeBalance;
                     salesChargeMax = existingChargeInfo.salesChargeMax;
                     salesChargeMin = existingChargeInfo.salesChargeMin;
@@ -755,7 +755,7 @@ actor class _OrganisationCanister() {
               var updatedSalesBalance = foundChargeInfo.salesChargeBalance;
               var updatedProjectsBalance = foundChargeInfo.projectsChargeBalance;
               var updatedTimesheetsBalance = foundChargeInfo.timesheetsChargeBalance;
-              var updatedRecruitmentBalance = foundChargeInfo.recruitmentChargeBalance;
+              var updatedJobsBalance = foundChargeInfo.jobsChargeBalance;
 
               switch(dto.serviceType){
                 case (#Accountancy){
@@ -770,8 +770,8 @@ actor class _OrganisationCanister() {
                 case (#Timesheets){
                   updatedTimesheetsBalance += dto.transferAmount;
                 };
-                case (#Recruitment){
-                  updatedRecruitmentBalance += dto.transferAmount;
+                case (#Jobs){
+                  updatedJobsBalance += dto.transferAmount;
                 };
               };
 
@@ -783,9 +783,9 @@ actor class _OrganisationCanister() {
                 projectsChargeBalance = updatedProjectsBalance;
                 projectsChargeMax = foundChargeInfo.projectsChargeMax;
                 projectsChargeMin = foundChargeInfo.projectsChargeMin;
-                recruitmentChargeBalance = updatedRecruitmentBalance;
-                recruitmentChargeMax = foundChargeInfo.recruitmentChargeMax;
-                recruitmentChargeMin = foundChargeInfo.recruitmentChargeMin;
+                jobsChargeBalance = updatedJobsBalance;
+                jobsChargeMax = foundChargeInfo.jobsChargeMax;
+                jobsChargeMin = foundChargeInfo.jobsChargeMin;
                 salesChargeBalance = updatedSalesBalance;
                 salesChargeMax = foundChargeInfo.salesChargeMax;
                 salesChargeMin = foundChargeInfo.salesChargeMin;
@@ -826,7 +826,7 @@ actor class _OrganisationCanister() {
               var updatedSalesBalance = foundChargeInfo.salesChargeBalance;
               var updatedProjectsBalance = foundChargeInfo.projectsChargeBalance;
               var updatedTimesheetsBalance = foundChargeInfo.timesheetsChargeBalance;
-              var updatedRecruitmentBalance = foundChargeInfo.recruitmentChargeBalance;
+              var updatedJobsBalance = foundChargeInfo.jobsChargeBalance;
               
               switch(dto.fromService){
                 case (#Accountancy){
@@ -853,11 +853,11 @@ actor class _OrganisationCanister() {
                   };
                   updatedTimesheetsBalance -= dto.transferAmount;
                 };
-                case (#Recruitment){
-                  if(foundChargeInfo.recruitmentChargeBalance < dto.transferAmount){
+                case (#Jobs){
+                  if(foundChargeInfo.jobsChargeBalance < dto.transferAmount){
                     return #err(#NotAllowed);
                   };
-                  updatedRecruitmentBalance -= dto.transferAmount;
+                  updatedJobsBalance -= dto.transferAmount;
                 };
               };
               
@@ -874,8 +874,8 @@ actor class _OrganisationCanister() {
                 case (#Timesheets){
                   updatedTimesheetsBalance += dto.transferAmount;
                 };
-                case (#Recruitment){
-                  updatedRecruitmentBalance += dto.transferAmount;
+                case (#Jobs){
+                  updatedJobsBalance += dto.transferAmount;
                 };
               };
 
@@ -887,9 +887,9 @@ actor class _OrganisationCanister() {
                 projectsChargeBalance = updatedProjectsBalance;
                 projectsChargeMax = foundChargeInfo.projectsChargeMax;
                 projectsChargeMin = foundChargeInfo.projectsChargeMin;
-                recruitmentChargeBalance = updatedRecruitmentBalance;
-                recruitmentChargeMax = foundChargeInfo.recruitmentChargeMax;
-                recruitmentChargeMin = foundChargeInfo.recruitmentChargeMin;
+                jobsChargeBalance = updatedJobsBalance;
+                jobsChargeMax = foundChargeInfo.jobsChargeMax;
+                jobsChargeMin = foundChargeInfo.jobsChargeMin;
                 salesChargeBalance = updatedSalesBalance;
                 salesChargeMax = foundChargeInfo.salesChargeMax;
                 salesChargeMin = foundChargeInfo.salesChargeMin;
@@ -936,8 +936,8 @@ actor class _OrganisationCanister() {
               var updatedProjectsChargeMax = foundChargeInfo.projectsChargeMax;
               var updatedTimesheetsChargeMin = foundChargeInfo.timesheetsChargeMin;
               var updatedTimesheetsChargeMax = foundChargeInfo.timesheetsChargeMax;
-              var updatedRecruitmentChargeMin = foundChargeInfo.recruitmentChargeMin;
-              var updatedRecruitmentChargeMax = foundChargeInfo.recruitmentChargeMax;
+              var updatedJobsChargeMin = foundChargeInfo.jobsChargeMin;
+              var updatedJobsChargeMax = foundChargeInfo.jobsChargeMax;
 
               switch(dto.serviceType){
                 case (#Accountancy){
@@ -956,9 +956,9 @@ actor class _OrganisationCanister() {
                   updatedTimesheetsChargeMin := dto.newChargeMin;
                   updatedTimesheetsChargeMax := dto.newChargeMax;
                 };
-                case (#Recruitment){
-                  updatedRecruitmentChargeMin := dto.newChargeMin;
-                  updatedRecruitmentChargeMax := dto.newChargeMax;
+                case (#Jobs){
+                  updatedJobsChargeMin := dto.newChargeMin;
+                  updatedJobsChargeMax := dto.newChargeMax;
                 };
               };
 
@@ -970,9 +970,9 @@ actor class _OrganisationCanister() {
                 projectsChargeBalance = foundChargeInfo.projectsChargeBalance;
                 projectsChargeMax = updatedProjectsChargeMax;
                 projectsChargeMin = updatedProjectsChargeMin;
-                recruitmentChargeBalance = foundChargeInfo.recruitmentChargeBalance;
-                recruitmentChargeMax = updatedRecruitmentChargeMax;
-                recruitmentChargeMin = updatedRecruitmentChargeMin;
+                jobsChargeBalance = foundChargeInfo.jobsChargeBalance;
+                jobsChargeMax = updatedJobsChargeMax;
+                jobsChargeMin = updatedJobsChargeMin;
                 salesChargeBalance = foundChargeInfo.salesChargeBalance;
                 salesChargeMax = updatedSalesChargeMax;
                 salesChargeMin = updatedSalesChargeMin;
@@ -1109,7 +1109,7 @@ actor class _OrganisationCanister() {
       await checkCanisterCycles("Accountancy");
       await checkCanisterCycles("Sales");
       await checkCanisterCycles("Timesheets");
-      await checkCanisterCycles("Recruitment");
+      await checkCanisterCycles("Jobs");
       await checkCanisterCycles("Projects");
     };
 

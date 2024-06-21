@@ -1,5 +1,5 @@
 module RecuitmentPermissions {
-    public type RecruitmentPermission = {
+    public type JobPermission = {
         #ListCandidates;
         #GetCandidate;
         #CreateCandidate;

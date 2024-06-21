@@ -14,6 +14,6 @@
 
 <Layout>
     <div class="flex flex-row h-screen w-full">
-        <p>Recruitment</p>
+        <p>Jobs</p>
     </div>  
 </Layout>
