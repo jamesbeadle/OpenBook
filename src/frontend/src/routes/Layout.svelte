@@ -140,14 +140,17 @@
 
   <aside class="bg-OpenBookGreen text-black p-4" bind:this={sidebar} class:expanded={expanded}>
     <div class="p-2">
-      <div class="p-2 flex justify-between items-center">
-        <h2 class="text-xl font-bold p-2">Options</h2>
-        <button on:click={handleCloseButtonClick} class="close-button">
+      <div class="p-2 flex items-center relative">
+        <button on:click={handleCloseButtonClick} class="close-button flex items-center absolute left-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
           </svg>
         </button>
+        <h2 class="text-xl font-bold p-2 text-center mx-auto">Menu</h2>
       </div>
+      
+
+      <div class="horizontal-divider my-2" />
       
       <ul class="mt-4 space-y-2">
         {#each links as option}

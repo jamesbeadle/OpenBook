@@ -64,14 +64,14 @@
               <div class="flex flex-col sm:hidden text-xs">
                 <div class="flex flex-row">
                   <button
-                    class="bg-gray-700 w-1/2 text-white py-2 px-4 rounded-l disabled:bg-gray-600"
+                    class="w-1/2 py-2 px-4 rounded-l bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray"
                     on:click={prevTab}
                     disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}
                   >
                     Prior Section
                   </button>
                   <button
-                    class="bg-gray-700 w-1/2 text-white py-2 px-4 rounded-r disabled:bg-gray-600"
+                    class="w-1/2 py-2 px-4 rounded-r bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray"
                     on:click={nextTab}
                     disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}
                   >
@@ -86,10 +86,10 @@
 
               </div>
 
-              <div class="hidden sm:flex flex-col text-xs  my-4">
+              <div class="hidden sm:flex flex-col text-xs  mb-4">
                 <div class="flex flex-row items-center justify-between">
                   <button
-                    class="bg-gray-700 text-white py-2 px-4 rounded disabled:bg-gray-600 flex-grow"
+                    class="py-2 px-4 rounded flex-grow bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray"
                     on:click={prevTab}
                     disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}
                   >
@@ -101,7 +101,7 @@
                     {/each}
                   </div>
                   <button
-                    class="bg-gray-700 text-white py-2 px-4 rounded disabled:bg-gray-600 flex-grow"
+                    class="py-2 px-4 rounded flex-grow bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray"
                     on:click={nextTab}
                     disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}
                   >
@@ -128,14 +128,14 @@
                 <div class="flex flex-col sm:hidden text-xs">
                   <div class="flex flex-row">
                     <button
-                      class="bg-gray-700 w-1/2 text-white py-2 px-4 rounded-l disabled:bg-gray-600"
+                      class="w-1/2 py-2 px-4 rounded-l bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray"
                       on:click={prevTab}
                       disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}
                     >
                       Prior Section
                     </button>
                     <button
-                      class="bg-gray-700 w-1/2 text-white py-2 px-4 rounded-r disabled:bg-gray-600"
+                      class="w-1/2 py-2 px-4 rounded-r bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray"
                       on:click={nextTab}
                       disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}
                     >
@@ -148,10 +148,10 @@
               </div>
 
 
-              <div class="hidden sm:flex flex-col text-xs  my-4">
+              <div class="hidden sm:flex flex-col text-xs  mt-4">
                 <div class="flex flex-row items-center justify-between">
                   <button
-                    class="bg-gray-700 text-white py-2 px-4 rounded disabled:bg-gray-600 flex-grow"
+                    class="text-white py-2 px-4 rounded flex-grow bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray"
                     on:click={prevTab}
                     disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}
                   >
@@ -163,7 +163,7 @@
                     {/each}
                   </div>
                   <button
-                    class="bg-gray-700 text-white py-2 px-4 rounded disabled:bg-gray-600 flex-grow"
+                    class="py-2 px-4 rounded flex-grow bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray"
                     on:click={nextTab}
                     disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}
                   >
