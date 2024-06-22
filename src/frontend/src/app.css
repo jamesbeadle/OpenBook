@@ -163,6 +163,11 @@ input {
   @apply flex-shrink-0 h-px bg-white self-stretch;
 }
 
+.horizontal-divider-gray {
+  min-height: 2px;
+  @apply flex-shrink-0 h-px bg-OpenBookWhiteOffset self-stretch;
+}
+
 /* Extra small devices (portrait phones, less than 480px) */
 @media (min-width: 480px) {
 }

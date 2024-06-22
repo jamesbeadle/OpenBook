@@ -42,7 +42,8 @@ export default {
         OpenBookGray: "#2E323A",
         OpenBookRed: "#FF403C",
         OpenBookDarkGreen: "#72B68C",
-        OpenBookLightGray: "#5D677A"
+        OpenBookLightGray: "#5D677A",
+        OpenBookWhiteOffset: "#F6F6F6"
       },
     },
   },

@@ -1,29 +1,8 @@
+<!-- Show details on an organisation, details and active projects -->
+
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import Layout from '../Layout.svelte';
-  import { authStore } from '$lib/stores/auth-store';
-  import { authSignedInStore } from '$lib/derived/auth.derived';
-  import Dashboard from '$lib/components/dashboard.svelte';
-  import Landing from '$lib/components/landing.svelte';
-  let isLoading = true;
-
-  onMount(async () => {
-    try {
-      await authStore.sync();
-    } catch (error) {
-      console.error('Error fetching homepage data:', error);
-    } finally {
-      isLoading = false;
-    }
-  });
+  import Layout from "../Layout.svelte";
 </script>
-
 <Layout>
-  <div class="flex flex-row h-full w-full">
-    {#if $authSignedInStore}
-      <Dashboard />
-    {:else}
-      <Landing />
-    {/if}
-  </div>
+  <p>The OpenBook Directory will be back soon.</p>
 </Layout>

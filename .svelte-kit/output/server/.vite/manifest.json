@@ -9,7 +9,7 @@
   },
   "_index.js": {
     "css": [
-      "_app/immutable/assets/index.CwycD2hp.css"
+      "_app/immutable/assets/index.DJiDkVx2.css"
     ],
     "file": "chunks/index.js",
     "imports": [
@@ -67,6 +67,14 @@
     "isEntry": true,
     "src": "src/frontend/src/routes/directory/+page.svelte"
   },
+  "src/frontend/src/routes/jobs/+page.svelte": {
+    "file": "entries/pages/jobs/_page.svelte.js",
+    "imports": [
+      "_index.js"
+    ],
+    "isEntry": true,
+    "src": "src/frontend/src/routes/jobs/+page.svelte"
+  },
   "src/frontend/src/routes/organisation/+page.svelte": {
     "file": "entries/pages/organisation/_page.svelte.js",
     "imports": [
@@ -98,14 +106,6 @@
     ],
     "isEntry": true,
     "src": "src/frontend/src/routes/projects/+page.svelte"
-  },
-  "src/frontend/src/routes/recruitment/+page.svelte": {
-    "file": "entries/pages/recruitment/_page.svelte.js",
-    "imports": [
-      "_index.js"
-    ],
-    "isEntry": true,
-    "src": "src/frontend/src/routes/recruitment/+page.svelte"
   },
   "src/frontend/src/routes/sales/+page.svelte": {
     "file": "entries/pages/sales/_page.svelte.js",

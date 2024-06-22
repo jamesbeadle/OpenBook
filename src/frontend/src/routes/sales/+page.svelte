@@ -12,3 +12,9 @@
         - convert quote
     - get sales figures
 -->
+<script lang="ts">
+    import Layout from "../Layout.svelte";
+</script>
+<Layout>
+    <p>Sales coming soon.</p>
+</Layout>

@@ -20,11 +20,14 @@
 
   $: links = $authSignedInStore ? [
     { name: 'Home', href: '/' },
+    { name: 'My Organisations', href: '/organisations' },
+    { name: 'Profile', href: '/profile' },
     { name: 'Projects', href: '/projects' },
     { name: 'Sales', href: '/sales' },
     { name: 'Jobs', href: '/jobs' },
     { name: 'Timesheets', href: 'timesheets' },
     { name: 'Accounts', href: '/accounts' },
+    { name: 'Directory', href: '/directory' },
   ] : 
   [
     { name: 'Connect', href: '#' },
@@ -157,7 +160,7 @@
 
       <div class="horizontal-divider my-2" />
       
-      <ul class="mt-4 space-y-2">
+      <ul class="mt-4">
         {#each links as option}
           <li>
             
@@ -167,7 +170,7 @@
                 <a href={option.href} class="block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2" on:click={handleLogout}>Disconnect</a>
               {:else}
                 <a href={option.href} class="block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2" on:click={handleLogin}>Connect</a>
-              {/if}
+              {/if}  
             {:else}
               <a href={option.href} class="block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2">{option.name}</a>
             {/if}

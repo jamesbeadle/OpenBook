@@ -1,31 +1,7 @@
+
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import Layout from '../Layout.svelte';
-  import { authStore } from '$lib/stores/auth-store';
-  import { authSignedInStore } from '$lib/derived/auth.derived';
-  import Dashboard from '$lib/components/dashboard.svelte';
-  import Landing from '$lib/components/landing.svelte';
-  let isLoading = true;
-
-  onMount(async () => {
-    try {
-      await authStore.sync();
-    } catch (error) {
-      console.error('Error fetching homepage data:', error);
-    } finally {
-      isLoading = false;
-    }
-  });
+  import Layout from "../Layout.svelte";
 </script>
-
 <Layout>
-  {#if $authSignedInStore}
-    <div class="flex flex-row h-full md:h-screen w-full">
-      <Dashboard />
-    </div>
-  {:else}
-    <div class="flex flex-row h-screen w-full">
-      <Landing />
-    </div>
-  {/if}
+  <p>Profile coming soon.</p>
 </Layout>
