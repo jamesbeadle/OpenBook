@@ -6,7 +6,6 @@ import * as set_cookie_parser from "set-cookie-parser";
 import { nonNullish } from "@dfinity/utils";
 import "dompurify";
 import { AuthClient } from "@dfinity/auth-client";
-import { HttpAgent, Actor } from "@dfinity/agent";
 let base = "";
 let assets = base;
 const initial = { base, assets };
@@ -3485,7 +3484,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1ylkcvk"
+  version_hash: "oe3b79"
 };
 async function get_hooks() {
   return {};
@@ -3866,7 +3865,7 @@ const Menu_icon = create_ssr_component(($$result, $$props, $$bindings, slots) =>
 });
 const css$1 = {
   code: "aside.svelte-viz6lm{position:absolute;left:-500px;transition:all 0.5s;height:var(--sidebar-height);width:300px;display:flex;flex-direction:column;justify-content:space-between}aside.expanded.svelte-viz6lm{left:0px}",
-  map: `{"version":3,"file":"Layout.svelte","sources":["Layout.svelte"],"sourcesContent":["<script lang=\\"ts\\">import { onMount, onDestroy } from \\"svelte\\";\\nimport { fade } from \\"svelte/transition\\";\\nimport { browser } from \\"$app/environment\\";\\nimport { goto } from \\"$app/navigation\\";\\nimport { initAuthWorker } from \\"$lib/services/worker.auth.services\\";\\nimport { authStore } from \\"$lib/stores/auth-store\\";\\nimport { authSignedInStore } from \\"$lib/derived/auth.derived\\";\\nimport { BusyScreen, Spinner } from \\"@dfinity/gix-components\\";\\nimport LogoIcon from \\"$lib/icons/logo-icon.svelte\\";\\nimport MenuIcon from \\"$lib/icons/menu-icon.svelte\\";\\nimport '../app.css';\\nlet expanded = false;\\nlet worker;\\nlet buttonHeight = 0;\\nlet sidebar;\\nconst init = async () => await Promise.all([syncAuthStore()]);\\n$: links = $authSignedInStore ? [\\n    { name: 'Home', href: '/' },\\n    { name: 'Projects', href: '/projects' },\\n    { name: 'Sales', href: '/sales' },\\n    { name: 'Jobs', href: '/jobs' },\\n    { name: 'Timesheets', href: 'timesheets' },\\n    { name: 'Accounts', href: '/accounts' },\\n] :\\n    [\\n        { name: 'Connect', href: '#' },\\n    ];\\nlet lessImportantOptions = [\\n    { name: 'Whitepaper', href: '/whitepaper' }\\n];\\nconst syncAuthStore = async () => {\\n    if (!browser) {\\n        return;\\n    }\\n    try {\\n        await authStore.sync();\\n    }\\n    catch (err) {\\n        console.error(\\"Error syncing auth store\\", err);\\n    }\\n};\\nconst updateSidebarHeight = () => {\\n    if (browser) {\\n        requestAnimationFrame(() => {\\n            const button = document.querySelector(\\".menu-row\\");\\n            if (button) {\\n                buttonHeight = button.clientHeight;\\n                const sidebarHeight = window.innerHeight - buttonHeight;\\n                document.documentElement.style.setProperty('--sidebar-height', \`\${sidebarHeight}px\`);\\n            }\\n        });\\n    }\\n};\\nconst handleClickOutside = (event) => {\\n    if (browser && expanded && sidebar && !sidebar.contains(event.target)) {\\n        expanded = false;\\n    }\\n};\\nconst handleButtonClick = (event) => {\\n    event.stopPropagation();\\n    expanded = !expanded;\\n};\\nconst handleCloseButtonClick = (event) => {\\n    event.stopPropagation();\\n    expanded = false;\\n};\\nonMount(async () => {\\n    worker = await initAuthWorker();\\n    if (browser) {\\n        window.addEventListener('resize', updateSidebarHeight);\\n        document.addEventListener('click', handleClickOutside);\\n    }\\n    requestAnimationFrame(() => {\\n        updateSidebarHeight();\\n    });\\n});\\nonDestroy(() => {\\n    if (browser) {\\n        document.removeEventListener('click', handleClickOutside);\\n        window.removeEventListener('resize', updateSidebarHeight);\\n    }\\n});\\n$: worker, $authStore, (() => worker?.syncAuthIdle($authStore))();\\n$: (() => {\\n    if (!browser) {\\n        return;\\n    }\\n    if ($authStore === undefined) {\\n        return;\\n    }\\n    const spinner = document.querySelector(\\"body > #app-spinner\\");\\n    spinner?.remove();\\n})();\\nfunction handleLogin() {\\n    let params = {\\n        domain: import.meta.env.VITE_AUTH_PROVIDER_URL,\\n    };\\n    authStore.signIn(params);\\n}\\nfunction handleLogout() {\\n    authStore.signOut();\\n    goto(\\"/\\");\\n}\\n<\/script>\\n\\n  <svelte:window on:storage={syncAuthStore} />\\n  {#await init()}\\n    <div in:fade>\\n      <Spinner />\\n    </div>\\n  {:then _}\\n    <div class=\\"menu-row flex items-center bg-OpenBookGray w-full p-2 text-white\\">\\n      <button on:click={handleButtonClick} class=\\"flex items-center\\">\\n        <MenuIcon fill='#FFFFFF' className=\\"w-5 m-1\\" />\\n      </button>\\n      <div class=\\"ml-auto\\">\\n        <a class=\\"flex flex-row items-center ml-auto\\" href=\\"/\\">\\n          <p class=\\"text-sm\\">OpenBook</p>\\n          <LogoIcon className=\\"w-4 m-1\\" />\\n        </a>\\n      </div>\\n    </div>\\n\\n  <aside class=\\"bg-OpenBookGreen text-black p-4\\" bind:this={sidebar} class:expanded={expanded}>\\n    <div class=\\"p-2\\">\\n      <div class=\\"p-2 flex items-center relative\\">\\n        <button on:click={handleCloseButtonClick} class=\\"close-button flex items-center absolute left-2\\">\\n          <svg xmlns=\\"http://www.w3.org/2000/svg\\" class=\\"h-6 w-6\\" fill=\\"none\\" viewBox=\\"0 0 24 24\\" stroke=\\"currentColor\\">\\n            <path stroke-linecap=\\"round\\" stroke-linejoin=\\"round\\" stroke-width=\\"2\\" d=\\"M15 19l-7-7 7-7\\" />\\n          </svg>\\n        </button>\\n        <h2 class=\\"text-xl font-bold p-2 text-center mx-auto\\">Menu</h2>\\n      </div>\\n      \\n\\n      <div class=\\"horizontal-divider my-2\\" />\\n      \\n      <ul class=\\"mt-4 space-y-2\\">\\n        {#each links as option}\\n          <li>\\n            \\n            {#if option.name === 'Connect'}\\n\\n              {#if $authSignedInStore}\\n                <a href={option.href} class=\\"block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2\\" on:click={handleLogout}>Disconnect</a>\\n              {:else}\\n                <a href={option.href} class=\\"block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2\\" on:click={handleLogin}>Connect</a>\\n              {/if}\\n            {:else}\\n              <a href={option.href} class=\\"block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2\\">{option.name}</a>\\n            {/if}\\n          </li>\\n        {/each}\\n      </ul>\\n    </div>\\n    <div class=\\"less-important p-2\\">\\n      <div class=\\"horizontal-divider my-2\\" />\\n      <ul class=\\"space-y-2 text-xs\\">\\n        {#each lessImportantOptions as option}\\n          <li>\\n            <a href={option.href} class=\\"block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2\\">{option.name}</a>\\n          </li>\\n        {/each}\\n      </ul>\\n    </div>\\n  </aside>\\n    <div class=\\"flex\\">\\n      <div class=\\"flex-1 p-4\\">\\n        <slot />\\n      </div>\\n    </div>\\n  {/await}\\n\\n  <BusyScreen />\\n\\n  <style>\\n    aside {\\n      position: absolute;\\n      left: -500px;\\n      transition: all 0.5s;\\n      height: var(--sidebar-height);\\n      width: 300px;\\n      display: flex;\\n      flex-direction: column;\\n      justify-content: space-between;\\n    }\\n\\n    aside.expanded {\\n      left: 0px;\\n    }</style>\\n"],"names":[],"mappings":"AAgLI,mBAAM,CACJ,QAAQ,CAAE,QAAQ,CAClB,IAAI,CAAE,MAAM,CACZ,UAAU,CAAE,GAAG,CAAC,IAAI,CACpB,MAAM,CAAE,IAAI,gBAAgB,CAAC,CAC7B,KAAK,CAAE,KAAK,CACZ,OAAO,CAAE,IAAI,CACb,cAAc,CAAE,MAAM,CACtB,eAAe,CAAE,aACnB,CAEA,KAAK,uBAAU,CACb,IAAI,CAAE,GACR"}`
+  map: `{"version":3,"file":"Layout.svelte","sources":["Layout.svelte"],"sourcesContent":["<script lang=\\"ts\\">import { onMount, onDestroy } from \\"svelte\\";\\nimport { fade } from \\"svelte/transition\\";\\nimport { browser } from \\"$app/environment\\";\\nimport { goto } from \\"$app/navigation\\";\\nimport { initAuthWorker } from \\"$lib/services/worker.auth.services\\";\\nimport { authStore } from \\"$lib/stores/auth-store\\";\\nimport { authSignedInStore } from \\"$lib/derived/auth.derived\\";\\nimport { BusyScreen, Spinner } from \\"@dfinity/gix-components\\";\\nimport LogoIcon from \\"$lib/icons/logo-icon.svelte\\";\\nimport MenuIcon from \\"$lib/icons/menu-icon.svelte\\";\\nimport '../app.css';\\nlet expanded = false;\\nlet worker;\\nlet buttonHeight = 0;\\nlet sidebar;\\nconst init = async () => await Promise.all([syncAuthStore()]);\\n$: links = $authSignedInStore ? [\\n    { name: 'Home', href: '/' },\\n    { name: 'My Organisations', href: '/organisations' },\\n    { name: 'Profile', href: '/profile' },\\n    { name: 'Projects', href: '/projects' },\\n    { name: 'Sales', href: '/sales' },\\n    { name: 'Jobs', href: '/jobs' },\\n    { name: 'Timesheets', href: 'timesheets' },\\n    { name: 'Accounts', href: '/accounts' },\\n    { name: 'Directory', href: '/directory' },\\n] :\\n    [\\n        { name: 'Connect', href: '#' },\\n    ];\\nlet lessImportantOptions = [\\n    { name: 'Whitepaper', href: '/whitepaper' }\\n];\\nconst syncAuthStore = async () => {\\n    if (!browser) {\\n        return;\\n    }\\n    try {\\n        await authStore.sync();\\n    }\\n    catch (err) {\\n        console.error(\\"Error syncing auth store\\", err);\\n    }\\n};\\nconst updateSidebarHeight = () => {\\n    if (browser) {\\n        requestAnimationFrame(() => {\\n            const button = document.querySelector(\\".menu-row\\");\\n            if (button) {\\n                buttonHeight = button.clientHeight;\\n                const sidebarHeight = window.innerHeight - buttonHeight;\\n                document.documentElement.style.setProperty('--sidebar-height', \`\${sidebarHeight}px\`);\\n            }\\n        });\\n    }\\n};\\nconst handleClickOutside = (event) => {\\n    if (browser && expanded && sidebar && !sidebar.contains(event.target)) {\\n        expanded = false;\\n    }\\n};\\nconst handleButtonClick = (event) => {\\n    event.stopPropagation();\\n    expanded = !expanded;\\n};\\nconst handleCloseButtonClick = (event) => {\\n    event.stopPropagation();\\n    expanded = false;\\n};\\nonMount(async () => {\\n    worker = await initAuthWorker();\\n    if (browser) {\\n        window.addEventListener('resize', updateSidebarHeight);\\n        document.addEventListener('click', handleClickOutside);\\n    }\\n    requestAnimationFrame(() => {\\n        updateSidebarHeight();\\n    });\\n});\\nonDestroy(() => {\\n    if (browser) {\\n        document.removeEventListener('click', handleClickOutside);\\n        window.removeEventListener('resize', updateSidebarHeight);\\n    }\\n});\\n$: worker, $authStore, (() => worker?.syncAuthIdle($authStore))();\\n$: (() => {\\n    if (!browser) {\\n        return;\\n    }\\n    if ($authStore === undefined) {\\n        return;\\n    }\\n    const spinner = document.querySelector(\\"body > #app-spinner\\");\\n    spinner?.remove();\\n})();\\nfunction handleLogin() {\\n    let params = {\\n        domain: import.meta.env.VITE_AUTH_PROVIDER_URL,\\n    };\\n    authStore.signIn(params);\\n}\\nfunction handleLogout() {\\n    authStore.signOut();\\n    goto(\\"/\\");\\n}\\n<\/script>\\n\\n  <svelte:window on:storage={syncAuthStore} />\\n  {#await init()}\\n    <div in:fade>\\n      <Spinner />\\n    </div>\\n  {:then _}\\n    <div class=\\"menu-row flex items-center bg-OpenBookGray w-full p-2 text-white\\">\\n      <button on:click={handleButtonClick} class=\\"flex items-center\\">\\n        <MenuIcon fill='#FFFFFF' className=\\"w-5 m-1\\" />\\n      </button>\\n      <div class=\\"ml-auto\\">\\n        <a class=\\"flex flex-row items-center ml-auto\\" href=\\"/\\">\\n          <p class=\\"text-sm\\">OpenBook</p>\\n          <LogoIcon className=\\"w-4 m-1\\" />\\n        </a>\\n      </div>\\n    </div>\\n\\n  <aside class=\\"bg-OpenBookGreen text-black p-4\\" bind:this={sidebar} class:expanded={expanded}>\\n    <div class=\\"p-2\\">\\n      <div class=\\"p-2 flex items-center relative\\">\\n        <button on:click={handleCloseButtonClick} class=\\"close-button flex items-center absolute left-2\\">\\n          <svg xmlns=\\"http://www.w3.org/2000/svg\\" class=\\"h-6 w-6\\" fill=\\"none\\" viewBox=\\"0 0 24 24\\" stroke=\\"currentColor\\">\\n            <path stroke-linecap=\\"round\\" stroke-linejoin=\\"round\\" stroke-width=\\"2\\" d=\\"M15 19l-7-7 7-7\\" />\\n          </svg>\\n        </button>\\n        <h2 class=\\"text-xl font-bold p-2 text-center mx-auto\\">Menu</h2>\\n      </div>\\n      \\n\\n      <div class=\\"horizontal-divider my-2\\" />\\n      \\n      <ul class=\\"mt-4\\">\\n        {#each links as option}\\n          <li>\\n            \\n            {#if option.name === 'Connect'}\\n\\n              {#if $authSignedInStore}\\n                <a href={option.href} class=\\"block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2\\" on:click={handleLogout}>Disconnect</a>\\n              {:else}\\n                <a href={option.href} class=\\"block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2\\" on:click={handleLogin}>Connect</a>\\n              {/if}  \\n            {:else}\\n              <a href={option.href} class=\\"block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2\\">{option.name}</a>\\n            {/if}\\n          </li>\\n        {/each}\\n      </ul>\\n    </div>\\n    <div class=\\"less-important p-2\\">\\n      <div class=\\"horizontal-divider my-2\\" />\\n      <ul class=\\"space-y-2 text-xs\\">\\n        {#each lessImportantOptions as option}\\n          <li>\\n            <a href={option.href} class=\\"block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2\\">{option.name}</a>\\n          </li>\\n        {/each}\\n      </ul>\\n    </div>\\n  </aside>\\n    <div class=\\"flex\\">\\n      <div class=\\"flex-1 p-4\\">\\n        <slot />\\n      </div>\\n    </div>\\n  {/await}\\n\\n  <BusyScreen />\\n\\n  <style>\\n    aside {\\n      position: absolute;\\n      left: -500px;\\n      transition: all 0.5s;\\n      height: var(--sidebar-height);\\n      width: 300px;\\n      display: flex;\\n      flex-direction: column;\\n      justify-content: space-between;\\n    }\\n\\n    aside.expanded {\\n      left: 0px;\\n    }</style>\\n"],"names":[],"mappings":"AAmLI,mBAAM,CACJ,QAAQ,CAAE,QAAQ,CAClB,IAAI,CAAE,MAAM,CACZ,UAAU,CAAE,GAAG,CAAC,IAAI,CACpB,MAAM,CAAE,IAAI,gBAAgB,CAAC,CAC7B,KAAK,CAAE,KAAK,CACZ,OAAO,CAAE,IAAI,CACb,cAAc,CAAE,MAAM,CACtB,eAAe,CAAE,aACnB,CAEA,KAAK,uBAAU,CACb,IAAI,CAAE,GACR"}`
 };
 const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let links;
@@ -3887,11 +3886,17 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   $$result.css.add(css$1);
   links = $authSignedInStore ? [
     { name: "Home", href: "/" },
+    {
+      name: "My Organisations",
+      href: "/organisations"
+    },
+    { name: "Profile", href: "/profile" },
     { name: "Projects", href: "/projects" },
     { name: "Sales", href: "/sales" },
     { name: "Jobs", href: "/jobs" },
     { name: "Timesheets", href: "timesheets" },
-    { name: "Accounts", href: "/accounts" }
+    { name: "Accounts", href: "/accounts" },
+    { name: "Directory", href: "/directory" }
   ] : [{ name: "Connect", href: "#" }];
   $$unsubscribe_authStore();
   $$unsubscribe_authSignedInStore();
@@ -3904,7 +3909,7 @@ const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       return ` <div class="menu-row flex items-center bg-OpenBookGray w-full p-2 text-white"><button class="flex items-center">${validate_component(Menu_icon, "MenuIcon").$$render($$result, { fill: "#FFFFFF", className: "w-5 m-1" }, {}, {})}</button> <div class="ml-auto"><a class="flex flex-row items-center ml-auto" href="/"><p class="text-sm" data-svelte-h="svelte-3z99nc">OpenBook</p> ${validate_component(Logo_icon, "LogoIcon").$$render($$result, { className: "w-4 m-1" }, {}, {})}</a></div></div> <aside class="${[
         "bg-OpenBookGreen text-black p-4 svelte-viz6lm",
         ""
-      ].join(" ").trim()}"${add_attribute("this", sidebar, 0)}><div class="p-2"><div class="p-2 flex items-center relative"><button class="close-button flex items-center absolute left-2" data-svelte-h="svelte-1tagnsq"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button> <h2 class="text-xl font-bold p-2 text-center mx-auto" data-svelte-h="svelte-p7ddzs">Menu</h2></div> <div class="horizontal-divider my-2"></div> <ul class="mt-4 space-y-2">${each(links, (option) => {
+      ].join(" ").trim()}"${add_attribute("this", sidebar, 0)}><div class="p-2"><div class="p-2 flex items-center relative"><button class="close-button flex items-center absolute left-2" data-svelte-h="svelte-1tagnsq"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button> <h2 class="text-xl font-bold p-2 text-center mx-auto" data-svelte-h="svelte-p7ddzs">Menu</h2></div> <div class="horizontal-divider my-2"></div> <ul class="mt-4">${each(links, (option) => {
         return `<li>${option.name === "Connect" ? `${$authSignedInStore ? `<a${add_attribute("href", option.href, 0)} class="block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2">Disconnect</a>` : `<a${add_attribute("href", option.href, 0)} class="block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2">Connect</a>`}` : `<a${add_attribute("href", option.href, 0)} class="block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2">${escape(option.name)}</a>`} </li>`;
       })}</ul></div> <div class="less-important p-2"><div class="horizontal-divider my-2"></div> <ul class="space-y-2 text-xs">${each(lessImportantOptions, (option) => {
         return `<li><a${add_attribute("href", option.href, 0)} class="block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2">${escape(option.name)}</a> </li>`;
@@ -3922,667 +3927,10 @@ const Page$a = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 const Page$9 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return ` <p data-svelte-h="svelte-1tcl1an">Accounting</p>`;
 });
-const idlFactory = ({ IDL }) => {
-  const List = IDL.Rec();
-  const OrganisationId = IDL.Text;
-  const Error2 = IDL.Variant({
-    "DecodeError": IDL.Null,
-    "NotAllowed": IDL.Null,
-    "NotEnoughFunds": IDL.Null,
-    "NotFound": IDL.Null,
-    "NotAuthorized": IDL.Null,
-    "InvalidData": IDL.Null,
-    "AlreadyExists": IDL.Null,
-    "PaymentError": IDL.Null
-  });
-  const Result = IDL.Variant({ "ok": IDL.Null, "err": Error2 });
-  const PrincipalId = IDL.Text;
-  const AcceptUserOrganisationRequest = IDL.Record({
-    "organisationId": OrganisationId,
-    "principalId": PrincipalId
-  });
-  const CurrencyId = IDL.Nat32;
-  const CreateProfileDTO = IDL.Record({
-    "username": IDL.Text,
-    "displayName": IDL.Text,
-    "termsAccepted": IDL.Bool,
-    "preferredPaymentCurrency": CurrencyId,
-    "openChatUsername": IDL.Text,
-    "profession": IDL.Text,
-    "otherContact": IDL.Text,
-    "emailAddress": IDL.Text,
-    "phoneNumber": IDL.Text,
-    "profilePicture": IDL.Vec(IDL.Nat8),
-    "userDefinedWallet": IDL.Text,
-    "organisations": IDL.Vec(OrganisationId),
-    "lastName": IDL.Text,
-    "firstName": IDL.Text
-  });
-  const DeleteOrganisation = IDL.Record({
-    "organisationId": OrganisationId,
-    "confirmDelete": IDL.Bool
-  });
-  const PresaleListingDTO = IDL.Record({
-    "ownerId": PrincipalId,
-    "listedOn": IDL.Int,
-    "tokens": IDL.Nat64,
-    "price": IDL.Nat64
-  });
-  const Result_4 = IDL.Variant({
-    "ok": IDL.Vec(PresaleListingDTO),
-    "err": Error2
-  });
-  const PresaleParticipation = IDL.Record({
-    "bookTokens": IDL.Nat64,
-    "icpSwapped": IDL.Nat64,
-    "principalId": PrincipalId
-  });
-  const ProfileDTO = IDL.Record({
-    "principal": IDL.Text,
-    "username": IDL.Text,
-    "displayName": IDL.Text,
-    "termsAccepted": IDL.Bool,
-    "preferredPaymentCurrency": CurrencyId,
-    "openChatUsername": IDL.Text,
-    "profession": IDL.Text,
-    "createDate": IDL.Int,
-    "lastModified": IDL.Int64,
-    "otherContact": IDL.Text,
-    "emailAddress": IDL.Text,
-    "phoneNumber": IDL.Text,
-    "profilePicture": IDL.Vec(IDL.Nat8),
-    "userDefinedWallet": IDL.Text,
-    "organisations": IDL.Vec(OrganisationId),
-    "lastName": IDL.Text,
-    "firstName": IDL.Text
-  });
-  const Result_3 = IDL.Variant({ "ok": ProfileDTO, "err": Error2 });
-  const Result_2 = IDL.Variant({ "ok": IDL.Bool, "err": Error2 });
-  const CurrencyId__1 = IDL.Nat32;
-  const ChangeType = IDL.Variant({
-    "ChartOfAccountsUpdated": IDL.Null,
-    "OrganisationUserAdded": IDL.Null,
-    "OrganisationUserRoleUpdated": IDL.Null,
-    "OrganisationUserRemoved": IDL.Null,
-    "OrganisationDetailUpdated": IDL.Null,
-    "CustomerRecordUpdated": IDL.Null,
-    "SupplierRecordUpdated": IDL.Null
-  });
-  const VisibilityLevel = IDL.Variant({
-    "Internal": IDL.Null,
-    "Private": IDL.Null,
-    "Public": IDL.Null
-  });
-  const AuditRecord = IDL.Record({
-    "changeType": ChangeType,
-    "timestamp": IDL.Int64,
-    "visibilityLevel": VisibilityLevel
-  });
-  List.fill(IDL.Opt(IDL.Tuple(AuditRecord, List)));
-  const OrganisationId__1 = IDL.Nat32;
-  const Profile = IDL.Record({
-    "principal": IDL.Text,
-    "username": IDL.Text,
-    "displayName": IDL.Text,
-    "termsAccepted": IDL.Bool,
-    "preferredPaymentCurrency": CurrencyId__1,
-    "openChatUsername": IDL.Text,
-    "profession": IDL.Text,
-    "createDate": IDL.Int,
-    "lastModified": IDL.Int64,
-    "auditHistory": List,
-    "profilePictureCanisterId": IDL.Text,
-    "otherContact": IDL.Text,
-    "emailAddress": IDL.Text,
-    "phoneNumber": IDL.Text,
-    "userDefinedWallet": IDL.Text,
-    "organisations": IDL.Vec(OrganisationId__1),
-    "lastName": IDL.Text,
-    "firstName": IDL.Text
-  });
-  const Result_1 = IDL.Variant({
-    "ok": IDL.Vec(IDL.Tuple(PrincipalId, Profile)),
-    "err": Error2
-  });
-  const CreateOrganisation = IDL.Record({
-    "ownerId": PrincipalId,
-    "name": IDL.Text
-  });
-  const PurchasePresaleAllocationDTO = IDL.Record({
-    "ownerId": PrincipalId,
-    "purchaserId": PrincipalId,
-    "tokens": IDL.Nat64,
-    "price": IDL.Nat64
-  });
-  const UpdateProfileDTO = IDL.Record({
-    "username": IDL.Text,
-    "displayName": IDL.Text,
-    "termsAccepted": IDL.Bool,
-    "preferredPaymentCurrency": CurrencyId,
-    "openChatUsername": IDL.Text,
-    "profession": IDL.Text,
-    "otherContact": IDL.Text,
-    "emailAddress": IDL.Text,
-    "phoneNumber": IDL.Text,
-    "userDefinedWallet": IDL.Text,
-    "lastName": IDL.Text,
-    "principalId": PrincipalId,
-    "firstName": IDL.Text
-  });
-  return IDL.Service({
-    "acceptOrganisationInvitation": IDL.Func([OrganisationId], [Result], []),
-    "acceptUserOrganisationRequest": IDL.Func(
-      [AcceptUserOrganisationRequest],
-      [Result],
-      []
-    ),
-    "createProfile": IDL.Func([CreateProfileDTO], [Result], []),
-    "deleteOrganisation": IDL.Func([DeleteOrganisation], [Result], []),
-    "deleteProfile": IDL.Func([PrincipalId], [Result], []),
-    "getPresaleAllocationListings": IDL.Func([], [Result_4], []),
-    "getPresaleParticipation": IDL.Func(
-      [],
-      [IDL.Vec(PresaleParticipation)],
-      []
-    ),
-    "getProfile": IDL.Func([], [Result_3], []),
-    "isOrganisationNameAvailable": IDL.Func([IDL.Text], [Result_2], []),
-    "isUsernameAvailable": IDL.Func([IDL.Text], [Result_2], []),
-    "leaveOrganiastion": IDL.Func([OrganisationId], [Result], []),
-    "listOGProfiles": IDL.Func([], [Result_1], []),
-    "listPresaleAllocation": IDL.Func([IDL.Nat64, IDL.Nat64], [Result], []),
-    "participateInPresale": IDL.Func([IDL.Nat64, IDL.Nat64], [Result], []),
-    "purchaseOrganisation": IDL.Func([CreateOrganisation], [Result], []),
-    "purchasePresaleAllocation": IDL.Func(
-      [PurchasePresaleAllocationDTO],
-      [Result],
-      []
-    ),
-    "rejectOrganisationInvitation": IDL.Func([OrganisationId], [Result], []),
-    "requestCanisterTopup": IDL.Func([IDL.Nat], [], []),
-    "requestOrganisationAccess": IDL.Func([OrganisationId], [Result], []),
-    "transferOGProfiles": IDL.Func([], [], ["oneway"]),
-    "unlistPresaleAllocation": IDL.Func([IDL.Nat64], [Result], []),
-    "updatePresaleNNSId": IDL.Func([IDL.Text], [Result], []),
-    "updateProfile": IDL.Func([UpdateProfileDTO], [Result], [])
-  });
-};
-var define_process_env_default$2 = { __CANDID_UI_CANISTER_ID: "gm7ld-quaaa-aaaaa-qaaqa-cai", BACKEND_CANISTER_ID: "dxfxs-weaaa-aaaaa-qaapa-cai", FRONTEND_CANISTER_ID: "dqerg-34aaa-aaaaa-qaapq-cai", DFX_NETWORK: "local" };
-const canisterId = define_process_env_default$2.CANISTER_ID_BACKEND;
-const createActor = (canisterId2, options2 = {}) => {
-  const agent = options2.agent || new HttpAgent({ ...options2.agentOptions });
-  if (options2.agent && options2.agentOptions) {
-    console.warn(
-      "Detected both agent and agentOptions passed to createActor. Ignoring agentOptions and proceeding with the provided agent."
-    );
-  }
-  {
-    agent.fetchRootKey().catch((err) => {
-      console.warn(
-        "Unable to fetch root key. Check to ensure that your local replica is running"
-      );
-      console.error(err);
-    });
-  }
-  return Actor.createActor(idlFactory, {
-    agent,
-    canisterId: canisterId2,
-    ...options2.actorOptions
-  });
-};
-canisterId ? createActor(canisterId) : void 0;
-var define_process_env_default$1 = { __CANDID_UI_CANISTER_ID: "gm7ld-quaaa-aaaaa-qaaqa-cai", BACKEND_CANISTER_ID: "dxfxs-weaaa-aaaaa-qaapa-cai", FRONTEND_CANISTER_ID: "dqerg-34aaa-aaaaa-qaapq-cai", DFX_NETWORK: "local" };
-class ActorFactory {
-  static createActor(idlFactory2, canisterId2 = "", identity = null, options2 = null) {
-    const hostOptions = {
-      host: "http://127.0.0.1:8080",
-      identity
-    };
-    if (!options2) {
-      options2 = {
-        agentOptions: hostOptions
-      };
-    } else if (!options2.agentOptions) {
-      options2.agentOptions = hostOptions;
-    } else {
-      options2.agentOptions.host = hostOptions.host;
-    }
-    const agent = new HttpAgent({ ...options2.agentOptions });
-    if (define_process_env_default$1.NODE_ENV !== "production") {
-      agent.fetchRootKey().catch((err) => {
-        console.warn(
-          "Unable to fetch root key. Ensure your local replica is running"
-        );
-        console.error(err);
-      });
-    }
-    return Actor.createActor(idlFactory2, {
-      agent,
-      canisterId: canisterId2,
-      ...options2?.actorOptions
-    });
-  }
-  static createIdentityActor(authStore2, canisterId2) {
-    let unsubscribe;
-    return new Promise((resolve2, reject) => {
-      unsubscribe = authStore2.subscribe((store) => {
-        if (store.identity) {
-          resolve2(store.identity);
-        }
-      });
-    }).then((identity) => {
-      unsubscribe();
-      return ActorFactory.createActor(idlFactory, canisterId2, identity);
-    });
-  }
-}
-const Wallet_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { className = "" } = $$props;
-  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
-    $$bindings.className(className);
-  return `<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true"${add_attribute("class", className, 0)} fill="currentColor" viewBox="0 0 24 24"><path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"></path><path d="M15.5,6.5v3a1,1,0,0,1-1,1h-3.5v-5H14.5A1,1,0,0,1,15.5,6.5Z"></path><path d="M12,8a.5,.5 0,1,1,.001,0Z"></path></svg>`;
-});
-const Dashboard_header = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let currentBorder;
-  let profileSrc;
-  let $profile, $$unsubscribe_profile;
-  let $page, $$unsubscribe_page;
-  $$unsubscribe_page = subscribe(page, (value) => $page = value);
-  let profile = writable(null);
-  $$unsubscribe_profile = subscribe(profile, (value) => $profile = value);
-  let showProfileDropdown = false;
-  let { activeTitle = "OpenBook" } = $$props;
-  onDestroy(() => {
-    if (typeof window !== "undefined") {
-      document.removeEventListener("click", closeDropdownOnClickOutside);
-    }
-  });
-  function closeDropdownOnClickOutside(event) {
-    const target = event.target;
-    if (target instanceof Element) {
-      if (!target.closest(".profile-dropdown") && !target.closest(".profile-pic")) {
-        showProfileDropdown = false;
-      }
-    }
-  }
-  if ($$props.activeTitle === void 0 && $$bindings.activeTitle && activeTitle !== void 0)
-    $$bindings.activeTitle(activeTitle);
-  currentBorder = (route) => $page.url.pathname === route ? "active-border" : "";
-  profileSrc = $profile && $profile?.profilePicture && $profile?.profilePicture?.length > 0 ? URL.createObjectURL(new Blob([new Uint8Array($profile.profilePicture)])) : "profile_placeholder.png";
-  $$unsubscribe_profile();
-  $$unsubscribe_page();
-  return `<div class="w-full p-4 top-bar flex justify-between items-center"><h1>${escape(activeTitle)}</h1> <div class="relative inline-block"><button${add_attribute("class", `h-full flex items-center border rounded-full ${currentBorder("/profile")}`, 0)}><img${add_attribute("src", profileSrc, 0)} alt="Profile" class="h-8 rounded-full profile-pic" aria-label="Toggle Profile"></button> <div${add_attribute("class", `absolute right-0 top-full w-48 bg-black rounded-b-md rounded-l-md shadow-lg z-50 profile-dropdown ${showProfileDropdown ? "block" : "hidden"}`, 0)}><ul class=""><li><a href="/profile" class="flex items-center h-full w-full nav-underline"><span class="flex items-center h-full w-full"><img${add_attribute("src", profileSrc, 0)} alt="logo" class="w-8 h-8 my-2 ml-4 mr-2 rounded-full"> <p class="w-full min-w-[125px] max-w-[125px] truncate" data-svelte-h="svelte-cig3zx">Profile</p></span></a></li> <li><button class="flex items-center justify-center px-4 pb-2 pt-1 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-gray-600 nav-button">Disconnect
-            ${validate_component(Wallet_icon, "WalletIcon").$$render($$result, { className: "ml-2 h-6 w-6 mt-1" }, {}, {})}</button></li></ul></div></div></div>`;
-});
-const Expand_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { className = "" } = $$props;
-  let { fill = "#FFFFFF" } = $$props;
-  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
-    $$bindings.className(className);
-  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
-    $$bindings.fill(fill);
-  return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><path d="M8.49995 8.3C8.09995 7.9 7.49995 7.9 7.09995 8.3C6.69995 8.7 6.69995 9.3 7.09995 9.7L9.29995 12L6.99995 14.3C6.79995 14.5 6.69995 14.7 6.69995 15C6.69995 15.6 7.09995 16 7.69995 16C7.99995 16 8.19995 15.9 8.39995 15.7L11.4 12.7C11.8 12.3 11.8 11.7 11.4 11.3L8.49995 8.3ZM17 11.3L14 8.3C13.6 7.9 13 7.9 12.6 8.3C12.2 8.7 12.2 9.3 12.6 9.7L14.9 12L12.6 14.3C12.4 14.5 12.3 14.7 12.3 15C12.3 15.6 12.7 16 13.3 16C13.6 16 13.8 15.9 14 15.7L17 12.7C17.3 12.3 17.3 11.7 17 11.3Z"${add_attribute("fill", fill, 0)}></path></svg>`;
-});
-const Icp_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { className = "" } = $$props;
-  let { fill = "#FFFFFF" } = $$props;
-  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
-    $$bindings.className(className);
-  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
-    $$bindings.fill(fill);
-  return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><g clip-path="url(#clip0_143_3542)"><path d="M23.055 7.33252C22.1423 5.1788 20.6205 3.34753 18.7057 2.05266C16.7914 0.757781 14.4794 -0.000328019 12 1.0647e-07C10.3475 -9.36435e-05 8.76816 0.336563 7.33261 0.944906C5.17894 1.85766 3.34763 3.37936 2.0527 5.2942C0.757828 7.20844 -0.000328019 9.5205 1.06464e-07 12C-9.36435e-05 13.6526 0.336609 15.2319 0.944953 16.6675C1.85766 18.8212 3.3795 20.6525 5.2943 21.9473C7.20858 23.2422 9.52064 24.0003 12 24C13.6525 24.0001 15.2318 23.6634 16.6674 23.0551C18.8211 22.1424 20.6524 20.6206 21.9473 18.7058C23.2422 16.7916 24.0003 14.4794 24 12C24.0001 10.3474 23.6634 8.76806 23.055 7.33252ZM21.5819 16.0434C20.792 17.9081 19.4704 19.4992 17.8095 20.622C16.1482 21.7447 14.1524 22.3997 12 22.4001C10.5648 22.4 9.20025 22.1086 7.95684 21.5819C6.09211 20.792 4.50103 19.4705 3.37823 17.8096C2.25534 16.1482 1.60031 14.1524 1.59998 12C1.60008 10.5647 1.8915 9.20011 2.41814 7.9567C3.20803 6.09197 4.52962 4.50089 6.19045 3.37814C7.85184 2.2553 9.84769 1.60031 12 1.59998C13.4353 1.60008 14.7998 1.89145 16.0432 2.41814C17.9079 3.20798 19.499 4.52958 20.6218 6.19041C21.7446 7.8518 22.3996 9.84759 22.4 12C22.3999 13.4354 22.1085 14.7999 21.5819 16.0434Z"${add_attribute("fill", fill, 0)}></path><path d="M20.302 10.4768C20.004 9.77372 19.5086 9.1778 18.8845 8.75569C18.5725 8.54466 18.2278 8.37713 17.8597 8.26238C17.4916 8.14763 17.1 8.08589 16.6966 8.08594C16.1171 8.08542 15.5699 8.20842 15.0705 8.41331C14.6328 8.59252 14.2299 8.83238 13.8531 9.10697C13.1941 9.58828 12.6109 10.1754 12.054 10.776C12.0359 10.7955 12.0182 10.8152 12.0001 10.8348C11.9962 10.8306 11.9923 10.8263 11.9884 10.822C11.6762 10.4836 11.3553 10.1493 11.0183 9.83452C10.5125 9.36295 9.97 8.93297 9.35631 8.61206C9.04965 8.45194 8.72495 8.32003 8.38173 8.22839C8.0387 8.1367 7.67734 8.08589 7.30328 8.08599C6.76534 8.08589 6.24878 8.19581 5.78026 8.39447C5.07719 8.69255 4.48126 9.18792 4.05915 9.81197C3.84812 10.124 3.68059 10.4687 3.56584 10.8368C3.45109 11.2049 3.38936 11.5965 3.3894 11.9999C3.38931 12.5378 3.49923 13.0544 3.69789 13.5229C3.99597 14.2259 4.49139 14.8218 5.11539 15.2439C5.42744 15.455 5.77215 15.6225 6.14026 15.7373C6.50833 15.852 6.89992 15.9137 7.30333 15.9137C7.88279 15.9142 8.43001 15.7912 8.92942 15.5863C9.36714 15.4071 9.77008 15.1673 10.1468 14.8927C10.8058 14.4113 11.389 13.8242 11.946 13.2237C11.9641 13.2041 11.9818 13.1844 11.9998 13.1648C12.0037 13.1691 12.0076 13.1734 12.0115 13.1777C12.3237 13.5161 12.6446 13.8504 12.9817 14.1652C13.4875 14.6367 14.0299 15.0667 14.6436 15.3876C14.9503 15.5476 15.275 15.6796 15.6182 15.7713C15.9612 15.863 16.3226 15.9138 16.6967 15.9137C17.2346 15.9138 17.7512 15.8038 18.2197 15.6052C18.9227 15.3071 19.5187 14.8118 19.9408 14.1877C20.1518 13.8757 20.3193 13.5309 20.4341 13.1628C20.5488 12.7948 20.6106 12.4032 20.6105 11.9998C20.6106 11.4619 20.5007 10.9453 20.302 10.4768ZM10.8379 12.1162C10.54 12.4391 10.2447 12.7458 9.95003 13.0208C9.50819 13.4339 9.06798 13.7729 8.63204 13.9997C8.41389 14.1135 8.19704 14.2002 7.97795 14.2587C7.75867 14.3172 7.53704 14.348 7.30337 14.3481C6.97801 14.348 6.67155 14.2823 6.39109 14.1637C5.97072 13.9858 5.60992 13.6864 5.35614 13.3108C5.2292 13.1231 5.12903 12.9168 5.06054 12.697C4.99206 12.4772 4.95503 12.2439 4.95503 11.9999C4.95512 11.6745 5.02079 11.368 5.13944 11.0876C5.31733 10.6673 5.61676 10.3065 5.99237 10.0527C6.18006 9.92574 6.3864 9.82556 6.60625 9.75708C6.82609 9.6886 7.05934 9.65156 7.30342 9.65156C7.66473 9.65203 7.99905 9.72478 8.33673 9.86236C8.63144 9.98278 8.92698 10.155 9.22459 10.372C9.74565 10.7511 10.2687 11.268 10.7974 11.8397C10.8461 11.8923 10.8951 11.9465 10.944 12C10.9087 12.0385 10.8732 12.078 10.8379 12.1162ZM18.8606 12.9121C18.6827 13.3325 18.3833 13.6933 18.0077 13.9471C17.82 14.074 17.6137 14.1742 17.3938 14.2427C17.174 14.3112 16.9407 14.3482 16.6967 14.3482C16.3353 14.3477 16.001 14.275 15.6633 14.1374C15.3686 14.017 15.0731 13.8448 14.7755 13.6277C14.2544 13.2487 13.7313 12.7318 13.2027 12.16C13.154 12.1074 13.105 12.0532 13.0561 11.9998C13.0915 11.9611 13.1269 11.9217 13.1622 11.8835C13.4601 11.5606 13.7554 11.2538 14.05 10.9789C14.4919 10.5658 14.9321 10.2268 15.368 9.99994C15.5862 9.88613 15.803 9.79945 16.0221 9.74095C16.2414 9.6825 16.463 9.65166 16.6967 9.65156C17.0221 9.65166 17.3285 9.71733 17.609 9.83597C18.0294 10.0139 18.3902 10.3133 18.6439 10.6889C18.7709 10.8766 18.871 11.0829 18.9395 11.3027C19.008 11.5225 19.045 11.7558 19.045 11.9999C19.045 12.3252 18.9793 12.6316 18.8606 12.9121Z"${add_attribute("fill", fill, 0)}></path></g><defs><clipPath id="clip0_143_3542"><rect width="24" height="24"${add_attribute("fill", fill, 0)}></rect></clipPath></defs></svg>`;
-});
-const Profile_detail = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let $profile, $$unsubscribe_profile;
-  let profile = writable(null);
-  $$unsubscribe_profile = subscribe(profile, (value) => $profile = value);
-  $profile && $profile?.profilePicture && $profile?.profilePicture?.length > 0 ? URL.createObjectURL(new Blob([new Uint8Array($profile.profilePicture)])) : "profile_placeholder.png";
-  $$unsubscribe_profile();
-  return `${`${validate_component(Spinner, "Spinner").$$render($$result, {}, {}, {})}`}`;
-});
-var define_process_env_default = { __CANDID_UI_CANISTER_ID: "gm7ld-quaaa-aaaaa-qaaqa-cai", BACKEND_CANISTER_ID: "dxfxs-weaaa-aaaaa-qaapa-cai", FRONTEND_CANISTER_ID: "dqerg-34aaa-aaaaa-qaapq-cai", DFX_NETWORK: "local" };
-function createProfileStore() {
-  let actor = ActorFactory.createActor(
-    idlFactory,
-    define_process_env_default.BACKEND_CANISTER_ID
-  );
-  async function getProfiles(usernameFilter2, firstNameFilter, lastNameFilter, professionFilter2, currentPage, directoryStartFilter) {
-    let updatedProfilesData = await actor.getProfiles(
-      usernameFilter2,
-      firstNameFilter,
-      lastNameFilter,
-      professionFilter2,
-      currentPage,
-      directoryStartFilter
-    );
-    return updatedProfilesData;
-  }
-  return {
-    getProfiles
-  };
-}
-const profilesStore = createProfileStore();
-const directoryFilter = writable("A");
-const usernameFilter = writable("");
-const firstNameFitler = writable("");
-const lastNameFitler = writable("");
-const professionFilter = writable("");
-function blobToSrc(blob) {
-  if (blob.length == 0) {
-    return "profile_placeholder.png";
-  }
-  return URL.createObjectURL(new Blob([new Uint8Array(blob)]));
-}
-const Directory = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let $directoryFilter, $$unsubscribe_directoryFilter;
-  let $professionFilter, $$unsubscribe_professionFilter;
-  let $lastNameFitler, $$unsubscribe_lastNameFitler;
-  let $firstNameFitler, $$unsubscribe_firstNameFitler;
-  let $usernameFilter, $$unsubscribe_usernameFilter;
-  $$unsubscribe_directoryFilter = subscribe(directoryFilter, (value) => $directoryFilter = value);
-  $$unsubscribe_professionFilter = subscribe(professionFilter, (value) => $professionFilter = value);
-  $$unsubscribe_lastNameFitler = subscribe(lastNameFitler, (value) => $lastNameFitler = value);
-  $$unsubscribe_firstNameFitler = subscribe(firstNameFitler, (value) => $firstNameFitler = value);
-  $$unsubscribe_usernameFilter = subscribe(usernameFilter, (value) => $usernameFilter = value);
-  let directoryResult;
-  let currentPage = 1;
-  let totalPages = 1;
-  let isLoading = true;
-  async function fetchProfiles() {
-    directoryResult = await profilesStore.getProfiles($usernameFilter, $firstNameFitler, $lastNameFitler, $professionFilter, currentPage, $directoryFilter);
-    totalPages = Math.ceil(Number(directoryResult.totalEntries) / 25);
-    isLoading = false;
-  }
-  async function getProfiles() {
-    try {
-      busyStore.startBusy({
-        initiator: "fetch-profiles",
-        text: "Fetch profiles..."
-      });
-      await fetchProfiles();
-    } catch (error) {
-      console.error("Error loading directory:", error);
-    } finally {
-      busyStore.stopBusy("fetch-profiles");
-    }
-  }
-  {
-    {
-      if ($directoryFilter !== "") {
-        getProfiles();
-      }
-    }
-  }
-  $$unsubscribe_directoryFilter();
-  $$unsubscribe_professionFilter();
-  $$unsubscribe_lastNameFitler();
-  $$unsubscribe_firstNameFitler();
-  $$unsubscribe_usernameFilter();
-  return `<h1 data-svelte-h="svelte-12ucp9m">OpenBook Directory</h1> ${!isLoading ? `<div class="filters flex flex-col w-full h-full"><div class="flex flex-col md:flex-row md:space-x-4 mt-2 md:mt-4"><div class="w-full md:w-1/2 mb-2 md:mb-0"><input class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2" type="text" placeholder="Username"${add_attribute("value", $usernameFilter, 0)}></div> <div class="w-full md:w-1/2 mb-2 md:mb-0"><input class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2" type="text" placeholder="First Name"${add_attribute("value", $firstNameFitler, 0)}></div></div> <div class="flex flex-col md:flex-row md:space-x-4 md:mt-4"><div class="w-full md:w-1/2 mb-2 md:mb-0"><input class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2" type="text" placeholder="Last Name"${add_attribute("value", $lastNameFitler, 0)}></div> <div class="w-full md:w-1/2 mb-2 md:mb-0"><input class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 mt-2" type="text" placeholder="Profession"${add_attribute("value", $professionFilter, 0)}></div></div> <div class="flex flex-row mt-2 md:mt-4"><button class="book-btn" data-svelte-h="svelte-1xkd8vn">Search</button></div></div> <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">${each(directoryResult.profiles, (profile) => {
-    return `<div class="card rounded-t-md shadow-md overflow-hidden m-4 directory-card"><img class="w-full h-48 object-cover"${add_attribute("src", blobToSrc(profile.profilePicture), 0)}${add_attribute("alt", profile.username, 0)}> <div class="p-4"><h2 class="text-lg font-bold">${escape(profile.firstName)} ${escape(profile.lastName)}</h2> <p class="text-sm flex items-center">${validate_component(Logo_icon, "LogoIcon").$$render($$result, { className: "w-2 mr-1" }, {}, {})} ${escape(profile.username)}</p> <p class="text-sm">${escape(profile.profession)}</p></div> </div>`;
-  })}</div> <div class="pagination flex items-center justify-center space-x-4"><button class="${"book-btn " + escape("disabled", true)}" ${"disabled"}>&lt;</button> <span>Page ${escape(currentPage)} / ${escape(totalPages)}</span> <button class="${"book-btn " + escape(currentPage === totalPages ? "disabled" : "", true)}" ${currentPage === totalPages ? "disabled" : ""}>&gt;</button></div>` : ``}`;
-});
-const Whitepaper_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { className = "" } = $$props;
-  let { fill = "#FFFFFF" } = $$props;
-  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
-    $$bindings.className(className);
-  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
-    $$bindings.fill(fill);
-  return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><path d="M11.362 2C15.518 2 14 8 14 8C14 8 20 6.35 20 10.457V22H4V2H11.362ZM12.189 0H2V24H22V9.614C22 7.223 15.352 0 12.189 0ZM17 13H7V12H17V13ZM17 15H7V16H17V15ZM14 18H7V19H14V18Z"${add_attribute("fill", fill, 0)}></path></svg>`;
-});
-const Home_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { className = "" } = $$props;
-  let { fill = "#FFFFFF" } = $$props;
-  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
-    $$bindings.className(className);
-  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
-    $$bindings.fill(fill);
-  return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><path fill="none"${add_attribute("stroke", fill, 0)} stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path fill="none"${add_attribute("stroke", fill, 0)} stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 22V12h6v10"></path></svg>`;
-});
-const Directory_nav = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let $$unsubscribe_professionFilter;
-  let $$unsubscribe_directoryFilter;
-  $$unsubscribe_professionFilter = subscribe(professionFilter, (value) => value);
-  $$unsubscribe_directoryFilter = subscribe(directoryFilter, (value) => value);
-  $$unsubscribe_professionFilter();
-  $$unsubscribe_directoryFilter();
-  return `<div class="flex flex-col space-y-1 items-center mt-4 text-sm"><button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn-active"}`,
-    0
-  )}>A</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>B</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>C</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>D</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>E</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>F</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>G</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>H</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>I</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>J</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>K</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>L</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>M</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>N</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>O</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>P</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>Q</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>R</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>S</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>T</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>U</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>V</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>W</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>X</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>Y</button> <button${add_attribute(
-    "class",
-    ` ${"directory-nav-btn"}`,
-    0
-  )}>Z</button></div>`;
-});
-const Accountancy_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { className = "" } = $$props;
-  let { fill = "#FFFFFF" } = $$props;
-  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
-    $$bindings.className(className);
-  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
-    $$bindings.fill(fill);
-  return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><rect x="3" y="2" width="18" height="20" rx="2" ry="2" stroke="none"${add_attribute("fill", fill, 0)}></rect><rect x="7" y="5" width="10" height="4" stroke="none" fill="white"></rect><rect x="7" y="11" width="2" height="2" fill="white"></rect><rect x="11" y="11" width="2" height="2" fill="white"></rect><rect x="15" y="11" width="2" height="2" fill="white"></rect><rect x="7" y="15" width="2" height="2" fill="white"></rect><rect x="11" y="15" width="2" height="2" fill="white"></rect><rect x="15" y="15" width="2" height="2" fill="white"></rect></svg>`;
-});
-const Sales_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { className = "" } = $$props;
-  let { fill = "#FFFFFF" } = $$props;
-  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
-    $$bindings.className(className);
-  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
-    $$bindings.fill(fill);
-  return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none"><path d="M7 18c-.83 0-1.5.67-1.5 1.5S6.17 21 7 21s1.5-.67 1.5-1.5S7.83 18 7 18zm10 0c-.83 0-1.5.67-1.5 1.5S16.17 21 17 21s1.5-.67 1.5-1.5S17.83 18 17 18zm-8.22-1.5h9.72l.78-4.5H6.56l-1.1-6H4v-1.5h1.36L5.8 2.33 6.87 2h.56l.45 2.5h10.45L19.5 9H7.22l-.45-2.5H6.15L7.78 16.5zm2.72-9h6.2l.25-1.5H10.25l.25 1.5z"${add_attribute("fill", fill, 0)}></path></svg>`;
-});
-const Timesheet_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { className = "" } = $$props;
-  let { fill = "#FFFFFF" } = $$props;
-  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
-    $$bindings.className(className);
-  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
-    $$bindings.fill(fill);
-  return `<svg${add_attribute("class", className, 0)} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none"${add_attribute("stroke", fill, 0)} stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="14" r="8"></circle><path d="M12 10V14L15 16"></path><path d="M8 2H16M12 2V6"></path><path d="M17 7L19 5"></path><path d="M7 7L5 5"></path></svg>`;
-});
-const Jobs_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { className = "" } = $$props;
-  let { fill = "#000000" } = $$props;
-  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
-    $$bindings.className(className);
-  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
-    $$bindings.fill(fill);
-  return `<svg${add_attribute("class", className, 0)} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="6" r="4"${add_attribute("stroke", fill, 0)} stroke-width="2" fill="none"></circle><path d="M8,14 Q12,18 16,14 L12,21 L8,14"${add_attribute("stroke", fill, 0)} stroke-width="2" fill="none"></path><line x1="12" y1="10" x2="12" y2="14"${add_attribute("stroke", fill, 0)} stroke-width="2"></line></svg>`;
-});
-const Task_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { className = "" } = $$props;
-  let { fill = "#000000" } = $$props;
-  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
-    $$bindings.className(className);
-  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
-    $$bindings.fill(fill);
-  return `<svg${add_attribute("class", className, 0)} width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20"${add_attribute("stroke", fill, 0)} stroke-width="2" fill="none"></rect><polyline points="6 12 10 16 18 8"${add_attribute("stroke", fill, 0)} stroke-width="2" fill="none"></polyline></svg>`;
-});
-const Dashboard = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let currentRoute;
-  let $page, $$unsubscribe_page;
-  $$unsubscribe_page = subscribe(page, (value) => $page = value);
-  currentRoute = $page.url.pathname;
-  $$unsubscribe_page();
-  return `<nav class="p-4 h-full side-nav flex flex-col items-center"><a href="/">${validate_component(Logo_icon, "Logo").$$render($$result, { className: "w-6" }, {}, {})}</a> <button>${validate_component(Home_icon, "HomeIcon").$$render(
-    $$result,
-    {
-      className: "side-nav-icon",
-      fill: currentRoute === "/" ? "#FFFFFF" : "#8C8C8C"
-    },
-    {},
-    {}
-  )}</button> <button>${validate_component(Task_icon, "TaskIcon").$$render(
-    $$result,
-    {
-      className: "side-nav-icon",
-      fill: "#8C8C8C"
-    },
-    {},
-    {}
-  )}</button> <button>${validate_component(Accountancy_icon, "AccountancyIcon").$$render(
-    $$result,
-    {
-      className: "side-nav-icon",
-      fill: "#8C8C8C"
-    },
-    {},
-    {}
-  )}</button> <button>${validate_component(Sales_icon, "SalesIcon").$$render(
-    $$result,
-    {
-      className: "side-nav-icon",
-      fill: "#8C8C8C"
-    },
-    {},
-    {}
-  )}</button> <button>${validate_component(Timesheet_icon, "TimesheetIcon").$$render(
-    $$result,
-    {
-      className: "side-nav-icon",
-      fill: "#8C8C8C"
-    },
-    {},
-    {}
-  )}</button> <button>${validate_component(Jobs_icon, "JobsIcon").$$render(
-    $$result,
-    {
-      className: "side-nav-icon",
-      fill: "#8C8C8C"
-    },
-    {},
-    {}
-  )}</button> <button>${validate_component(Icp_icon, "IcpIcon").$$render(
-    $$result,
-    {
-      className: "side-nav-icon",
-      fill: currentRoute === "/directory" ? "#FFFFFF" : "#8C8C8C"
-    },
-    {},
-    {}
-  )}</button> ${currentRoute === "/" ? `<button>${validate_component(Whitepaper_icon, "WhitepaperIcon").$$render(
-    $$result,
-    {
-      className: "side-nav-icon",
-      fill: "#8C8C8C"
-    },
-    {},
-    {}
-  )}</button>` : ``} ${``} ${currentRoute === "/directory" ? `${validate_component(Directory_nav, "DirectoryNav").$$render($$result, {}, {}, {})}` : ``} <div class="pull-down">${validate_component(Expand_icon, "ExpandIcon").$$render($$result, { fill: "#555555" }, {}, {})}</div></nav> <div class="w-full">${validate_component(Dashboard_header, "DashboardHeader").$$render($$result, {}, {}, {})} <div class="flex-1 p-8">${currentRoute === "/profile" ? `${validate_component(Profile_detail, "ProfileDetail").$$render($$result, {}, {}, {})}` : ``} ${currentRoute === "/directory" ? `${validate_component(Directory, "IcpDirectory").$$render($$result, {}, {}, {})}` : ``} ${``} ${``} ${``} ${currentRoute === "/" ? `<p class="text-2xl" data-svelte-h="svelte-11g1yv3">Welcome to OpenBook</p> <p data-svelte-h="svelte-53rjjq">OpenBook is a decentralised business management tool for organisations
-        of all sizes.</p> <button class="book-btn mt-4" data-svelte-h="svelte-shnzvf">Create Profile</button> <button class="book-btn mt-4 disabled text-xs" data-svelte-h="svelte-1b189a6">Create Organisation (soon)</button>` : ``}</div></div>`;
-});
-const Landing = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<div class="relative md:w-auto w-full h-full overflow-hidden md:overflow-visible" data-svelte-h="svelte-14qlssr"><img src="home.png" alt="" class="hidden-image aspect-w-16 md:h-full w-full md:w-auto object-cover object-middle"></div> <div class="md:flex-1 flex flex-col justify-center items-center p-4 md:p-12 my-16 md:my-2"><div class="md:flex-1 flex flex-col justify-center items-center p-4 md:p-12 my-16 md:my-2 space-y-8">${validate_component(Logo_icon, "Logo").$$render($$result, { className: "w-24" }, {}, {})} <p data-svelte-h="svelte-xf904x">Welcome Back</p> <p class="hidden" data-svelte-h="svelte-8vrkqj">Please connect to continue</p> <div class="flex flex-row space-x-2"><button class="book-btn min-w-[150px]" data-svelte-h="svelte-k8064b">Connect</button> <a href="/whitepaper" class="book-btn min-w-[150px]" data-svelte-h="svelte-vlfr5f">Whitepaper</a></div> <p class="text-center" data-svelte-h="svelte-5t7oxk">Welcome to OpenBook, the future of business management at your fingertips!
-      Experience the ease of decentralised business management, secure
-      transaction management and real-time insights.</p></div></div>`;
-});
 const Page$8 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let $authSignedInStore, $$unsubscribe_authSignedInStore;
-  $$unsubscribe_authSignedInStore = subscribe(authSignedInStore, (value) => $authSignedInStore = value);
-  $$unsubscribe_authSignedInStore();
-  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+  return `  ${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<div class="flex flex-row h-full w-full">${$authSignedInStore ? `${validate_component(Dashboard, "Dashboard").$$render($$result, {}, {}, {})}` : `${validate_component(Landing, "Landing").$$render($$result, {}, {}, {})}`}</div>`;
+      return `<p data-svelte-h="svelte-hi0xwy">The OpenBook Directory will be back soon.</p>`;
     }
   })}`;
 });
@@ -4594,59 +3942,46 @@ const Page$7 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   })}`;
 });
 const Page$6 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return ``;
+  return `  ${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+    default: () => {
+      return `<p data-svelte-h="svelte-tii2ku">Organisation coming soon.</p>`;
+    }
+  })}`;
 });
 const Page$5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return ``;
+  return `  ${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+    default: () => {
+      return `<p data-svelte-h="svelte-12yeslb">Organisations coming soon.</p>`;
+    }
+  })}`;
 });
 const Page$4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let $authSignedInStore, $$unsubscribe_authSignedInStore;
-  $$unsubscribe_authSignedInStore = subscribe(authSignedInStore, (value) => $authSignedInStore = value);
-  $$unsubscribe_authSignedInStore();
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `${$authSignedInStore ? `<div class="flex flex-row h-full md:h-screen w-full">${validate_component(Dashboard, "Dashboard").$$render($$result, {}, {}, {})}</div>` : `<div class="flex flex-row h-screen w-full">${validate_component(Landing, "Landing").$$render($$result, {}, {}, {})}</div>`}`;
+      return `<p data-svelte-h="svelte-1r6u1x5">Profile coming soon.</p>`;
     }
   })}`;
 });
 const Page$3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let $authSignedInStore, $$unsubscribe_authSignedInStore;
-  $$unsubscribe_authSignedInStore = subscribe(authSignedInStore, (value) => $authSignedInStore = value);
-  let tasks = [
-    {
-      id: "1",
-      title: "Task 1",
-      status: "In Progress",
-      visibility: "Public",
-      milestones: 3,
-      comments: 5,
-      tags: ["urgent", "new"],
-      startDate: "2023-03-01",
-      endDate: "2023-03-15",
-      completedDate: null
-    }
-  ];
-  const formatDateRange = (start, end) => {
-    const startDate = new Date(start).toLocaleDateString();
-    const endDate = new Date(end).toLocaleDateString();
-    return `${startDate} - ${endDate}`;
-  };
-  $$unsubscribe_authSignedInStore();
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `${$authSignedInStore ? `<div class="overflow-x-auto"><table class="min-w-full table-auto"><thead class="border-b" data-svelte-h="svelte-1335yiv"><tr><th class="text-left p-4">ID</th> <th class="text-left p-4">Title</th> <th class="text-left p-4">Status</th> <th class="text-left p-4">Visibility</th> <th class="text-left p-4">Milestones</th> <th class="text-left p-4">Comments</th> <th class="text-left p-4">Tags</th> <th class="text-left p-4">Dates</th></tr></thead> <tbody>${each(tasks, (task) => {
-        return `<tr class="border-b"><td class="p-4">${escape(task.id)}</td> <td class="p-4">${escape(task.title)}</td> <td class="p-4">${escape(task.status)}</td> <td class="p-4"><span${add_attribute("class", `icon ${task.visibility}`, 0)}></span> </td> <td class="p-4">${escape(task.milestones)}</td> <td class="p-4">${escape(task.comments)}</td> <td class="p-4">${each(task.tags, (tag) => {
-          return `<span class="inline-block bg-blue-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">${escape(tag)}</span>`;
-        })}</td> <td class="p-4">${task.completedDate ? `Completed: ${escape(new Date(task.completedDate).toLocaleDateString())}` : `${escape(formatDateRange(task.startDate, task.endDate))}`}</td> </tr>`;
-      })}</tbody></table></div>` : ``}`;
+      return `<p data-svelte-h="svelte-1faomfa">Projects coming soon.</p>`;
     }
   })}`;
 });
 const Page$2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return ``;
+  return `  ${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+    default: () => {
+      return `<p data-svelte-h="svelte-x7cxlg">Sales coming soon.</p>`;
+    }
+  })}`;
 });
 const Page$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return ``;
+  return `  ${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+    default: () => {
+      return `<p data-svelte-h="svelte-16xv4tv">Timesheets coming soon.</p>`;
+    }
+  })}`;
 });
 const Black_logo_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { className = "" } = $$props;
@@ -4655,191 +3990,96 @@ const Black_logo_icon = create_ssr_component(($$result, $$props, $$bindings, slo
   return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("class", className, 0)} viewBox="0 0 28 40" fill="none"><path d="M27.6525 32.0409V38.6535C25.9333 37.6255 23.8653 37.0304 21.6411 37.0304C19.8257 37.0304 18.1184 37.4272 16.6156 38.1305C15.5756 38.6174 14.6318 39.2486 13.8263 40.0001C13.0207 39.2486 12.0769 38.6174 11.037 38.1305C9.53412 37.4272 7.82687 37.0304 6.01142 37.0304C3.7872 37.0304 1.71927 37.6255 0 38.6535V32.0409C1.08206 31.3917 2.29636 30.9168 3.60685 30.6583C4.38233 30.502 5.18786 30.4178 6.01142 30.4178C6.62459 30.4178 7.23174 30.4659 7.81485 30.5501C10.1593 30.8988 12.2513 31.9207 13.8263 33.3875C15.4013 31.9207 17.4932 30.8988 19.8377 30.5501C20.4208 30.4659 21.028 30.4178 21.6411 30.4178C22.4647 30.4178 23.2702 30.502 24.0457 30.6583C25.3562 30.9168 26.5705 31.3917 27.6525 32.0409Z" fill="#000000"></path><path d="M13.8263 0C6.19177 0 0 6.19177 0 13.8263C0 21.4608 6.19177 27.6525 13.8263 27.6525C21.4608 27.6525 27.6525 21.4608 27.6525 13.8263C27.6525 6.19177 21.4608 0 13.8263 0ZM13.8263 21.04C9.8407 21.04 6.61257 17.8118 6.61257 13.8263C6.61257 9.8407 9.8407 6.61257 13.8263 6.61257C17.8118 6.61257 21.04 9.8407 21.04 13.8263C21.04 17.8118 17.8118 21.04 13.8263 21.04Z" fill="white"></path></svg>`;
 });
 const Vision = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<div class="flex flex-col space-y-2" data-svelte-h="svelte-qgwuab"><h1 class="text-2xl">Vision</h1> <p>Businesses are increasingly turning to Software as a Service (SaaS)
+  return `<div class="flex flex-col space-y-2" data-svelte-h="svelte-g5xwvu"><h1 class="text-2xl">Vision</h1> <p>Businesses are increasingly turning to Software as a Service (SaaS)
     platforms to manager their internal processes. Platforms like Salesforce &amp;
-    Quickbooks use this common software distribution model in which applications
+    QuickBooks use the common software distribution model in which applications
     are hosted by a third-party provider and made available to customers over
     the internet. This model allows businesses to access software applications
     without the need for internal hardware or technical expertise, paying on a
-    subscription basis.</p> <p>The Internet Computer blockchain has provided the world with a foundation
-    for genuine decentralisation. This technological leap is particularly
-    transformative for businesses worldwide, which are increasingly reliant on
-    Software as a Service (SaaS) platforms for critical data processing.</p> <p>Businesses today face the task of managing multiple subscriptions across a
+    subscription basis.</p> <p>Businesses today face the task of managing multiple subscriptions across a
     range of platforms. Their use cases often extend further, encompassing
     multiple organisations, currencies, and user roles. These challenges open
     the door for opportunities to create a more streamlined and integrated
     approach to business operations.</p> <p>In the world of SaaS platforms, diversity in functionality often comes at a
-    cost. These platforms are frequently cluttered with ads, compromising the
+    cost. These platforms can be cluttered with ads, compromising the
     user experience. Additionally, they are characterised by complex
     subscription models, where access to full features is often gated behind
     various tiers of service. This can lead to a situation where businesses feel
     trapped, using software that doesn&#39;t fully meet their needs or forces them
-    into paying more for essential features.</p> <p>Moreover, each dataset is privately held, limiting the potential for broader
-    societal benefits. These siloed data repositories prevent the collective
-    intelligence and insights that could be gleaned from a more open and shared
-    approach.</p> <p>This is where a transformative opportunity emerges. Envision harnessing the
-    power of these extensive datasets in an accessible, unified way. By applying
-    AI to a consolidated data lake, a DAO could democratically decide to develop
-    powerful tools.</p> <p>These tools wouldn&#39;t just elevate business operations&#39; functionality and
-    efficiency; they could also offer broader societal benefits. This vast
-    resource of data holds potential far beyond individual organisational
-    growth. It represents a communal asset, poised to drive innovation and
-    progress in a manner that resonates with the ethos of decentralisation.</p> <p>Furthermore, a critical issue in today&#39;s SaaS environment is data ownership.
-    Currently, businesses often don&#39;t retain full control over their own data.
-    This limitation restricts their ability to fully leverage this asset,
-    particularly in the creation of bespoke AI models and other innovative
-    applications. Changing this paradigm is essential. By shifting towards a
-    model where businesses retain ownership of their data, they are empowered to
-    explore and implement custom AI solutions and other tools that cater
-    specifically to their unique needs and objectives.</p></div>`;
+    into paying more for essential features.</p> <p>Data is also privately held by centralised web service entities, 
+    with data access potentially restricted without notice. 
+    Changing this paradigm is essential. By shifting towards a model where businesses retain ownership of their data, 
+    they are empowered to explore and implement custom solutions tailored to their unique needs and objectives.</p> <p>OpenBook will elevate your business operations, functionality and
+    efficiency.</p> <h1 class="text-xl">The Internet Computer</h1> <p>The Internet Computer Protocol has provided the world with a foundation
+    for genuine decentralisation. This leap in technology allows us to transform how we as business interact with the 
+    Software as a Service (SaaS) platforms we are increasingly reliant on.</p></div>`;
 });
 const Product = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<h1 class="text-2xl mb-8 mt-4" data-svelte-h="svelte-172t505">Minimum Viable Product (MVP)</h1> <div class="flex flex-col space-y-12 mt-4 mb-4" data-svelte-h="svelte-chx0hb"><div class="space-y-4"><p>OpenBook will conduct it&#39;s decentralisation sale as a fully integrated
-      platform, encompassing both sales and accountancy functions.</p> <p>With a focus on transactional-based systems, OpenBook is engineered for
-      the accurate reconciliation of multi-currency finance data, catering to
-      specific jurisdictional needs. Key design components of OpenBook’s MVP
-      include:</p></div> <div class="space-y-4"><h1 class="text-xl">Multi-Role</h1> <p>OpenBook is designed to support various user roles, such as finance
+  return `<div class="flex flex-col space-y-2" data-svelte-h="svelte-onyv7y"><h1 class="text-2xl">Product</h1> <h1 class="text-xl">Multi-Role</h1> <p>OpenBook is designed to support various user roles, such as project memebers, finance
       professionals and sales representatives. Each role within the platform
       will have access to tailored tools and features, enhancing efficiency and
       user experience. This multi-role approach ensures that every user,
       regardless of their function, finds the platform adaptable to their
-      specific needs.</p></div> <div class="space-y-4"><h1 class="text-xl">Multi-Tenant</h1> <p>Recognising the complex needs of modern business professionals, OpenBook
-      will enable users to manage and navigate across multiple organisations
-      effortlessly. This is especially beneficial for users managing or
-      interacting with different businesses or client accounts, providing a
-      seamless and integrated experience.</p></div> <div class="space-y-4"><h1 class="text-xl">Multi-Currency</h1> <p>OpenBook will support transactions in both fiat and cryptocurrencies. This
-      feature is vital for businesses engaged in international operations or
-      those operating in the crypto space, offering a cohesive view of financial
-      activities across different monetary systems.</p> <p>These foundational features of OpenBook’s MVP are set to provide a
-      versatile, flexible, and comprehensive toolset, meeting the diverse
-      requirements of businesses in today&#39;s dynamic environment.</p></div></div> <button ${"disabled"} class="book-btn my-8 disabled" data-svelte-h="svelte-qdsuyd">View System Designs (coming soon)</button>`;
-});
-const Revenue = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<h1 class="text-2xl mb-8 mt-4" data-svelte-h="svelte-18v727s">Value Proposition</h1> <div class="flex flex-col space-y-12 mt-4 mb-4" data-svelte-h="svelte-1q1zv5n"><div class="space-y-4"><h1 class="text-xl">$BOOK Utility Token</h1> <p>OpenBook operates as a DAO (Decentralised Autonomous Organisation). The
-      $BOOK token is used within the DAO for the following purposes:</p> <ul class="list-disc px-4"><li>Organisations will pay an annual subscription for the basic OpenBook
-        service with $BOOK tokens.</li> <li>Organisations will be able to settle invoices and pay employees in
-        $BOOK, along with any other ICRC token.</li> <li>Neuron holders will be rewarded with $BOOK maturity interest.</li> <li>Finance professionals will be able to design and build financial reports
-        based on the granular chart of accounts structure an organisation sets
-        up. These professionals will be rewarded in $BOOK tokens when an
-        organisation uses their designed report.</li> <li>As OpenBook grows it will venture into all areas of business management,
-        subscriptions to these additional advanced features will also be paid
-        using $BOOK.</li></ul></div> <div class="space-y-4"><h1 class="text-xl">DAO Valuation</h1> <p>In forecasting the potential revenue for our platform, we conducted a
-      comparative analysis between two established SaaS platforms: Salesforce
-      and QuickBooks.</p> <p><b>Salesforce:</b> A dominant force in the CRM space. Salesforce has seen consistent
-      growth over the years. In 2023, their annual revenue was $31.352 billion, up
-      18.35% from 2022. To provide a broader perspective, their revenue in 2022 was
-      $26.492 billion, marking a 24.66% growth from 2021, which had a revenue of
-      $21.252 billion, a 24.3% increase from 2020.</p> <p><b>QuickBooks:</b> Highly popular in the accounting software market. As of
-      the recent data, QuickBooks generated a total revenue of $9.6 billion, a 25%
-      increase year-over-year. Their combined platform revenue, which includes QuickBooks
-      Online, TurboTax Online, and Credit Karma, accounted for $6.6 billion, marking
-      a 39% growth.</p> <p>Both these platforms represent a combined user base of approximately 6.6
-      million. It&#39;s crucial to understand that the impressive revenue figures,
-      especially from Salesforce, often stem from their enterprise licensing
-      agreements. Enterprise licences differ significantly from individual or
-      small business licences. They&#39;re priced higher, offer an extensive range
-      of features, and often include additional services like consulting,
-      training, and customisation. This model can significantly inflate the
-      average revenue per user, especially for platforms like Salesforce, which
-      caters to large corporations and businesses across the globe.</p> <p>Drawing insights from QuickBooks and Salesforce, we find that Salesforce&#39;s
-      revenue is approximately $10,451 per user per year, while QuickBooks
-      stands at about $2,667 per user. We&#39;ll use the more conservative figure
-      from QuickBooks as our benchmark. To hit a valuation of $1 billion over 8
-      years, with a projected revenue per user of $2,667, we would require a
-      user base of 37,500. This goal entails an average onboarding of roughly
-      4,688 users per annum with this target representing a mere 0.57% of the
-      combined 6.6 million user base of Salesforce and QuickBooks.</p></div> <div class="space-y-4"><h1 class="text-xl">Adaptive and User-Focused Revenue Model</h1> <p>Central to OpenBook&#39;s revenue strategy is our dedication to simple,
-      user-friendly subscription models. Users have the freedom to activate or
-      deactivate platform features as their business needs evolve. This unique
-      model allows for a customisable experience, ensuring that users only pay
-      for what they need, when they need it. Crucially, even when a feature is
-      deactivated, all associated data is preserved, ready to be reactivated at
-      any time. This approach not only makes OpenBook adaptive to changing
-      business landscapes but also ensures that it remains economically
-      efficient for our users. $BOOK tokens will be used to pay for these
-      services.</p> <p>In line with our commitment to directly benefit neuron holders, OpenBook
-      will allocate 50% of any ICRC-1 token received by the DAO each month to
-      neuron holders. Distribution to neuron holders will be proportional to
-      each neuron&#39;s total $BOOK value and its remaining duration. This ensures a
-      fair and equitable redistribution of revenue. Calculation for this
-      distribution will be based on the status of BOOK neurons as at the end of
-      each month, aligning with the DAO&#39;s transparent and community-focused
-      ethos. The remaining 50% will remain in the OpenBook treasury free for the
-      DAO to use as required.</p> <p>The reinvestment of revenues into the DAO and direct distribution to
-      neuron holders are designed to foster a cycle of growth, user engagement,
-      and shared prosperity.</p></div> <div class="space-y-4"><h1 class="text-xl">DAO Reward Structure</h1> <p>The OpenBook DAO&#39;s rewards are funded by the minting of new BOOK tokens,
-      minting 2.5% of the total supply annually. The minted $BOOK is distributed
-      throughout the year for the following reward categories</p> <ul class="list-disc px-4"><li>Professional Service Rewards (75%)</li> <li>Governance Rewards (25%)</li></ul> <h1 class="text-xl">Professional Service Rewards</h1> <p>The DAO has the ability to propose and vote on new features or
-      adjustments, leveraging the expertise of finance professionals. This
-      integration of domain knowledge ensures that the feature development
-      process is strategic and thoughtful, providing businesses with a clear
-      understanding of the services available. The inclusion of these
-      professionals in the DAO&#39;s decision-making adds a layer of practical
-      insight and relevance to the features and adjustments considered, ensuring
-      they align with real-world financial needs and trends.</p> <p>Professional Service Rewards further reinforce this approach. Initially,
-      these rewards will be used for writing jurisdiction-specific reports by
-      local finance professionals, who will build tailored reports suited to
-      their local jurisdictional finance rules and formats. This reward pool
-      will later expand to include other experts in fields relevant to future
-      OpenBook features, continuing to enrich the platform with practical and
-      expert insights.</p> <h1 class="text-xl">Governance Rewards</h1> <p>The DAO will reward users for participation in governance with $BOOK
-      tokens. Failed proposals will cost 10 $BOOK tokens to a neuron holder
-      which will be deposited into the DAO’s treasury.</p></div> <div class="space-y-4"><p>We will decentralise OpenBook through the following token allocation at
-      genesis:</p> <ul class="list-disc px-4"><li>James Beadle + Team - 12%</li> <li>Funded NFT Holders - 12%</li> <li>SNS Decentralisation Sale - 25%</li> <li>DAO Treasury - 51%</li></ul></div></div>`;
-});
-const Tokenomics = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return ``;
+      specific needs.</p> <h1 class="text-xl">Multi-Tenant</h1> <p>Recognising the complex needs of modern business professionals, OpenBook
+    will enable users to manage and navigate across multiple organisations
+    effortlessly. This is especially beneficial for agency users managing multiple businesses or client accounts, 
+    providing a seamless, integrated experience.</p> <h1 class="text-xl">Multi-Currency</h1> <p>OpenBook will support transactions in both fiat and cryptocurrencies. This
+    will allow businesses engaged in international operations or
+    within the Web3 space, offering a combined view of financial
+    activities for any audience.</p> <h1 class="text-xl">MVP</h1> <p>These foundational features of OpenBook’s MVP are set to provide a
+    versatile, flexible, and comprehensive toolset, meeting the diverse
+    requirements of businesses in today&#39;s dynamic environment.</p> <p>OpenBook will conduct it&#39;s decentralisation sale as a fully integrated
+    platform, containing modules to manage projects, sales, accounts, jobs and timesheets.</p></div>`;
 });
 const Dao = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return ``;
+  return `<div class="flex flex-col space-y-2" data-svelte-h="svelte-1geg4in"><h1 class="text-2xl">The OpenBook DAO</h1> <p>We aim to decentralise OpenBook using the Internet Computer Protocol&#39;s SNS DAO infrastructure. 
+        Decentralising the platform will ensure that all future profits are in the hands of the DAO. 
+        The platform will operate using our utility token, $BOOK.</p> <p>The DAO allows purchase of an organisation and the recharging of a services using $BOOK and $ICP tokens. 
+        The DAO will burn the $BOOK tokens and use the $ICP to purchase and burn $BOOK from exchanges until the total supply is back to 100m.</p> <p>The DAO will reward users for participation in governance with $BOOK tokens. 
+        Failed proposals will cost 10 $BOOK tokens to a neuron holder which will be deposited into the DAO’s treasury.</p> <p>We will decentralise OpenBook through the following token allocation at genesis:</p> <ul class="list-disc px-4"><li>Waterway Labs - 12%</li> <li>Presale - 12%</li> <li>SNS Decentralisation Sale - 25%</li> <li>DAO Treasury - 51%</li></ul> <p>Revenue</p> <p>We compared two established platforms (Salesforce &amp; QuickBook) to forecast potential revenue for OpenBook.</p> <p><b>Salesforce:</b> 
+        Salesforce is the market leading sales SaaS platform that has seen consistent growth over the years. 
+        Their annual revenue increased by 24.3%, 24.66% and 24.3% in the 3 years from 2021 to 2023.
+        Salesforce had a turnover of $31.352 billion in the year ending 2023.</p> <p><b>QuickBooks:</b> 
+        QuickBooks is a popular accountancy SaaS product. 
+        Their parent company Intuit had revenue of $15.81B in the twelve months ending April 30, 2024, with 12.39% growth year-over-year.</p> <p>These impressive revenue figures, especially in Salesforce&#39;s case, stem from complex pricing models. 
+        Central to OpenBook&#39;s revenue strategy is our &#39;Pay as You Use&#39; pricing model. 
+        You organisation comes charged up 100%, as it run downs we will keep track of your usage. OpenBook will then suggest a topup amount for your organisation in $BOOK or $ICP.</p></div>`;
 });
 const Marketing = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return ``;
+  return `<div class="flex flex-col space-y-2" data-svelte-h="svelte-11g3fw"><h1 class="text-2xl">Marketing</h1> <p>OpenBook is developed by <a href="https://waterwaylabs.xyz" target="_blank" class="text-OpenBookDarkGreen">Waterway Labs</a>.</p> <p>Waterway Labs are developing a variety of applications aimed to introduce people &amp; businesses to the ICP blockchain.
+        Waterway Labs is UK based, with a plan to introduce a wide range of UK businesses to OpenBook. Our plan is to introduce new businesses to the platform in each UK city we visit, offering them bespoke development services for features that could be abstracted for businesses in general.</p> <p>We plan to focus on real world use cases, writing case studies on how key SaaS services can be unified on Web3 to provide businesses with a lower cost, better option.</p></div>`;
 });
 const Roadmap = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<h1 class="text-2xl mb-8 mt-4" data-svelte-h="svelte-1isdr5e">Roadmap: Building Towards AI-Enhanced Business Operations</h1> <div class="flex flex-col space-y-12 mt-4 mb-4" data-svelte-h="svelte-1361nsh"><div class="space-y-4"><h1 class="text-xl">Ongoing: Security and Transparency Balance</h1> <ul class="list-disc px-4"><li>Maintaining the delicate balance between data security and transparency.</li> <li>Ensuring private data remains protected while providing necessary
-        insights to stakeholders.</li></ul></div> <div class="space-y-4"><h1 class="text-xl">Initial Phase: Establishing Core On-Chain Services</h1> <p>2024: Launch of OpenBook MVP</p> <ul class="list-disc px-4"><li>Introduction of fundamental business management services for sales and
-        finance.</li> <li>Seamless integration of these core services to establish the primary
-        data lake.</li></ul> <p>Late 2024: Expansion of Core Features</p> <ul class="list-disc px-4"><li>Adding Joint Venture Accounting, Timesheet Management, Project
-        Management, and Customer Service.</li> <li>Each new feature designed to enrich the data lake with diverse business
-        operation insights.</li></ul></div> <div class="space-y-4"><h1 class="text-xl">Intermediate Phase: Broadening the Scope</h1> <p>2025: Enriching the Platform</p> <ul class="list-disc px-4"><li>Integration of Inventory &amp; Supply Chain Management, Risk Management,
-        Recruitment, and Training.</li> <li>Focus on Advanced Reporting features for more in-depth data analysis
-        capabilities.</li> <li>Implementation of global tax reports as templates, evolving with input
-        from finance professionals.</li></ul></div> <div class="space-y-4"><h1 class="text-xl">Advanced Phase: Leveraging AI for Enhanced Business Insights</h1> <p>Post-2025: Introduction of AI Tools</p> <ul class="list-disc px-4"><li>Utilizing the comprehensive data lake for AI-driven insights.</li> <li>Democratically decided AI tool development through DAO voting, based on
-        accumulated data and expert advice.</li> <li>AI tools aimed at improving financial forecasting, operational
-        efficiency, and strategic decision-making.</li></ul> <p>2026 and Beyond: Integrating Recruitment and Career Management</p> <ul class="list-disc px-4"><li>Launch of Business Profile and Recruitment Features</li> <li>Introduction of a comprehensive business profile platform, aiming to
-        rival established networks like LinkedIn.</li> <li>Seamless integration of recruitment, career achievements, and
-        professional networking into OpenBook.</li> <li>Utilisation of the data lake to provide AI-driven insights for career
-        development and talent acquisition.</li></ul></div> <div class="space-y-4"><h1 class="text-xl">Long-Term Vision: A Comprehensive Business Ecosystem</h1> <p>OpenBook will evolve focused on transforming the landscape of business
-      operations, from foundational business services, advanced AI-driven tools
-      and professional networking.</p></div></div>`;
+  return `<div class="flex flex-col space-y-2" data-svelte-h="svelte-zkirrf"><h1 class="text-2xl">Roadmap</h1> <div class="space-y-4"><h1 class="text-xl">Ongoing: Security and Transparency Balance</h1> <ul class="list-disc px-4"><li>Maintaining the delicate balance between data security and transparency.</li> <li>Ensuring private data remains protected while providing necessary
+        insights to stakeholders.</li></ul></div> <div class="space-y-4"><h1 class="text-xl">Initial Phase: Establishing Core On-Chain Services</h1> <p>2024: Launch of OpenBook MVP</p> <ul class="list-disc px-4"><li>Introduction of fundamental business management services for project management, sales, accounts, jobs and timesheets.</li></ul> <p>2025: Expansion of Core Features</p> <ul class="list-disc px-4"><li>Adding new features like joint venture accounting and customer service features.</li> <li>Working with clients to extend the existing OpenBook functionality based on their bespoke requirements, 
+        ensuring the system can handle an ever increasing number of use cases out of the box.</li></ul></div> <div class="space-y-4"><h1 class="text-xl">Intermediate Phase: Broadening the Scope</h1> <p>2025: Enriching the Platform</p> <ul class="list-disc px-4"><li>Integration of Inventory &amp; Supply Chain Management, Risk Management and Training.</li> <li>Focus on Advanced Reporting features for more in-depth data analysis capabilities.</li> <li>Implementation of global tax reports as templates, evolving with input from finance professionals.</li></ul></div> <div class="space-y-4"><h1 class="text-xl">Advanced Phase: Leveraging AI for Enhanced Business Insights</h1> <p>Post-2025: Integrating Recruitment and Career Management</p> <ul class="list-disc px-4"><li>Launch of Business Profile and Recruitment Features</li> <li>Introduction of a comprehensive business profile platform, aiming to
+        rival established networks like LinkedIn. OpenBook will integrate your career achievements to your profile, 
+        the first decentralised career award system based on immutable on-chain metrics.</li></ul></div></div>`;
 });
 const Team = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<h1 class="text-2xl mb-8 mt-4" data-svelte-h="svelte-yexfpg">The OpenBook Team</h1> <div class="flex flex-col space-y-12 mt-4 mb-4" data-svelte-h="svelte-1hp3okx"><p>OpenBook was founded by James Beadle. James&#39; experience in developing
-    financial systems spans various organisations, each with unique
-    transactional data and reporting needs. His background equips him with a
-    practical understanding of the complexities involved in creating tailored
-    financial solutions.</p> <p>OpenBook is designed by DfinityDesigner, a seasoned designer responsible for
+  return `<div class="flex flex-col space-y-2" data-svelte-h="svelte-1h7n41g"><h1 class="text-2xl">Team</h1> <p>Waterway Labs founder James Beadle has experience in developing
+    multi-currency, multi-tenant, financial &amp; timesheet systems for spanning various sized organisations, each with unique
+    transactional data and reporting needs. His background equips him with a practical understanding of the complexities involved in creating tailored financial solutions.</p> <p>OpenBook is designed by DfinityDesigner, a seasoned designer responsible for
     designing major IC projects like OpenChat. His experience ensures each
-    feature is designed with the user&#39;s experience paramount.</p> <p>Other team members will be announced in the coming months.</p></div>`;
+    feature is designed with the user&#39;s experience paramount.</p> <p>The Waterway Labs team is in the process of expansion, bringing on a new Managing &amp; Operations Director in June 2024. This allows James to focus on the development of OpenBook.</p> <p>Other team members will be announced in the coming months.</p></div>`;
 });
 const System_architecture = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return ``;
+  return `<div class="flex flex-col space-y-2" data-svelte-h="svelte-wmxqjw"><h1 class="text-2xl">System Architecture</h1> <p>6 canisters are created when you setup an OpenBook organisation. 
+        The main canister created is the organisation canister, this canister maanges references to the 5 initial service canisters, 
+        containing data and functions to manage your projects, sales, accounts, jobs and timesheets.</p> <p>A user is presented with the total charge of their organisation, with all canisters sharing cycles where required. 
+        The system prediodically records the cycle usage for an organisation, adjusting the suggested topup amounts to get you back to 100%.
+        A user can topup to any % they want.  
+        This pricing model allows users to keep the management of their service as simple as possible.</p> <p>This pricing model allows users to keep the management of their service as simple as possible.</p></div>`;
 });
 const css = {
   code: ".pip.svelte-1cpyk1w{width:10px;height:10px;background-color:gray;border-radius:50%;margin:0 2px}.pip.is-active.svelte-1cpyk1w{--tw-bg-opacity:1;background-color:rgb(102 224 148 / var(--tw-bg-opacity))}@media(min-width: 640px){.pip.svelte-1cpyk1w{width:12px;height:12px}}",
-  map: '{"version":3,"file":"+page.svelte","sources":["+page.svelte"],"sourcesContent":["<script lang=\\"ts\\">import Layout from \\"../Layout.svelte\\";\\nimport BlackLogoIcon from \\"$lib/icons/black-logo-icon.svelte\\";\\nimport Vision from \\"$lib/components/whitepaper/vision.svelte\\";\\nimport Product from \\"$lib/components/whitepaper/product.svelte\\";\\nimport Revenue from \\"$lib/components/whitepaper/revenue.svelte\\";\\nimport Tokenomics from \\"$lib/components/whitepaper/tokenomics.svelte\\";\\nimport DAO from \\"$lib/components/whitepaper/dao.svelte\\";\\nimport Marketing from \\"$lib/components/whitepaper/marketing.svelte\\";\\nimport RoadMap from \\"$lib/components/whitepaper/roadmap.svelte\\";\\nimport Team from \\"$lib/components/whitepaper/team.svelte\\";\\nimport SystemArchitecture from \\"$lib/components/whitepaper/system-architecture.svelte\\";\\nlet activeTab = \\"vision\\";\\nconst tabs = [\\n    { name: \\"Vision\\", component: Vision },\\n    { name: \\"Product\\", component: Product },\\n    { name: \\"Revenue\\", component: Revenue },\\n    { name: \\"Tokenomics\\", component: Tokenomics },\\n    { name: \\"DAO\\", component: DAO },\\n    { name: \\"Marketing\\", component: Marketing },\\n    { name: \\"Road Map\\", component: RoadMap },\\n    { name: \\"Team\\", component: Team },\\n    { name: \\"System Architecture\\", component: SystemArchitecture },\\n];\\nfunction nextTab() {\\n    const currentIndex = tabs.findIndex(tab => tab.name.toLowerCase() === activeTab);\\n    if (currentIndex < tabs.length - 1) {\\n        activeTab = tabs[currentIndex + 1].name.toLowerCase();\\n    }\\n}\\nfunction prevTab() {\\n    const currentIndex = tabs.findIndex(tab => tab.name.toLowerCase() === activeTab);\\n    if (currentIndex > 0) {\\n        activeTab = tabs[currentIndex - 1].name.toLowerCase();\\n    }\\n}\\nfunction isActiveTab(index) {\\n    return tabs[index].name.toLowerCase() === activeTab;\\n}\\n<\/script>\\n\\n<Layout>\\n  <div class=\\"p-2\\">\\n    <div class=\\"flex flex-col bg-OpenBookGreen rounded-md rounded-b-lg xs:text-lg sm:text-xl\\">\\n      <div class=\\"flex flex-row items-center px-4 border-b border-b-OpenBookGreen justify-between text-black\\">\\n        <div class=\\"flex items-center\\">\\n          <BlackLogoIcon className=\\"w-4 xs:w-6 sm:w-8 mx-1 xs:mx-2 sm:mx-3 my-2\\" />\\n          <p class=\\"p-2 xs:p-3 sm:p-4\\">OpenBook Whitepaper</p>\\n        </div>\\n      </div>\\n\\n      <div class=\\"w-full bg-OpenBookGray p-4 rounded-b-md flex flex-col text-sm xs:text-base sm:text-lg\\">\\n        \\n        {#each tabs as { name, component }}\\n          {#if activeTab === name.toLowerCase()}\\n            <div class=\\"flex flex-col\\">\\n\\n              <div class=\\"flex flex-col sm:hidden text-xs\\">\\n                <div class=\\"flex flex-row\\">\\n                  <button\\n                    class=\\"w-1/2 py-2 px-4 rounded-l bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray\\"\\n                    on:click={prevTab}\\n                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}\\n                  >\\n                    Prior Section\\n                  </button>\\n                  <button\\n                    class=\\"w-1/2 py-2 px-4 rounded-r bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray\\"\\n                    on:click={nextTab}\\n                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}\\n                  >\\n                    Next Section\\n                  </button>\\n                </div>\\n                <div class=\\"flex flex-row justify-center my-4\\">\\n                  {#each tabs as _, index}\\n                    <div class=\\"pip\\" class:is-active={isActiveTab(index)}></div>\\n                  {/each}\\n                </div>\\n\\n              </div>\\n\\n              <div class=\\"hidden sm:flex flex-col text-xs  mb-4\\">\\n                <div class=\\"flex flex-row items-center justify-between\\">\\n                  <button\\n                    class=\\"py-2 px-4 rounded flex-grow bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray\\"\\n                    on:click={prevTab}\\n                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}\\n                  >\\n                    Prior Section\\n                  </button>\\n                  <div class=\\"flex-grow flex flex-row justify-center\\">\\n                    {#each tabs as _, index}\\n                      <div class=\\"pip\\" class:is-active={isActiveTab(index)}></div>\\n                    {/each}\\n                  </div>\\n                  <button\\n                    class=\\"py-2 px-4 rounded flex-grow bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray\\"\\n                    on:click={nextTab}\\n                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}\\n                  >\\n                    Next Section\\n                  </button>\\n                </div>\\n              </div>\\n              \\n\\n              <div class=\\"horizontal-divider\\" />\\n              <div class=\\"flex my-4\\">\\n                <svelte:component this={component} />\\n              </div>\\n              <div class=\\"horizontal-divider\\" />\\n\\n              <div class=\\"flex flex-col sm:hidden\\">\\n                <div class=\\"flex flex-row justify-center my-4\\">\\n                  {#each tabs as _, index}\\n                    <div class=\\"pip\\" class:is-active={isActiveTab(index)}></div>\\n                  {/each}\\n                </div>\\n                \\n                \\n                <div class=\\"flex flex-col sm:hidden text-xs\\">\\n                  <div class=\\"flex flex-row\\">\\n                    <button\\n                      class=\\"w-1/2 py-2 px-4 rounded-l bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray\\"\\n                      on:click={prevTab}\\n                      disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}\\n                    >\\n                      Prior Section\\n                    </button>\\n                    <button\\n                      class=\\"w-1/2 py-2 px-4 rounded-r bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray\\"\\n                      on:click={nextTab}\\n                      disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}\\n                    >\\n                      Next Section\\n                    </button>\\n                  </div>\\n  \\n                </div>\\n                \\n              </div>\\n\\n\\n              <div class=\\"hidden sm:flex flex-col text-xs  mt-4\\">\\n                <div class=\\"flex flex-row items-center justify-between\\">\\n                  <button\\n                    class=\\"text-white py-2 px-4 rounded flex-grow bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray\\"\\n                    on:click={prevTab}\\n                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}\\n                  >\\n                    Prior Section\\n                  </button>\\n                  <div class=\\"flex-grow flex flex-row justify-center\\">\\n                    {#each tabs as _, index}\\n                      <div class=\\"pip\\" class:is-active={isActiveTab(index)}></div>\\n                    {/each}\\n                  </div>\\n                  <button\\n                    class=\\"py-2 px-4 rounded flex-grow bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray\\"\\n                    on:click={nextTab}\\n                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}\\n                  >\\n                    Next Section\\n                  </button>\\n                </div>\\n              </div>\\n\\n\\n\\n            </div>\\n          {/if}\\n        {/each}\\n      </div>\\n    </div>\\n  </div>\\n</Layout>\\n\\n<style>\\n  .pip {\\n    width: 10px;\\n    height: 10px;\\n    background-color: gray;\\n    border-radius: 50%;\\n    margin: 0 2px;\\n  }\\n  \\n  .pip.is-active {\\n    --tw-bg-opacity: 1;\\n    background-color: rgb(102 224 148 / var(--tw-bg-opacity));\\n}\\n\\n  @media (min-width: 640px) {\\n    .pip {\\n      width: 12px;\\n      height: 12px;\\n    }\\n  }</style>\\n"],"names":[],"mappings":"AAkLE,mBAAK,CACH,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,IAAI,CACZ,gBAAgB,CAAE,IAAI,CACtB,aAAa,CAAE,GAAG,CAClB,MAAM,CAAE,CAAC,CAAC,GACZ,CAEA,IAAI,yBAAW,CACb,eAAe,CAAE,CAAC,CAClB,gBAAgB,CAAE,IAAI,GAAG,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC,CAAC,IAAI,eAAe,CAAC,CAC5D,CAEE,MAAO,YAAY,KAAK,CAAE,CACxB,mBAAK,CACH,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,IACV,CACF"}'
+  map: '{"version":3,"file":"+page.svelte","sources":["+page.svelte"],"sourcesContent":["<script lang=\\"ts\\">import Layout from \\"../Layout.svelte\\";\\nimport BlackLogoIcon from \\"$lib/icons/black-logo-icon.svelte\\";\\nimport Vision from \\"$lib/components/whitepaper/vision.svelte\\";\\nimport Product from \\"$lib/components/whitepaper/product.svelte\\";\\nimport DAO from \\"$lib/components/whitepaper/dao.svelte\\";\\nimport Marketing from \\"$lib/components/whitepaper/marketing.svelte\\";\\nimport RoadMap from \\"$lib/components/whitepaper/roadmap.svelte\\";\\nimport Team from \\"$lib/components/whitepaper/team.svelte\\";\\nimport SystemArchitecture from \\"$lib/components/whitepaper/system-architecture.svelte\\";\\nlet activeTab = \\"vision\\";\\nconst tabs = [\\n    { name: \\"Vision\\", component: Vision },\\n    { name: \\"Product\\", component: Product },\\n    { name: \\"DAO\\", component: DAO },\\n    { name: \\"Marketing\\", component: Marketing },\\n    { name: \\"Road Map\\", component: RoadMap },\\n    { name: \\"Team\\", component: Team },\\n    { name: \\"System Architecture\\", component: SystemArchitecture },\\n];\\nfunction nextTab() {\\n    const currentIndex = tabs.findIndex(tab => tab.name.toLowerCase() === activeTab);\\n    if (currentIndex < tabs.length - 1) {\\n        activeTab = tabs[currentIndex + 1].name.toLowerCase();\\n    }\\n}\\nfunction prevTab() {\\n    const currentIndex = tabs.findIndex(tab => tab.name.toLowerCase() === activeTab);\\n    if (currentIndex > 0) {\\n        activeTab = tabs[currentIndex - 1].name.toLowerCase();\\n    }\\n}\\nfunction isActiveTab(index) {\\n    return tabs[index].name.toLowerCase() === activeTab;\\n}\\n<\/script>\\n\\n<Layout>\\n  <div class=\\"p-2\\">\\n    <div class=\\"flex flex-col bg-OpenBookGreen rounded-md rounded-b-lg xs:text-lg sm:text-xl\\">\\n      <div class=\\"flex flex-row items-center px-4 border-b border-b-OpenBookGreen justify-between text-black\\">\\n        <div class=\\"flex items-center\\">\\n          <BlackLogoIcon className=\\"w-4 xs:w-6 sm:w-8 mx-1 xs:mx-2 sm:mx-3 my-2\\" />\\n          <p class=\\"p-2 xs:p-3 sm:p-4\\">OpenBook Whitepaper</p>\\n        </div>\\n      </div>\\n\\n      <div class=\\"w-full bg-OpenBookGray p-4 rounded-b-md flex flex-col text-sm xs:text-base sm:text-lg\\">\\n        \\n        {#each tabs as { name, component }}\\n          {#if activeTab === name.toLowerCase()}\\n            <div class=\\"flex flex-col\\">\\n\\n              <div class=\\"flex flex-col sm:hidden text-xs\\">\\n                <div class=\\"flex flex-row\\">\\n                  <button\\n                    class=\\"w-1/2 py-2 px-4 rounded-l bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray\\"\\n                    on:click={prevTab}\\n                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}\\n                  >\\n                    Prior Section\\n                  </button>\\n                  <button\\n                    class=\\"w-1/2 py-2 px-4 rounded-r bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray\\"\\n                    on:click={nextTab}\\n                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}\\n                  >\\n                    Next Section\\n                  </button>\\n                </div>\\n                <div class=\\"flex flex-row justify-center my-4\\">\\n                  {#each tabs as _, index}\\n                    <div class=\\"pip\\" class:is-active={isActiveTab(index)}></div>\\n                  {/each}\\n                </div>\\n\\n              </div>\\n\\n              <div class=\\"hidden sm:flex flex-col text-xs  mb-4\\">\\n                <div class=\\"flex flex-row items-center justify-between\\">\\n                  <button\\n                    class=\\"py-2 px-4 rounded flex-grow bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray\\"\\n                    on:click={prevTab}\\n                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}\\n                  >\\n                    Prior Section\\n                  </button>\\n                  <div class=\\"flex-grow flex flex-row justify-center\\">\\n                    {#each tabs as _, index}\\n                      <div class=\\"pip\\" class:is-active={isActiveTab(index)}></div>\\n                    {/each}\\n                  </div>\\n                  <button\\n                    class=\\"py-2 px-4 rounded flex-grow bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray\\"\\n                    on:click={nextTab}\\n                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}\\n                  >\\n                    Next Section\\n                  </button>\\n                </div>\\n              </div>\\n              \\n\\n              <div class=\\"horizontal-divider\\" />\\n              <div class=\\"flex my-4\\">\\n                <svelte:component this={component} />\\n              </div>\\n              <div class=\\"horizontal-divider\\" />\\n\\n              <div class=\\"flex flex-col sm:hidden\\">\\n                <div class=\\"flex flex-row justify-center my-4\\">\\n                  {#each tabs as _, index}\\n                    <div class=\\"pip\\" class:is-active={isActiveTab(index)}></div>\\n                  {/each}\\n                </div>\\n                \\n                \\n                <div class=\\"flex flex-col sm:hidden text-xs\\">\\n                  <div class=\\"flex flex-row\\">\\n                    <button\\n                      class=\\"w-1/2 py-2 px-4 rounded-l bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray\\"\\n                      on:click={prevTab}\\n                      disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}\\n                    >\\n                      Prior Section\\n                    </button>\\n                    <button\\n                      class=\\"w-1/2 py-2 px-4 rounded-r bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray\\"\\n                      on:click={nextTab}\\n                      disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}\\n                    >\\n                      Next Section\\n                    </button>\\n                  </div>\\n  \\n                </div>\\n                \\n              </div>\\n\\n\\n              <div class=\\"hidden sm:flex flex-col text-xs  mt-4\\">\\n                <div class=\\"flex flex-row items-center justify-between\\">\\n                  <button\\n                    class=\\"text-white py-2 px-4 rounded flex-grow bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray\\"\\n                    on:click={prevTab}\\n                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === 0}\\n                  >\\n                    Prior Section\\n                  </button>\\n                  <div class=\\"flex-grow flex flex-row justify-center\\">\\n                    {#each tabs as _, index}\\n                      <div class=\\"pip\\" class:is-active={isActiveTab(index)}></div>\\n                    {/each}\\n                  </div>\\n                  <button\\n                    class=\\"py-2 px-4 rounded flex-grow bg-OpenBookDarkGreen text-white disabled:bg-OpenBookLightGray disabled:text-OpenBookGray\\"\\n                    on:click={nextTab}\\n                    disabled={tabs.findIndex(tab => tab.name.toLowerCase() === activeTab) === tabs.length - 1}\\n                  >\\n                    Next Section\\n                  </button>\\n                </div>\\n              </div>\\n\\n\\n\\n            </div>\\n          {/if}\\n        {/each}\\n      </div>\\n    </div>\\n  </div>\\n</Layout>\\n\\n<style>\\n  .pip {\\n    width: 10px;\\n    height: 10px;\\n    background-color: gray;\\n    border-radius: 50%;\\n    margin: 0 2px;\\n  }\\n  \\n  .pip.is-active {\\n    --tw-bg-opacity: 1;\\n    background-color: rgb(102 224 148 / var(--tw-bg-opacity));\\n}\\n\\n  @media (min-width: 640px) {\\n    .pip {\\n      width: 12px;\\n      height: 12px;\\n    }\\n  }</style>\\n"],"names":[],"mappings":"AA8KE,mBAAK,CACH,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,IAAI,CACZ,gBAAgB,CAAE,IAAI,CACtB,aAAa,CAAE,GAAG,CAClB,MAAM,CAAE,CAAC,CAAC,GACZ,CAEA,IAAI,yBAAW,CACb,eAAe,CAAE,CAAC,CAClB,gBAAgB,CAAE,IAAI,GAAG,CAAC,GAAG,CAAC,GAAG,CAAC,CAAC,CAAC,IAAI,eAAe,CAAC,CAC5D,CAEE,MAAO,YAAY,KAAK,CAAE,CACxB,mBAAK,CACH,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,IACV,CACF"}'
 };
 const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let activeTab = "vision";
   const tabs = [
     { name: "Vision", component: Vision },
     { name: "Product", component: Product },
-    { name: "Revenue", component: Revenue },
-    {
-      name: "Tokenomics",
-      component: Tokenomics
-    },
     { name: "DAO", component: Dao },
     { name: "Marketing", component: Marketing },
     { name: "Road Map", component: Roadmap },
