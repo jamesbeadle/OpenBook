@@ -50,6 +50,7 @@
     "@dfinity/principal": "^1.0.1",
     "@dfinity/sns": "^3.0.0",
     "@dfinity/utils": "^2.1.2",
+    "esbuild": "^0.21.5",
     "lodash-es": "^4.17.21",
     "postcss": "^8.4.31",
     "svelte-flag-icons": "^0.7.2",

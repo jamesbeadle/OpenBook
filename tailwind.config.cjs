@@ -38,6 +38,7 @@ export default {
     },
     extend: {
       colors: {
+        OpenBookDark: "#101111",
         OpenBookGreen: "#66E094",
         OpenBookGray: "#2E323A",
         OpenBookRed: "#FF403C",

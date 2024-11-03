@@ -9,7 +9,6 @@ import T_Old "data-types/old-types";
 import DTOs "dtos/DTOs";
 import ProfileDTOs "dtos/profile-dtos";
 import OrganisationDTOs "dtos/organisation-dtos";
-import PresaleManager "managers/presale-manager";
 import ProfileManager "managers/profile-manager";
 import StorageManager "managers/storage-manager";
 import TreasuryManager "managers/treasury-manager";
@@ -20,7 +19,6 @@ actor Self {
   
   private let profileManager = ProfileManager.ProfileManager();
   private let treasuryManager = TreasuryManager.TreasuryManager();
-  private let presaleManager = PresaleManager.PresaleManager();
   private let organisationManager = OrganisationManager.OrganisationManager();
   private let storageManager = StorageManager.StorageManager();
   private let cyclesManager = CyclesManager.CyclesManager();
@@ -95,6 +93,7 @@ actor Self {
 
     switch(purchaseResult){
       case (#Ok result){
+        //await recordPurchase(); //TODO
         let createResult = await organisationManager.createOrganisation(dto);
         switch(createResult){
           case (#ok organisationId){
@@ -133,6 +132,8 @@ actor Self {
       };
     };
   };
+
+  //TODO: Topup cycles
 
   public shared ({ caller }) func isOrganisationNameAvailable(organisationName : Text) : async Result.Result<Bool, T.Error> {
     assert not Principal.isAnonymous(caller);
@@ -265,91 +266,6 @@ actor Self {
         return await organisationManager.confirmAccessRequest(dto.organisationId, principalId);
       };
     };
-  };
-
-  //Presale Functions
-
-  public shared ({ caller }) func participateInPresale(icpAmount: Nat64, tokens: Nat64) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-
-    if(icpAmount < 1_000_000){
-      return #err(#InvalidData);
-    };
-
-    if(tokens < 10){
-      return #err(#InvalidData);
-    };
-
-    if (tokens % 10 != 0) {
-      return #err(#InvalidData);
-    };
-
-    let purchaseResult = await treasuryManager.participateInPresale(Principal.fromActor(Self), principalId, icpAmount);
-
-    switch(purchaseResult){
-      case (#Ok result){  
-        await presaleManager.participateInPresale(principalId, icpAmount, tokens);
-      };
-      case (#Err err_result){
-        return #err(#PaymentError);
-      }
-    };
-  };
-
-  public shared ({ caller }) func getPresaleParticipation() : async [T.PresaleParticipation] {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    presaleManager.getPresaleParticipation(principalId);
-  };
-
-  public shared ({ caller }) func updatePresaleNNSId(newNNSId: Text) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return await presaleManager.updatePresaleNNSId(principalId, newNNSId);
-  };
-
-  public shared ({ caller }) func listPresaleAllocation(tokens: Nat64, listPrice: Nat64) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return await presaleManager.listPresaleAllocation(principalId, tokens, listPrice);
-  };
-
-  public shared ({ caller }) func unlistPresaleAllocation(tokens: Nat64) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    return await presaleManager.unlistPresaleAllocation(principalId, tokens);
-  };
-
-  public shared ({ caller }) func purchasePresaleAllocation(dto: DTOs.PurchasePresaleAllocationDTO) : async Result.Result<(), T.Error>{
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-
-    let listing = await presaleManager.getListing(dto.ownerId);
-    switch(listing){
-      case (null){
-        return #err(#NotAllowed);
-      };
-      case (?foundListing){
-        if(dto.tokens == foundListing.tokens and dto.price == foundListing.price){
-          let transferResult = await treasuryManager.purchasePresaleAllocation(Principal.fromActor(Self), principalId, foundListing.ownerId, foundListing.price);
-          switch(transferResult){
-            case (#Ok transferResult){
-              return await presaleManager.transferPresaleAllocation(principalId, dto.ownerId);
-            };
-            case _ {
-              return #err(#PaymentError);
-            }
-          };
-        };
-        return #err(#NotAllowed);
-      }
-    };
-  };
-
-  public shared ({ caller }) func getPresaleAllocationListings() : async Result.Result<[DTOs.PresaleListingDTO], T.Error>{
-    assert not Principal.isAnonymous(caller);
-    return await presaleManager.getPresaleAllocationListings();
   };
     
   //Canister cycle topup functions

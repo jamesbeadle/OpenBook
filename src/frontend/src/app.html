@@ -226,5 +226,19 @@
     >
       <circle cx="50%" cy="50%" r="45" />
     </svg>
+    <script>
+      try {
+        const currentMenu = !localStorage.nnsMenu
+          ? undefined
+          : JSON.parse(localStorage.nnsMenu);
+
+        document.documentElement.setAttribute(
+          "menu",
+          currentMenu ?? "expanded",
+        );
+      } catch (error) {
+        console.error("Error initializing menu", error);
+      }
+    </script>
   </body>
 </html>

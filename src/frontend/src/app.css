@@ -72,7 +72,7 @@ input[type="file"] {
   @apply text-xs xs:text-sm sm:text-lg md:text-xxs lg:text-sm xl:text-base;
 }
 .book-btn {
-  @apply bg-OpenBookGreen px-4 py-2 rounded-md text-center text-black;
+  @apply bg-OpenBookGreen px-6 py-2 rounded-sm text-center text-black text-sm;
 }
 .book-btn.disabled {
   @apply bg-gray-500;

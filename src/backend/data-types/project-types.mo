@@ -11,7 +11,7 @@ module ProjectTypes {
     members: [ProjectMember];
     linkTree: [ProjectLink];
     stages: [ProjectStage];
-    groupChatReference: Text;
+    references: [ProjectReference];
     addedBy: T.PrincipalId;
     timestamp: Int;
   };
@@ -49,6 +49,14 @@ module ProjectTypes {
     addedBy: T.PrincipalId;
     milestones: [Milestone];
   };
+
+  public type ProjectReference = {
+    description: Text;
+    icon: Blob;
+    link: Text;
+    addedBy: T.PrincipalId;
+    timestamp: Int;
+  };  
 
   public type Milestone = {
     index: Nat16;

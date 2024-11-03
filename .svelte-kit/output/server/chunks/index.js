@@ -950,9 +950,6 @@ function get_current_component() {
     throw new Error("Function called outside component initialization");
   return current_component;
 }
-function onDestroy(fn) {
-  get_current_component().$$.on_destroy.push(fn);
-}
 function setContext(key2, context) {
   get_current_component().$$.context.set(key2, context);
   return context;
@@ -3412,7 +3409,7 @@ const options = {
   root: Root,
   service_worker: false,
   templates: {
-    app: ({ head, body: body2, assets: assets2, nonce, env }) => '<!doctype html>\n<html lang="en">\n  <head>\n    <meta charset="utf-8" />\n    <meta content="width=device-width, initial-scale=1" name="viewport" />\n\n    <title>OpenBook</title>\n    <link href="https://openbook.services" rel="canonical" />\n    <meta\n      content="OpenBook is a decentralised business management platform on the Internet Computer blockchain."\n      name="description"\n    />\n    <meta content="OpenBook" property="og:title" />\n    <meta\n      content="OpenBook is a decentralised business management platform on the Internet Computer blockchain."\n      property="og:description"\n    />\n    <meta content="website" property="og:type" />\n    <meta content="https://openbook.services" property="og:url" />\n    <meta\n      content="https://openbook.services/meta-share.jpg"\n      property="og:image"\n    />\n    <meta content="summary_large_image" name="twitter:card" />\n    <meta content="OpenBook" name="twitter:title" />\n    <meta\n      content="OpenBook is a decentralised business management platform on the Internet Computer blockchain."\n      name="twitter:description"\n    />\n    <meta\n      content="https://openbook.services/meta-share.jpg"\n      name="twitter:image"\n    />\n    <meta content="@beadle1989" name="twitter:creator" />\n\n    <link crossorigin="anonymous" href="/manifest.webmanifest" rel="manifest" />\n\n    <!-- Favicon -->\n    <link\n      rel="icon"\n      type="image/png"\n      sizes="32x32"\n      href="' + assets2 + '/favicons/favicon-32x32.png"\n    />\n    <link\n      rel="icon"\n      type="image/png"\n      sizes="16x16"\n      href="' + assets2 + '/favicons/favicon-16x16.png"\n    />\n    <link rel="shortcut icon" href="' + assets2 + '/favicons/favicon.ico" />\n\n    <!-- iOS meta tags & icons -->\n    <meta name="apple-mobile-web-app-capable" content="yes" />\n    <meta name="apple-mobile-web-app-status-bar-style" content="#2CE3A6" />\n    <meta name="apple-mobile-web-app-title" content="OpenBook" />\n    <link\n      rel="apple-touch-icon"\n      href="' + assets2 + '/favicons/apple-touch-icon.png"\n    />\n    <link\n      rel="mask-icon"\n      href="' + assets2 + '/favicons/safari-pinned-tab.svg"\n      color="#2CE3A6"\n    />\n\n    <!-- MS -->\n    <meta name="msapplication-TileColor" content="#101111" />\n    <meta\n      name="msapplication-config"\n      content="' + assets2 + '/favicons/browserconfig.xml"\n    />\n\n    <meta content="#2CE3A6" name="theme-color" />\n    ' + head + '\n\n    <style>\n      html,\n      body {\n        height: 100%;\n        margin: 0;\n      }\n\n      @font-face {\n        font-display: swap;\n        font-family: "Lato";\n        font-style: normal;\n        font-weight: 400;\n        src: url("' + assets2 + '/Lato-Regular.woff2") format("woff2");\n      }\n      body {\n        font-family: "Lato", sans-serif !important;\n        color: white !important;\n        background-color: #101111;\n        height: 100vh;\n        margin: 0;\n      }\n\n      #app-spinner {\n        --spinner-size: 30px;\n\n        width: var(--spinner-size);\n        height: var(--spinner-size);\n\n        animation: app-spinner-linear-rotate 2000ms linear infinite;\n\n        position: absolute;\n        top: calc(50% - (var(--spinner-size) / 2));\n        left: calc(50% - (var(--spinner-size) / 2));\n\n        --radius: 45px;\n        --circumference: calc(3.14159265359 * var(--radius) * 2);\n\n        --start: calc((1 - 0.05) * var(--circumference));\n        --end: calc((1 - 0.8) * var(--circumference));\n      }\n\n      #app-spinner circle {\n        stroke-dasharray: var(--circumference);\n        stroke-width: 10%;\n        transform-origin: 50% 50% 0;\n\n        transition-property: stroke;\n\n        animation-name: app-spinner-stroke-rotate-100;\n        animation-duration: 4000ms;\n        animation-timing-function: cubic-bezier(0.35, 0, 0.25, 1);\n        animation-iteration-count: infinite;\n\n        fill: transparent;\n        stroke: currentColor;\n\n        transition: stroke-dashoffset 225ms linear;\n      }\n\n      @keyframes app-spinner-linear-rotate {\n        0% {\n          transform: rotate(0deg);\n        }\n        100% {\n          transform: rotate(360deg);\n        }\n      }\n\n      @keyframes app-spinner-stroke-rotate-100 {\n        0% {\n          stroke-dashoffset: var(--start);\n          transform: rotate(0);\n        }\n        12.5% {\n          stroke-dashoffset: var(--end);\n          transform: rotate(0);\n        }\n        12.5001% {\n          stroke-dashoffset: var(--end);\n          transform: rotateX(180deg) rotate(72.5deg);\n        }\n        25% {\n          stroke-dashoffset: var(--start);\n          transform: rotateX(180deg) rotate(72.5deg);\n        }\n\n        25.0001% {\n          stroke-dashoffset: var(--start);\n          transform: rotate(270deg);\n        }\n        37.5% {\n          stroke-dashoffset: var(--end);\n          transform: rotate(270deg);\n        }\n        37.5001% {\n          stroke-dashoffset: var(--end);\n          transform: rotateX(180deg) rotate(161.5deg);\n        }\n        50% {\n          stroke-dashoffset: var(--start);\n          transform: rotateX(180deg) rotate(161.5deg);\n        }\n\n        50.0001% {\n          stroke-dashoffset: var(--start);\n          transform: rotate(180deg);\n        }\n        62.5% {\n          stroke-dashoffset: var(--end);\n          transform: rotate(180deg);\n        }\n        62.5001% {\n          stroke-dashoffset: var(--end);\n          transform: rotateX(180deg) rotate(251.5deg);\n        }\n        75% {\n          stroke-dashoffset: var(--start);\n          transform: rotateX(180deg) rotate(251.5deg);\n        }\n\n        75.0001% {\n          stroke-dashoffset: var(--start);\n          transform: rotate(90deg);\n        }\n        87.5% {\n          stroke-dashoffset: var(--end);\n          transform: rotate(90deg);\n        }\n        87.5001% {\n          stroke-dashoffset: var(--end);\n          transform: rotateX(180deg) rotate(341.5deg);\n        }\n        100% {\n          stroke-dashoffset: var(--start);\n          transform: rotateX(180deg) rotate(341.5deg);\n        }\n      }\n    </style>\n  </head>\n  <body data-sveltekit-preload-data="hover">\n    <div style="display: contents">' + body2 + '</div>\n\n    <svg\n      id="app-spinner"\n      preserveAspectRatio="xMidYMid meet"\n      focusable="false"\n      aria-hidden="true"\n      data-tid="spinner"\n      viewBox="0 0 100 100"\n    >\n      <circle cx="50%" cy="50%" r="45" />\n    </svg>\n  </body>\n</html>\n',
+    app: ({ head, body: body2, assets: assets2, nonce, env }) => '<!doctype html>\n<html lang="en">\n  <head>\n    <meta charset="utf-8" />\n    <meta content="width=device-width, initial-scale=1" name="viewport" />\n\n    <title>OpenBook</title>\n    <link href="https://openbook.services" rel="canonical" />\n    <meta\n      content="OpenBook is a decentralised business management platform on the Internet Computer blockchain."\n      name="description"\n    />\n    <meta content="OpenBook" property="og:title" />\n    <meta\n      content="OpenBook is a decentralised business management platform on the Internet Computer blockchain."\n      property="og:description"\n    />\n    <meta content="website" property="og:type" />\n    <meta content="https://openbook.services" property="og:url" />\n    <meta\n      content="https://openbook.services/meta-share.jpg"\n      property="og:image"\n    />\n    <meta content="summary_large_image" name="twitter:card" />\n    <meta content="OpenBook" name="twitter:title" />\n    <meta\n      content="OpenBook is a decentralised business management platform on the Internet Computer blockchain."\n      name="twitter:description"\n    />\n    <meta\n      content="https://openbook.services/meta-share.jpg"\n      name="twitter:image"\n    />\n    <meta content="@beadle1989" name="twitter:creator" />\n\n    <link crossorigin="anonymous" href="/manifest.webmanifest" rel="manifest" />\n\n    <!-- Favicon -->\n    <link\n      rel="icon"\n      type="image/png"\n      sizes="32x32"\n      href="' + assets2 + '/favicons/favicon-32x32.png"\n    />\n    <link\n      rel="icon"\n      type="image/png"\n      sizes="16x16"\n      href="' + assets2 + '/favicons/favicon-16x16.png"\n    />\n    <link rel="shortcut icon" href="' + assets2 + '/favicons/favicon.ico" />\n\n    <!-- iOS meta tags & icons -->\n    <meta name="apple-mobile-web-app-capable" content="yes" />\n    <meta name="apple-mobile-web-app-status-bar-style" content="#2CE3A6" />\n    <meta name="apple-mobile-web-app-title" content="OpenBook" />\n    <link\n      rel="apple-touch-icon"\n      href="' + assets2 + '/favicons/apple-touch-icon.png"\n    />\n    <link\n      rel="mask-icon"\n      href="' + assets2 + '/favicons/safari-pinned-tab.svg"\n      color="#2CE3A6"\n    />\n\n    <!-- MS -->\n    <meta name="msapplication-TileColor" content="#101111" />\n    <meta\n      name="msapplication-config"\n      content="' + assets2 + '/favicons/browserconfig.xml"\n    />\n\n    <meta content="#2CE3A6" name="theme-color" />\n    ' + head + '\n\n    <style>\n      html,\n      body {\n        height: 100%;\n        margin: 0;\n      }\n\n      @font-face {\n        font-display: swap;\n        font-family: "Lato";\n        font-style: normal;\n        font-weight: 400;\n        src: url("' + assets2 + '/Lato-Regular.woff2") format("woff2");\n      }\n      body {\n        font-family: "Lato", sans-serif !important;\n        color: white !important;\n        background-color: #101111;\n        height: 100vh;\n        margin: 0;\n      }\n\n      #app-spinner {\n        --spinner-size: 30px;\n\n        width: var(--spinner-size);\n        height: var(--spinner-size);\n\n        animation: app-spinner-linear-rotate 2000ms linear infinite;\n\n        position: absolute;\n        top: calc(50% - (var(--spinner-size) / 2));\n        left: calc(50% - (var(--spinner-size) / 2));\n\n        --radius: 45px;\n        --circumference: calc(3.14159265359 * var(--radius) * 2);\n\n        --start: calc((1 - 0.05) * var(--circumference));\n        --end: calc((1 - 0.8) * var(--circumference));\n      }\n\n      #app-spinner circle {\n        stroke-dasharray: var(--circumference);\n        stroke-width: 10%;\n        transform-origin: 50% 50% 0;\n\n        transition-property: stroke;\n\n        animation-name: app-spinner-stroke-rotate-100;\n        animation-duration: 4000ms;\n        animation-timing-function: cubic-bezier(0.35, 0, 0.25, 1);\n        animation-iteration-count: infinite;\n\n        fill: transparent;\n        stroke: currentColor;\n\n        transition: stroke-dashoffset 225ms linear;\n      }\n\n      @keyframes app-spinner-linear-rotate {\n        0% {\n          transform: rotate(0deg);\n        }\n        100% {\n          transform: rotate(360deg);\n        }\n      }\n\n      @keyframes app-spinner-stroke-rotate-100 {\n        0% {\n          stroke-dashoffset: var(--start);\n          transform: rotate(0);\n        }\n        12.5% {\n          stroke-dashoffset: var(--end);\n          transform: rotate(0);\n        }\n        12.5001% {\n          stroke-dashoffset: var(--end);\n          transform: rotateX(180deg) rotate(72.5deg);\n        }\n        25% {\n          stroke-dashoffset: var(--start);\n          transform: rotateX(180deg) rotate(72.5deg);\n        }\n\n        25.0001% {\n          stroke-dashoffset: var(--start);\n          transform: rotate(270deg);\n        }\n        37.5% {\n          stroke-dashoffset: var(--end);\n          transform: rotate(270deg);\n        }\n        37.5001% {\n          stroke-dashoffset: var(--end);\n          transform: rotateX(180deg) rotate(161.5deg);\n        }\n        50% {\n          stroke-dashoffset: var(--start);\n          transform: rotateX(180deg) rotate(161.5deg);\n        }\n\n        50.0001% {\n          stroke-dashoffset: var(--start);\n          transform: rotate(180deg);\n        }\n        62.5% {\n          stroke-dashoffset: var(--end);\n          transform: rotate(180deg);\n        }\n        62.5001% {\n          stroke-dashoffset: var(--end);\n          transform: rotateX(180deg) rotate(251.5deg);\n        }\n        75% {\n          stroke-dashoffset: var(--start);\n          transform: rotateX(180deg) rotate(251.5deg);\n        }\n\n        75.0001% {\n          stroke-dashoffset: var(--start);\n          transform: rotate(90deg);\n        }\n        87.5% {\n          stroke-dashoffset: var(--end);\n          transform: rotate(90deg);\n        }\n        87.5001% {\n          stroke-dashoffset: var(--end);\n          transform: rotateX(180deg) rotate(341.5deg);\n        }\n        100% {\n          stroke-dashoffset: var(--start);\n          transform: rotateX(180deg) rotate(341.5deg);\n        }\n      }\n    </style>\n  </head>\n  <body data-sveltekit-preload-data="hover">\n    <div style="display: contents">' + body2 + '</div>\n\n    <svg\n      id="app-spinner"\n      preserveAspectRatio="xMidYMid meet"\n      focusable="false"\n      aria-hidden="true"\n      data-tid="spinner"\n      viewBox="0 0 100 100"\n    >\n      <circle cx="50%" cy="50%" r="45" />\n    </svg>\n    <script>\n      try {\n        const currentMenu = !localStorage.nnsMenu\n          ? undefined\n          : JSON.parse(localStorage.nnsMenu);\n\n        document.documentElement.setAttribute(\n          "menu",\n          currentMenu ?? "expanded",\n        );\n      } catch (error) {\n        console.error("Error initializing menu", error);\n      }\n    <\/script>\n  </body>\n</html>\n',
     error: ({ status, message }) => '<!doctype html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<title>' + message + `</title>
 
 		<style>
@@ -3484,7 +3481,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "rpq871"
+  version_hash: "6w8jrm"
 };
 async function get_hooks() {
   return {};
@@ -3569,7 +3566,7 @@ class Server {
     });
   }
 }
-const Layout$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `${slots.default ? slots.default({}) : ``}`;
 });
 function get(key2, parse2 = JSON.parse) {
@@ -3744,7 +3741,7 @@ const initBusyStore = () => {
 const busyStore = initBusyStore();
 const busy = derived(busyStore, ($busyStore) => $busyStore.length > 0);
 const busyMessage = derived(busyStore, ($busyStore) => $busyStore.reverse().find(({ text: text2 }) => nonNullish(text2))?.text);
-const css$3 = {
+const css$2 = {
   code: ".medium.svelte-85668t{--spinner-size:30px}.small.svelte-85668t{--spinner-size:calc(var(--line-height-standard) * 1rem)}.tiny.svelte-85668t{--spinner-size:calc(var(--line-height-standard) * 0.5rem)}svg.svelte-85668t{width:var(--spinner-size);height:var(--spinner-size);animation:spinner-linear-rotate 2000ms linear infinite;position:absolute;top:calc(50% - var(--spinner-size) / 2);left:calc(50% - var(--spinner-size) / 2);--radius:45px;--circumference:calc(3.1415926536 * var(--radius) * 2);--start:calc((1 - 0.05) * var(--circumference));--end:calc((1 - 0.8) * var(--circumference))}svg.inline.svelte-85668t{display:inline-block;position:relative}circle.svelte-85668t{stroke-dasharray:var(--circumference);stroke-width:10%;transform-origin:50% 50% 0;transition-property:stroke;animation-name:spinner-stroke-rotate-100;animation-duration:4000ms;animation-timing-function:cubic-bezier(0.35, 0, 0.25, 1);animation-iteration-count:infinite;fill:transparent;stroke:currentColor;transition:stroke-dashoffset 225ms linear}@keyframes spinner-linear-rotate{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}@keyframes spinner-stroke-rotate-100{0%{stroke-dashoffset:var(--start);transform:rotate(0)}12.5%{stroke-dashoffset:var(--end);transform:rotate(0)}12.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(72.5deg)}25%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(72.5deg)}25.0001%{stroke-dashoffset:var(--start);transform:rotate(270deg)}37.5%{stroke-dashoffset:var(--end);transform:rotate(270deg)}37.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(161.5deg)}50%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(161.5deg)}50.0001%{stroke-dashoffset:var(--start);transform:rotate(180deg)}62.5%{stroke-dashoffset:var(--end);transform:rotate(180deg)}62.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(251.5deg)}75%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(251.5deg)}75.0001%{stroke-dashoffset:var(--start);transform:rotate(90deg)}87.5%{stroke-dashoffset:var(--end);transform:rotate(90deg)}87.5001%{stroke-dashoffset:var(--end);transform:rotateX(180deg) rotate(341.5deg)}100%{stroke-dashoffset:var(--start);transform:rotateX(180deg) rotate(341.5deg)}}",
   map: '{"version":3,"file":"Spinner.svelte","sources":["Spinner.svelte"],"sourcesContent":["<!-- adapted source: https://github.com/angular/components/tree/master/src/material/progress-spinner -->\\n<script>export let inline = false;\\nexport let size = \\"medium\\";\\n<\/script>\\n\\n<svg\\n  class:inline\\n  class={size}\\n  preserveAspectRatio=\\"xMidYMid meet\\"\\n  focusable=\\"false\\"\\n  aria-hidden=\\"true\\"\\n  data-tid=\\"spinner\\"\\n  viewBox=\\"0 0 100 100\\"><circle cx=\\"50%\\" cy=\\"50%\\" r=\\"45\\" /></svg\\n>\\n\\n<style>.medium {\\n  --spinner-size: 30px;\\n}\\n\\n.small {\\n  --spinner-size: calc(var(--line-height-standard) * 1rem);\\n}\\n\\n.tiny {\\n  --spinner-size: calc(var(--line-height-standard) * 0.5rem);\\n}\\n\\nsvg {\\n  width: var(--spinner-size);\\n  height: var(--spinner-size);\\n  animation: spinner-linear-rotate 2000ms linear infinite;\\n  position: absolute;\\n  top: calc(50% - var(--spinner-size) / 2);\\n  left: calc(50% - var(--spinner-size) / 2);\\n  --radius: 45px;\\n  --circumference: calc(3.1415926536 * var(--radius) * 2);\\n  --start: calc((1 - 0.05) * var(--circumference));\\n  --end: calc((1 - 0.8) * var(--circumference));\\n}\\nsvg.inline {\\n  display: inline-block;\\n  position: relative;\\n}\\n\\ncircle {\\n  stroke-dasharray: var(--circumference);\\n  stroke-width: 10%;\\n  transform-origin: 50% 50% 0;\\n  transition-property: stroke;\\n  animation-name: spinner-stroke-rotate-100;\\n  animation-duration: 4000ms;\\n  animation-timing-function: cubic-bezier(0.35, 0, 0.25, 1);\\n  animation-iteration-count: infinite;\\n  fill: transparent;\\n  stroke: currentColor;\\n  transition: stroke-dashoffset 225ms linear;\\n}\\n\\n/* -global- */\\n@keyframes -global-spinner-linear-rotate {\\n  0% {\\n    transform: rotate(0deg);\\n  }\\n  100% {\\n    transform: rotate(360deg);\\n  }\\n}\\n/* -global- */\\n@keyframes -global-spinner-stroke-rotate-100 {\\n  0% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotate(0);\\n  }\\n  12.5% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotate(0);\\n  }\\n  12.5001% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotateX(180deg) rotate(72.5deg);\\n  }\\n  25% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotateX(180deg) rotate(72.5deg);\\n  }\\n  25.0001% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotate(270deg);\\n  }\\n  37.5% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotate(270deg);\\n  }\\n  37.5001% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotateX(180deg) rotate(161.5deg);\\n  }\\n  50% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotateX(180deg) rotate(161.5deg);\\n  }\\n  50.0001% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotate(180deg);\\n  }\\n  62.5% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotate(180deg);\\n  }\\n  62.5001% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotateX(180deg) rotate(251.5deg);\\n  }\\n  75% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotateX(180deg) rotate(251.5deg);\\n  }\\n  75.0001% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotate(90deg);\\n  }\\n  87.5% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotate(90deg);\\n  }\\n  87.5001% {\\n    stroke-dashoffset: var(--end);\\n    transform: rotateX(180deg) rotate(341.5deg);\\n  }\\n  100% {\\n    stroke-dashoffset: var(--start);\\n    transform: rotateX(180deg) rotate(341.5deg);\\n  }\\n}</style>\\n"],"names":[],"mappings":"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"}'
 };
@@ -3755,10 +3752,10 @@ const Spinner = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     $$bindings.inline(inline);
   if ($$props.size === void 0 && $$bindings.size && size !== void 0)
     $$bindings.size(size);
-  $$result.css.add(css$3);
+  $$result.css.add(css$2);
   return `  <svg class="${[escape(null_to_empty(size), true) + " svelte-85668t", inline ? "inline" : ""].join(" ").trim()}" preserveAspectRatio="xMidYMid meet" focusable="false" aria-hidden="true" data-tid="spinner" viewBox="0 0 100 100"><circle cx="50%" cy="50%" r="45" class="svelte-85668t"></circle></svg>`;
 });
-const css$2 = {
+const css$1 = {
   code: "div.svelte-14plyno{z-index:calc(var(--z-index) + 1000);position:fixed;top:0;right:0;bottom:0;left:0;background:var(--backdrop);color:var(--backdrop-contrast)}.content.svelte-14plyno{display:flex;flex-direction:column;justify-content:center;align-items:center}p.svelte-14plyno{padding-bottom:var(--padding);max-width:calc(var(--section-max-width) / 2)}",
   map: '{"version":3,"file":"BusyScreen.svelte","sources":["BusyScreen.svelte"],"sourcesContent":["<script>import { fade } from \\"svelte/transition\\";\\nimport { busy, busyMessage } from \\"../stores/busy.store\\";\\nimport Spinner from \\"./Spinner.svelte\\";\\nimport { nonNullish } from \\"@dfinity/utils\\";\\n<\/script>\\n\\n<!-- Display spinner and lock UI if busyStore is not empty -->\\n{#if $busy}\\n  <div data-tid=\\"busy\\" transition:fade|global>\\n    <div class=\\"content\\">\\n      {#if nonNullish($busyMessage)}\\n        <p>{$busyMessage}</p>\\n      {/if}\\n      <span>\\n        <Spinner inline />\\n      </span>\\n    </div>\\n  </div>\\n{/if}\\n\\n<style>div {\\n  z-index: calc(var(--z-index) + 1000);\\n  position: fixed;\\n  top: 0;\\n  right: 0;\\n  bottom: 0;\\n  left: 0;\\n  background: var(--backdrop);\\n  color: var(--backdrop-contrast);\\n}\\n\\n.content {\\n  display: flex;\\n  flex-direction: column;\\n  justify-content: center;\\n  align-items: center;\\n}\\n\\np {\\n  padding-bottom: var(--padding);\\n  max-width: calc(var(--section-max-width) / 2);\\n}</style>\\n"],"names":[],"mappings":"AAoBO,kBAAI,CACT,OAAO,CAAE,KAAK,IAAI,SAAS,CAAC,CAAC,CAAC,CAAC,IAAI,CAAC,CACpC,QAAQ,CAAE,KAAK,CACf,GAAG,CAAE,CAAC,CACN,KAAK,CAAE,CAAC,CACR,MAAM,CAAE,CAAC,CACT,IAAI,CAAE,CAAC,CACP,UAAU,CAAE,IAAI,UAAU,CAAC,CAC3B,KAAK,CAAE,IAAI,mBAAmB,CAChC,CAEA,uBAAS,CACP,OAAO,CAAE,IAAI,CACb,cAAc,CAAE,MAAM,CACtB,eAAe,CAAE,MAAM,CACvB,WAAW,CAAE,MACf,CAEA,gBAAE,CACA,cAAc,CAAE,IAAI,SAAS,CAAC,CAC9B,SAAS,CAAE,KAAK,IAAI,mBAAmB,CAAC,CAAC,CAAC,CAAC,CAAC,CAC9C"}'
 };
@@ -3767,7 +3764,7 @@ const BusyScreen = create_ssr_component(($$result, $$props, $$bindings, slots) =
   let $busyMessage, $$unsubscribe_busyMessage;
   $$unsubscribe_busy = subscribe(busy, (value) => $busy = value);
   $$unsubscribe_busyMessage = subscribe(busyMessage, (value) => $busyMessage = value);
-  $$result.css.add(css$2);
+  $$result.css.add(css$1);
   $$unsubscribe_busy();
   $$unsubscribe_busyMessage();
   return ` ${$busy ? `<div data-tid="busy" class="svelte-14plyno"><div class="content svelte-14plyno">${nonNullish($busyMessage) ? `<p class="svelte-14plyno">${escape($busyMessage)}</p>` : ``} <span>${validate_component(Spinner, "Spinner").$$render($$result, { inline: true }, {}, {})}</span></div></div>` : ``}`;
@@ -3846,7 +3843,7 @@ const initMenuStore = () => {
 const menuStore = initMenuStore();
 derived(menuStore, ($menuStore) => $menuStore === Menu.COLLAPSED);
 const adminPrincipal = "nn75s-ayupf-j6mj3-kluyb-wjj7y-eang2-dwzzr-cfdxk-etbw7-cgwnb-lqe";
-const authSignedInStore = derived(
+derived(
   authStore,
   ({ identity }) => identity !== null && identity !== void 0
 );
@@ -3854,71 +3851,28 @@ derived(
   authStore,
   ({ identity }) => identity !== null && identity !== void 0 && identity.getPrincipal().toString() === adminPrincipal
 );
-const Menu_icon = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let { className = "w-6" } = $$props;
-  let { fill = "#FFFFFF" } = $$props;
-  if ($$props.className === void 0 && $$bindings.className && className !== void 0)
-    $$bindings.className(className);
-  if ($$props.fill === void 0 && $$bindings.fill && fill !== void 0)
-    $$bindings.fill(fill);
-  return `<svg${add_attribute("class", className, 0)} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect y="4" width="24" height="2"${add_attribute("fill", fill, 0)}></rect><rect y="11" width="24" height="2"${add_attribute("fill", fill, 0)}></rect><rect y="18" width="24" height="2"${add_attribute("fill", fill, 0)}></rect></svg>`;
-});
-const css$1 = {
-  code: "aside.svelte-viz6lm{position:absolute;left:-500px;transition:all 0.5s;height:var(--sidebar-height);width:300px;display:flex;flex-direction:column;justify-content:space-between}aside.expanded.svelte-viz6lm{left:0px}",
-  map: `{"version":3,"file":"Layout.svelte","sources":["Layout.svelte"],"sourcesContent":["<script lang=\\"ts\\">import { onMount, onDestroy } from \\"svelte\\";\\nimport { fade } from \\"svelte/transition\\";\\nimport { browser } from \\"$app/environment\\";\\nimport { goto } from \\"$app/navigation\\";\\nimport { initAuthWorker } from \\"$lib/services/worker.auth.services\\";\\nimport { authStore } from \\"$lib/stores/auth-store\\";\\nimport { authSignedInStore } from \\"$lib/derived/auth.derived\\";\\nimport { BusyScreen, Spinner } from \\"@dfinity/gix-components\\";\\nimport LogoIcon from \\"$lib/icons/logo-icon.svelte\\";\\nimport MenuIcon from \\"$lib/icons/menu-icon.svelte\\";\\nimport '../app.css';\\nlet expanded = false;\\nlet worker;\\nlet buttonHeight = 0;\\nlet sidebar;\\nconst init = async () => await Promise.all([syncAuthStore()]);\\n$: links = $authSignedInStore ? [\\n    { name: 'Home', href: '/' },\\n    { name: 'My Organisations', href: '/organisations' },\\n    { name: 'Profile', href: '/profile' },\\n    { name: 'Projects', href: '/projects' },\\n    { name: 'Sales', href: '/sales' },\\n    { name: 'Jobs', href: '/jobs' },\\n    { name: 'Timesheets', href: 'timesheets' },\\n    { name: 'Accounts', href: '/accounts' },\\n    { name: 'Directory', href: '/directory' },\\n] :\\n    [\\n        { name: 'Connect', href: '#' },\\n    ];\\nlet lessImportantOptions = [\\n    { name: 'Whitepaper', href: '/whitepaper' }\\n];\\nconst syncAuthStore = async () => {\\n    if (!browser) {\\n        return;\\n    }\\n    try {\\n        await authStore.sync();\\n    }\\n    catch (err) {\\n        console.error(\\"Error syncing auth store\\", err);\\n    }\\n};\\nconst updateSidebarHeight = () => {\\n    if (browser) {\\n        requestAnimationFrame(() => {\\n            const button = document.querySelector(\\".menu-row\\");\\n            if (button) {\\n                buttonHeight = button.clientHeight;\\n                const sidebarHeight = window.innerHeight - buttonHeight;\\n                document.documentElement.style.setProperty('--sidebar-height', \`\${sidebarHeight}px\`);\\n            }\\n        });\\n    }\\n};\\nconst handleClickOutside = (event) => {\\n    if (browser && expanded && sidebar && !sidebar.contains(event.target)) {\\n        expanded = false;\\n    }\\n};\\nconst handleButtonClick = (event) => {\\n    event.stopPropagation();\\n    expanded = !expanded;\\n};\\nconst handleCloseButtonClick = (event) => {\\n    event.stopPropagation();\\n    expanded = false;\\n};\\nonMount(async () => {\\n    worker = await initAuthWorker();\\n    if (browser) {\\n        window.addEventListener('resize', updateSidebarHeight);\\n        document.addEventListener('click', handleClickOutside);\\n    }\\n    requestAnimationFrame(() => {\\n        updateSidebarHeight();\\n    });\\n});\\nonDestroy(() => {\\n    if (browser) {\\n        document.removeEventListener('click', handleClickOutside);\\n        window.removeEventListener('resize', updateSidebarHeight);\\n    }\\n});\\n$: worker, $authStore, (() => worker?.syncAuthIdle($authStore))();\\n$: (() => {\\n    if (!browser) {\\n        return;\\n    }\\n    if ($authStore === undefined) {\\n        return;\\n    }\\n    const spinner = document.querySelector(\\"body > #app-spinner\\");\\n    spinner?.remove();\\n})();\\nfunction handleLogin() {\\n    let params = {\\n        domain: import.meta.env.VITE_AUTH_PROVIDER_URL,\\n    };\\n    authStore.signIn(params);\\n}\\nfunction handleLogout() {\\n    authStore.signOut();\\n    goto(\\"/\\");\\n}\\n<\/script>\\n\\n  <svelte:window on:storage={syncAuthStore} />\\n  {#await init()}\\n    <div in:fade>\\n      <Spinner />\\n    </div>\\n  {:then _}\\n    <div class=\\"menu-row flex items-center bg-OpenBookGray w-full p-2 text-white\\">\\n      <button on:click={handleButtonClick} class=\\"flex items-center\\">\\n        <MenuIcon fill='#FFFFFF' className=\\"w-5 m-1\\" />\\n      </button>\\n      <div class=\\"ml-auto\\">\\n        <a class=\\"flex flex-row items-center ml-auto\\" href=\\"/\\">\\n          <p class=\\"text-sm\\">OpenBook</p>\\n          <LogoIcon className=\\"w-4 m-1\\" />\\n        </a>\\n      </div>\\n    </div>\\n\\n  <aside class=\\"bg-OpenBookGreen text-black p-4\\" bind:this={sidebar} class:expanded={expanded}>\\n    <div class=\\"p-2\\">\\n      <div class=\\"p-2 flex items-center relative\\">\\n        <button on:click={handleCloseButtonClick} class=\\"close-button flex items-center absolute left-2\\">\\n          <svg xmlns=\\"http://www.w3.org/2000/svg\\" class=\\"h-6 w-6\\" fill=\\"none\\" viewBox=\\"0 0 24 24\\" stroke=\\"currentColor\\">\\n            <path stroke-linecap=\\"round\\" stroke-linejoin=\\"round\\" stroke-width=\\"2\\" d=\\"M15 19l-7-7 7-7\\" />\\n          </svg>\\n        </button>\\n        <h2 class=\\"text-xl font-bold p-2 text-center mx-auto\\">Menu</h2>\\n      </div>\\n      \\n\\n      <div class=\\"horizontal-divider my-2\\" />\\n      \\n      <ul class=\\"mt-4\\">\\n        {#each links as option}\\n          <li>\\n            \\n            {#if option.name === 'Connect'}\\n\\n              {#if $authSignedInStore}\\n                <a href={option.href} class=\\"block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2\\" on:click={handleLogout}>Disconnect</a>\\n              {:else}\\n                <a href={option.href} class=\\"block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2\\" on:click={handleLogin}>Connect</a>\\n              {/if}  \\n            {:else}\\n              <a href={option.href} class=\\"block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2\\">{option.name}</a>\\n            {/if}\\n          </li>\\n        {/each}\\n      </ul>\\n    </div>\\n    <div class=\\"less-important p-2\\">\\n      <div class=\\"horizontal-divider my-2\\" />\\n      <ul class=\\"space-y-2 text-xs\\">\\n        {#each lessImportantOptions as option}\\n          <li>\\n            <a href={option.href} class=\\"block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2\\">{option.name}</a>\\n          </li>\\n        {/each}\\n      </ul>\\n    </div>\\n  </aside>\\n    <div class=\\"flex\\">\\n      <div class=\\"flex-1 p-4\\">\\n        <slot />\\n      </div>\\n    </div>\\n  {/await}\\n\\n  <BusyScreen />\\n\\n  <style>\\n    aside {\\n      position: absolute;\\n      left: -500px;\\n      transition: all 0.5s;\\n      height: var(--sidebar-height);\\n      width: 300px;\\n      display: flex;\\n      flex-direction: column;\\n      justify-content: space-between;\\n    }\\n\\n    aside.expanded {\\n      left: 0px;\\n    }</style>\\n"],"names":[],"mappings":"AAmLI,mBAAM,CACJ,QAAQ,CAAE,QAAQ,CAClB,IAAI,CAAE,MAAM,CACZ,UAAU,CAAE,GAAG,CAAC,IAAI,CACpB,MAAM,CAAE,IAAI,gBAAgB,CAAC,CAC7B,KAAK,CAAE,KAAK,CACZ,OAAO,CAAE,IAAI,CACb,cAAc,CAAE,MAAM,CACtB,eAAe,CAAE,aACnB,CAEA,KAAK,uBAAU,CACb,IAAI,CAAE,GACR"}`
-};
-const Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  let links;
+const Layout_1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let $$unsubscribe_authStore;
-  let $authSignedInStore, $$unsubscribe_authSignedInStore;
   $$unsubscribe_authStore = subscribe(authStore, (value) => value);
-  $$unsubscribe_authSignedInStore = subscribe(authSignedInStore, (value) => $authSignedInStore = value);
-  let sidebar;
   const init2 = async () => await Promise.all([syncAuthStore()]);
-  let lessImportantOptions = [{ name: "Whitepaper", href: "/whitepaper" }];
   const syncAuthStore = async () => {
     {
       return;
     }
   };
-  onDestroy(() => {
-  });
-  $$result.css.add(css$1);
-  links = $authSignedInStore ? [
-    { name: "Home", href: "/" },
-    {
-      name: "My Organisations",
-      href: "/organisations"
-    },
-    { name: "Profile", href: "/profile" },
-    { name: "Projects", href: "/projects" },
-    { name: "Sales", href: "/sales" },
-    { name: "Jobs", href: "/jobs" },
-    { name: "Timesheets", href: "timesheets" },
-    { name: "Accounts", href: "/accounts" },
-    { name: "Directory", href: "/directory" }
-  ] : [{ name: "Connect", href: "#" }];
   $$unsubscribe_authStore();
-  $$unsubscribe_authSignedInStore();
   return ` ${function(__value) {
     if (is_promise(__value)) {
       __value.then(null, noop);
       return ` <div>${validate_component(Spinner, "Spinner").$$render($$result, {}, {}, {})}</div> `;
     }
-    return function(_) {
-      return ` <div class="menu-row flex items-center bg-OpenBookGray w-full p-2 text-white"><button class="flex items-center">${validate_component(Menu_icon, "MenuIcon").$$render($$result, { fill: "#FFFFFF", className: "w-5 m-1" }, {}, {})}</button> <div class="ml-auto"><a class="flex flex-row items-center ml-auto" href="/"><p class="text-sm" data-svelte-h="svelte-3z99nc">OpenBook</p> ${validate_component(Logo_icon, "LogoIcon").$$render($$result, { className: "w-4 m-1" }, {}, {})}</a></div></div> <aside class="${[
-        "bg-OpenBookGreen text-black p-4 svelte-viz6lm",
-        ""
-      ].join(" ").trim()}"${add_attribute("this", sidebar, 0)}><div class="p-2"><div class="p-2 flex items-center relative"><button class="close-button flex items-center absolute left-2" data-svelte-h="svelte-1tagnsq"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button> <h2 class="text-xl font-bold p-2 text-center mx-auto" data-svelte-h="svelte-p7ddzs">Menu</h2></div> <div class="horizontal-divider my-2"></div> <ul class="mt-4">${each(links, (option) => {
-        return `<li>${option.name === "Connect" ? `${$authSignedInStore ? `<a${add_attribute("href", option.href, 0)} class="block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2">Disconnect</a>` : `<a${add_attribute("href", option.href, 0)} class="block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2">Connect</a>`}` : `<a${add_attribute("href", option.href, 0)} class="block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2">${escape(option.name)}</a>`} </li>`;
-      })}</ul></div> <div class="less-important p-2"><div class="horizontal-divider my-2"></div> <ul class="space-y-2 text-xs">${each(lessImportantOptions, (option) => {
-        return `<li><a${add_attribute("href", option.href, 0)} class="block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2">${escape(option.name)}</a> </li>`;
-      })}</ul></div></aside> <div class="flex"><div class="flex-1 p-4">${slots.default ? slots.default({}) : ``}</div></div> `;
+    return /* @__PURE__ */ function(_) {
+      return ` <div class="min-h-screen flex flex-col items-center justify-center bg-OpenBookDark space-y-4"> <img src="logo.png" alt="Logo" class="w-36">  <h1 class="text-4xl font-bold text-white" data-svelte-h="svelte-jxk7v3">Welcome to OpenBook</h1>  <p class="text-lg text-white" data-svelte-h="svelte-18wacz2">Simplifying Business Management with Web3 Technologies</p>  <button class="book-btn text-white font-bold py-2 px-4 rounded-lg transition-all" data-svelte-h="svelte-95xjqv">Connect</button></div> `;
     }();
   }(init2())} ${validate_component(BusyScreen, "BusyScreen").$$render($$result, {}, {}, {})}`;
 });
 const Page$a = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+  return `${validate_component(Layout_1, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `<div class="p-4"><div class="flex flex-row items-center"><p class="text-2xl" data-svelte-h="svelte-11g1yv3">Welcome to OpenBook</p> ${validate_component(Logo_icon, "LogoIcon").$$render($$result, { className: "w-10 ml-4" }, {}, {})}</div> <p class="my-2" data-svelte-h="svelte-10yljcu">Decentralised Business Management.</p> <a href="/whitepaper" data-svelte-h="svelte-2q3d2e"><button class="bg-OpenBookGray text-white my-2 px-4 py-2 rounded-sm">Whitepaper</button></a></div>`;
     }
@@ -3928,56 +3882,70 @@ const Page$9 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return ` <p data-svelte-h="svelte-1tcl1an">Accounting</p>`;
 });
 const Page$8 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `  ${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+  return `  ${validate_component(Layout_1, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `<p data-svelte-h="svelte-hi0xwy">The OpenBook Directory will be back soon.</p>`;
     }
   })}`;
 });
 const Page$7 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return ` ${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+  return ` ${validate_component(Layout_1, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `<div class="flex flex-row h-screen w-full" data-svelte-h="svelte-lmm05t"><p>Jobs</p></div>`;
     }
   })}`;
 });
 const Page$6 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `  ${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+  return `  ${validate_component(Layout_1, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `<p data-svelte-h="svelte-tii2ku">Organisation coming soon.</p>`;
     }
   })}`;
 });
 const Page$5 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `  ${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+  let organizations = [
+    {
+      id: 1,
+      name: "Waterway Labs",
+      created: "2024-07-01",
+      status: "Active",
+      logo: "https://via.placeholder.com/150"
+    }
+  ];
+  return `${validate_component(Layout_1, "Layout").$$render($$result, {}, {}, {
     default: () => {
-      return `<p data-svelte-h="svelte-12yeslb">Organisations coming soon.</p>`;
+      return `<div class="container mx-auto mt-4"><div class="flex justify-between items-center mb-4"><h1 class="text-2xl font-bold" data-svelte-h="svelte-i5wnh5">Organisations</h1> <button class="bg-OpenBookGreen hover:bg-OpenBookDarkGreen text-white font-bold py-2 px-4 rounded" data-svelte-h="svelte-1ki2ju4">Add Organisation</button></div> <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">${each(organizations, (org) => {
+        return `<div class="max-w-sm rounded overflow-hidden shadow-lg bg-OpenBookLightGray pb-4"><img class="w-full"${add_attribute("src", org.logo, 0)} alt="${escape(org.name, true) + " logo"}"> <div class="px-4 py-4"><div class="font-bold text-xl mb-2">${escape(org.name)}</div> <p class="text-white text-base">ID: ${escape(org.id)}<br>
+                            Created: ${escape(org.created)}<br>
+                            Status: ${escape(org.status)} </p></div> <div class="px-4 py-2" data-svelte-h="svelte-tyvg63"><button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View
+                        </button></div> </div>`;
+      })}</div></div>`;
     }
   })}`;
 });
 const Page$4 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+  return `${validate_component(Layout_1, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `<p data-svelte-h="svelte-1r6u1x5">Profile coming soon.</p>`;
     }
   })}`;
 });
 const Page$3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+  return `${validate_component(Layout_1, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `<p data-svelte-h="svelte-1faomfa">Projects coming soon.</p>`;
     }
   })}`;
 });
 const Page$2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `  ${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+  return `  ${validate_component(Layout_1, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `<p data-svelte-h="svelte-x7cxlg">Sales coming soon.</p>`;
     }
   })}`;
 });
 const Page$1 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `  ${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+  return `  ${validate_component(Layout_1, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `<p data-svelte-h="svelte-16xv4tv">Timesheets coming soon.</p>`;
     }
@@ -4061,11 +4029,13 @@ const Roadmap = create_ssr_component(($$result, $$props, $$bindings, slots) => {
         the first decentralised career award system based on immutable on-chain metrics.</li></ul></div></div>`;
 });
 const Team = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-  return `<div class="flex flex-col space-y-2" data-svelte-h="svelte-1h7n41g"><h1 class="text-2xl">Team</h1> <p>Waterway Labs founder James Beadle has experience in developing
+  return `<div class="flex flex-col space-y-2" data-svelte-h="svelte-1752z6i"><h1 class="text-2xl">Team</h1> <p>Waterway Labs founder James Beadle has experience in developing
     multi-currency, multi-tenant, financial &amp; timesheet systems for spanning various sized organisations, each with unique
     transactional data and reporting needs. His background equips him with a practical understanding of the complexities involved in creating tailored financial solutions.</p> <p>OpenBook is designed by DfinityDesigner, a seasoned designer responsible for
     designing major IC projects like OpenChat. His experience ensures each
-    feature is designed with the user&#39;s experience paramount.</p> <p>The Waterway Labs team is in the process of expansion, bringing on a new Managing &amp; Operations Director in June 2024. This allows James to focus on the development of OpenBook.</p> <p>Other team members will be announced in the coming months.</p></div>`;
+    feature is designed with the user&#39;s experience paramount.</p> <p>The Waterway Labs team is in the process of expansion, 
+    bringing on a new Managing &amp; Operations Director in June 2024. 
+    This allows James to focus on the development of OpenBook.</p> <p>Other team members will be announced in the coming months.</p></div>`;
 });
 const System_architecture = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   return `<div class="flex flex-col space-y-2" data-svelte-h="svelte-wmxqjw"><h1 class="text-2xl">System Architecture</h1> <p>6 canisters are created when you setup an OpenBook organisation. 
@@ -4097,7 +4067,7 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     return tabs[index].name.toLowerCase() === activeTab;
   }
   $$result.css.add(css);
-  return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
+  return `${validate_component(Layout_1, "Layout").$$render($$result, {}, {}, {
     default: () => {
       return `<div class="p-2"><div class="flex flex-col bg-OpenBookGreen rounded-md rounded-b-lg xs:text-lg sm:text-xl"><div class="flex flex-row items-center px-4 border-b border-b-OpenBookGreen justify-between text-black"><div class="flex items-center">${validate_component(Black_logo_icon, "BlackLogoIcon").$$render(
         $$result,
@@ -4124,7 +4094,7 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
 });
 export {
   Error$1 as E,
-  Layout$1 as L,
+  Layout as L,
   Page$a as P,
   Server as S,
   set_building as a,

@@ -6,37 +6,13 @@
   import { initAuthWorker } from "$lib/services/worker.auth.services";
   import { authStore, type AuthSignInParams, type AuthStoreData } from "$lib/stores/auth-store";
   import { authSignedInStore } from "$lib/derived/auth.derived";
-  import { BusyScreen, Spinner } from "@dfinity/gix-components";
+  import { BusyScreen, Content, HeaderTitle, Layout, MenuItem, Spinner } from "@dfinity/gix-components";
   import LogoIcon from "$lib/icons/logo-icon.svelte";
   import MenuIcon from "$lib/icons/menu-icon.svelte";
   import '../app.css';
 
-  let expanded = false;
   let worker: { syncAuthIdle: (auth: AuthStoreData) => void } | undefined;
-  let buttonHeight = 0;
-  let sidebar: HTMLElement;
-
   const init = async () => await Promise.all([syncAuthStore()]);
-
-  $: links = $authSignedInStore ? [
-    { name: 'Home', href: '/' },
-    { name: 'My Organisations', href: '/organisations' },
-    { name: 'Profile', href: '/profile' },
-    { name: 'Projects', href: '/projects' },
-    { name: 'Sales', href: '/sales' },
-    { name: 'Jobs', href: '/jobs' },
-    { name: 'Timesheets', href: 'timesheets' },
-    { name: 'Accounts', href: '/accounts' },
-    { name: 'Directory', href: '/directory' },
-  ] : 
-  [
-    { name: 'Connect', href: '#' },
-  ];
-
-  let lessImportantOptions = [
-    { name: 'Whitepaper', href: '/whitepaper' }
-  ];
-
   const syncAuthStore = async () => {
     if (!browser) {
       return;
@@ -49,51 +25,8 @@
     }
   };
 
-  const updateSidebarHeight = () => {
-    if (browser) {
-      requestAnimationFrame(() => {
-        const button = document.querySelector(".menu-row");
-        if (button) {
-          buttonHeight = button.clientHeight;
-          const sidebarHeight = window.innerHeight - buttonHeight;
-          document.documentElement.style.setProperty('--sidebar-height', `${sidebarHeight}px`);
-        }
-      });
-    }
-  };
-
-  const handleClickOutside = (event: MouseEvent) => {
-    if (browser && expanded && sidebar && !sidebar.contains(event.target as Node)) {
-      expanded = false;
-    }
-  };
-
-  const handleButtonClick = (event: MouseEvent) => {
-    event.stopPropagation();
-    expanded = !expanded;
-  };
-
-  const handleCloseButtonClick = (event: MouseEvent) => {
-    event.stopPropagation();
-    expanded = false;
-  };
-
   onMount(async () => {
     worker = await initAuthWorker();
-    if (browser) {
-      window.addEventListener('resize', updateSidebarHeight);
-      document.addEventListener('click', handleClickOutside);
-    }
-    requestAnimationFrame(() => {
-      updateSidebarHeight();
-    });
-  });
-
-  onDestroy(() => {
-    if (browser) {
-      document.removeEventListener('click', handleClickOutside);
-      window.removeEventListener('resize', updateSidebarHeight);
-    }
   });
 
   $: worker, $authStore, (() => worker?.syncAuthIdle($authStore))();
@@ -134,83 +67,26 @@
       <Spinner />
     </div>
   {:then _}
-    <div class="menu-row flex items-center bg-OpenBookGray w-full p-2 text-white">
-      <button on:click={handleButtonClick} class="flex items-center">
-        <MenuIcon fill='#FFFFFF' className="w-5 m-1" />
-      </button>
-      <div class="ml-auto">
-        <a class="flex flex-row items-center ml-auto" href="/">
-          <p class="text-sm">OpenBook</p>
-          <LogoIcon className="w-4 m-1" />
-        </a>
-      </div>
-    </div>
-
-  <aside class="bg-OpenBookGreen text-black p-4" bind:this={sidebar} class:expanded={expanded}>
-    <div class="p-2">
-      <div class="p-2 flex items-center relative">
-        <button on:click={handleCloseButtonClick} class="close-button flex items-center absolute left-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-        <h2 class="text-xl font-bold p-2 text-center mx-auto">Menu</h2>
-      </div>
-      
-
-      <div class="horizontal-divider my-2" />
-      
-      <ul class="mt-4">
-        {#each links as option}
-          <li>
-            
-            {#if option.name === 'Connect'}
-
-              {#if $authSignedInStore}
-                <a href={option.href} class="block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2" on:click={handleLogout}>Disconnect</a>
-              {:else}
-                <a href={option.href} class="block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2" on:click={handleLogin}>Connect</a>
-              {/if}  
-            {:else}
-              <a href={option.href} class="block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2">{option.name}</a>
-            {/if}
-          </li>
-        {/each}
-      </ul>
-    </div>
-    <div class="less-important p-2">
-      <div class="horizontal-divider my-2" />
-      <ul class="space-y-2 text-xs">
-        {#each lessImportantOptions as option}
-          <li>
-            <a href={option.href} class="block rounded hover:bg-OpenBookGray hover:text-white px-4 py-2">{option.name}</a>
-          </li>
-        {/each}
-      </ul>
-    </div>
-  </aside>
-    <div class="flex">
-      <div class="flex-1 p-4">
-        <slot />
-      </div>
-    </div>
+  <div class="min-h-screen flex flex-col items-center justify-center bg-OpenBookDark space-y-4">
+    <!-- Logo Section -->
+    <img src="logo.png" alt="Logo" class="w-36" />
+  
+    <!-- Title -->
+    <h1 class="text-4xl font-bold text-white">Welcome to OpenBook</h1>
+  
+    <!-- Subtitle -->
+    <p class="text-lg text-white">
+      Simplifying Business Management with Web3 Technologies
+    </p>
+  
+    <!-- Connect Button -->
+    <button
+      on:click={handleLogin}
+      class="book-btn text-white font-bold py-2 px-4 rounded-lg transition-all"
+    >
+      Connect
+    </button>
+  </div>
   {/await}
 
   <BusyScreen />
-
-  <style>
-    aside {
-      position: absolute;
-      left: -500px;
-      transition: all 0.5s;
-      height: var(--sidebar-height);
-      width: 300px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    aside.expanded {
-      left: 0px;
-    }
-  </style>

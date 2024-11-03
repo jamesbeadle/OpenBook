@@ -11,7 +11,9 @@
     feature is designed with the user's experience paramount.
   </p>
   <p>
-    The Waterway Labs team is in the process of expansion, bringing on a new Managing & Operations Director in June 2024. This allows James to focus on the development of OpenBook. 
+    The Waterway Labs team is in the process of expansion, 
+    bringing on a new Managing & Operations Director in June 2024. 
+    This allows James to focus on the development of OpenBook. 
   </p>
   <p>Other team members will be announced in the coming months.</p>
 </div>

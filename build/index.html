@@ -73,11 +73,11 @@
 
     <meta content="#2CE3A6" name="theme-color" />
     
-		<link href="/_app/immutable/assets/index.CipnWpIH.css" rel="stylesheet">
-		<link rel="modulepreload" href="/_app/immutable/entry/start.XrsF1RM1.js">
-		<link rel="modulepreload" href="/_app/immutable/chunks/index.1Xe4EmAO.js">
-		<link rel="modulepreload" href="/_app/immutable/chunks/vendor.9GmjPp7g.js">
-		<link rel="modulepreload" href="/_app/immutable/entry/app.CKCM9-XL.js">
+		<link href="/_app/immutable/assets/index.D412BQnI.css" rel="stylesheet">
+		<link rel="modulepreload" href="/_app/immutable/entry/start.BV01ENeD.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/index.DC74Cdt_.js">
+		<link rel="modulepreload" href="/_app/immutable/chunks/vendor.BOYNCRBL.js">
+		<link rel="modulepreload" href="/_app/immutable/entry/app.C1lNa6eT.js">
 
     <style>
       html,
@@ -222,15 +222,15 @@
     <div style="display: contents">
 			<script>
 				{
-					__sveltekit_rpq871 = {
+					__sveltekit_6w8jrm = {
 						base: ""
 					};
 
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("/_app/immutable/entry/start.XrsF1RM1.js"),
-						import("/_app/immutable/entry/app.CKCM9-XL.js")
+						import("/_app/immutable/entry/start.BV01ENeD.js"),
+						import("/_app/immutable/entry/app.C1lNa6eT.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element);
 					});
@@ -248,5 +248,19 @@
     >
       <circle cx="50%" cy="50%" r="45" />
     </svg>
+    <script>
+      try {
+        const currentMenu = !localStorage.nnsMenu
+          ? undefined
+          : JSON.parse(localStorage.nnsMenu);
+
+        document.documentElement.setAttribute(
+          "menu",
+          currentMenu ?? "expanded",
+        );
+      } catch (error) {
+        console.error("Error initializing menu", error);
+      }
+    </script>
   </body>
 </html>
