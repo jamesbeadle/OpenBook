@@ -15,10 +15,6 @@ module {
     private var bankReconciliations = TrieMap.TrieMap<AccountancyTypes.AccountingPeriodId, AccountancyTypes.BankReconciliation>(Utilities.eqNat32, Utilities.hashNat32);
 
 
-
-    //map accounting period to reconciliation report
-        //inside the report should be the grouped general ledger transactions for the month
-        //add or minus adjustments
    
     public func getBankAccounts(dto: DTOs.GetBankAccounts) : Result.Result<DTOs.GetBankAccounts, T.Error>{
 
@@ -153,6 +149,15 @@ module {
     public func importTransactions(dto: DTOs.ImportTransactions) : Result.Result<(), T.Error>{
         return #err(#NotFound); //TODO
     };
+
+
+
+    //map accounting period to reconciliation report
+        //inside the report should be the grouped general ledger transactions for the month
+        //add or minus adjustments
+
+
+    //Todo pass to parent stblae vars
 
   }
 };

@@ -23,6 +23,8 @@ actor Self {
   private let storageManager = StorageManager.StorageManager();
   private let cyclesManager = CyclesManager.CyclesManager();
   
+  /* Profile functions */
+  
   public shared ({ caller }) func createProfile(dto : ProfileDTOs.CreateProfileDTO) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
@@ -83,6 +85,8 @@ actor Self {
     return #ok(profileManager.isUsernameAvailable(username));
   };
 
+  /* Organisation functions */
+
   public shared ({ caller }) func purchaseOrganisation(dto: OrganisationDTOs.CreateOrganisation) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
@@ -139,136 +143,8 @@ actor Self {
     assert not Principal.isAnonymous(caller);
     return #ok(organisationManager.isOrganisationNameAvailable(organisationName));
   };
-
-  public shared ({ caller }) func acceptOrganisationInvitation(organisationId: T.OrganisationId) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
     
-    let profile = await profileManager.getProfile(principalId);
-
-    switch(profile){
-      case (null){
-        return #err(#NotFound);
-      };
-      case (?foundProfile){
-        let isOrganisationMember = await organisationManager.isUserOrganisationMember(organisationId, principalId);
-        assert not isOrganisationMember;
-
-        let invitationExists = await organisationManager.invitationExists(organisationId, principalId);
-        assert invitationExists;
-
-        let organisationInvitationExists = await profileManager.organisationInviteExists(organisationId, principalId);
-        assert organisationInvitationExists;
-        
-        await profileManager.acceptOrganisationInvitation(organisationId, principalId);
-        return await organisationManager.acceptInvitation(organisationId, principalId);
-      };
-    };
-  };
-
-  public shared ({ caller }) func rejectOrganisationInvitation(organisationId: T.OrganisationId) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    
-    let profile = await profileManager.getProfile(principalId);
-
-    switch(profile){
-      case (null){
-        return #err(#NotFound);
-      };
-      case (?foundProfile){
-        
-        let isOrganisationMember = await organisationManager.isUserOrganisationMember(organisationId, principalId);
-        assert not isOrganisationMember;
-        
-        let invitationExists = await organisationManager.invitationExists(organisationId, principalId);
-        assert invitationExists;
-
-        let organisationInvitationExists = await profileManager.organisationInviteExists(organisationId, principalId);
-        assert organisationInvitationExists;
-        
-        await profileManager.rejectOrganisationInvitation(organisationId, principalId);
-        return await organisationManager.rejectInvitation(organisationId, principalId);
-      };
-    };
-  };
-
-  public shared ({ caller }) func requestOrganisationAccess(organisationId: T.OrganisationId) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    
-    let profile = await profileManager.getProfile(principalId);
-
-    switch(profile){
-      case (null){
-        return #err(#NotFound);
-      };
-      case (?foundProfile){
-        
-        let isOrganisationMember = await organisationManager.isUserOrganisationMember(organisationId, principalId);
-        assert not isOrganisationMember;
-        
-        let invitationExists = await organisationManager.invitationExists(organisationId, principalId);
-        if(invitationExists){
-          await profileManager.acceptOrganisationInvitation(organisationId, principalId);
-          return await organisationManager.acceptInvitation(organisationId, principalId);
-        };
-
-        await profileManager.addOrganisationAccessRequest(organisationId, principalId);
-        return await organisationManager.requestAccess(organisationId, principalId);
-      };
-    };
-  };
-
-  public shared ({ caller }) func leaveOrganiastion(organisationId: T.OrganisationId) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-    
-    let profile = await profileManager.getProfile(principalId);
-
-    switch(profile){
-      case (null){
-        return #err(#NotFound);
-      };
-      case (?foundProfile){
-        
-        let isOrganisationMember = await organisationManager.isUserOrganisationMember(organisationId, principalId);
-        assert not isOrganisationMember;
-        
-        await profileManager.leaveOrganisation(organisationId, principalId);
-        return await organisationManager.leaveOrganisation(organisationId, principalId);
-      };
-    };
-  };
-
-  public shared ({ caller }) func acceptUserOrganisationRequest(dto: OrganisationDTOs.AcceptUserOrganisationRequest) : async Result.Result<(), T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
-
-    let isOrganisationAdmin = await organisationManager.isAdmin(dto.organisationId, principalId);
-    assert isOrganisationAdmin;
-
-    let requestExists = await organisationManager.userAccessRequestExists(dto.organisationId, dto.principalId);
-    assert requestExists;
-    
-    let profile = await profileManager.getProfile(principalId);
-
-    switch(profile){
-      case (null){
-        return #err(#NotFound);
-      };
-      case (?foundProfile){
-        
-        let isOrganisationMember = await organisationManager.isUserOrganisationMember(dto.organisationId, principalId);
-        assert not isOrganisationMember;
-        
-        await profileManager.addOrganisation(dto.organisationId, principalId);
-        return await organisationManager.confirmAccessRequest(dto.organisationId, principalId);
-      };
-    };
-  };
-    
-  //Canister cycle topup functions
+  /* Canister maintenance functions */
 
   public shared ({ caller }) func requestCanisterTopup(cycles: Nat) : async () {
     Debug.print("IMPORTANT: External canister just requested topup");

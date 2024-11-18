@@ -31,6 +31,8 @@ actor class _OrganisationCanister() {
 
     private stable var organisation: ?T.Organisation = null;
     private stable var admins: [T.PrincipalId] = [];
+    private stable var stable_event_logs: [T.EventLogEntry] = [];
+    private stable var stable_next_system_event_id: Nat = 1;
 
     private let currencyManager = CurrencyManager.CurrencyManager();
     private let contactsManager = ContactsManager.ContactsManager();
@@ -39,59 +41,33 @@ actor class _OrganisationCanister() {
     private let ICP_CHARGE_RATE = 100_000_000;
     let ICP_FEE : Nat = 10_000;
     let DEFAULT_CYCLES_CHECK_AMOUNT: Nat = 2_000_000_000_000;
+    private var minimumCanisterCycles: Nat = 10_000_000_000_000;
+    private var canisterTopupAmount: Nat = 10_000_000_000_000;
 
-    public shared ({ caller }) func initialise(dto: DTOs.InitialiseOrganisation) : async (){
-      assert not Principal.isAnonymous(caller);
-      let principalId = Principal.toText(caller);
-      assert principalId == Environment.BACKEND_CANISTER_ID;
-      
-      organisation := ?{
-        addresses = [];
-        auditHistory = [];
-        invites = [];
-        banner = null;
-        contacts = [];
-        friendlyName = "";
-        id = dto.canisterId;
-        lastModified = null;
-        logo = null;
-        mainAddressId = null;
-        mainContactId = null;
-        members = [];
-        name = dto.name;
-        ownerId = dto.ownerId;
-        referenceNumber = "";
-        createdOn = Time.now();
-        accessRequests = [];
-        chargeInformation = null;
-      };
-    };
+    /* Organisation getters */
 
-    public shared ({ caller }) func isAdmin (principalId: T.PrincipalId) : async Bool{
-      assert not Principal.isAnonymous(caller);
-     return isAdminForCaller(principalId);
-    };
-
-    public shared ({ caller }) func addCurrency(dto: DTOs.AddCurrency) : async Result.Result<(), T.Error> {
-      assert not Principal.isAnonymous(caller);
-      let principalId = Principal.toText(caller);
-      assert await isAdmin(principalId);
-      return await currencyManager.addCurrency(dto);
-    };
-
-    public shared ({ caller }) func getServiceCanisterIds() : async DTOs.ServiceCanisterIds {
+    public shared ({ caller }) func getOrganisation () : async ?DTOs.Organisation{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert isTeamMember(principalId);
 
-      return {
-        accountancyCanisterId = accountancy_canister_id;
-        timesheetsCanisterId = timesheets_canister_id;
-        projectsCanisterId = projects_canister_id;
-        jobsCanisterId = jobs_canister_id;
-        salesCanisterId = sales_canister_id;
-        storageCanisterId = storage_canister_id;
-      }
+      switch(organisation){
+        case (null){
+          return null;
+        };
+        case (?foundOrganisation){
+          return ?{
+            id = foundOrganisation.id;            
+            name = foundOrganisation.name;
+            members = foundOrganisation.members;
+            ownerId = foundOrganisation.ownerId;
+            banner = foundOrganisation.banner;
+            friendlyName = foundOrganisation.friendlyName;
+            lastModified = foundOrganisation.lastModified;
+            logo = foundOrganisation.logo;
+          };  
+        }
+      };
     };
 
     public shared ({ caller }) func getPublicOrganisation () : async Result.Result<DTOs.OrganisationInfo, T.Error>{
@@ -119,428 +95,22 @@ actor class _OrganisationCanister() {
       };
     };
 
-    public shared ({ caller }) func getOrganisation () : async ?DTOs.Organisation{
+    public shared ({ caller }) func getServiceCanisterIds() : async DTOs.ServiceCanisterIds {
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert isTeamMember(principalId);
 
-      switch(organisation){
-        case (null){
-          return null;
-        };
-        case (?foundOrganisation){
-          return ?{
-            id = foundOrganisation.id;            
-            name = foundOrganisation.name;
-            members = foundOrganisation.members;
-            ownerId = foundOrganisation.ownerId;
-            banner = foundOrganisation.banner;
-            friendlyName = foundOrganisation.friendlyName;
-            lastModified = foundOrganisation.lastModified;
-            logo = foundOrganisation.logo;
-          };  
-        }
-      };
-    };
-
-    public shared ({ caller }) func acceptOrganisationInvitation (callerPrincipalId: T.PrincipalId) : async (){
-      assert not Principal.isAnonymous(caller);
-      let principalId = Principal.toText(caller);
-      assert principalId == Environment.BACKEND_CANISTER_ID;
-      assert not isTeamMember(callerPrincipalId);
-
-      switch(organisation){
-        case (null){};
-        case (?foundOrganisation){
-          let remainingInvitationsBuffer = Buffer.fromArray<T.OrganisationInvite>([]);
-          let userInvitationsBuffer = Buffer.fromArray<T.OrganisationInvite>([]);
-          for(invitation in Iter.fromArray(foundOrganisation.invites)){
-            if(invitation.sentTo == callerPrincipalId){
-              userInvitationsBuffer.add(invitation);
-            }
-            else
-            {
-              remainingInvitationsBuffer.add(invitation)
-            }
-          };
-
-          let updatedTeamMembersBuffer = Buffer.fromArray<T.TeamMember>(foundOrganisation.members);
-          for(invitation in Iter.fromArray(Buffer.toArray(userInvitationsBuffer))){
-            let newTeamMember: T.TeamMember = {
-              joined = Time.now();
-              organisationId = foundOrganisation.id;
-              positions = [invitation.position];
-              principalId = invitation.sentTo
-            };
-            updatedTeamMembersBuffer.add(newTeamMember);
-          };
-
-          let updatedOrganisation: T.Organisation = {
-            id = foundOrganisation.id;
-            ownerId = foundOrganisation.ownerId;
-            name = foundOrganisation.name;
-            friendlyName = foundOrganisation.friendlyName;
-            referenceNumber = foundOrganisation.referenceNumber;
-            logo = foundOrganisation.logo;
-            banner = foundOrganisation.banner;
-            members = Buffer.toArray(updatedTeamMembersBuffer);
-            mainAddressId = foundOrganisation.mainAddressId;
-            mainContactId = foundOrganisation.mainContactId;
-            addresses = foundOrganisation.addresses;
-            contacts = foundOrganisation.contacts;
-            auditHistory = foundOrganisation.auditHistory;
-            invites = Buffer.toArray(remainingInvitationsBuffer);
-            lastModified = foundOrganisation.lastModified;
-            createdOn = foundOrganisation.createdOn;
-            accessRequests = foundOrganisation.accessRequests;
-            chargeInformation = foundOrganisation.chargeInformation;
-          };
-
-          organisation := ?updatedOrganisation;
-        }
-      };
-    };
-
-    public shared ({ caller }) func isUserOrganisationMember (callerPrincipalId: T.PrincipalId) : async Bool{
-      assert not Principal.isAnonymous(caller);
-      let principalId = Principal.toText(caller);
-      assert principalId == Environment.BACKEND_CANISTER_ID;
-      return isTeamMember(callerPrincipalId);
-    };
-
-    public shared ({ caller }) func invitationExists (callerPrincipalId: T.PrincipalId) : async Bool{
-      assert not Principal.isAnonymous(caller);
-      let principalId = Principal.toText(caller);
-      assert principalId == Environment.BACKEND_CANISTER_ID;
-
-      switch(organisation){
-        case (null){
-          return false;
-        };
-        case (?foundOrganisation){
-          let invitationSentToPrincipalIds = Array.map<T.OrganisationInvite, T.PrincipalId>(foundOrganisation.invites, func(invite : T.OrganisationInvite) : T.PrincipalId { return invite.sentTo });
-          return switch (Array.find<T.PrincipalId>(invitationSentToPrincipalIds, func(foundPrincipalId) { foundPrincipalId == callerPrincipalId })) {
-            case null { false };
-            case _ { true };
-          };
-        }
-      };
-    };
-
-    public shared ({ caller }) func acceptInvitation (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
-      assert not Principal.isAnonymous(caller);
-      let principalId = Principal.toText(caller);
-      assert principalId == Environment.BACKEND_CANISTER_ID;
-
-      switch(organisation){
-        case (null){
-          return #err(#NotFound);
-        };
-        case (?foundOrganisation){
-          switch (Array.find<T.OrganisationInvite>(foundOrganisation.invites, func(invite) { invite.sentTo == callerPrincipalId })) {
-            case null {
-              return #err(#NotFound);
-            };
-            case (?foundInvite) { 
-              let membersBuffer = Buffer.fromArray<T.TeamMember>(foundOrganisation.members);
-              let newMember: T.TeamMember = {
-                joined = Time.now();
-                organisationId = foundOrganisation.id;
-                positions = [foundInvite.position];
-                principalId = callerPrincipalId;
-              };
-              membersBuffer.add(newMember);
-              organisation := ?{
-                addresses = foundOrganisation.addresses;
-                auditHistory = foundOrganisation.auditHistory;
-                banner = foundOrganisation.banner;
-                contacts = foundOrganisation.contacts;
-                createdOn = foundOrganisation.createdOn;
-                friendlyName = foundOrganisation.friendlyName;
-                id = foundOrganisation.id;
-                invites = Array.filter<T.OrganisationInvite>(foundOrganisation.invites, func(invite) { invite.sentTo != callerPrincipalId });
-                lastModified = foundOrganisation.lastModified;
-                logo = foundOrganisation.logo;
-                mainAddressId = foundOrganisation.mainAddressId;
-                mainContactId = foundOrganisation.mainContactId;
-                members = Buffer.toArray(membersBuffer);
-                name = foundOrganisation.name;
-                ownerId = foundOrganisation.ownerId;
-                referenceNumber = foundOrganisation.referenceNumber;
-                accessRequests = foundOrganisation.accessRequests;
-                chargeInformation = foundOrganisation.chargeInformation;
-              };
-              return #err(#NotFound);
-             };
-          };
-        }
-      };
-    };
-
-    public shared ({ caller }) func rejectInvitation (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
-      assert not Principal.isAnonymous(caller);
-      let principalId = Principal.toText(caller);
-      assert principalId == Environment.BACKEND_CANISTER_ID;
-
-      switch(organisation){
-        case (null){
-          return #err(#NotFound);
-        };
-        case (?foundOrganisation){
-          switch (Array.find<T.OrganisationInvite>(foundOrganisation.invites, func(invite) { invite.sentTo == callerPrincipalId })) {
-            case null {
-              return #err(#NotFound);
-            };
-            case (?foundInvite) { 
-              organisation := ?{
-                addresses = foundOrganisation.addresses;
-                auditHistory = foundOrganisation.auditHistory;
-                banner = foundOrganisation.banner;
-                contacts = foundOrganisation.contacts;
-                createdOn = foundOrganisation.createdOn;
-                friendlyName = foundOrganisation.friendlyName;
-                id = foundOrganisation.id;
-                invites = Array.filter<T.OrganisationInvite>(foundOrganisation.invites, func(invite) { invite.sentTo != callerPrincipalId });
-                lastModified = foundOrganisation.lastModified;
-                logo = foundOrganisation.logo;
-                mainAddressId = foundOrganisation.mainAddressId;
-                mainContactId = foundOrganisation.mainContactId;
-                members = foundOrganisation.members;
-                name = foundOrganisation.name;
-                ownerId = foundOrganisation.ownerId;
-                referenceNumber = foundOrganisation.referenceNumber;
-                accessRequests = foundOrganisation.accessRequests;
-                chargeInformation = foundOrganisation.chargeInformation;
-              };
-              return #err(#NotFound);
-             };
-          };
-        }
-      };
-    };
-
-    public shared ({ caller }) func requestAccess (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
-      assert not Principal.isAnonymous(caller);
-      let principalId = Principal.toText(caller);
-      assert principalId == Environment.BACKEND_CANISTER_ID;
-      assert not isTeamMember(callerPrincipalId);
-
-      switch(organisation){
-        case (null){
-            return #err(#NotFound);
-        };
-        case (?foundOrganisation){
-          
-          let existingRequest = Array.find(foundOrganisation.accessRequests, func(request: T.AccessRequest) : Bool {
-            request.requesterPrincipalId == callerPrincipalId
-          });
-
-          if(Option.isSome(existingRequest)){
-            return #err(#AlreadyExists);
-          };
-
-          let requestsBuffer = Buffer.fromArray<T.AccessRequest>(foundOrganisation.accessRequests);
-
-          let accessRequest: T.AccessRequest = {
-            requestTime = Time.now();
-            requesterPrincipalId = callerPrincipalId;
-          };
-
-          requestsBuffer.add(accessRequest);
-
-          let updatedOrganisation: T.Organisation = {
-            id = foundOrganisation.id;
-            ownerId = foundOrganisation.ownerId;
-            name = foundOrganisation.name;
-            friendlyName = foundOrganisation.friendlyName;
-            referenceNumber = foundOrganisation.referenceNumber;
-            logo = foundOrganisation.logo;
-            banner = foundOrganisation.banner;
-            members = foundOrganisation.members;
-            mainAddressId = foundOrganisation.mainAddressId;
-            mainContactId = foundOrganisation.mainContactId;
-            addresses = foundOrganisation.addresses;
-            contacts = foundOrganisation.contacts;
-            auditHistory = foundOrganisation.auditHistory;
-            invites = foundOrganisation.invites;
-            lastModified = foundOrganisation.lastModified;
-            createdOn = foundOrganisation.createdOn;
-            accessRequests = Buffer.toArray(requestsBuffer);
-            chargeInformation = foundOrganisation.chargeInformation;
-          };
-
-          organisation := ?updatedOrganisation;
-
-
-          return #ok;
-          
-        };
+      return {
+        accountancyCanisterId = accountancy_canister_id;
+        timesheetsCanisterId = timesheets_canister_id;
+        projectsCanisterId = projects_canister_id;
+        jobsCanisterId = jobs_canister_id;
+        salesCanisterId = sales_canister_id;
+        storageCanisterId = storage_canister_id;
       }
     };
 
-    public shared ({ caller }) func userAccessRequestExists (callerPrincipalId: T.PrincipalId) : async Bool{
-      assert not Principal.isAnonymous(caller);
-      let principalId = Principal.toText(caller);
-      assert principalId == Environment.BACKEND_CANISTER_ID;
-
-      switch(organisation){
-        case (null){
-            return false;
-        };
-        case (?foundOrganisation){
-          
-          let existingRequest = Array.find(foundOrganisation.accessRequests, func(request: T.AccessRequest) : Bool {
-            request.requesterPrincipalId == callerPrincipalId
-          });
-
-          return Option.isSome(existingRequest);          
-        };
-      }
-    };
-
-    public shared ({ caller }) func confirmAccessRequest (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
-      assert not Principal.isAnonymous(caller);
-      let principalId = Principal.toText(caller);
-      assert principalId == Environment.BACKEND_CANISTER_ID;
-
-      switch(organisation){
-        case (null){
-            return #err(#NotFound);
-        };
-        case (?foundOrganisation){
-          
-          let existingRequest = Array.find(foundOrganisation.accessRequests, func(request: T.AccessRequest) : Bool {
-            request.requesterPrincipalId == callerPrincipalId
-          });
-
-          if(Option.isSome(existingRequest)){
-            return #err(#AlreadyExists);
-          };
-
-          let requestsBuffer = Buffer.fromArray<T.AccessRequest>(foundOrganisation.accessRequests);
-
-          let accessRequest: T.AccessRequest = {
-            requestTime = Time.now();
-            requesterPrincipalId = callerPrincipalId;
-          };
-
-          requestsBuffer.add(accessRequest);
-
-          let updatedOrganisation: T.Organisation = {
-            id = foundOrganisation.id;
-            ownerId = foundOrganisation.ownerId;
-            name = foundOrganisation.name;
-            friendlyName = foundOrganisation.friendlyName;
-            referenceNumber = foundOrganisation.referenceNumber;
-            logo = foundOrganisation.logo;
-            banner = foundOrganisation.banner;
-            members = foundOrganisation.members;
-            mainAddressId = foundOrganisation.mainAddressId;
-            mainContactId = foundOrganisation.mainContactId;
-            addresses = foundOrganisation.addresses;
-            contacts = foundOrganisation.contacts;
-            auditHistory = foundOrganisation.auditHistory;
-            invites = foundOrganisation.invites;
-            lastModified = foundOrganisation.lastModified;
-            createdOn = foundOrganisation.createdOn;
-            accessRequests = Buffer.toArray(requestsBuffer);
-            chargeInformation = foundOrganisation.chargeInformation;
-          };
-
-          organisation := ?updatedOrganisation;
-
-          return #ok;
-          
-        };
-      }
-    };
-
-    public shared ({ caller }) func rejectAccessRequest (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
-      assert not Principal.isAnonymous(caller);
-      let principalId = Principal.toText(caller);
-      assert principalId == Environment.BACKEND_CANISTER_ID;
-
-      switch(organisation){
-        case (null){
-            return #err(#NotFound);
-        };
-        case (?foundOrganisation){
-          
-          let existingRequest = Array.find(foundOrganisation.accessRequests, func(request: T.AccessRequest) : Bool {
-            request.requesterPrincipalId == callerPrincipalId
-          });
-
-          if(not Option.isSome(existingRequest)){
-            return #err(#NotFound);
-          };
-
-          let updatedOrganisation: T.Organisation = {
-            id = foundOrganisation.id;
-            ownerId = foundOrganisation.ownerId;
-            name = foundOrganisation.name;
-            friendlyName = foundOrganisation.friendlyName;
-            referenceNumber = foundOrganisation.referenceNumber;
-            logo = foundOrganisation.logo;
-            banner = foundOrganisation.banner;
-            members = foundOrganisation.members;
-            mainAddressId = foundOrganisation.mainAddressId;
-            mainContactId = foundOrganisation.mainContactId;
-            addresses = foundOrganisation.addresses;
-            contacts = foundOrganisation.contacts;
-            auditHistory = foundOrganisation.auditHistory;
-            invites = foundOrganisation.invites;
-            lastModified = foundOrganisation.lastModified;
-            createdOn = foundOrganisation.createdOn;
-            accessRequests = Array.filter(foundOrganisation.accessRequests, func(request: T.AccessRequest) : Bool { request.requesterPrincipalId != callerPrincipalId });
-            chargeInformation = foundOrganisation.chargeInformation;
-          };
-
-          organisation := ?updatedOrganisation;
-
-          return #ok;
-        };
-      }
-    };
-
-    public shared ({ caller }) func leaveOrganisation (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
-      assert not Principal.isAnonymous(caller);
-      let principalId = Principal.toText(caller);
-      assert principalId == Environment.BACKEND_CANISTER_ID;
-      assert isTeamMember(callerPrincipalId);
-
-      switch(organisation){
-        case (null){
-            return #err(#NotFound);
-        };
-        case (?foundOrganisation){
-          
-          let updatedOrganisation: T.Organisation = {
-            id = foundOrganisation.id;
-            ownerId = foundOrganisation.ownerId;
-            name = foundOrganisation.name;
-            friendlyName = foundOrganisation.friendlyName;
-            referenceNumber = foundOrganisation.referenceNumber;
-            logo = foundOrganisation.logo;
-            banner = foundOrganisation.banner;
-            members = Array.filter(foundOrganisation.members, func(member: T.TeamMember) : Bool { member.principalId != callerPrincipalId });
-            mainAddressId = foundOrganisation.mainAddressId;
-            mainContactId = foundOrganisation.mainContactId;
-            addresses = foundOrganisation.addresses;
-            contacts = foundOrganisation.contacts;
-            auditHistory = foundOrganisation.auditHistory;
-            invites = foundOrganisation.invites;
-            lastModified = foundOrganisation.lastModified;
-            createdOn = foundOrganisation.createdOn;
-            accessRequests = foundOrganisation.accessRequests;
-            chargeInformation = foundOrganisation.chargeInformation;
-          };
-
-          organisation := ?updatedOrganisation;
-
-          return #ok;
-        };
-      }
-    };
+    /* Organisation management */
 
     public shared ({ caller }) func updateOrganisationDetails(dto: DTOs.UpdateOrganisationDetail) : async Result.Result<(), T.Error> {
         assert not Principal.isAnonymous(caller);
@@ -622,6 +192,14 @@ actor class _OrganisationCanister() {
         return #ok;
     };
 
+    public shared ({ caller }) func addCurrency(dto: DTOs.AddCurrency) : async Result.Result<(), T.Error> {
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      assert await isAdmin(principalId);
+      return await currencyManager.addCurrency(dto);
+    };
+
+    //TODO: Single charge function only
     public shared ({ caller }) func purchaseCharge (dto: DTOs.PurchaseCharge) : async Result.Result<(), T.Error>{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
@@ -729,7 +307,6 @@ actor class _OrganisationCanister() {
       };
     };
 
-
     public shared ({ caller }) func chargeService (dto: DTOs.ChargeService) : async Result.Result<(), T.Error>{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
@@ -801,194 +378,361 @@ actor class _OrganisationCanister() {
       };
     };
 
-    public shared ({ caller }) func transferCharge (dto: DTOs.TransferCharge) : async Result.Result<(), T.Error>{
+    /* Organisation membership */
+
+    public shared ({ caller }) func acceptInvitation () : async (){
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
-      assert isAdminForCaller(principalId);
+      assert not isTeamMember(principalId);
 
+      let isOrganisationMember = await isUserOrganisationMember(principalId);
+      assert not isOrganisationMember;
+
+      let invitationAlreadyExists = await invitationExists(principalId);
+      assert invitationAlreadyExists;
+
+      switch(organisation){
+        case (null){};
+        case (?foundOrganisation){
+          let main_backend_canister = actor (Environment.BACKEND_CANISTER_ID) : actor {
+            organisationInviteExists : (organisationId: T.OrganisationId, principalId: T.PrincipalId) -> async Bool;
+          };
+          let organisationInvitationExists = await main_backend_canister.organisationInviteExists(foundOrganisation.id, principalId);
+          assert organisationInvitationExists;
+
+          let remainingInvitationsBuffer = Buffer.fromArray<T.OrganisationInvite>([]);
+          let userInvitationsBuffer = Buffer.fromArray<T.OrganisationInvite>([]);
+          for(invitation in Iter.fromArray(foundOrganisation.invites)){
+            if(invitation.sentTo == principalId){
+              userInvitationsBuffer.add(invitation);
+            }
+            else
+            {
+              remainingInvitationsBuffer.add(invitation)
+            }
+          };
+
+          let updatedTeamMembersBuffer = Buffer.fromArray<T.TeamMember>(foundOrganisation.members);
+          for(invitation in Iter.fromArray(Buffer.toArray(userInvitationsBuffer))){
+            let newTeamMember: T.TeamMember = {
+              joined = Time.now();
+              organisationId = foundOrganisation.id;
+              positions = [invitation.position];
+              principalId = invitation.sentTo
+            };
+            updatedTeamMembersBuffer.add(newTeamMember);
+          };
+
+          let updatedOrganisation: T.Organisation = {
+            id = foundOrganisation.id;
+            ownerId = foundOrganisation.ownerId;
+            name = foundOrganisation.name;
+            friendlyName = foundOrganisation.friendlyName;
+            referenceNumber = foundOrganisation.referenceNumber;
+            logo = foundOrganisation.logo;
+            banner = foundOrganisation.banner;
+            members = Buffer.toArray(updatedTeamMembersBuffer);
+            mainAddressId = foundOrganisation.mainAddressId;
+            mainContactId = foundOrganisation.mainContactId;
+            addresses = foundOrganisation.addresses;
+            contacts = foundOrganisation.contacts;
+            auditHistory = foundOrganisation.auditHistory;
+            invites = Buffer.toArray(remainingInvitationsBuffer);
+            lastModified = foundOrganisation.lastModified;
+            createdOn = foundOrganisation.createdOn;
+            accessRequests = foundOrganisation.accessRequests;
+            chargeInformation = foundOrganisation.chargeInformation;
+          };
+
+          organisation := ?updatedOrganisation;
+        }
+      };
+    };
+
+    public shared ({ caller }) func rejectInvitation () : async Result.Result<(), T.Error>{
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      let isOrganisationMember = await isUserOrganisationMember(principalId);
+      assert not isOrganisationMember;
+      
+      let invitationAlreadyExists = await invitationExists(principalId);
+      assert invitationAlreadyExists;
+        
       switch(organisation){
         case (null){
           return #err(#NotFound);
         };
         case (?foundOrganisation){
+          let main_backend_canister = actor (Environment.BACKEND_CANISTER_ID) : actor {
+            organisationInviteExists : (organisationId: T.OrganisationId, principalId: T.PrincipalId) -> async Bool;
+          };
+          let organisationInvitationExists = await main_backend_canister.organisationInviteExists(foundOrganisation.id, principalId);
+          assert organisationInvitationExists;
           
-          switch(foundOrganisation.chargeInformation){
-            case (null){
-              return #err(#NotAllowed);
+          switch (Array.find<T.OrganisationInvite>(foundOrganisation.invites, func(invite) { invite.sentTo == principalId })) {
+            case null {
+              return #err(#NotFound);
             };
-            case (?foundChargeInfo){
-              let availableCharge = foundChargeInfo.availableBalance;
-              if(availableCharge < dto.transferAmount){
-                return #err(#NotAllowed);
+            case (?_) { 
+              organisation := ?{
+                addresses = foundOrganisation.addresses;
+                auditHistory = foundOrganisation.auditHistory;
+                banner = foundOrganisation.banner;
+                contacts = foundOrganisation.contacts;
+                createdOn = foundOrganisation.createdOn;
+                friendlyName = foundOrganisation.friendlyName;
+                id = foundOrganisation.id;
+                invites = Array.filter<T.OrganisationInvite>(foundOrganisation.invites, func(invite) { invite.sentTo != principalId });
+                lastModified = foundOrganisation.lastModified;
+                logo = foundOrganisation.logo;
+                mainAddressId = foundOrganisation.mainAddressId;
+                mainContactId = foundOrganisation.mainContactId;
+                members = foundOrganisation.members;
+                name = foundOrganisation.name;
+                ownerId = foundOrganisation.ownerId;
+                referenceNumber = foundOrganisation.referenceNumber;
+                accessRequests = foundOrganisation.accessRequests;
+                chargeInformation = foundOrganisation.chargeInformation;
               };
-
-              var updatedAccountancyBalance = foundChargeInfo.accountancyChargeBalance;
-              var updatedSalesBalance = foundChargeInfo.salesChargeBalance;
-              var updatedProjectsBalance = foundChargeInfo.projectsChargeBalance;
-              var updatedTimesheetsBalance = foundChargeInfo.timesheetsChargeBalance;
-              var updatedJobsBalance = foundChargeInfo.jobsChargeBalance;
-              
-              switch(dto.fromService){
-                case (#Accountancy){
-                  if(foundChargeInfo.accountancyChargeBalance < dto.transferAmount){
-                    return #err(#NotAllowed);
-                  };
-                  updatedAccountancyBalance -= dto.transferAmount;
-                };
-                case (#Sales){
-                  if(foundChargeInfo.salesChargeBalance < dto.transferAmount){
-                    return #err(#NotAllowed);
-                  };
-                  updatedSalesBalance -= dto.transferAmount;
-                };
-                case (#Projects){
-                  if(foundChargeInfo.projectsChargeBalance < dto.transferAmount){
-                    return #err(#NotAllowed);
-                  };
-                  updatedProjectsBalance -= dto.transferAmount;
-                };
-                case (#Timesheets){
-                  if(foundChargeInfo.timesheetsChargeBalance < dto.transferAmount){
-                    return #err(#NotAllowed);
-                  };
-                  updatedTimesheetsBalance -= dto.transferAmount;
-                };
-                case (#Jobs){
-                  if(foundChargeInfo.jobsChargeBalance < dto.transferAmount){
-                    return #err(#NotAllowed);
-                  };
-                  updatedJobsBalance -= dto.transferAmount;
-                };
-              };
-              
-              switch(dto.toService){
-                case (#Accountancy){
-                  updatedAccountancyBalance += dto.transferAmount;
-                };
-                case (#Sales){
-                  updatedSalesBalance += dto.transferAmount;
-                };
-                case (#Projects){
-                  updatedProjectsBalance += dto.transferAmount;
-                };
-                case (#Timesheets){
-                  updatedTimesheetsBalance += dto.transferAmount;
-                };
-                case (#Jobs){
-                  updatedJobsBalance += dto.transferAmount;
-                };
-              };
-
-              let updatedChargeInformation: T.ChargeInformation = {
-                accountancyChargeBalance = updatedAccountancyBalance;
-                accountancyChargeMax = foundChargeInfo.accountancyChargeMax;
-                accountancyChargeMin = foundChargeInfo.accountancyChargeMin;
-                availableBalance = foundChargeInfo.availableBalance - dto.transferAmount;
-                projectsChargeBalance = updatedProjectsBalance;
-                projectsChargeMax = foundChargeInfo.projectsChargeMax;
-                projectsChargeMin = foundChargeInfo.projectsChargeMin;
-                jobsChargeBalance = updatedJobsBalance;
-                jobsChargeMax = foundChargeInfo.jobsChargeMax;
-                jobsChargeMin = foundChargeInfo.jobsChargeMin;
-                salesChargeBalance = updatedSalesBalance;
-                salesChargeMax = foundChargeInfo.salesChargeMax;
-                salesChargeMin = foundChargeInfo.salesChargeMin;
-                timesheetsChargeBalance = updatedTimesheetsBalance;
-                timesheetsChargeMax = foundChargeInfo.timesheetsChargeMax;
-                timesheetsChargeMin = foundChargeInfo.timesheetsChargeMin;
-              };
-
-              return #ok;
-            }
+              return #err(#NotFound);
+             };
           };
         }
       };
     };
 
-    public shared ({ caller }) func updateChargeRanges(dto: DTOs.UpdateChargeRanges) : async Result.Result<(), T.Error>{
+    public shared ({ caller }) func requestAccess () : async Result.Result<(), T.Error>{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
-      assert isAdminForCaller(principalId);
+    
+      assert not isTeamMember(principalId);
+
+      let isOrganisationMember = await isUserOrganisationMember(principalId);
+      assert not isOrganisationMember;
+      
+      let invitationAlreadyExists = await invitationExists(principalId);
+      assert invitationAlreadyExists;
 
       switch(organisation){
         case (null){
-          return #err(#NotFound);
+            return #err(#NotFound);
         };
         case (?foundOrganisation){
           
-          switch(foundOrganisation.chargeInformation){
-            case (null){
-              return #err(#NotAllowed);
-            };
-            case (?foundChargeInfo){
-              
-              return #err(#NotAllowed);//TODO
-              //charge range needs to be valid
-                //check the current charge on the proposed range
-                  //current charge % must be > 50% of current cycle balance in cycles 
-                    //so if proposed charge chage is default  100m unit
+          let existingRequest = Array.find(foundOrganisation.accessRequests, func(request: T.AccessRequest) : Bool {
+            request.requesterPrincipalId == principalId
+          });
 
-              var updatedAccountancyChargeMin = foundChargeInfo.accountancyChargeMin;
-              var updatedAccountancyChargeMax = foundChargeInfo.accountancyChargeMax;
-              var updatedSalesChargeMin = foundChargeInfo.salesChargeMin;
-              var updatedSalesChargeMax = foundChargeInfo.salesChargeMax;
-              var updatedProjectsChargeMin = foundChargeInfo.projectsChargeMin;
-              var updatedProjectsChargeMax = foundChargeInfo.projectsChargeMax;
-              var updatedTimesheetsChargeMin = foundChargeInfo.timesheetsChargeMin;
-              var updatedTimesheetsChargeMax = foundChargeInfo.timesheetsChargeMax;
-              var updatedJobsChargeMin = foundChargeInfo.jobsChargeMin;
-              var updatedJobsChargeMax = foundChargeInfo.jobsChargeMax;
+          if(Option.isSome(existingRequest)){
+            return #err(#AlreadyExists);
+          };
 
-              switch(dto.serviceType){
-                case (#Accountancy){
-                  updatedAccountancyChargeMin := dto.newChargeMin;
-                  updatedAccountancyChargeMax := dto.newChargeMax;
-                };
-                case (#Sales){
-                  updatedSalesChargeMin := dto.newChargeMin;
-                  updatedSalesChargeMax := dto.newChargeMax;
-                };
-                case (#Projects){
-                  updatedProjectsChargeMin := dto.newChargeMin;
-                  updatedProjectsChargeMax := dto.newChargeMax;
-                };
-                case (#Timesheets){
-                  updatedTimesheetsChargeMin := dto.newChargeMin;
-                  updatedTimesheetsChargeMax := dto.newChargeMax;
-                };
-                case (#Jobs){
-                  updatedJobsChargeMin := dto.newChargeMin;
-                  updatedJobsChargeMax := dto.newChargeMax;
-                };
-              };
+          let requestsBuffer = Buffer.fromArray<T.AccessRequest>(foundOrganisation.accessRequests);
 
-              let updatedChargeInformation: T.ChargeInformation = {
-                accountancyChargeBalance = foundChargeInfo.accountancyChargeBalance;
-                accountancyChargeMax = updatedAccountancyChargeMax;
-                accountancyChargeMin = updatedAccountancyChargeMin;
-                availableBalance = foundChargeInfo.availableBalance;
-                projectsChargeBalance = foundChargeInfo.projectsChargeBalance;
-                projectsChargeMax = updatedProjectsChargeMax;
-                projectsChargeMin = updatedProjectsChargeMin;
-                jobsChargeBalance = foundChargeInfo.jobsChargeBalance;
-                jobsChargeMax = updatedJobsChargeMax;
-                jobsChargeMin = updatedJobsChargeMin;
-                salesChargeBalance = foundChargeInfo.salesChargeBalance;
-                salesChargeMax = updatedSalesChargeMax;
-                salesChargeMin = updatedSalesChargeMin;
-                timesheetsChargeBalance = foundChargeInfo.timesheetsChargeBalance;
-                timesheetsChargeMax = updatedTimesheetsChargeMax;
-                timesheetsChargeMin = updatedTimesheetsChargeMin;
-              };
+          let accessRequest: T.AccessRequest = {
+            requestTime = Time.now();
+            requesterPrincipalId = principalId;
+          };
 
-              return #ok;
-            }
+          requestsBuffer.add(accessRequest);
+
+          let updatedOrganisation: T.Organisation = {
+            id = foundOrganisation.id;
+            ownerId = foundOrganisation.ownerId;
+            name = foundOrganisation.name;
+            friendlyName = foundOrganisation.friendlyName;
+            referenceNumber = foundOrganisation.referenceNumber;
+            logo = foundOrganisation.logo;
+            banner = foundOrganisation.banner;
+            members = foundOrganisation.members;
+            mainAddressId = foundOrganisation.mainAddressId;
+            mainContactId = foundOrganisation.mainContactId;
+            addresses = foundOrganisation.addresses;
+            contacts = foundOrganisation.contacts;
+            auditHistory = foundOrganisation.auditHistory;
+            invites = foundOrganisation.invites;
+            lastModified = foundOrganisation.lastModified;
+            createdOn = foundOrganisation.createdOn;
+            accessRequests = Buffer.toArray(requestsBuffer);
+            chargeInformation = foundOrganisation.chargeInformation;
+          };
+
+          organisation := ?updatedOrganisation;
+
+
+          return #ok;
+          
+        };
+      }
+    };
+
+    public shared ({ caller }) func confirmAccessRequest (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      let isOrganisationAdmin = await isAdmin(principalId);
+      assert isOrganisationAdmin;
+
+      switch(organisation){
+        case (null){
+            return #err(#NotFound);
+        };
+        case (?foundOrganisation){
+          
+          let existingRequest = Array.find(foundOrganisation.accessRequests, func(request: T.AccessRequest) : Bool {
+            request.requesterPrincipalId == callerPrincipalId
+          });
+
+          if(Option.isSome(existingRequest)){
+            return #err(#AlreadyExists);
+          };
+
+          let requestsBuffer = Buffer.fromArray<T.AccessRequest>(foundOrganisation.accessRequests);
+
+          let accessRequest: T.AccessRequest = {
+            requestTime = Time.now();
+            requesterPrincipalId = callerPrincipalId;
+          };
+
+          requestsBuffer.add(accessRequest);
+
+          let updatedOrganisation: T.Organisation = {
+            id = foundOrganisation.id;
+            ownerId = foundOrganisation.ownerId;
+            name = foundOrganisation.name;
+            friendlyName = foundOrganisation.friendlyName;
+            referenceNumber = foundOrganisation.referenceNumber;
+            logo = foundOrganisation.logo;
+            banner = foundOrganisation.banner;
+            members = foundOrganisation.members;
+            mainAddressId = foundOrganisation.mainAddressId;
+            mainContactId = foundOrganisation.mainContactId;
+            addresses = foundOrganisation.addresses;
+            contacts = foundOrganisation.contacts;
+            auditHistory = foundOrganisation.auditHistory;
+            invites = foundOrganisation.invites;
+            lastModified = foundOrganisation.lastModified;
+            createdOn = foundOrganisation.createdOn;
+            accessRequests = Buffer.toArray(requestsBuffer);
+            chargeInformation = foundOrganisation.chargeInformation;
+          };
+
+          organisation := ?updatedOrganisation;
+
+          return #ok;
+          
+        };
+      }
+    };
+
+    public shared ({ caller }) func rejectAccessRequest (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      let isOrganisationAdmin = await isAdmin(principalId);
+      assert isOrganisationAdmin;
+
+      switch(organisation){
+        case (null){
+            return #err(#NotFound);
+        };
+        case (?foundOrganisation){
+          
+          let existingRequest = Array.find(foundOrganisation.accessRequests, func(request: T.AccessRequest) : Bool {
+            request.requesterPrincipalId == callerPrincipalId
+          });
+
+          if(not Option.isSome(existingRequest)){
+            return #err(#NotFound);
+          };
+
+          let updatedOrganisation: T.Organisation = {
+            id = foundOrganisation.id;
+            ownerId = foundOrganisation.ownerId;
+            name = foundOrganisation.name;
+            friendlyName = foundOrganisation.friendlyName;
+            referenceNumber = foundOrganisation.referenceNumber;
+            logo = foundOrganisation.logo;
+            banner = foundOrganisation.banner;
+            members = foundOrganisation.members;
+            mainAddressId = foundOrganisation.mainAddressId;
+            mainContactId = foundOrganisation.mainContactId;
+            addresses = foundOrganisation.addresses;
+            contacts = foundOrganisation.contacts;
+            auditHistory = foundOrganisation.auditHistory;
+            invites = foundOrganisation.invites;
+            lastModified = foundOrganisation.lastModified;
+            createdOn = foundOrganisation.createdOn;
+            accessRequests = Array.filter(foundOrganisation.accessRequests, func(request: T.AccessRequest) : Bool { request.requesterPrincipalId != callerPrincipalId });
+            chargeInformation = foundOrganisation.chargeInformation;
+          };
+
+          organisation := ?updatedOrganisation;
+
+          return #ok;
+        };
+      }
+    };
+
+    public shared ({ caller }) func leaveOrganisation (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      assert isTeamMember(principalId);
+
+      switch(organisation){
+        case (null){
+            return #err(#NotFound);
+        };
+        case (?foundOrganisation){
+          
+          let updatedOrganisation: T.Organisation = {
+            id = foundOrganisation.id;
+            ownerId = foundOrganisation.ownerId;
+            name = foundOrganisation.name;
+            friendlyName = foundOrganisation.friendlyName;
+            referenceNumber = foundOrganisation.referenceNumber;
+            logo = foundOrganisation.logo;
+            banner = foundOrganisation.banner;
+            members = Array.filter(foundOrganisation.members, func(member: T.TeamMember) : Bool { member.principalId != callerPrincipalId });
+            mainAddressId = foundOrganisation.mainAddressId;
+            mainContactId = foundOrganisation.mainContactId;
+            addresses = foundOrganisation.addresses;
+            contacts = foundOrganisation.contacts;
+            auditHistory = foundOrganisation.auditHistory;
+            invites = foundOrganisation.invites;
+            lastModified = foundOrganisation.lastModified;
+            createdOn = foundOrganisation.createdOn;
+            accessRequests = foundOrganisation.accessRequests;
+            chargeInformation = foundOrganisation.chargeInformation;
+          };
+
+          organisation := ?updatedOrganisation;
+
+          return #ok;
+        };
+      }
+    };
+
+    private func isUserOrganisationMember (callerPrincipalId: T.PrincipalId) : async Bool{
+      return isTeamMember(callerPrincipalId);
+    };
+
+    private func invitationExists (callerPrincipalId: T.PrincipalId) : async Bool{
+      
+      switch(organisation){
+        case (null){
+          return false;
+        };
+        case (?foundOrganisation){
+          let invitationSentToPrincipalIds = Array.map<T.OrganisationInvite, T.PrincipalId>(foundOrganisation.invites, func(invite : T.OrganisationInvite) : T.PrincipalId { return invite.sentTo });
+          return switch (Array.find<T.PrincipalId>(invitationSentToPrincipalIds, func(foundPrincipalId) { foundPrincipalId == callerPrincipalId })) {
+            case null { false };
+            case _ { true };
           };
         }
       };
     };
 
-    //Contacts
+
+    /* Organiastion contact functions */
     
     public shared ({ caller }) func listContacts(dto: DTOs.ListContacts) : async Result.Result<DTOs.ListContacts, T.Error>{
       assert not Principal.isAnonymous(caller);
@@ -1025,6 +769,13 @@ actor class _OrganisationCanister() {
       return await contactsManager.deleteContact(dto);
     };
 
+    /* Permission functions */
+
+    public shared ({ caller }) func isAdmin (principalId: T.PrincipalId) : async Bool{
+      assert not Principal.isAnonymous(caller);
+     return isAdminForCaller(principalId);
+    };
+
     private func isAdminForCaller(caller : T.PrincipalId) : Bool {
       switch (Array.find<T.PrincipalId>(admins, func(admin) { admin == caller })) {
         case null { false };
@@ -1050,10 +801,35 @@ actor class _OrganisationCanister() {
         }
       };
     };
+    
+    /* Canister maintenance functions */
 
-    //event logs
-    private stable var stable_event_logs: [T.EventLogEntry] = [];
-    private stable var stable_next_system_event_id: Nat = 1;
+    public shared ({ caller }) func initialise(dto: DTOs.InitialiseOrganisation) : async (){
+      assert not Principal.isAnonymous(caller);
+      let principalId = Principal.toText(caller);
+      assert principalId == Environment.BACKEND_CANISTER_ID;
+      
+      organisation := ?{
+        addresses = [];
+        auditHistory = [];
+        invites = [];
+        banner = null;
+        contacts = [];
+        friendlyName = "";
+        id = dto.canisterId;
+        lastModified = null;
+        logo = null;
+        mainAddressId = null;
+        mainContactId = null;
+        members = [];
+        name = dto.name;
+        ownerId = dto.ownerId;
+        referenceNumber = "";
+        createdOn = Time.now();
+        accessRequests = [];
+        chargeInformation = null;
+      };
+    };
     
     system func preupgrade() {
       
@@ -1063,45 +839,8 @@ actor class _OrganisationCanister() {
       ignore Timer.setTimer<system>(#nanoseconds(Int.abs(1)), postUpgradeCallback);
     }; 
     
-    private func postUpgradeCallback() : async (){      
-      await systemCheckCallback();
+    private func postUpgradeCallback() : async (){    
       await cyclesCheckCallback();
-    };
-
-    private func systemCheckCallback() : async () {
-      
-      let eventTime = Time.now();
-      let dateString = Utilities.getReadableDate(eventTime);
-
-      let cyclesAvailable: Nat = await getCanisterCyclesAvailable();
-      
-      recordSystemEvent({
-        eventDetail = "Good morning from OpenBook. I have " # Nat.toText(cyclesAvailable) # " cycles available in my backend canister wallet."; 
-        eventId = 0;
-        eventTime = Time.now();
-        eventTitle = "System Check " # dateString # ". (ID: " # Int.toText(stable_next_system_event_id) # ")";
-        eventType = #SystemCheck;
-      });
-
-      let remainingDuration = Nat64.toNat(Nat64.fromIntWrap(Utilities.getNext6AM() - Time.now()));
-      ignore Timer.setTimer<system>(#nanoseconds remainingDuration, systemCheckCallback);
-    };
-
-    private func recordSystemEvent(eventLog: T.EventLogEntry){
-      let eventsBuffer = Buffer.fromArray<T.EventLogEntry>(stable_event_logs);
-      eventsBuffer.add({
-        eventDetail = eventLog.eventDetail;
-        eventId = stable_next_system_event_id;
-        eventTime = eventLog.eventTime;
-        eventTitle = eventLog.eventTitle;
-        eventType = eventLog.eventType;
-      }); 
-      stable_event_logs := Buffer.toArray(eventsBuffer);
-      stable_next_system_event_id += 1;
-    };
-
-    private func getCanisterCyclesAvailable() : async Nat {
-      return Cycles.available();
     };
 
     private func cyclesCheckCallback() : async () {
@@ -1113,23 +852,37 @@ actor class _OrganisationCanister() {
       await checkCanisterCycles("Projects");
     };
 
-
     private func checkCycles() : async () {
 
       let balance = Cycles.balance();
 
       if (balance < DEFAULT_CYCLES_CHECK_AMOUNT) {
-        //TODO: They do need to request cycles from the backend provided they can afford them
-        let openfpl_backend_canister = actor (Environment.BACKEND_CANISTER_ID) : actor {
+        let main_backend_canister = actor (Environment.BACKEND_CANISTER_ID) : actor {
           requestCanisterTopup : (cycles: Nat) -> async ();
         };
-        await openfpl_backend_canister.requestCanisterTopup(DEFAULT_CYCLES_CHECK_AMOUNT);
+        await main_backend_canister.requestCanisterTopup(DEFAULT_CYCLES_CHECK_AMOUNT);
       };
     };  
 
     //TODO: requestCanisterTopup make the same cycle sending setup here
 
     private func checkCanisterCycles(canisterId: T.CanisterId) : async () {
+
+
+      //Canisters created with 25T cycles so total organisation starts with 7 canisters
+        //total cost for setup is 175T cycles
+          //As used check for below 10T cycles, topping up with 10T cycles
+            //Meaning the settles balance is always 10-20T cycles on any canister
+          //
+      
+      //Total Charge of organisation is:
+        //(Total of 7 Actual) / (7 * (MINIMUM + TOPUP AMOUNT) = % charge
+      
+      //record topup frequency
+
+      //check topup frequency to adjust values aiming to spread them out
+
+
       //call the function on the canister to get the cycles
       //let balance = canister.getCyclesBalance();
 

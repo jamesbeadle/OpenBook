@@ -392,7 +392,7 @@ actor class _JobManagementCanister() {
         return recruitersManager.findRecruiters(dto);
     };
 
-    private func hasPermission(principalId: T.PrincipalId, permission: RecruitmentPermissions.RecruitmentPermission) : Bool {
+    private func hasPermission(principalId: T.PrincipalId, permission: JobPermissions.JobPermission) : Bool {
         return permissionsManager.hasPermission(principalId, permission);
     };
     
