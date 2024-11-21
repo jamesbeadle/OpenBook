@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { profilesStore } from '$lib/stores/profile-store';
-  import { Spinner, busyStore } from '@dfinity/gix-components';
   import LogoIcon from '$lib/icons/logo-icon.svelte';
   import {
     directoryFilter,
@@ -46,15 +45,10 @@
 
   async function getProfiles() {
     try {
-      busyStore.startBusy({
-        initiator: 'fetch-profiles',
-        text: 'Fetch profiles...',
-      });
       await fetchProfiles();
     } catch (error) {
       console.error('Error loading directory:', error);
     } finally {
-      busyStore.stopBusy('fetch-profiles');
     }
   }
 

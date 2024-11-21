@@ -2,7 +2,7 @@
   <h1 class="text-2xl">Product</h1>
 
   <p>
-    OpenBook is a key business management tool, built and tested to run <a class="text-OpenBookGreen" target="_blank" href="https://waterwaylabs.xyz">Waterway Labs</a>. 
+    OpenBook is a key business management tool, built and tested to run <a class="text-BrandGreen" target="_blank" href="https://waterwaylabs.xyz">Waterway Labs</a>. 
     Task management is our first feature to go live, allowing us to manage our workload through OpenBook. 
     The platform will continue to evolve with help from our future clients, abstracting their needs out into customisable features useful to all organisations. 
     

@@ -31,7 +31,7 @@
         <div class="flex justify-between items-center mb-4">
             <h1 class="text-2xl font-bold">Organisations</h1>
             <button 
-                class="bg-OpenBookGreen hover:bg-OpenBookDarkGreen text-white font-bold py-2 px-4 rounded"
+                class="bg-BrandGreen hover:bg-OpenBookDarkGreen text-white font-bold py-2 px-4 rounded"
                 on:click={addOrganization}
             >
                 Add Organisation

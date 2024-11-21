@@ -1,8 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { userStore } from '$lib/stores/user-store';
-  import { toastsError, toastsShow } from '$lib/stores/toasts-store';
-  import { Modal, busyStore } from '@dfinity/gix-components';
   import type {
     ProfileDTO,
     UpdateProfileDTO,
@@ -77,10 +75,6 @@
     !isOtherContactValid(newOtherContact);
 
   async function updateProfileInfo() {
-    busyStore.startBusy({
-      initiator: 'update-profile-info',
-      text: 'Updating profile info...',
-    });
     try {
       if (!$profile) {
         return;
@@ -104,11 +98,6 @@
       let result = await userStore.updateShareableProfileInfo(updateProfileDTO);
       shareableInfoUpdated();
       userStore.sync();
-      toastsShow({
-        text: 'Profile info updated.',
-        level: 'success',
-        duration: 2000,
-      });
     } catch (error) {
       toastsError({
         msg: { text: 'Error updating profile info.' },
@@ -116,7 +105,6 @@
       });
       console.error('Error updating profile info:', error);
     } finally {
-      busyStore.stopBusy('update-profile-info');
     }
   }
 

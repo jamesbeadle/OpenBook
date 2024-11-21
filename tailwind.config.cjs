@@ -38,13 +38,14 @@ export default {
     },
     extend: {
       colors: {
-        OpenBookDark: "#101111",
-        OpenBookGreen: "#66E094",
-        OpenBookGray: "#2E323A",
-        OpenBookRed: "#FF403C",
-        OpenBookDarkGreen: "#72B68C",
-        OpenBookLightGray: "#5D677A",
-        OpenBookWhiteOffset: "#F6F6F6",
+        BrandBlack: "#101111", //From Figma Screen Background
+        BrandGray: "#1A1A1D", //From Figma Panel Background
+        BrandLightGray: "#E8E8E8", //From Figma Text
+        BrandAltGray: "#2E323A", //From Figma Panel Border
+        BrandGreen: "#66E094", //From Figma Logo
+        BrandRed: "#FF403C", //From Figma negative text
+        BrandDisabledGray: "#8C8C8C" //Disable Icon
+        
       },
     },
   },

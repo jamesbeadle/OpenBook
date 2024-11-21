@@ -188,7 +188,7 @@
   }
   
   .pip.is-active {
-    @apply bg-OpenBookGreen
+    @apply bg-BrandGreen
   }
 
   @media (min-width: 640px) {

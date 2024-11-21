@@ -35,6 +35,7 @@
 
     <link crossorigin="anonymous" href="/manifest.webmanifest" rel="manifest" />
 
+    <link rel="preload" href="/home.jpg" as="image" />
     <!-- Favicon -->
     <link
       rel="icon"
@@ -83,13 +84,15 @@
 
       @font-face {
         font-display: swap;
-        font-family: "Lato";
+        font-family: "Poppins";
         font-style: normal;
         font-weight: 400;
-        src: url("%sveltekit.assets%/Lato-Regular.woff2") format("woff2");
+        src: url("%sveltekit.assets%/Poppins-Regular.woff2")
+          format("woff2");
       }
+
       body {
-        font-family: "Lato", sans-serif !important;
+        font-family: "Poppins", sans-serif !important;
         color: white !important;
         background-color: #101111;
         height: 100vh;
@@ -211,6 +214,7 @@
           transform: rotateX(180deg) rotate(341.5deg);
         }
       }
+
     </style>
   </head>
   <body data-sveltekit-preload-data="hover">
@@ -226,6 +230,7 @@
     >
       <circle cx="50%" cy="50%" r="45" />
     </svg>
+    
     <script>
       try {
         const currentMenu = !localStorage.nnsMenu

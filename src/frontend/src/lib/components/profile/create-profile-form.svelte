@@ -2,8 +2,6 @@
   import { onMount } from 'svelte';
   import { debounce } from 'lodash-es';
   import { userStore } from '$lib/stores/user-store';
-  import { toastsError, toastsShow } from '$lib/stores/toasts-store';
-  import { busyStore } from '@dfinity/gix-components';
   import type {
     ProfileDTO,
     UpdateProfileDTO,
@@ -155,19 +153,9 @@
         profileUpdated();
       }
       userStore.sync();
-      toastsShow({
-        text: 'Profile updated.',
-        level: 'success',
-        duration: 2000,
-      });
     } catch (error) {
-      toastsError({
-        msg: { text: 'Error updating profile.' },
-        err: error,
-      });
       console.error('Error updating profile:', error);
     } finally {
-      busyStore.stopBusy('update-profile');
     }
   }
 

@@ -2,9 +2,7 @@
   import { onMount } from 'svelte';
   import { writable, type Writable } from 'svelte/store';
   import { userStore } from '$lib/stores/user-store';
-  import { toastsError, toastsShow } from '$lib/stores/toasts-store';
   import type { ProfileDTO } from '../../../../../declarations/backend/backend.did';
-  import { busyStore, Copy, Modal, Spinner } from '@dfinity/gix-components';
   import { getDateFromBigInt } from '$lib/utils/helpers';
   import CreateProfileForm from './create-profile-form.svelte';
   import OpenchatIcon from '$lib/icons/openchat-icon.svelte';
@@ -45,10 +43,6 @@
         joinedDate = getDateFromBigInt(value.createDate);
       });
     } catch (error) {
-      toastsError({
-        msg: { text: 'Error fetching profile detail.' },
-        err: error,
-      });
       console.error('Error fetching profile detail:', error);
     } finally {
       isLoading = false;
@@ -82,10 +76,6 @@
   }
 
   async function uploadProfileImage(file: File) {
-    busyStore.startBusy({
-      initiator: 'upload-image',
-      text: 'Uploading profile picture...',
-    });
 
     try {
       await userStore.updateProfilePicture(file);
@@ -100,21 +90,11 @@
           const blob = new Blob([new Uint8Array(profileData.profilePicture)]);
           profileSrc = URL.createObjectURL(blob) + '?v=' + new Date().getTime();
         }
-        toastsShow({
-          text: 'Profile image updated.',
-          level: 'success',
-          duration: 2000,
-        });
       });
       
     } catch (error) {
-      toastsError({
-        msg: { text: 'Error updating profile image.' },
-        err: error,
-      });
       console.error('Error updating profile image', error);
     } finally {
-      busyStore.stopBusy('upload-image');
     }
   }
 
@@ -134,11 +114,6 @@
     try {
       const textToCopy = $profile ? $profile.principal : '';
       await navigator.clipboard.writeText(textToCopy);
-      toastsShow({
-        text: 'Copied to clipboard.',
-        level: 'success',
-        duration: 2000,
-      });
     } catch (err) {
       console.error('Failed to copy:', err);
     }

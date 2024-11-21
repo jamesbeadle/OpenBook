@@ -5,7 +5,6 @@
   import { writable, type Writable } from 'svelte/store';
   import { userStore } from '$lib/stores/user-store';
   import { authStore } from '$lib/stores/auth-store';
-  import { toastsError } from '$lib/stores/toasts-store';
   import type { ProfileDTO } from '../../../../declarations/backend/backend.did';
   import WalletIcon from '$lib/icons/wallet-icon.svelte';
 
@@ -37,10 +36,6 @@
         setProfile(value);
       });
     } catch (error) {
-      toastsError({
-        msg: { text: 'Error syncing authentication.' },
-        err: error,
-      });
       console.error('Error syncing authentication:', error);
     }
   });

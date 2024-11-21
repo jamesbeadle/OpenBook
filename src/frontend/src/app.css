@@ -72,14 +72,14 @@ input[type="file"] {
   @apply text-xs xs:text-sm sm:text-lg md:text-xxs lg:text-sm xl:text-base;
 }
 .book-btn {
-  @apply bg-OpenBookGreen px-6 py-2 rounded-sm text-center text-black text-sm;
+  @apply bg-BrandGreen px-6 py-2 rounded-sm text-center text-black text-sm;
 }
 .book-btn.disabled {
   @apply bg-gray-500;
 }
 
 .directory-nav-btn-active {
-  @apply bg-OpenBookGreen px-3 py-1 rounded-sm text-center text-black;
+  @apply bg-BrandGreen px-3 py-1 rounded-sm text-center text-black;
 }
 
 .directory-nav-btn {
@@ -165,7 +165,7 @@ input {
 
 .horizontal-divider-gray {
   min-height: 2px;
-  @apply flex-shrink-0 h-px bg-OpenBookWhiteOffset self-stretch;
+  @apply flex-shrink-0 h-px bg-white self-stretch;
 }
 
 /* Extra small devices (portrait phones, less than 480px) */
