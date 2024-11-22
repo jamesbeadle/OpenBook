@@ -14,9 +14,11 @@ import StorageManager "managers/storage-manager";
 import TreasuryManager "managers/treasury-manager";
 import OrganisationManager "managers/organisation-manager";
 import CyclesManager "managers/cycles-manager";
+import NewsFeedManager "managers/news-feed-manager";
 
 actor Self {
   
+  private let newsFeedManager = NewsFeedManager.NewsFeedManager();
   private let profileManager = ProfileManager.ProfileManager();
   private let treasuryManager = TreasuryManager.TreasuryManager();
   private let organisationManager = OrganisationManager.OrganisationManager();
