@@ -1,30 +1,33 @@
 <script>
-import { onMount } from "svelte";
+  import { onMount } from "svelte";
 
-import BankingIcon from "$lib/icons/banking-icon.svelte";
-import CollapseIcon from "$lib/icons/collapse-icon.svelte";
-import ExpandIcon from "$lib/icons/expand-icon.svelte";
-import HomeIcon from "$lib/icons/home-icon.svelte";
-import LogoIcon from "$lib/icons/logo-icon.svelte";
-import TeamIcon from "$lib/icons/team-icon.svelte";
-import ExpandedNavItems from "../shared/expanded-nav-items.svelte";
-import CloseIcon from "$lib/icons/close-icon.svelte";
-import { authStore } from "$lib/stores/auth-store";
-    import SalesIcon from "$lib/icons/sales-icon.svelte";
-    import AccountancyIcon from "$lib/icons/accountancy-icon.svelte";
-    import TimesheetIcon from "$lib/icons/timesheet-icon.svelte";
-    import TaskIcon from "$lib/icons/task-icon.svelte";
-    import ProjectsIcon from "$lib/icons/side-nav/projects-icon.svelte";
+  import CollapseIcon from "$lib/icons/collapse-icon.svelte";
+  import ExpandIcon from "$lib/icons/expand-icon.svelte";
+  import ProjectsIcon from "$lib/icons/side-nav/projects-icon.svelte";
+
+  import TeamIcon from "$lib/icons/team-icon.svelte";
+  import ExpandedNavItems from "../shared/expanded-nav-items.svelte";
+  import CloseIcon from "$lib/icons/close-icon.svelte";
+  import { authStore } from "$lib/stores/auth-store";
+  import AccountancyIcon from "$lib/icons/side-nav/accountancy-icon.svelte";
+  import TimesheetIcon from "$lib/icons/side-nav/timesheet-icon.svelte";
+  import TaskIcon from "$lib/icons/task-icon.svelte";
+    import NetworkingIcon from "$lib/icons/side-nav/networking-icon.svelte";
+    import SalesIcon from "$lib/icons/side-nav/sales-icon.svelte";
+    import { page } from "$app/stores";
+    import JobsIcon from "$lib/icons/side-nav/jobs-icon.svelte";
+    import LogoIcon from "$lib/icons/logo-icon.svelte";
 
   let isMenuOpen = false;
   let isProfilePanelOpen = false;
 
   const menuItems = [
-    { icon: ProjectsIcon, title: 'Projects', links: ['Members', 'Projects'] },
-    { icon: TeamIcon, title: 'Networking', links: ['Accounts', 'Transactions'] },
-    { icon: SalesIcon, title: 'Sales', links: ['Accounts', 'Transactions'] },
-    { icon: AccountancyIcon, title: 'Accounts', links: ['Accounts', 'Transactions'] },
-    { icon: TimesheetIcon, title: 'Timesheets', links: ['Accounts', 'Transactions'] }
+    { icon: NetworkingIcon, title: 'Networking', links: ['Accounts', 'Transactions'], route: '/' },
+    { icon: ProjectsIcon, title: 'Projects', links: ['Members', 'Projects'], route: '/projects' },
+    { icon: SalesIcon, title: 'Sales', links: ['Accounts', 'Transactions'], route: '/sales' },
+    { icon: AccountancyIcon, title: 'Accounts', links: ['Accounts', 'Transactions'], route: '/accounts' },
+    { icon: TimesheetIcon, title: 'Timesheets', links: ['Accounts', 'Transactions'], route: '/timesheets' },
+    { icon: JobsIcon, title: 'Jobs', links: ['Accounts', 'Transactions'], route: '/jobs' }
   ];
 
   onMount(() => {});
@@ -60,21 +63,28 @@ import { authStore } from "$lib/stores/auth-store";
     </div>
     <ul class="space-y-2">
             {#each menuItems as item}
-        <li
-          class={`mx-2 rounded cursor-pointer hover:bg-BrandAltGray ${
-            isMenuOpen ? "w-full" : "flex items-center justify-center"
-          }`}
-        >
-          {#if isMenuOpen}
-            <ExpandedNavItems
-              icon={item.icon}
-              title={item.title}
-              links={item.links}
-            />
-          {:else}
-            <svelte:component this={item.icon} className="w-4 py-2" />
-          {/if}
-        </li>
+            <a href={item.route}>
+              <li
+                class={`mx-2 rounded cursor-pointer hover:bg-BrandAltGray ${
+                  isMenuOpen ? "w-full" : "flex items-center justify-center"
+                }`}
+              >
+                {#if isMenuOpen}
+                  <ExpandedNavItems
+                    icon={item.icon}
+                    title={item.title}
+                    links={item.links}
+                  />
+                {:else}
+                  {#if $page.url.pathname == item.route}
+                    <svelte:component this={item.icon} className="w-4 py-2" fill='white' />
+                  {:else}
+                    <svelte:component this={item.icon} className="w-4 py-2" />
+                  {/if}
+                {/if}
+              </li>
+            
+            </a>
       {/each}
 
     </ul>
@@ -99,12 +109,13 @@ import { authStore } from "$lib/stores/auth-store";
       </div>
     </div>
 
-    <main class="flex-1">
+    <main class="flex-1 p-4">
       <slot />
     </main>
 
      {#if isProfilePanelOpen}
      <button
+        aria-label="profile-close"
        class="fixed inset-0 bg-black bg-opacity-50 z-40"
        on:click={() => (isProfilePanelOpen = false)}
      ></button>

@@ -2,7 +2,7 @@
   import ExpandIcon from '$lib/icons/expand-icon.svelte';
   import IcpIcon from '$lib/icons/icp-icon.svelte';
   import Logo from '$lib/icons/logo-icon.svelte';
-  import ValueIcon from '$lib/icons/value-icon.svelte';
+  import ValueIcon from '$lib/icons/side-nav/value-icon.svelte';
 
   let activeSection = 0;
   let sections = ['projects', 'contacts'];

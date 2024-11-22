@@ -53,7 +53,6 @@ const initAuthStore = (): AuthStore => {
     },
 
     signIn: ({ domain }: AuthSignInParams) =>
-      // eslint-disable-next-line no-async-promise-executor
       new Promise<void>(async (resolve, reject) => {
         authClient = authClient ?? (await createAuthClient());
 
@@ -88,7 +87,6 @@ const initAuthStore = (): AuthStore => {
 
       await client.logout();
 
-      // This fix a "sign in -> sign out -> sign in again" flow without window reload.
       authClient = null;
 
       update((state: AuthStoreData) => ({

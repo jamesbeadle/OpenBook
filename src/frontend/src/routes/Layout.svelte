@@ -7,6 +7,9 @@
   import { authStore, type AuthSignInParams, type AuthStoreData } from "$lib/stores/auth-store";
    import '../app.css';
     import FullScreenSpinner from "$lib/components/shared/full-screen-spinner.svelte";
+    import { authSignedInStore } from "$lib/derived/auth.derived";
+    import Welcome from "$lib/components/home/welcome.svelte";
+    import Dashboard from "$lib/components/dashboard/dashboard.svelte";
 
   let worker: { syncAuthIdle: (auth: AuthStoreData) => void } | undefined;
   const init = async () => await Promise.all([syncAuthStore()]);
@@ -43,11 +46,17 @@
 
 </script>
 
-  <svelte:window on:storage={syncAuthStore} />
-  {#await init()}
-    <div in:fade>
-      <FullScreenSpinner />
-    </div>
-  {:then _}
-    <slot></slot>
+<svelte:window on:storage={syncAuthStore} />
+{#await init()}
+  <div in:fade>
+    <FullScreenSpinner />
+  </div>
+{:then _}
+  {#if !$authSignedInStore}
+      <Welcome />
+  {:else}
+    <Dashboard>
+      <slot></slot>
+    </Dashboard>
+  {/if}
 {/await}

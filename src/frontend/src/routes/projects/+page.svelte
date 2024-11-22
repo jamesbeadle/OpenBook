@@ -1,7 +1,12 @@
-
 <script lang="ts">
+    import { onMount } from "svelte";
     import Layout from "../Layout.svelte";
-</script>
+    
+    onMount(async () => {
+    });
+  
+  </script>
+  
 <Layout>
-    <p>Projects coming soon.</p>
+    <p>Projects</p>
 </Layout>

@@ -1,6 +1,6 @@
 <script>
   export let className = '';
-  export let fill = '#FFFFFF';
+  export let fill = '#8C8C8C';
 </script>
 
 <svg

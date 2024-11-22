@@ -1,8 +1,3 @@
-<script>
-
-    import Layout from "../Layout.svelte";
-
-</script>
 <!-- 
     - show jobs
     - show candidates
@@ -12,8 +7,14 @@
         - add candidate
 -->
 
-<Layout>
-    <div class="flex flex-row h-screen w-full">
-        <p>Jobs</p>
-    </div>  
-</Layout>
+<script lang="ts">
+    import { onMount } from "svelte";
+      import Layout from "../Layout.svelte";
+    
+    onMount(async () => {
+    });
+  
+  </script>
+  <Layout>
+    <p>Jobs</p>
+  </Layout>
