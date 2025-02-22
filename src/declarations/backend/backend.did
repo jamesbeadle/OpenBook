@@ -1,0 +1,163 @@
+type VisibilityLevel = 
+ variant {
+   Internal;
+   Private;
+   Public;
+ };
+type UpdateProfileDTO = 
+ record {
+   displayName: text;
+   emailAddress: text;
+   firstName: text;
+   lastName: text;
+   openChatUsername: text;
+   otherContact: text;
+   phoneNumber: text;
+   preferredPaymentCurrency: CurrencyId;
+   principalId: PrincipalId;
+   profession: text;
+   termsAccepted: bool;
+   userDefinedWallet: text;
+   username: text;
+ };
+type Result_3 = 
+ variant {
+   err: Error;
+   ok: ProfileDTO;
+ };
+type Result_2 = 
+ variant {
+   err: Error;
+   ok: bool;
+ };
+type Result_1 = 
+ variant {
+   err: Error;
+   ok: vec record {
+             PrincipalId;
+             Profile;
+           };
+ };
+type Result = 
+ variant {
+   err: Error;
+   ok;
+ };
+type ProfileDTO = 
+ record {
+   createDate: int;
+   displayName: text;
+   emailAddress: text;
+   firstName: text;
+   lastModified: int64;
+   lastName: text;
+   openChatUsername: text;
+   organisations: vec OrganisationId__1;
+   otherContact: text;
+   phoneNumber: text;
+   preferredPaymentCurrency: CurrencyId;
+   "principal": text;
+   profession: text;
+   profilePicture: blob;
+   termsAccepted: bool;
+   userDefinedWallet: text;
+   username: text;
+ };
+type Profile = 
+ record {
+   auditHistory: List;
+   createDate: int;
+   displayName: text;
+   emailAddress: text;
+   firstName: text;
+   lastModified: int64;
+   lastName: text;
+   openChatUsername: text;
+   organisations: vec OrganisationId;
+   otherContact: text;
+   phoneNumber: text;
+   preferredPaymentCurrency: CurrencyId__1;
+   "principal": text;
+   profession: text;
+   profilePictureCanisterId: text;
+   termsAccepted: bool;
+   userDefinedWallet: text;
+   username: text;
+ };
+type PrincipalId = text;
+type OrganisationId__1 = text;
+type OrganisationId = nat32;
+type List = 
+ opt record {
+       AuditRecord;
+       List;
+     };
+type Error = 
+ variant {
+   AlreadyExists;
+   DecodeError;
+   InvalidData;
+   NotAllowed;
+   NotAuthorized;
+   NotEnoughFunds;
+   NotFound;
+   PaymentError;
+ };
+type DeleteOrganisation = 
+ record {
+   confirmDelete: bool;
+   organisationId: OrganisationId__1;
+ };
+type CurrencyId__1 = nat32;
+type CurrencyId = nat32;
+type CreateProfileDTO = 
+ record {
+   displayName: text;
+   emailAddress: text;
+   firstName: text;
+   lastName: text;
+   openChatUsername: text;
+   organisations: vec OrganisationId__1;
+   otherContact: text;
+   phoneNumber: text;
+   preferredPaymentCurrency: CurrencyId;
+   profession: text;
+   profilePicture: blob;
+   termsAccepted: bool;
+   userDefinedWallet: text;
+   username: text;
+ };
+type CreateOrganisation = 
+ record {
+   name: text;
+   ownerId: PrincipalId;
+ };
+type ChangeType = 
+ variant {
+   ChartOfAccountsUpdated;
+   CustomerRecordUpdated;
+   OrganisationDetailUpdated;
+   OrganisationUserAdded;
+   OrganisationUserRemoved;
+   OrganisationUserRoleUpdated;
+   SupplierRecordUpdated;
+ };
+type AuditRecord = 
+ record {
+   changeType: ChangeType;
+   timestamp: int64;
+   visibilityLevel: VisibilityLevel;
+ };
+service : {
+  createProfile: (CreateProfileDTO) -> (Result);
+  deleteOrganisation: (DeleteOrganisation) -> (Result);
+  deleteProfile: (PrincipalId) -> (Result);
+  getProfile: () -> (Result_3);
+  isOrganisationNameAvailable: (text) -> (Result_2);
+  isUsernameAvailable: (text) -> (Result_2);
+  listOGProfiles: () -> (Result_1);
+  purchaseOrganisation: (CreateOrganisation) -> (Result);
+  requestCanisterTopup: (nat) -> ();
+  transferOGProfiles: () -> () oneway;
+  updateProfile: (UpdateProfileDTO) -> (Result);
+}
