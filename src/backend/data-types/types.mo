@@ -38,6 +38,7 @@ module OpenBookTypes {
     profilePictureCanisterId : Base.CanisterId;
     profilePictureBucketNumber: BucketNumber;
     profilePictureFileId: FileId;
+    ownedOrganiastions: [Org.OrganisationId];
     teamMemberships : [Org.TeamMember];
     createDate : Int;
     auditHistory : [Org.AuditRecord];
