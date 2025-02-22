@@ -1,36 +1,27 @@
 
 
 import T "../data-types/types";
-import OT "../data-types/old-types";
-
 import Text "mo:base/Text";
-import Blob "mo:base/Blob";
-import Account "../utilities/Account";
 import Result "mo:base/Result";
-import HashMap "mo:base/HashMap";
 import Iter "mo:base/Iter";
-import List "mo:base/List";
-import Int "mo:base/Int";
-import Buffer "mo:base/Buffer";
-import Array "mo:base/Array";
-import Order "mo:base/Order";
-import DTOs "../dtos/DTOs";
 import Prim "mo:prim";
+import Base "mo:waterway-mops/BaseTypes";
 
-import ProfileDTOs "../dtos/profile-dtos"
+import ProfileDTOs "../dtos/profile-dtos";
+import Org "../data-types/organisation-types";
 
 module {
   public class ProfileManager() {
-    private var profile_canister_ids: [T.CanisterId] = [];
-    private var profile_canister_index: [(T.PrincipalId, T.CanisterId)] = [];
-    private var active_canister_id: T.CanisterId = "";
+    private var profile_canister_ids: [Base.CanisterId] = [];
+    private var profile_canister_index: [(Base.PrincipalId, Base.CanisterId)] = [];
+    private var active_canister_id: Base.CanisterId = "";
     private var unique_usernames : [Text] = [];
 
-    public func profileExists(principalId: T.PrincipalId) : Bool {
+    public func profileExists(principalId: Base.PrincipalId) : Bool {
       return false; //todo;
     };
 
-    public func getProfile(principalId: T.PrincipalId) : async ?ProfileDTOs.ProfileDTO {
+    public func getProfile(principalId: Base.PrincipalId) : async ?ProfileDTOs.ProfileDTO {
       return null; //todo
     };
 
@@ -42,35 +33,35 @@ module {
       return #err(#NotFound); //todo
     };
 
-    public func deleteProfile(principalId: T.PrincipalId) : async Result.Result<(), T.Error> {
+    public func deleteProfile(principalId: Base.PrincipalId) : async Result.Result<(), T.Error> {
       return #err(#NotFound); //todo
     };
 
-    public func addOrganisationToProfile(principalId: T.PrincipalId, organisationId: T.OrganisationId) : async Result.Result<(), T.Error> {
+    public func addOrganisationToProfile(principalId: Base.PrincipalId, organisationId: Org.OrganisationId) : async Result.Result<(), T.Error> {
       return #err(#NotFound); //todo
     };
 
-    public func leaveOrganisation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async () {
+    public func leaveOrganisation(organisationId: Org.OrganisationId, principalId: Base.PrincipalId) : async () {
       
     };
 
-    public func organisationInviteExists(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Bool{
+    public func organisationInviteExists(organisationId: Org.OrganisationId, principalId: Base.PrincipalId) : async Bool{
       return false;
     };
 
-    public func acceptOrganisationInvitation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async (){
+    public func acceptOrganisationInvitation(organisationId: Org.OrganisationId, principalId: Base.PrincipalId) : async (){
 
     };
 
-    public func rejectOrganisationInvitation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async (){
+    public func rejectOrganisationInvitation(organisationId: Org.OrganisationId, principalId: Base.PrincipalId) : async (){
 
     };
 
-    public func addOrganisationAccessRequest(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async (){
+    public func addOrganisationAccessRequest(organisationId: Org.OrganisationId, principalId: Base.PrincipalId) : async (){
 
     };
 
-    public func addOrganisation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async (){
+    public func addOrganisation(organisationId: Org.OrganisationId, principalId: Base.PrincipalId) : async (){
 
     };
 
@@ -302,19 +293,19 @@ module {
       return true;
     };
 
-    public func getStableProfileCanisterIds() : [T.CanisterId] {
+    public func getStableProfileCanisterIds() : [Base.CanisterId] {
       return profile_canister_ids;
     };
 
-    public func setStableProfileCanisterIds(stable_profile_canister_ids: [T.CanisterId]) : () {
+    public func setStableProfileCanisterIds(stable_profile_canister_ids: [Base.CanisterId]) : () {
       profile_canister_ids := stable_profile_canister_ids;
     };
 
-    public func getStableProfileCanisterIndex() : [(T.PrincipalId, T.CanisterId)] {
+    public func getStableProfileCanisterIndex() : [(Base.PrincipalId, Base.CanisterId)] {
       return profile_canister_index;
     };
 
-    public func setStableProfileCanisterIndex(stable_profile_canister_index: [(T.PrincipalId, T.CanisterId)]) : () {
+    public func setStableProfileCanisterIndex(stable_profile_canister_index: [(Base.PrincipalId, Base.CanisterId)]) : () {
       profile_canister_index := stable_profile_canister_index;
     };
 
@@ -326,11 +317,11 @@ module {
       unique_usernames := stable_unique_usernames;
     };
 
-    public func getStableActiveCanisterId() : T.CanisterId {
+    public func getStableActiveCanisterId() : Base.CanisterId {
       return active_canister_id; 
     };
 
-    public func setStableActiveCanisterId(stable_active_canisterId: T.CanisterId) : () {
+    public func setStableActiveCanisterId(stable_active_canisterId: Base.CanisterId) : () {
       active_canister_id := stable_active_canisterId; 
     };
   };

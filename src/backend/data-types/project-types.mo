@@ -1,4 +1,5 @@
 import T "types";
+import Base "mo:waterway-mops/BaseTypes";
 
 module ProjectTypes {
 
@@ -12,7 +13,7 @@ module ProjectTypes {
     linkTree: [ProjectLink];
     stages: [ProjectStage];
     references: [ProjectReference];
-    addedBy: T.PrincipalId;
+    addedBy: Base.PrincipalId;
     timestamp: Int;
   };
 
@@ -27,16 +28,16 @@ module ProjectTypes {
   };
 
   public type ProjectMember = {
-    principcalId: T.PrincipalId;
+    principcalId: Base.PrincipalId;
     role: Text;
-    addedBy: T.PrincipalId;
+    addedBy: Base.PrincipalId;
     timestamp: Int;
   };
 
   public type ProjectLink = {
     url: Text;
     description: Text;
-    addedBy: T.PrincipalId;
+    addedBy: Base.PrincipalId;
     timestamp: Int;
   };
 
@@ -46,7 +47,7 @@ module ProjectTypes {
     startDate: Int;
     endDate: Int;
     timestamp: Int;
-    addedBy: T.PrincipalId;
+    addedBy: Base.PrincipalId;
     milestones: [Milestone];
   };
 
@@ -54,7 +55,7 @@ module ProjectTypes {
     description: Text;
     icon: Blob;
     link: Text;
-    addedBy: T.PrincipalId;
+    addedBy: Base.PrincipalId;
     timestamp: Int;
   };  
 
@@ -66,7 +67,7 @@ module ProjectTypes {
     endDate: Int;
     tasks: [Task];
     timestamp: Int;
-    addedBy: T.PrincipalId;
+    addedBy: Base.PrincipalId;
   };
 
   public type Task = {
@@ -78,12 +79,12 @@ module ProjectTypes {
     priority: PriorityLevel;
     status: TaskStatus;
     visibility: Visibility;
-    assignedTo: T.PrincipalId;
+    assignedTo: Base.PrincipalId;
     expectedDuration: Int;
     actualDuration: Int;
     comments: [Text];
     timestamp: Int;
-    addedBy: T.PrincipalId;
+    addedBy: Base.PrincipalId;
   };
 
   public type Visibility = {
@@ -95,7 +96,7 @@ module ProjectTypes {
   public type TaskComment = {
     comment: Text;
     timestamp: Int;
-    addedBy: T.PrincipalId;
+    addedBy: Base.PrincipalId;
   };
 
   public type TaskStatus = {

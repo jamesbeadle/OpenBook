@@ -1,16 +1,18 @@
 import T "../data-types/types";
+import Base "mo:waterway-mops/BaseTypes";
+import Org "../data-types/organisation-types";
 
-module OrganisationTypes {
+module OrganisationDTOs {
     
     public type CreateOrganisation = {
-        ownerId: T.PrincipalId;
+        ownerId: Base.PrincipalId;
         name: Text;
     };
 
     public type InitialiseOrganisation = {
-        ownerId: T.PrincipalId;
+        ownerId: Base.PrincipalId;
         name: Text;
-        canisterId: T.CanisterId;
+        canisterId: Base.CanisterId;
     };
 
     public type UpdateOrganisationBanner = {
@@ -30,18 +32,18 @@ module OrganisationTypes {
     };
 
     public type Organisation = {
-        id: T.CanisterId;
+        id: Base.CanisterId;
         name: Text;
-        ownerId: T.PrincipalId;
+        ownerId: Base.PrincipalId;
         friendlyName : Text;
         logo : ?Blob;
         banner : ?Blob;
         lastModified : ?Int64;
-        members: [T.TeamMember]
+        members: [Org.TeamMember]
     };
 
     public type UpdateOrganisationDetail = {
-        id: T.OrganisationId;
+        id: Org.OrganisationId;
         name: ?Text;
         friendlyName : ?Text;
         referenceNumber : ?Text;
@@ -50,13 +52,13 @@ module OrganisationTypes {
     };
 
     public type DeleteOrganisation = {
-        organisationId: T.OrganisationId;
+        organisationId: Org.OrganisationId;
         confirmDelete: Bool;
     };
 
     public type AcceptUserOrganisationRequest = {
-        organisationId: T.OrganisationId;
-        principalId: T.PrincipalId;
+        organisationId: Org.OrganisationId;
+        principalId: Base.PrincipalId;
     };
 
     public type ServiceCanisterIds = {

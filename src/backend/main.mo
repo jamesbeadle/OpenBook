@@ -4,9 +4,9 @@ import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Text "mo:base/Text";
 import Debug "mo:base/Debug";
+import Base "mo:waterway-mops/BaseTypes";
 import T "data-types/types";
 import T_Old "data-types/old-types";
-import DTOs "dtos/DTOs";
 import ProfileDTOs "dtos/profile-dtos";
 import OrganisationDTOs "dtos/organisation-dtos";
 import ProfileManager "managers/profile-manager";
@@ -68,7 +68,7 @@ actor Self {
     return await profileManager.updateProfile(dto);
   };
   
-  public shared ({ caller }) func deleteProfile(deletePrincipalId: T.PrincipalId) : async Result.Result<(), T.Error> {
+  public shared ({ caller }) func deleteProfile(deletePrincipalId: Base.PrincipalId) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
 
@@ -157,12 +157,12 @@ actor Self {
   
   //TODO: Stable Variables
   private stable var stable_topups : [T.CanisterTopup] = [];
-  private stable var stable_organisation_canister_ids: [T.CanisterId] = [];
-  private stable var stable_profile_canister_ids: [T.CanisterId] = [];
-  private stable var stable_profile_canister_index: [(T.PrincipalId, T.CanisterId)] = [];
-  private stable var stable_active_profile_canister_id: T.CanisterId = "";
-  private stable var stable_storage_canister_ids: [T.CanisterId] = [];
-  private stable var stable_active_storage_canister_id: T.CanisterId = "";
+  private stable var stable_organisation_canister_ids: [Base.CanisterId] = [];
+  private stable var stable_profile_canister_ids: [Base.CanisterId] = [];
+  private stable var stable_profile_canister_index: [(Base.PrincipalId, Base.CanisterId)] = [];
+  private stable var stable_active_profile_canister_id: Base.CanisterId = "";
+  private stable var stable_storage_canister_ids: [Base.CanisterId] = [];
+  private stable var stable_active_storage_canister_id: Base.CanisterId = "";
 
   private stable var stable_unique_usernames : [Text] = [];
   private stable var stable_unique_organisation_names : [Text] = [];
@@ -195,7 +195,7 @@ actor Self {
   
   /* The below functionality relates to the December 2023 directory launch with all user to be transferred to the new data structure */
 
-  public shared func listOGProfiles() : async Result.Result<[(T.PrincipalId, T_Old.Profile)], T.Error>{
+  public shared func listOGProfiles() : async Result.Result<[(Base.PrincipalId, T_Old.Profile)], T.Error>{
     return #ok(stable_profiles);
   };
 

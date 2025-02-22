@@ -16,9 +16,11 @@ import Cycles "mo:base/ExperimentalCycles";
 import Int "mo:base/Int";
 import Nat "mo:base/Nat";
 import Blob "mo:base/Blob";
+import Base "mo:waterway-mops/BaseTypes";
 import ContactsManager "../managers/contacts-manager";
 import ICPLedger "../defs/ledger";
 import Account "../utilities/Account";
+import Org "../data-types/organisation-types";
 
 actor class _OrganisationCanister() {
 
@@ -29,8 +31,8 @@ actor class _OrganisationCanister() {
     private stable var jobs_canister_id = "";
     private stable var storage_canister_id = "";
 
-    private stable var organisation: ?T.Organisation = null;
-    private stable var admins: [T.PrincipalId] = [];
+    private stable var organisation: ?Org.Organisation = null;
+    private stable var admins: [Base.PrincipalId] = [];
     private stable var stable_event_logs: [T.EventLogEntry] = [];
     private stable var stable_next_system_event_id: Nat = 1;
 
@@ -164,7 +166,7 @@ actor class _OrganisationCanister() {
               }
             };
 
-            let updatedOrganisation: T.Organisation = {
+            let updatedOrganisation: Org.Organisation = {
               id = foundOrganisation.id;
               ownerId = foundOrganisation.ownerId;
               name = name;
@@ -226,7 +228,7 @@ actor class _OrganisationCanister() {
 
               let chargeUnits = dto.icpAmount / ICP_CHARGE_RATE;
               
-                  let updatedOrganisation: T.Organisation = {
+                  let updatedOrganisation: Org.Organisation = {
                     id = foundOrganisation.id;
                     ownerId = foundOrganisation.ownerId;
                     name = foundOrganisation.name;
@@ -273,13 +275,13 @@ actor class _OrganisationCanister() {
         case (null){};
         case (?foundOrganisation){
           let main_backend_canister = actor (Environment.BACKEND_CANISTER_ID) : actor {
-            organisationInviteExists : (organisationId: T.OrganisationId, principalId: T.PrincipalId) -> async Bool;
+            organisationInviteExists : (organisationId: Org.OrganisationId, principalId: Base.PrincipalId) -> async Bool;
           };
           let organisationInvitationExists = await main_backend_canister.organisationInviteExists(foundOrganisation.id, principalId);
           assert organisationInvitationExists;
 
-          let remainingInvitationsBuffer = Buffer.fromArray<T.OrganisationInvite>([]);
-          let userInvitationsBuffer = Buffer.fromArray<T.OrganisationInvite>([]);
+          let remainingInvitationsBuffer = Buffer.fromArray<Org.OrganisationInvite>([]);
+          let userInvitationsBuffer = Buffer.fromArray<Org.OrganisationInvite>([]);
           for(invitation in Iter.fromArray(foundOrganisation.invites)){
             if(invitation.sentTo == principalId){
               userInvitationsBuffer.add(invitation);
@@ -290,9 +292,9 @@ actor class _OrganisationCanister() {
             }
           };
 
-          let updatedTeamMembersBuffer = Buffer.fromArray<T.TeamMember>(foundOrganisation.members);
+          let updatedTeamMembersBuffer = Buffer.fromArray<Org.TeamMember>(foundOrganisation.members);
           for(invitation in Iter.fromArray(Buffer.toArray(userInvitationsBuffer))){
-            let newTeamMember: T.TeamMember = {
+            let newTeamMember: Org.TeamMember = {
               joined = Time.now();
               organisationId = foundOrganisation.id;
               positions = [invitation.position];
@@ -301,7 +303,7 @@ actor class _OrganisationCanister() {
             updatedTeamMembersBuffer.add(newTeamMember);
           };
 
-          let updatedOrganisation: T.Organisation = {
+          let updatedOrganisation: Org.Organisation = {
             id = foundOrganisation.id;
             ownerId = foundOrganisation.ownerId;
             name = foundOrganisation.name;
@@ -342,12 +344,12 @@ actor class _OrganisationCanister() {
         };
         case (?foundOrganisation){
           let main_backend_canister = actor (Environment.BACKEND_CANISTER_ID) : actor {
-            organisationInviteExists : (organisationId: T.OrganisationId, principalId: T.PrincipalId) -> async Bool;
+            organisationInviteExists : (organisationId: Org.OrganisationId, principalId: Base.PrincipalId) -> async Bool;
           };
           let organisationInvitationExists = await main_backend_canister.organisationInviteExists(foundOrganisation.id, principalId);
           assert organisationInvitationExists;
           
-          switch (Array.find<T.OrganisationInvite>(foundOrganisation.invites, func(invite) { invite.sentTo == principalId })) {
+          switch (Array.find<Org.OrganisationInvite>(foundOrganisation.invites, func(invite) { invite.sentTo == principalId })) {
             case null {
               return #err(#NotFound);
             };
@@ -360,7 +362,7 @@ actor class _OrganisationCanister() {
                 createdOn = foundOrganisation.createdOn;
                 friendlyName = foundOrganisation.friendlyName;
                 id = foundOrganisation.id;
-                invites = Array.filter<T.OrganisationInvite>(foundOrganisation.invites, func(invite) { invite.sentTo != principalId });
+                invites = Array.filter<Org.OrganisationInvite>(foundOrganisation.invites, func(invite) { invite.sentTo != principalId });
                 lastModified = foundOrganisation.lastModified;
                 logo = foundOrganisation.logo;
                 mainAddressId = foundOrganisation.mainAddressId;
@@ -397,7 +399,7 @@ actor class _OrganisationCanister() {
         };
         case (?foundOrganisation){
           
-          let existingRequest = Array.find(foundOrganisation.accessRequests, func(request: T.AccessRequest) : Bool {
+          let existingRequest = Array.find(foundOrganisation.accessRequests, func(request: Org.AccessRequest) : Bool {
             request.requesterPrincipalId == principalId
           });
 
@@ -405,16 +407,16 @@ actor class _OrganisationCanister() {
             return #err(#AlreadyExists);
           };
 
-          let requestsBuffer = Buffer.fromArray<T.AccessRequest>(foundOrganisation.accessRequests);
+          let requestsBuffer = Buffer.fromArray<Org.AccessRequest>(foundOrganisation.accessRequests);
 
-          let accessRequest: T.AccessRequest = {
+          let accessRequest: Org.AccessRequest = {
             requestTime = Time.now();
             requesterPrincipalId = principalId;
           };
 
           requestsBuffer.add(accessRequest);
 
-          let updatedOrganisation: T.Organisation = {
+          let updatedOrganisation: Org.Organisation = {
             id = foundOrganisation.id;
             ownerId = foundOrganisation.ownerId;
             name = foundOrganisation.name;
@@ -444,7 +446,7 @@ actor class _OrganisationCanister() {
       }
     };
 
-    public shared ({ caller }) func confirmAccessRequest (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
+    public shared ({ caller }) func confirmAccessRequest (callerPrincipalId: Base.PrincipalId) : async Result.Result<(), T.Error>{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       let isOrganisationAdmin = await isAdmin(principalId);
@@ -456,7 +458,7 @@ actor class _OrganisationCanister() {
         };
         case (?foundOrganisation){
           
-          let existingRequest = Array.find(foundOrganisation.accessRequests, func(request: T.AccessRequest) : Bool {
+          let existingRequest = Array.find(foundOrganisation.accessRequests, func(request: Org.AccessRequest) : Bool {
             request.requesterPrincipalId == callerPrincipalId
           });
 
@@ -464,16 +466,16 @@ actor class _OrganisationCanister() {
             return #err(#AlreadyExists);
           };
 
-          let requestsBuffer = Buffer.fromArray<T.AccessRequest>(foundOrganisation.accessRequests);
+          let requestsBuffer = Buffer.fromArray<Org.AccessRequest>(foundOrganisation.accessRequests);
 
-          let accessRequest: T.AccessRequest = {
+          let accessRequest: Org.AccessRequest = {
             requestTime = Time.now();
             requesterPrincipalId = callerPrincipalId;
           };
 
           requestsBuffer.add(accessRequest);
 
-          let updatedOrganisation: T.Organisation = {
+          let updatedOrganisation: Org.Organisation = {
             id = foundOrganisation.id;
             ownerId = foundOrganisation.ownerId;
             name = foundOrganisation.name;
@@ -502,7 +504,7 @@ actor class _OrganisationCanister() {
       }
     };
 
-    public shared ({ caller }) func rejectAccessRequest (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
+    public shared ({ caller }) func rejectAccessRequest (callerPrincipalId: Base.PrincipalId) : async Result.Result<(), T.Error>{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       let isOrganisationAdmin = await isAdmin(principalId);
@@ -514,7 +516,7 @@ actor class _OrganisationCanister() {
         };
         case (?foundOrganisation){
           
-          let existingRequest = Array.find(foundOrganisation.accessRequests, func(request: T.AccessRequest) : Bool {
+          let existingRequest = Array.find(foundOrganisation.accessRequests, func(request: Org.AccessRequest) : Bool {
             request.requesterPrincipalId == callerPrincipalId
           });
 
@@ -522,7 +524,7 @@ actor class _OrganisationCanister() {
             return #err(#NotFound);
           };
 
-          let updatedOrganisation: T.Organisation = {
+          let updatedOrganisation: Org.Organisation = {
             id = foundOrganisation.id;
             ownerId = foundOrganisation.ownerId;
             name = foundOrganisation.name;
@@ -539,7 +541,7 @@ actor class _OrganisationCanister() {
             invites = foundOrganisation.invites;
             lastModified = foundOrganisation.lastModified;
             createdOn = foundOrganisation.createdOn;
-            accessRequests = Array.filter(foundOrganisation.accessRequests, func(request: T.AccessRequest) : Bool { request.requesterPrincipalId != callerPrincipalId });
+            accessRequests = Array.filter(foundOrganisation.accessRequests, func(request: Org.AccessRequest) : Bool { request.requesterPrincipalId != callerPrincipalId });
             chargeBalance = foundOrganisation.chargeBalance;
           };
 
@@ -550,7 +552,7 @@ actor class _OrganisationCanister() {
       }
     };
 
-    public shared ({ caller }) func leaveOrganisation (callerPrincipalId: T.PrincipalId) : async Result.Result<(), T.Error>{
+    public shared ({ caller }) func leaveOrganisation (callerPrincipalId: Base.PrincipalId) : async Result.Result<(), T.Error>{
       assert not Principal.isAnonymous(caller);
       let principalId = Principal.toText(caller);
       assert isTeamMember(principalId);
@@ -561,7 +563,7 @@ actor class _OrganisationCanister() {
         };
         case (?foundOrganisation){
           
-          let updatedOrganisation: T.Organisation = {
+          let updatedOrganisation: Org.Organisation = {
             id = foundOrganisation.id;
             ownerId = foundOrganisation.ownerId;
             name = foundOrganisation.name;
@@ -569,7 +571,7 @@ actor class _OrganisationCanister() {
             referenceNumber = foundOrganisation.referenceNumber;
             logo = foundOrganisation.logo;
             banner = foundOrganisation.banner;
-            members = Array.filter(foundOrganisation.members, func(member: T.TeamMember) : Bool { member.principalId != callerPrincipalId });
+            members = Array.filter(foundOrganisation.members, func(member: Org.TeamMember) : Bool { member.principalId != callerPrincipalId });
             mainAddressId = foundOrganisation.mainAddressId;
             mainContactId = foundOrganisation.mainContactId;
             addresses = foundOrganisation.addresses;
@@ -589,19 +591,19 @@ actor class _OrganisationCanister() {
       }
     };
 
-    private func isUserOrganisationMember (callerPrincipalId: T.PrincipalId) : async Bool{
+    private func isUserOrganisationMember (callerPrincipalId: Base.PrincipalId) : async Bool{
       return isTeamMember(callerPrincipalId);
     };
 
-    private func invitationExists (callerPrincipalId: T.PrincipalId) : async Bool{
+    private func invitationExists (callerPrincipalId: Base.PrincipalId) : async Bool{
       
       switch(organisation){
         case (null){
           return false;
         };
         case (?foundOrganisation){
-          let invitationSentToPrincipalIds = Array.map<T.OrganisationInvite, T.PrincipalId>(foundOrganisation.invites, func(invite : T.OrganisationInvite) : T.PrincipalId { return invite.sentTo });
-          return switch (Array.find<T.PrincipalId>(invitationSentToPrincipalIds, func(foundPrincipalId) { foundPrincipalId == callerPrincipalId })) {
+          let invitationSentToPrincipalIds = Array.map<Org.OrganisationInvite, Base.PrincipalId>(foundOrganisation.invites, func(invite : Org.OrganisationInvite) : Base.PrincipalId { return invite.sentTo });
+          return switch (Array.find<Base.PrincipalId>(invitationSentToPrincipalIds, func(foundPrincipalId) { foundPrincipalId == callerPrincipalId })) {
             case null { false };
             case _ { true };
           };
@@ -649,29 +651,29 @@ actor class _OrganisationCanister() {
 
     /* Permission functions */
 
-    public shared ({ caller }) func isAdmin (principalId: T.PrincipalId) : async Bool{
+    public shared ({ caller }) func isAdmin (principalId: Base.PrincipalId) : async Bool{
       assert not Principal.isAnonymous(caller);
      return isAdminForCaller(principalId);
     };
 
-    private func isAdminForCaller(caller : T.PrincipalId) : Bool {
-      switch (Array.find<T.PrincipalId>(admins, func(admin) { admin == caller })) {
+    private func isAdminForCaller(caller : Base.PrincipalId) : Bool {
+      switch (Array.find<Base.PrincipalId>(admins, func(admin) { admin == caller })) {
         case null { false };
         case _ { true };
       };
     };
 
-    private func isTeamMember(callerPrincipalId: T.PrincipalId) : Bool {
+    private func isTeamMember(callerPrincipalId: Base.PrincipalId) : Bool {
       switch(organisation){
         case (null){
           return false;
         };
         case (?foundOrganisation){
-          let teamMemberPrincipals = Array.map<T.TeamMember, T.PrincipalId>(foundOrganisation.members, func(member : T.TeamMember) : T.PrincipalId { return member.principalId });
+          let teamMemberPrincipals = Array.map<Org.TeamMember, Base.PrincipalId>(foundOrganisation.members, func(member : Org.TeamMember) : Base.PrincipalId { return member.principalId });
 
-          let teamMember = Array.find<T.PrincipalId>(
+          let teamMember = Array.find<Base.PrincipalId>(
             teamMemberPrincipals,
-            func(memberPrincipalId : T.PrincipalId) : Bool {
+            func(memberPrincipalId : Base.PrincipalId) : Bool {
               return callerPrincipalId == memberPrincipalId;
             },
           );
@@ -744,7 +746,7 @@ actor class _OrganisationCanister() {
 
     //TODO: requestCanisterTopup make the same cycle sending setup here
 
-    private func checkCanisterCycles(canisterId: T.CanisterId) : async () {
+    private func checkCanisterCycles(canisterId: Base.CanisterId) : async () {
 
 
       //Canisters created with 25T cycles so total organisation starts with 7 canisters

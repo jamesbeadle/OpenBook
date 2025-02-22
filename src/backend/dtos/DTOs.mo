@@ -1,4 +1,5 @@
 import Blob "mo:base/Blob";
+import Base "mo:waterway-mops/BaseTypes";
 import T "../data-types/types";
 
 module DTOs {
@@ -63,15 +64,15 @@ module DTOs {
   };
 
   public type PresaleListingDTO = {
-    ownerId: T.PrincipalId;
+    ownerId: Base.PrincipalId;
     tokens: Nat64;
     price: Nat64;
     listedOn: Int;
   };
 
   public type PurchasePresaleAllocationDTO = {
-    ownerId: T.PrincipalId;
-    purchaserId: T.PrincipalId;
+    ownerId: Base.PrincipalId;
+    purchaserId: Base.PrincipalId;
     tokens: Nat64;
     price: Nat64;
   };

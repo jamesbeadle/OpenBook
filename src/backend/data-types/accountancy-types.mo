@@ -1,6 +1,8 @@
 
 import T "types";
 import TaxTypes "tax-types";
+import Base "mo:waterway-mops/BaseTypes";
+import Org "organisation-types";
 
 module AccountsTypes {
     public type AccountingPeriodId = Nat32;
@@ -13,7 +15,7 @@ module AccountsTypes {
     public type AccountingPeriod = {
         id: AccountingPeriodId;
         year: FinancialYearId;
-        month: T.CalendarMonth;
+        month: Base.CalendarMonth;
     };
 
     public type FinancialYear = {
@@ -80,7 +82,7 @@ module AccountsTypes {
         description: Text;
         transactionType: TransactionType;
         detail: TransactionDetail;
-        addedBy: T.PrincipalId;
+        addedBy: Base.PrincipalId;
         timestamp: Int;
         balance: Float;
     };
@@ -288,17 +290,17 @@ module AccountsTypes {
         id : T.CustomerId;
         name : Text;
         legalName : Text;
-        mainAddressId : T.AddressId;
-        mainContactId : T.ContactId;
+        mainAddressId : Org.AddressId;
+        mainContactId : Org.ContactId;
         assetAccounts : AssetAccount;
         salesTaxId : Text;
         paymentTermDays : Nat16;
-        contactMethod : T.ContactMethod;
-        accountManager : T.CustomerId;
-        primaryAddressId : T.AddressId;
-        primaryContactId : T.ContactId;
-        addresses : [T.Address];
-        contacts : [T.Contact];
+        contactMethod : Org.ContactMethod;
+        accountManager : Org.ContactId;
+        primaryAddressId : Org.AddressId;
+        primaryContactId : Org.ContactId;
+        addresses : [Org.Address];
+        contacts : [Org.Contact];
     };
 
     public type AccountStatus = {
@@ -311,17 +313,17 @@ module AccountsTypes {
         id : T.SupplierId;
         name : Text;
         legalName : Text;
-        mainAddressId : T.AddressId;
-        mainContactId : T.ContactId;
+        mainAddressId : Org.AddressId;
+        mainContactId : Org.ContactId;
         assetAccounts : AssetAccount;
         salesTaxId : Text;
         paymentTermDays : Nat16;
-        contactMethod : T.ContactMethod;
-        accountManager : T.CustomerId;
-        primaryAddressId : T.AddressId;
-        primaryContactId : T.ContactId;
-        addresses : [T.Address];
-        contacts : [T.Contact];
+        contactMethod : Org.ContactMethod;
+        accountManager : Org.ContactId;
+        primaryAddressId : Org.AddressId;
+        primaryContactId : Org.ContactId;
+        addresses : [Org.Address];
+        contacts : [Org.Contact];
         paymentOptions : [AssetAccount];
     };
 

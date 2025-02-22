@@ -1,5 +1,6 @@
 import Base "mo:waterway-mops/BaseTypes";
 import T "types";
+import Org "organisation-types";
 
 module NetworkingTypes {
 
@@ -42,7 +43,7 @@ module NetworkingTypes {
         comments: [Comment];
         questions: [Question];
         contextId: ContextId;
-        organisation: T.OrganisationId;
+        organisation: Org.OrganisationId;
         project: T.ProjectId;
         projectStage: Nat16;
     };

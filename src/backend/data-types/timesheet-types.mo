@@ -1,5 +1,5 @@
 
-import T "types";
+import Base "mo:waterway-mops/BaseTypes";
 
 module TimesheetTypes {
 
@@ -8,7 +8,7 @@ module TimesheetTypes {
     };
 
     public type TimesheetEntry = {
-        staffMemberId: T.PrincipalId;
+        staffMemberId: Base.PrincipalId;
         index: Nat;
         startTime: Int;
         endTime: Int;

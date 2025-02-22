@@ -9,13 +9,15 @@ import OrganisationCanister "../canister-defs/organisation";
 import Utilities "../utilities/Utilities";
 import Cycles "mo:base/ExperimentalCycles";
 import Option "mo:base/Option";
+import Base "mo:waterway-mops/BaseTypes";
 import Environment "../utilities/Environment";
+import Org "../data-types/organisation-types";
 
 module {
   public class OrganisationManager() {
     
     private var unique_organisation_names : [Text] = [];
-    private var organisation_canister_ids: [T.CanisterId] = [];
+    private var organisation_canister_ids: [Base.CanisterId] = [];
 
     private var storeCanisterId : ?((canisterId : Text) -> async ()) = null;
     private var backendCanisterController : ?Principal = null;
@@ -30,7 +32,7 @@ module {
       backendCanisterController := ?controller;
     };
     
-    public func createOrganisation(dto: OrganisationDTOs.CreateOrganisation) : async Result.Result<T.OrganisationId, T.Error> {
+    public func createOrganisation(dto: OrganisationDTOs.CreateOrganisation) : async Result.Result<Org.OrganisationId, T.Error> {
       
       let nameTaken = isOrganisationNameAvailable(dto.name);
       if(nameTaken){
@@ -60,14 +62,14 @@ module {
       };      
     };
 
-    public func getOrganisation(organisationId: T.OrganisationId) : async ?OrganisationDTOs.Organisation {
+    public func getOrganisation(organisationId: Org.OrganisationId) : async ?OrganisationDTOs.Organisation {
       let organisation_canister = actor (organisationId) : actor {
         getOrganisation : () -> async ?OrganisationDTOs.Organisation;
       };
       return await organisation_canister.getOrganisation();
     };
 
-    public func deleteOrganisation(organisationId: T.OrganisationId) : async Result.Result<(), T.Error> {
+    public func deleteOrganisation(organisationId: Org.OrganisationId) : async Result.Result<(), T.Error> {
 
       let organisation = await getOrganisation(organisationId);
 
@@ -99,9 +101,9 @@ module {
             },
           );
 
-          organisation_canister_ids := Array.filter<T.CanisterId>(
+          organisation_canister_ids := Array.filter<Base.CanisterId>(
             organisation_canister_ids,
-            func(canisterId : T.CanisterId) : Bool {
+            func(canisterId : Base.CanisterId) : Bool {
               return canisterId != organisationId;
             },
           );
@@ -119,72 +121,72 @@ module {
       return Option.isNull(nameExists);
     };
 
-    public func acceptOrganisationInvitation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async () {
+    public func acceptOrganisationInvitation(organisationId: Org.OrganisationId, principalId: Base.PrincipalId) : async () {
       let organisation_canister = actor (organisationId) : actor {
-        acceptOrganisationInvitation : (principalId: T.PrincipalId) -> async ();
+        acceptOrganisationInvitation : (principalId: Base.PrincipalId) -> async ();
       };
       return await organisation_canister.acceptOrganisationInvitation(principalId);
     };
 
-    public func isUserOrganisationMember(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Bool{
+    public func isUserOrganisationMember(organisationId: Org.OrganisationId, principalId: Base.PrincipalId) : async Bool{
       let organisation_canister = actor (organisationId) : actor {
-        isUserOrganisationMember : (principalId: T.PrincipalId) -> async Bool;
+        isUserOrganisationMember : (principalId: Base.PrincipalId) -> async Bool;
       };
       return await organisation_canister.isUserOrganisationMember(principalId);
     };
 
-    public func invitationExists(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Bool{
+    public func invitationExists(organisationId: Org.OrganisationId, principalId: Base.PrincipalId) : async Bool{
       let organisation_canister = actor (organisationId) : actor {
-        invitationExists : (principalId: T.PrincipalId) -> async Bool;
+        invitationExists : (principalId: Base.PrincipalId) -> async Bool;
       };
       return await organisation_canister.invitationExists(principalId);
     };
 
-    public func acceptInvitation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Result.Result<(), T.Error> {
+    public func acceptInvitation(organisationId: Org.OrganisationId, principalId: Base.PrincipalId) : async Result.Result<(), T.Error> {
       let organisation_canister = actor (organisationId) : actor {
-        acceptInvitation : (principalId: T.PrincipalId) -> async Result.Result<(), T.Error>;
+        acceptInvitation : (principalId: Base.PrincipalId) -> async Result.Result<(), T.Error>;
       };
       return await organisation_canister.acceptInvitation(principalId);
     };
 
-    public func rejectInvitation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Result.Result<(), T.Error> {
+    public func rejectInvitation(organisationId: Org.OrganisationId, principalId: Base.PrincipalId) : async Result.Result<(), T.Error> {
       let organisation_canister = actor (organisationId) : actor {
-        rejectInvitation : (principalId: T.PrincipalId) -> async Result.Result<(), T.Error>;
+        rejectInvitation : (principalId: Base.PrincipalId) -> async Result.Result<(), T.Error>;
       };
       return await organisation_canister.rejectInvitation(principalId);
     };
 
-    public func requestAccess(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Result.Result<(), T.Error> {
+    public func requestAccess(organisationId: Org.OrganisationId, principalId: Base.PrincipalId) : async Result.Result<(), T.Error> {
       let organisation_canister = actor (organisationId) : actor {
-        requestAccess : (principalId: T.PrincipalId) -> async Result.Result<(), T.Error>;
+        requestAccess : (principalId: Base.PrincipalId) -> async Result.Result<(), T.Error>;
       };
       return await organisation_canister.requestAccess(principalId);
     };
 
-    public func leaveOrganisation(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Result.Result<(), T.Error> {
+    public func leaveOrganisation(organisationId: Org.OrganisationId, principalId: Base.PrincipalId) : async Result.Result<(), T.Error> {
       let organisation_canister = actor (organisationId) : actor {
-        leaveOrganisation : (principalId: T.PrincipalId) -> async Result.Result<(), T.Error>;
+        leaveOrganisation : (principalId: Base.PrincipalId) -> async Result.Result<(), T.Error>;
       };
       return await organisation_canister.leaveOrganisation(principalId);
     };
 
-    public func isAdmin(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Bool {
+    public func isAdmin(organisationId: Org.OrganisationId, principalId: Base.PrincipalId) : async Bool {
       let organisation_canister = actor (organisationId) : actor {
-        isAdmin : (principalId: T.PrincipalId) -> async Bool;
+        isAdmin : (principalId: Base.PrincipalId) -> async Bool;
       };
       return await organisation_canister.isAdmin(principalId);
     };
 
-    public func userAccessRequestExists(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Bool {
+    public func userAccessRequestExists(organisationId: Org.OrganisationId, principalId: Base.PrincipalId) : async Bool {
       let organisation_canister = actor (organisationId) : actor {
-        userAccessRequestExists : (principalId: T.PrincipalId) -> async Bool;
+        userAccessRequestExists : (principalId: Base.PrincipalId) -> async Bool;
       };
       return await organisation_canister.userAccessRequestExists(principalId);
     };
 
-    public func confirmAccessRequest(organisationId: T.OrganisationId, principalId: T.PrincipalId) : async Result.Result<(), T.Error> {
+    public func confirmAccessRequest(organisationId: Org.OrganisationId, principalId: Base.PrincipalId) : async Result.Result<(), T.Error> {
       let organisation_canister = actor (organisationId) : actor {
-        confirmAccessRequest : (principalId: T.PrincipalId) -> async Result.Result<(), T.Error>;
+        confirmAccessRequest : (principalId: Base.PrincipalId) -> async Result.Result<(), T.Error>;
       };
       return await organisation_canister.confirmAccessRequest(principalId);
     };
@@ -197,11 +199,11 @@ module {
       unique_organisation_names := stable_unique_organisation_names;
     };
 
-    public func getStableOrganisationCanisterIds() : [T.CanisterId] {
+    public func getStableOrganisationCanisterIds() : [Base.CanisterId] {
       return organisation_canister_ids; 
     };
 
-    public func setStableOrganisationCanisterIds(stable_organisation_canister_ids: [T.CanisterId]) : () {
+    public func setStableOrganisationCanisterIds(stable_organisation_canister_ids: [Base.CanisterId]) : () {
       organisation_canister_ids := stable_organisation_canister_ids; 
     };
   

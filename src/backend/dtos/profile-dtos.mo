@@ -1,4 +1,6 @@
 import T "../data-types/types";
+import Org "../data-types/organisation-types";
+import Base "mo:waterway-mops/BaseTypes";
 
 module ProfileDTOs {
     public type GetDirectoryDTO = {
@@ -36,7 +38,7 @@ module ProfileDTOs {
       otherContact : Text;
       termsAccepted : Bool;
       profilePicture : Blob;
-      organisations : [T.OrganisationId];
+      organisations : [Org.OrganisationId];
       createDate : Int;
       lastModified : Int64;
       userDefinedWallet : Text;
@@ -55,13 +57,13 @@ module ProfileDTOs {
       otherContact : Text;
       termsAccepted : Bool;
       profilePicture : Blob;
-      organisations : [T.OrganisationId];
+      organisations : [Org.OrganisationId];
       userDefinedWallet : Text;
       preferredPaymentCurrency : T.CurrencyId;
     };
 
     public type UpdateProfileDTO = {
-      principalId: T.PrincipalId;
+      principalId: Base.PrincipalId;
       username : Text;
       displayName : Text;
       profession : Text;

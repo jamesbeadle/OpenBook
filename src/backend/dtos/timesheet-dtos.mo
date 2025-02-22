@@ -1,4 +1,4 @@
-module{
+module TimesheetDTOs {
     public type ListTimesheets = {};
     public type GetTimesheet = {};
     public type CreateTimesheet = {};

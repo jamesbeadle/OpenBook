@@ -4,6 +4,7 @@ import Time "mo:base/Time";
 import Principal "mo:base/Principal";
 import Blob "mo:base/Blob";
 import Nat "mo:base/Nat";
+import Base "mo:waterway-mops/BaseTypes";
 import Ledger "../defs/ledger";
 import Account "../utilities/Account";
 import T "../data-types/types";
@@ -72,7 +73,7 @@ module {
             });
         };
 
-        public func purchaseOrganisation(defaultAccount: Principal, userId: T.PrincipalId) : async Ledger.Icrc1TransferResult{
+        public func purchaseOrganisation(defaultAccount: Principal, userId: Base.PrincipalId) : async Ledger.Icrc1TransferResult{
             let _ = await ledger.icrc1_transfer({
                 memo = ?Blob.fromArray([]);
                 from_subaccount = ?Account.principalToSubaccount(Principal.fromText(userId));
@@ -83,11 +84,11 @@ module {
             });
         };
 
-        public func participateInPresale(defaultAccount: Principal, principalId: T.PrincipalId, icpAmount: Nat64) : async Ledger.Icrc1TransferResult{
+        public func participateInPresale(defaultAccount: Principal, principalId: Base.PrincipalId, icpAmount: Nat64) : async Ledger.Icrc1TransferResult{
             return #Err(#TooOld);
         };
 
-        public func purchasePresaleAllocation(defaultAccount: Principal, principalId: T.PrincipalId, ownerId: T.PrincipalId, icpAmount: Nat64) : async Ledger.Icrc1TransferResult{
+        public func purchasePresaleAllocation(defaultAccount: Principal, principalId: Base.PrincipalId, ownerId: Base.PrincipalId, icpAmount: Nat64) : async Ledger.Icrc1TransferResult{
             return #Err(#TooOld);
         };
         

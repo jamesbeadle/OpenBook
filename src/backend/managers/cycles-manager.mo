@@ -3,6 +3,7 @@ import Buffer "mo:base/Buffer";
 import Nat "mo:base/Nat";
 import Iter "mo:base/Iter";
 import Principal "mo:base/Principal";
+import Base "mo:waterway-mops/BaseTypes";
 import Environment "../utilities/Environment";
 import T "../data-types/types";
 import Utilities "../utilities/Utilities";
@@ -30,7 +31,7 @@ module {
       topups := stable_topups;
     };
 
-    public func checkDynamicCanisterCycles(dynamicCanisterIds: [T.CanisterId]) : async (){
+    public func checkDynamicCanisterCycles(dynamicCanisterIds: [Base.CanisterId]) : async (){
       
       for(canisterId in Iter.fromArray(dynamicCanisterIds)){
         
@@ -202,7 +203,7 @@ module {
       recordCanisterTopup(canisterPrincipal, cycles);
     };
 
-    private func recordCanisterTopup(canisterId: T.CanisterId, cyclesAmount: Nat){
+    private func recordCanisterTopup(canisterId: Base.CanisterId, cyclesAmount: Nat){
 
       let topup: T.CanisterTopup = {
         canisterId = canisterId;
