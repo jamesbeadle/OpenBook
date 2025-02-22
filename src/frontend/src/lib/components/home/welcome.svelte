@@ -10,8 +10,8 @@
   
     <div class="flex-grow md:w-1/2 bg-black text-white flex flex-col justify-center items-center p-8">
       <LogoIcon className="w-24 mb-8" />
-      <h1 class="text-3xl font-bold mb-4">Welcome Back</h1>
-      <p class="text-lg mb-6">Please connect to continue.</p>
+      <h1 class="text-3xl font-bold mb-4">OpenBook</h1>
+      <p class="text-lg mb-6">Decentralised business management.</p>
       <button on:click={() => authStore.signIn({ domain: import.meta.env.VITE_AUTH_PROVIDER_URL })} class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded">
         Connect
       </button>

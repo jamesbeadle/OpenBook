@@ -5018,7 +5018,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1v1r0nm"
+  version_hash: "oth1i3"
 };
 async function get_hooks() {
   let handle;
@@ -5280,7 +5280,7 @@ function Welcome($$payload, $$props) {
   push();
   $$payload.out += `<div class="flex flex-col md:flex-row h-screen"><div class="block md:hidden h-1/4 bg-cover bg-center"><img src="/home.jpg" alt="Home" class="object-cover h-full w-full"></div> <div class="flex-grow md:w-1/2 bg-black text-white flex flex-col justify-center items-center p-8">`;
   Logo_icon($$payload, { className: "w-24 mb-8" });
-  $$payload.out += `<!----> <h1 class="text-3xl font-bold mb-4">Welcome Back</h1> <p class="text-lg mb-6">Please connect to continue.</p> <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded">Connect</button> <footer class="text-sm text-gray-400 mt-10 text-center">Developed by <a href="https://waterwaylabs.xyz" class="underline" target="_blank">Waterway Labs</a>.</footer></div> <div class="hidden md:flex md:w-1/2 bg-cover bg-center relative"><img src="/home.jpg" alt="Home" class="object-cover h-full w-full"></div></div>`;
+  $$payload.out += `<!----> <h1 class="text-3xl font-bold mb-4">OpenBook</h1> <p class="text-lg mb-6">Decentralised business management.</p> <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded">Connect</button> <footer class="text-sm text-gray-400 mt-10 text-center">Developed by <a href="https://waterwaylabs.xyz" class="underline" target="_blank">Waterway Labs</a>.</footer></div> <div class="hidden md:flex md:w-1/2 bg-cover bg-center relative"><img src="/home.jpg" alt="Home" class="object-cover h-full w-full"></div></div>`;
   pop();
 }
 function Expand_icon($$payload, $$props) {

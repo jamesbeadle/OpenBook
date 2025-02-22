@@ -1,4 +1,4 @@
-import Base "base-types";
+import Base "mo:waterway-mops/BaseTypes";
 import T "types";
 
 module NetworkingTypes {

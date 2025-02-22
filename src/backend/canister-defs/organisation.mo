@@ -182,7 +182,7 @@ actor class _OrganisationCanister() {
               lastModified = foundOrganisation.lastModified;
               createdOn = foundOrganisation.createdOn;
               accessRequests = foundOrganisation.accessRequests;
-              chargeInformation = foundOrganisation.chargeInformation;
+              chargeBalance = foundOrganisation.chargeBalance;
             };
 
             organisation := ?updatedOrganisation;
@@ -225,57 +225,7 @@ actor class _OrganisationCanister() {
             case (#Ok result){
 
               let chargeUnits = dto.icpAmount / ICP_CHARGE_RATE;
-              var chargeInformation: ?T.ChargeInformation = null;
-              switch(foundOrganisation.chargeInformation){
-                case (null){
-                  chargeInformation := ?{
-                    accountancyChargeBalance = 0;
-                    accountancyChargeMax = 0;
-                    accountancyChargeMin = 0;
-                    availableBalance = chargeUnits;
-                    projectsChargeBalance = 0;
-                    projectsChargeMax = 0;
-                    projectsChargeMin = 0;
-                    jobsChargeBalance = 0;
-                    jobsChargeMax = 0;
-                    jobsChargeMin = 0;
-                    salesChargeBalance = 0;
-                    salesChargeMax = 0;
-                    salesChargeMin = 0;
-                    timesheetsChargeBalance = 0;
-                    timesheetsChargeMax = 0;
-                    timesheetsChargeMin = 0;
-                  };
-                };
-                case (?existingChargeInfo){
-                  chargeInformation := ?{
-                    accountancyChargeBalance = existingChargeInfo.accountancyChargeBalance;
-                    accountancyChargeMax = existingChargeInfo.accountancyChargeMax;
-                    accountancyChargeMin = existingChargeInfo.accountancyChargeMin;
-                    availableBalance = existingChargeInfo.availableBalance + chargeUnits;
-                    projectsChargeBalance = existingChargeInfo.projectsChargeBalance;
-                    projectsChargeMax = existingChargeInfo.projectsChargeMax;
-                    projectsChargeMin = existingChargeInfo.projectsChargeMin;
-                    jobsChargeBalance = existingChargeInfo.jobsChargeBalance;
-                    jobsChargeMax = existingChargeInfo.jobsChargeMax;
-                    jobsChargeMin = existingChargeInfo.jobsChargeMin;
-                    salesChargeBalance = existingChargeInfo.salesChargeBalance;
-                    salesChargeMax = existingChargeInfo.salesChargeMax;
-                    salesChargeMin = existingChargeInfo.salesChargeMin;
-                    timesheetsChargeBalance = existingChargeInfo.timesheetsChargeBalance;
-                    timesheetsChargeMax = existingChargeInfo.timesheetsChargeMax;
-                    timesheetsChargeMin = existingChargeInfo.timesheetsChargeMin;
-                  };
-
-                };
-              };
-
-              switch(chargeInformation){
-                case (null){
-                  return #err(#PaymentError);
-                };
-                case (?updatedChargeInformation){
-
+              
                   let updatedOrganisation: T.Organisation = {
                     id = foundOrganisation.id;
                     ownerId = foundOrganisation.ownerId;
@@ -294,7 +244,7 @@ actor class _OrganisationCanister() {
                     lastModified = foundOrganisation.lastModified;
                     createdOn = foundOrganisation.createdOn;
                     accessRequests = foundOrganisation.accessRequests;
-                    chargeInformation = ?updatedChargeInformation;
+                    chargeBalance = chargeUnits;
                   };
                   
                   organisation := ?updatedOrganisation;
@@ -303,79 +253,7 @@ actor class _OrganisationCanister() {
               return #ok;
             };
           };
-        }
-      };
-    };
-
-    public shared ({ caller }) func chargeService (dto: DTOs.ChargeService) : async Result.Result<(), T.Error>{
-      assert not Principal.isAnonymous(caller);
-      let principalId = Principal.toText(caller);
-      assert isAdminForCaller(principalId);
-
-      switch(organisation){
-        case (null){
-          return #err(#NotFound);
-        };
-        case (?foundOrganisation){
-          
-          switch(foundOrganisation.chargeInformation){
-            case (null){
-              return #err(#NotAllowed);
-            };
-            case (?foundChargeInfo){
-              let availableCharge = foundChargeInfo.availableBalance;
-              if(availableCharge < dto.transferAmount){
-                return #err(#NotAllowed);
-              };
-
-              var updatedAccountancyBalance = foundChargeInfo.accountancyChargeBalance;
-              var updatedSalesBalance = foundChargeInfo.salesChargeBalance;
-              var updatedProjectsBalance = foundChargeInfo.projectsChargeBalance;
-              var updatedTimesheetsBalance = foundChargeInfo.timesheetsChargeBalance;
-              var updatedJobsBalance = foundChargeInfo.jobsChargeBalance;
-
-              switch(dto.serviceType){
-                case (#Accountancy){
-                  updatedAccountancyBalance += dto.transferAmount;
-                };
-                case (#Sales){
-                  updatedSalesBalance += dto.transferAmount;
-                };
-                case (#Projects){
-                  updatedProjectsBalance += dto.transferAmount;
-                };
-                case (#Timesheets){
-                  updatedTimesheetsBalance += dto.transferAmount;
-                };
-                case (#Jobs){
-                  updatedJobsBalance += dto.transferAmount;
-                };
-              };
-
-              let updatedChargeInformation: T.ChargeInformation = {
-                accountancyChargeBalance = updatedAccountancyBalance;
-                accountancyChargeMax = foundChargeInfo.accountancyChargeMax;
-                accountancyChargeMin = foundChargeInfo.accountancyChargeMin;
-                availableBalance = foundChargeInfo.availableBalance - dto.transferAmount;
-                projectsChargeBalance = updatedProjectsBalance;
-                projectsChargeMax = foundChargeInfo.projectsChargeMax;
-                projectsChargeMin = foundChargeInfo.projectsChargeMin;
-                jobsChargeBalance = updatedJobsBalance;
-                jobsChargeMax = foundChargeInfo.jobsChargeMax;
-                jobsChargeMin = foundChargeInfo.jobsChargeMin;
-                salesChargeBalance = updatedSalesBalance;
-                salesChargeMax = foundChargeInfo.salesChargeMax;
-                salesChargeMin = foundChargeInfo.salesChargeMin;
-                timesheetsChargeBalance = updatedTimesheetsBalance;
-                timesheetsChargeMax = foundChargeInfo.timesheetsChargeMax;
-                timesheetsChargeMin = foundChargeInfo.timesheetsChargeMin;
-              };
-
-              return #ok;
-            }
-          };
-        }
-      };
+        
     };
 
     /* Organisation membership */
@@ -441,7 +319,7 @@ actor class _OrganisationCanister() {
             lastModified = foundOrganisation.lastModified;
             createdOn = foundOrganisation.createdOn;
             accessRequests = foundOrganisation.accessRequests;
-            chargeInformation = foundOrganisation.chargeInformation;
+            chargeBalance = foundOrganisation.chargeBalance;
           };
 
           organisation := ?updatedOrganisation;
@@ -492,7 +370,7 @@ actor class _OrganisationCanister() {
                 ownerId = foundOrganisation.ownerId;
                 referenceNumber = foundOrganisation.referenceNumber;
                 accessRequests = foundOrganisation.accessRequests;
-                chargeInformation = foundOrganisation.chargeInformation;
+                chargeBalance = foundOrganisation.chargeBalance;
               };
               return #err(#NotFound);
              };
@@ -554,7 +432,7 @@ actor class _OrganisationCanister() {
             lastModified = foundOrganisation.lastModified;
             createdOn = foundOrganisation.createdOn;
             accessRequests = Buffer.toArray(requestsBuffer);
-            chargeInformation = foundOrganisation.chargeInformation;
+            chargeBalance = foundOrganisation.chargeBalance;
           };
 
           organisation := ?updatedOrganisation;
@@ -613,7 +491,7 @@ actor class _OrganisationCanister() {
             lastModified = foundOrganisation.lastModified;
             createdOn = foundOrganisation.createdOn;
             accessRequests = Buffer.toArray(requestsBuffer);
-            chargeInformation = foundOrganisation.chargeInformation;
+            chargeBalance = foundOrganisation.chargeBalance;
           };
 
           organisation := ?updatedOrganisation;
@@ -662,7 +540,7 @@ actor class _OrganisationCanister() {
             lastModified = foundOrganisation.lastModified;
             createdOn = foundOrganisation.createdOn;
             accessRequests = Array.filter(foundOrganisation.accessRequests, func(request: T.AccessRequest) : Bool { request.requesterPrincipalId != callerPrincipalId });
-            chargeInformation = foundOrganisation.chargeInformation;
+            chargeBalance = foundOrganisation.chargeBalance;
           };
 
           organisation := ?updatedOrganisation;
@@ -701,7 +579,7 @@ actor class _OrganisationCanister() {
             lastModified = foundOrganisation.lastModified;
             createdOn = foundOrganisation.createdOn;
             accessRequests = foundOrganisation.accessRequests;
-            chargeInformation = foundOrganisation.chargeInformation;
+            chargeBalance = foundOrganisation.chargeBalance;
           };
 
           organisation := ?updatedOrganisation;
@@ -827,7 +705,7 @@ actor class _OrganisationCanister() {
         referenceNumber = "";
         createdOn = Time.now();
         accessRequests = [];
-        chargeInformation = null;
+        chargeBalance = 0;
       };
     };
     
