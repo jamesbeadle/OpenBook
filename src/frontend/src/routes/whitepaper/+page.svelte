@@ -107,11 +107,11 @@
               </div>
               
 
-              <div class="horizontal-divider" />
+              <div class="horizontal-divider"></div>
               <div class="flex my-4">
                 <svelte:component this={component} />
               </div>
-              <div class="horizontal-divider" />
+              <div class="horizontal-divider"></div>
 
               <div class="flex flex-col sm:hidden">
                 <div class="flex flex-row justify-center my-4">

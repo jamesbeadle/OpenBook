@@ -18,10 +18,10 @@ import NewsFeedManager "managers/news-feed-manager";
 
 actor Self {
   
+  private let organisationManager = OrganisationManager.OrganisationManager();
   private let newsFeedManager = NewsFeedManager.NewsFeedManager();
   private let profileManager = ProfileManager.ProfileManager();
   private let treasuryManager = TreasuryManager.TreasuryManager();
-  private let organisationManager = OrganisationManager.OrganisationManager();
   private let storageManager = StorageManager.StorageManager();
   private let cyclesManager = CyclesManager.CyclesManager();
   

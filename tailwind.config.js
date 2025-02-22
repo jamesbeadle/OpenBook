@@ -44,12 +44,9 @@ export default {
         BrandAltGray: "#2E323A", //From Figma Panel Border
         BrandGreen: "#66E094", //From Figma Logo
         BrandRed: "#FF403C", //From Figma negative text
-        BrandDisabledGray: "#8C8C8C" //Disable Icon
-        
+        BrandDisabledGray: "#8C8C8C", //Disable Icon
       },
     },
   },
   plugins: [],
 };
-
-
