@@ -2,22 +2,22 @@ import {
   AUTH_MAX_TIME_TO_LIVE,
   AUTH_POPUP_HEIGHT,
   AUTH_POPUP_WIDTH,
-  localIdentityCanisterId,
 } from "$lib/constants/app.constants";
 import type { OptionIdentity } from "$lib/types/identity";
 import { createAuthClient } from "$lib/utils/auth.utils";
 import { popupCenter } from "$lib/utils/window.utils";
 import type { AuthClient } from "@dfinity/auth-client";
-import { nonNullish } from "@dfinity/utils";
 import { writable, type Readable } from "svelte/store";
+import { clearProfileFromDB } from "$lib/utils/db.utils";
 
 export interface AuthStoreData {
   identity: OptionIdentity;
 }
 
 let authClient: AuthClient | undefined | null;
+55;
 
-const NNS_IC_ORG_ALTERNATIVE_ORIGIN = "https://openbook.services";
+const NNS_IC_ORG_ALTERNATIVE_ORIGIN = "https://openfpl.xyz";
 const NNS_IC_APP_DERIVATION_ORIGIN =
   "https://etq35-qqaaa-aaaal-qcrvq-cai.icp0.io";
 
@@ -53,12 +53,10 @@ const initAuthStore = (): AuthStore => {
     },
 
     signIn: ({ domain }: AuthSignInParams) =>
+      // eslint-disable-next-line no-async-promise-executor
       new Promise<void>(async (resolve, reject) => {
         authClient = authClient ?? (await createAuthClient());
-
-        const identityProvider = nonNullish(localIdentityCanisterId)
-          ? `http://localhost:4943?canisterId=${localIdentityCanisterId}`
-          : `${domain ?? "https://identity.ic0.app"}`;
+        const identityProvider = domain;
 
         await authClient?.login({
           maxTimeToLive: AUTH_MAX_TIME_TO_LIVE,
@@ -93,6 +91,7 @@ const initAuthStore = (): AuthStore => {
         ...state,
         identity: null,
       }));
+      await clearProfileFromDB();
     },
   };
 };

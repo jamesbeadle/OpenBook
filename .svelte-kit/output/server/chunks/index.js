@@ -4,8 +4,9 @@ import * as devalue from "devalue";
 import { Buffer } from "buffer";
 import { parse, serialize } from "cookie";
 import * as set_cookie_parser from "set-cookie-parser";
-import { nonNullish } from "@dfinity/utils";
+import "@dfinity/utils";
 import { AuthClient } from "@dfinity/auth-client";
+import "idb";
 let base = "";
 let assets = base;
 const app_dir = "_app";
@@ -5018,7 +5019,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "dlybsu"
+  version_hash: "kt70u7"
 };
 async function get_hooks() {
   let handle;
@@ -5185,7 +5186,6 @@ function Error$1($$payload, $$props) {
   $$payload.out += `<h1>${escape_html(page$1.status)}</h1> <p>${escape_html(page$1.error?.message)}</p>`;
   pop();
 }
-const localIdentityCanisterId = "https://identity.ic0.app";
 const AUTH_MAX_TIME_TO_LIVE = BigInt(
   60 * 60 * 1e3 * 1e3 * 1e3 * 24 * 14
 );
@@ -5205,8 +5205,11 @@ const popupCenter = ({
     return void 0;
   }
 };
+async function clearProfileFromDB() {
+  return;
+}
 let authClient;
-const NNS_IC_ORG_ALTERNATIVE_ORIGIN = "https://openbook.services";
+const NNS_IC_ORG_ALTERNATIVE_ORIGIN = "https://openfpl.xyz";
 const NNS_IC_APP_DERIVATION_ORIGIN = "https://etq35-qqaaa-aaaal-qcrvq-cai.icp0.io";
 const isNnsAlternativeOrigin = () => {
   return window.location.origin === NNS_IC_ORG_ALTERNATIVE_ORIGIN;
@@ -5224,29 +5227,32 @@ const initAuthStore = () => {
         identity: isAuthenticated ? authClient.getIdentity() : null
       });
     },
-    signIn: ({ domain }) => new Promise(async (resolve2, reject) => {
-      authClient = authClient ?? await createAuthClient();
-      const identityProvider = nonNullish(localIdentityCanisterId) ? `http://localhost:4943?canisterId=${localIdentityCanisterId}` : `${domain ?? "https://identity.ic0.app"}`;
-      await authClient?.login({
-        maxTimeToLive: AUTH_MAX_TIME_TO_LIVE,
-        onSuccess: () => {
-          update((state) => ({
-            ...state,
-            identity: authClient?.getIdentity()
-          }));
-          resolve2();
-        },
-        onError: reject,
-        identityProvider,
-        ...isNnsAlternativeOrigin() && {
-          derivationOrigin: NNS_IC_APP_DERIVATION_ORIGIN
-        },
-        windowOpenerFeatures: popupCenter({
-          width: AUTH_POPUP_WIDTH,
-          height: AUTH_POPUP_HEIGHT
-        })
-      });
-    }),
+    signIn: ({ domain }) => (
+      // eslint-disable-next-line no-async-promise-executor
+      new Promise(async (resolve2, reject) => {
+        authClient = authClient ?? await createAuthClient();
+        const identityProvider = domain;
+        await authClient?.login({
+          maxTimeToLive: AUTH_MAX_TIME_TO_LIVE,
+          onSuccess: () => {
+            update((state) => ({
+              ...state,
+              identity: authClient?.getIdentity()
+            }));
+            resolve2();
+          },
+          onError: reject,
+          identityProvider,
+          ...isNnsAlternativeOrigin() && {
+            derivationOrigin: NNS_IC_APP_DERIVATION_ORIGIN
+          },
+          windowOpenerFeatures: popupCenter({
+            width: AUTH_POPUP_WIDTH,
+            height: AUTH_POPUP_HEIGHT
+          })
+        });
+      })
+    ),
     signOut: async () => {
       const client = authClient ?? await createAuthClient();
       await client.logout();
@@ -5255,6 +5261,7 @@ const initAuthStore = () => {
         ...state,
         identity: null
       }));
+      await clearProfileFromDB();
     }
   };
 };
