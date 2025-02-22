@@ -37,6 +37,10 @@ module {
       return #err(#NotFound); //todo
     };
 
+    public func recordPurchase() : async Result.Result<(), T.Error> {
+      return #err(#NotFound); //todo
+    };
+
     public func addOrganisationToProfile(principalId: Base.PrincipalId, organisationId: Org.OrganisationId) : async Result.Result<(), T.Error> {
       return #err(#NotFound); //todo
     };

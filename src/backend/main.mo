@@ -15,6 +15,7 @@ import TreasuryManager "managers/treasury-manager";
 import OrganisationManager "managers/organisation-manager";
 import CyclesManager "managers/cycles-manager";
 import NewsFeedManager "managers/news-feed-manager";
+import OrganisationQueries "cqrs/queries/organisation_queries";
 
 actor Self {
   
@@ -89,6 +90,13 @@ actor Self {
 
   /* Organisation functions */
 
+  public shared ({ caller }) func getOrganisations(dto : OrganisationQueries.GetOrganisations) : async Result.Result<OrganisationQueries.Organisations, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    assert dto.owner == principalId;
+    return organisationManager.getOrganisations(dto);
+  };
+
   public shared ({ caller }) func purchaseOrganisation(dto: OrganisationDTOs.CreateOrganisation) : async Result.Result<(), T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
@@ -98,8 +106,8 @@ actor Self {
     let purchaseResult = await treasuryManager.purchaseOrganisation(Principal.fromActor(Self), principalId);
 
     switch(purchaseResult){
-      case (#Ok result){
-        //await recordPurchase(); //TODO
+      case (#Ok _){
+        let _ = await profileManager.recordPurchase();
         let createResult = await organisationManager.createOrganisation(dto);
         switch(createResult){
           case (#ok organisationId){
@@ -110,7 +118,7 @@ actor Self {
           };
         };
       };
-      case (#Err err_result){
+      case (#Err _){
         return #err(#PaymentError);
       }
     };

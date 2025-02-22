@@ -54,8 +54,7 @@ module OrganisationTypes {
 
   public type Idea = {
     id: IdeaId;
-    organisationId: OrganisationId
-
+    organisationId: OrganisationId;
   };
 
   public type AccessRequest = {
