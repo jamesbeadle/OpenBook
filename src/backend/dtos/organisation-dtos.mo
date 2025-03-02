@@ -61,15 +61,6 @@ module OrganisationDTOs {
         principalId: Base.PrincipalId;
     };
 
-    public type ServiceCanisterIds = {
-        accountancyCanisterId: Text;
-        projectsCanisterId: Text;
-        salesCanisterId: Text;
-        timesheetsCanisterId: Text;
-        jobsCanisterId: Text;
-        storageCanisterId: Text;
-    };
-
     public type PurchaseCharge = {
         icpAmount: Nat;
     };

@@ -352,3 +352,10 @@ export function isProfessionValid(profession: string): boolean {
     );
   }
 }
+
+export function uint8ArrayToBase64(bytes: Uint8Array): string {
+  const binary = Array.from(bytes)
+    .map((byte) => String.fromCharCode(byte))
+    .join("");
+  return btoa(binary);
+}

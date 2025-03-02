@@ -20,6 +20,11 @@ type UpdateProfileDTO =
    userDefinedWallet: text;
    username: text;
  };
+type Result_4 = 
+ variant {
+   err: Error;
+   ok: Organisations;
+ };
 type Result_3 = 
  variant {
    err: Error;
@@ -56,7 +61,7 @@ type ProfileDTO =
    otherContact: text;
    phoneNumber: text;
    preferredPaymentCurrency: CurrencyId;
-   "principal": text;
+   principalId: PrincipalId;
    profession: text;
    profilePicture: blob;
    termsAccepted: bool;
@@ -85,13 +90,27 @@ type Profile =
    username: text;
  };
 type PrincipalId = text;
+type Organisations = 
+ record {
+   organisations: vec OrganisationDTO;
+   owner: PrincipalId;
+ };
 type OrganisationId__1 = text;
 type OrganisationId = nat32;
+type OrganisationDTO = record {};
 type List = 
  opt record {
        AuditRecord;
        List;
      };
+type GetProfile = record {principalId: PrincipalId;};
+type GetOrganisations = 
+ record {
+   limit: nat;
+   offset: nat;
+   owner: PrincipalId;
+   searchTerm: text;
+ };
 type Error = 
  variant {
    AlreadyExists;
@@ -152,7 +171,8 @@ service : {
   createProfile: (CreateProfileDTO) -> (Result);
   deleteOrganisation: (DeleteOrganisation) -> (Result);
   deleteProfile: (PrincipalId) -> (Result);
-  getProfile: () -> (Result_3);
+  getOrganisations: (GetOrganisations) -> (Result_4);
+  getProfile: (GetProfile) -> (Result_3);
   isOrganisationNameAvailable: (text) -> (Result_2);
   isUsernameAvailable: (text) -> (Result_2);
   listOGProfiles: () -> (Result_1);

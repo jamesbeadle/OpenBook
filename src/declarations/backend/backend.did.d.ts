@@ -50,9 +50,23 @@ export type Error =
   | { InvalidData: null }
   | { AlreadyExists: null }
   | { PaymentError: null };
+export interface GetOrganisations {
+  owner: PrincipalId;
+  offset: bigint;
+  limit: bigint;
+  searchTerm: string;
+}
+export interface GetProfile {
+  principalId: PrincipalId;
+}
 export type List = [] | [[AuditRecord, List]];
+export type OrganisationDTO = {};
 export type OrganisationId = number;
 export type OrganisationId__1 = string;
+export interface Organisations {
+  owner: PrincipalId;
+  organisations: Array<OrganisationDTO>;
+}
 export type PrincipalId = string;
 export interface Profile {
   principal: string;
@@ -75,7 +89,6 @@ export interface Profile {
   firstName: string;
 }
 export interface ProfileDTO {
-  principal: string;
   username: string;
   displayName: string;
   termsAccepted: boolean;
@@ -91,12 +104,14 @@ export interface ProfileDTO {
   userDefinedWallet: string;
   organisations: Array<OrganisationId__1>;
   lastName: string;
+  principalId: PrincipalId;
   firstName: string;
 }
 export type Result = { ok: null } | { err: Error };
 export type Result_1 = { ok: Array<[PrincipalId, Profile]> } | { err: Error };
 export type Result_2 = { ok: boolean } | { err: Error };
 export type Result_3 = { ok: ProfileDTO } | { err: Error };
+export type Result_4 = { ok: Organisations } | { err: Error };
 export interface UpdateProfileDTO {
   username: string;
   displayName: string;
@@ -120,7 +135,8 @@ export interface _SERVICE {
   createProfile: ActorMethod<[CreateProfileDTO], Result>;
   deleteOrganisation: ActorMethod<[DeleteOrganisation], Result>;
   deleteProfile: ActorMethod<[PrincipalId], Result>;
-  getProfile: ActorMethod<[], Result_3>;
+  getOrganisations: ActorMethod<[GetOrganisations], Result_4>;
+  getProfile: ActorMethod<[GetProfile], Result_3>;
   isOrganisationNameAvailable: ActorMethod<[string], Result_2>;
   isUsernameAvailable: ActorMethod<[string], Result_2>;
   listOGProfiles: ActorMethod<[], Result_1>;

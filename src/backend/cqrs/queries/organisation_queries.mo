@@ -6,6 +6,10 @@ module OrganisationQueries {
 
     };
 
+    public type OrganisationSummaryDTO = {
+        canisterId: Base.CanisterId;
+    }; 
+
     public type GetOrganisations = {
         owner : Base.PrincipalId;
         limit : Nat;
@@ -15,6 +19,7 @@ module OrganisationQueries {
     
     public type Organisations = {
         owner : Base.PrincipalId;
-        organisations : [OrganisationDTO];
+        organisations : [OrganisationSummaryDTO];
     };
+    
 };

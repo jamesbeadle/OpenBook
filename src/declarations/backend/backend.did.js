@@ -34,8 +34,20 @@ export const idlFactory = ({ IDL }) => {
     confirmDelete: IDL.Bool,
   });
   const PrincipalId = IDL.Text;
+  const GetOrganisations = IDL.Record({
+    owner: PrincipalId,
+    offset: IDL.Nat,
+    limit: IDL.Nat,
+    searchTerm: IDL.Text,
+  });
+  const OrganisationDTO = IDL.Record({});
+  const Organisations = IDL.Record({
+    owner: PrincipalId,
+    organisations: IDL.Vec(OrganisationDTO),
+  });
+  const Result_4 = IDL.Variant({ ok: Organisations, err: Error });
+  const GetProfile = IDL.Record({ principalId: PrincipalId });
   const ProfileDTO = IDL.Record({
-    principal: IDL.Text,
     username: IDL.Text,
     displayName: IDL.Text,
     termsAccepted: IDL.Bool,
@@ -51,6 +63,7 @@ export const idlFactory = ({ IDL }) => {
     userDefinedWallet: IDL.Text,
     organisations: IDL.Vec(OrganisationId__1),
     lastName: IDL.Text,
+    principalId: PrincipalId,
     firstName: IDL.Text,
   });
   const Result_3 = IDL.Variant({ ok: ProfileDTO, err: Error });
@@ -124,7 +137,8 @@ export const idlFactory = ({ IDL }) => {
     createProfile: IDL.Func([CreateProfileDTO], [Result], []),
     deleteOrganisation: IDL.Func([DeleteOrganisation], [Result], []),
     deleteProfile: IDL.Func([PrincipalId], [Result], []),
-    getProfile: IDL.Func([], [Result_3], []),
+    getOrganisations: IDL.Func([GetOrganisations], [Result_4], []),
+    getProfile: IDL.Func([GetProfile], [Result_3], []),
     isOrganisationNameAvailable: IDL.Func([IDL.Text], [Result_2], []),
     isUsernameAvailable: IDL.Func([IDL.Text], [Result_2], []),
     listOGProfiles: IDL.Func([], [Result_1], []),

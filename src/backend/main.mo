@@ -10,39 +10,18 @@ import T_Old "data-types/old-types";
 import ProfileDTOs "dtos/profile-dtos";
 import OrganisationDTOs "dtos/organisation-dtos";
 import ProfileManager "managers/profile-manager";
-import StorageManager "managers/storage-manager";
 import TreasuryManager "managers/treasury-manager";
 import OrganisationManager "managers/organisation-manager";
 import CyclesManager "managers/cycles-manager";
-import NewsFeedManager "managers/news-feed-manager";
 import OrganisationQueries "cqrs/queries/organisation_queries";
+import ProfileQueries "cqrs/queries/profile_queries";
 
 actor Self {
-  
-  private let organisationManager = OrganisationManager.OrganisationManager();
-  private let newsFeedManager = NewsFeedManager.NewsFeedManager();
-  private let profileManager = ProfileManager.ProfileManager();
-  private let treasuryManager = TreasuryManager.TreasuryManager();
-  private let storageManager = StorageManager.StorageManager();
-  private let cyclesManager = CyclesManager.CyclesManager();
-  
-  /* Profile functions */
-  
-  public shared ({ caller }) func createProfile(dto : ProfileDTOs.CreateProfileDTO) : async Result.Result<(), T.Error> {
+
+  public shared ({ caller }) func getProfile(dto: ProfileQueries.GetProfile) : async Result.Result<ProfileQueries.ProfileDTO, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
-    
-    let profileExists = profileManager.profileExists(principalId);
-    if(profileExists){
-      return #err(#AlreadyExists);
-    };
-
-    return await profileManager.createProfile(dto);
-  };
-
-  public shared ({ caller }) func getProfile() : async Result.Result<ProfileDTOs.ProfileDTO, T.Error> {
-    assert not Principal.isAnonymous(caller);
-    let principalId = Principal.toText(caller);
+    assert dto.principalId == principalId;
 
     let profile = await profileManager.getProfile(principalId);
 
@@ -54,6 +33,18 @@ actor Self {
         return #ok(foundProfile);
       }
     };
+  };
+
+  public shared ({ caller }) func createProfile(dto : ProfileDTOs.CreateProfileDTO) : async Result.Result<(), T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    
+    let profileExists = profileManager.profileExists(principalId);
+    if(profileExists){
+      return #err(#AlreadyExists);
+    };
+
+    return await profileManager.createProfile(dto);
   };
 
   public shared ({ caller }) func updateProfile(dto : ProfileDTOs.UpdateProfileDTO) : async Result.Result<(), T.Error> {
@@ -88,13 +79,24 @@ actor Self {
     return #ok(profileManager.isUsernameAvailable(username));
   };
 
+  //in this canister i need to check the cycles of canisters and top up if needed to keep over min canister threshold
+    //record the first time this is done
+    //after 3 months of no topup, remove the organisation canister
+  
+  private let organisationManager = OrganisationManager.OrganisationManager();
+  private let profileManager = ProfileManager.ProfileManager();
+  private let treasuryManager = TreasuryManager.TreasuryManager();
+  private let cyclesManager = CyclesManager.CyclesManager();
+  
+  /* Profile functions */
+
   /* Organisation functions */
 
   public shared ({ caller }) func getOrganisations(dto : OrganisationQueries.GetOrganisations) : async Result.Result<OrganisationQueries.Organisations, T.Error> {
     assert not Principal.isAnonymous(caller);
     let principalId = Principal.toText(caller);
     assert dto.owner == principalId;
-    return organisationManager.getOrganisations(dto);
+    return profileManager.getOrganisations(dto);
   };
 
   public shared ({ caller }) func purchaseOrganisation(dto: OrganisationDTOs.CreateOrganisation) : async Result.Result<(), T.Error> {
@@ -169,8 +171,6 @@ actor Self {
   private stable var stable_profile_canister_ids: [Base.CanisterId] = [];
   private stable var stable_profile_canister_index: [(Base.PrincipalId, Base.CanisterId)] = [];
   private stable var stable_active_profile_canister_id: Base.CanisterId = "";
-  private stable var stable_storage_canister_ids: [Base.CanisterId] = [];
-  private stable var stable_active_storage_canister_id: Base.CanisterId = "";
 
   private stable var stable_unique_usernames : [Text] = [];
   private stable var stable_unique_organisation_names : [Text] = [];
@@ -182,8 +182,6 @@ actor Self {
     stable_profile_canister_ids := profileManager.getStableProfileCanisterIds();
     stable_profile_canister_index := profileManager.getStableProfileCanisterIndex();
     stable_active_profile_canister_id := profileManager.getStableActiveCanisterId();
-    stable_storage_canister_ids := storageManager.getStableStorageCanisterIds(); 
-    stable_active_storage_canister_id := storageManager.getStableActiveCanisterId();
   };
 
   system func postupgrade() {
@@ -195,12 +193,14 @@ actor Self {
     profileManager.setStableProfileCanisterIds(stable_profile_canister_ids);
     profileManager.setStableProfileCanisterIndex(stable_profile_canister_index);
     profileManager.setStableActiveCanisterId(stable_active_profile_canister_id);
-    storageManager.setStableStorageCanisterIds(stable_storage_canister_ids);
-    storageManager.setStableActiveCanisterId(stable_active_storage_canister_id);
+    checkCycles();
+  };
+  
+  private func checkCycles(){
+
 
     //TODO: Trigger cycles manager to begin watching canisters, implement on OpenFPL
   };
-  
   /* The below functionality relates to the December 2023 directory launch with all user to be transferred to the new data structure */
 
   public shared func listOGProfiles() : async Result.Result<[(Base.PrincipalId, T_Old.Profile)], T.Error>{

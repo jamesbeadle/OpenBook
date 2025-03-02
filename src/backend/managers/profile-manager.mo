@@ -9,6 +9,8 @@ import Base "mo:waterway-mops/BaseTypes";
 
 import ProfileDTOs "../dtos/profile-dtos";
 import Org "../data-types/organisation-types";
+import OrganisationQueries "../cqrs/queries/organisation_queries";
+import ProfileQueries "../cqrs/queries/profile_queries";
 
 module {
   public class ProfileManager() {
@@ -17,11 +19,19 @@ module {
     private var active_canister_id: Base.CanisterId = "";
     private var unique_usernames : [Text] = [];
 
+    private var profileOrganisationHashes: [(Base.PrincipalId, [(Org.OrganisationId, Text)])] = [];
+
+    //get hashes
+
+    //update organisation hash
+
+    //remove organisation hash
+
     public func profileExists(principalId: Base.PrincipalId) : Bool {
       return false; //todo;
     };
 
-    public func getProfile(principalId: Base.PrincipalId) : async ?ProfileDTOs.ProfileDTO {
+    public func getProfile(principalId: Base.PrincipalId) : async ?ProfileQueries.ProfileDTO {
       return null; //todo
     };
 
@@ -38,6 +48,10 @@ module {
     };
 
     public func recordPurchase() : async Result.Result<(), T.Error> {
+      return #err(#NotFound); //todo
+    };
+
+    public func getOrganisations(dto : OrganisationQueries.GetOrganisations) : Result.Result<OrganisationQueries.Organisations, T.Error> {
       return #err(#NotFound); //todo
     };
 

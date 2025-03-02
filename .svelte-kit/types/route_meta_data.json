@@ -1,12 +1,7 @@
 {
 	"/": [],
-	"/accounts": [],
-	"/jobs": [],
 	"/organisations": [],
 	"/organisation": [],
 	"/profile": [],
-	"/projects": [],
-	"/sales": [],
-	"/timesheets": [],
-	"/whitepaper": []
+	"/projects": []
 }

@@ -1,6 +1,6 @@
 import Base "mo:waterway-mops/BaseTypes";
 
-module PromotionnCommands {
+module PromotionCommands {
 
     //add promotional event
     //add required content item

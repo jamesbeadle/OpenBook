@@ -5019,7 +5019,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "kt70u7"
+  version_hash: "4glcgg"
 };
 async function get_hooks() {
   let handle;
@@ -5484,22 +5484,21 @@ function Layout($$payload, $$props) {
   if ($$store_subs) unsubscribe_stores($$store_subs);
   pop();
 }
+function OrganisationList($$payload) {
+  let organisations = [];
+  const each_array = ensure_array_like(organisations);
+  $$payload.out += `<div class="overflow-x-auto"><table class="min-w-full bg-white border border-gray-200"><thead class="bg-gray-50"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Projects</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team Members</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th></tr></thead><tbody class="divide-y divide-gray-200"><!--[-->`;
+  for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+    each_array[$$index];
+    $$payload.out += `<tr class="hover:bg-gray-50"><td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><div class="relative"><button class="p-1 rounded-full hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path></svg></button> <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"><div class="py-1"><button class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</button> <button class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Delete</button></div></div></div></td></tr>`;
+  }
+  $$payload.out += `<!--]--></tbody></table></div>`;
+}
 function _page$9($$payload, $$props) {
   push();
-  let postContent = "";
-  let tags = "";
-  let contextId = "";
-  let organisation = "";
-  let project = "";
-  let projectStage = 0;
   Layout($$payload, {
     children: ($$payload2) => {
-      $$payload2.out += `<div class="p-4 bg-BrandAltGray shadow rounded-md text-sm"><h2 class="mb-2">Create a Post</h2> <textarea class="w-full p-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" rows="3" placeholder="Share your thoughts...">`;
-      const $$body = escape_html(postContent);
-      if ($$body) {
-        $$payload2.out += `${$$body}`;
-      }
-      $$payload2.out += `</textarea> <div class="mt-1 flex flex-row justify-center items-center"><label for="tags" class="block text-sm font-medium mr-2">Tags</label> <input type="text"${attr("value", tags)} class="w-full p-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" placeholder="e.g., web3, blockchain"></div> <div class="mt-1 grid grid-cols-1 md:grid-cols-2 gap-4"><div><label for="context-id" class="block text-sm font-medium mb-1">Context ID</label> <input type="text"${attr("value", contextId)} class="w-full p-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" placeholder="Enter context ID"></div> <div><label for="organisation-id" class="block text-sm font-medium mb-1">Organisation</label> <input type="text"${attr("value", organisation)} class="w-full p-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" placeholder="Enter organisation"></div> <div><label for="project-id" class="block text-sm font-medium mb-1">Project</label> <input type="text"${attr("value", project)} class="w-full p-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" placeholder="Enter project"></div> <div><label for="project-stage" class="block text-sm font-medium mb-1">Project Stage</label> <input type="number"${attr("value", projectStage)} class="w-full p-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-300" placeholder="Enter stage"></div></div> <div class="mt-4 flex justify-end"><button class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">Post</button></div></div>`;
+      OrganisationList($$payload2);
     },
     $$slots: { default: true }
   });

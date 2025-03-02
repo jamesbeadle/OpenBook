@@ -25,26 +25,6 @@ module ProfileDTOs {
       lastName : Text;
     };
 
-    public type ProfileDTO = {
-      principal : Text;
-      username : Text;
-      displayName : Text;
-      profession : Text;
-      firstName : Text;
-      lastName : Text;
-      openChatUsername : Text;
-      emailAddress : Text;
-      phoneNumber : Text;
-      otherContact : Text;
-      termsAccepted : Bool;
-      profilePicture : Blob;
-      organisations : [Org.OrganisationId];
-      createDate : Int;
-      lastModified : Int64;
-      userDefinedWallet : Text;
-      preferredPaymentCurrency : T.CurrencyId;
-    };
-
     public type CreateProfileDTO = {
       username : Text;
       displayName : Text;

@@ -24,13 +24,6 @@ import Org "../data-types/organisation-types";
 
 actor class _OrganisationCanister() {
 
-    private stable var accountancy_canister_id = "";
-    private stable var projects_canister_id = "";
-    private stable var sales_canister_id = "";
-    private stable var timesheets_canister_id = "";
-    private stable var jobs_canister_id = "";
-    private stable var storage_canister_id = "";
-
     private stable var organisation: ?Org.Organisation = null;
     private stable var admins: [Base.PrincipalId] = [];
     private stable var stable_event_logs: [T.EventLogEntry] = [];
@@ -95,21 +88,6 @@ actor class _OrganisationCanister() {
           return #ok(dto);
         }
       };
-    };
-
-    public shared ({ caller }) func getServiceCanisterIds() : async DTOs.ServiceCanisterIds {
-      assert not Principal.isAnonymous(caller);
-      let principalId = Principal.toText(caller);
-      assert isTeamMember(principalId);
-
-      return {
-        accountancyCanisterId = accountancy_canister_id;
-        timesheetsCanisterId = timesheets_canister_id;
-        projectsCanisterId = projects_canister_id;
-        jobsCanisterId = jobs_canister_id;
-        salesCanisterId = sales_canister_id;
-        storageCanisterId = storage_canister_id;
-      }
     };
 
     /* Organisation management */
