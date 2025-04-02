@@ -4,10 +4,8 @@ import Nat "mo:base/Nat";
 import Iter "mo:base/Iter";
 import Principal "mo:base/Principal";
 import Base "mo:waterway-mops/BaseTypes";
-import Environment "../utilities/Environment";
 import T "../data-types/types";
 import Utilities "../utilities/Utilities";
-import Management "../utilities/Management";
 
 module {
 

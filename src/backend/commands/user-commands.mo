@@ -1,6 +1,6 @@
 import Base "mo:waterway-mops/BaseTypes";
 
-module ProfileCommands {
+module UserCommands {
 
     public type CreateProfile = {
         principalId: Base.PrincipalId;

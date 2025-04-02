@@ -1,27 +1,22 @@
 import Departments "../data-types/organisation-departments";
 import UserRoles "../data-types/user-roles";
-import Base "mo:waterway-mops/BaseTypes";
+import Ids "mo:waterway-mops/Ids";
+import AppIds "app-ids";
+import AppEnums "app-enums";
 
 module OrganisationTypes {
 
-//back burner for ideas
-    //idea
-
-  public type IdeaId = Nat32;
-  public type AddressId = Nat32;
-  public type ContactId = Nat32;
-  public type OrganisationId = Base.CanisterId;
   public type Organisation = {
-    id: OrganisationId;
-    ownerId: Base.PrincipalId;
+    id: AppIds.OrganisationId;
+    ownerId: Ids.PrincipalId;
     name: Text;
     friendlyName : Text;
     referenceNumber : Text;
     logo : ?Blob;
     banner : ?Blob;
     members : [TeamMember];
-    mainAddressId : ?AddressId;
-    mainContactId : ?ContactId;
+    mainAddressId : ?AppIds.AddressId;
+    mainContactId : ?AppIds.ContactId;
     addresses : [Address];
     contacts : [Contact];
     auditHistory : [AuditRecord];
@@ -33,32 +28,27 @@ module OrganisationTypes {
   };
 
   public type AuditRecord = {
-    changeType : ChangeType;
+    changeType : AppEnums.ChangeType;
     timestamp : Int64;
-    visibilityLevel : VisibilityLevel;
+    visibilityLevel : AppEnums.VisibilityLevel;
   };
 
   public type Address = {
-    id : AddressId;
+    id : AppIds.AddressId;
     addressName : Text;
     addressLines : [Text];
     lastModified : Int;
   };
 
   public type TeamMember = {
-    principalId: Base.PrincipalId;
-    organisationId: OrganisationId;
+    principalId: Ids.PrincipalId;
+    organisationId: AppIds.OrganisationId;
     positions: [OrganisationPosition];
     joined: Int;
   };
 
-  public type Idea = {
-    id: IdeaId;
-    organisationId: OrganisationId;
-  };
-
   public type AccessRequest = {
-    requesterPrincipalId: Base.PrincipalId;
+    requesterPrincipalId: Ids.PrincipalId;
     requestTime: Int;
   };
 
@@ -69,46 +59,19 @@ module OrganisationTypes {
     ended: Int;
   };
 
-  public type ChangeType = {
-    #OrganisationDetailUpdated;
-    #CustomerRecordUpdated;
-    #SupplierRecordUpdated;
-    #ChartOfAccountsUpdated;
-    #OrganisationUserAdded;
-    #OrganisationUserRemoved;
-    #OrganisationUserRoleUpdated;
-  };
-
   public type OrganisationInvite = {
-    sentBy: Base.PrincipalId;
+    sentBy: Ids.PrincipalId;
     sentOn: Int;
-    sentTo: Base.PrincipalId;
+    sentTo: Ids.PrincipalId;
     position: OrganisationPosition;
   };
 
-  public type VisibilityLevel = {
-    #Private;
-    #Internal;
-    #Public;
-  };
-
-  public type ContactMethod = {
-    #Email;
-    #Phone;
-    #Post;
-    #OpenChat;
-    #Twitter;
-    #Discord;
-    #Telegram;
-    #Other;
-  };
-
   public type Contact = {
-    id : ContactId;
+    id : AppIds.ContactId;
     firstName : Text;
     lastName : Text;
     email : Text;
-    addressId : AddressId;
+    addressId : AppIds.AddressId;
     jobTitle : Text;
     lastModified : Int;
   };

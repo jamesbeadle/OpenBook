@@ -1,22 +1,110 @@
+
+/* ----- Mops Packages ----- */
+
 import Blob "mo:base/Blob";
+import Debug "mo:base/Debug";
 import Iter "mo:base/Iter";
 import Principal "mo:base/Principal";
 import Result "mo:base/Result";
 import Text "mo:base/Text";
-import Debug "mo:base/Debug";
 import Base "mo:waterway-mops/BaseTypes";
-import T "data-types/types";
-import T_Old "data-types/old-types";
-import ProfileDTOs "dtos/profile-dtos";
-import OrganisationDTOs "dtos/organisation-dtos";
+
+
+/* ----- Canister Definition Files ----- */
+
+import UsersCanister "canister_definitions/users-canister";
+import OrganisationCanister "canister_definitions/organisation-canister";
+
+
+/* ----- Queries ----- */
+
+import OrganisationQueries "cqrs/queries/organisation_queries";
+import UserQueries "cqrs/queries/user_queries";
+import TeamQueries "cqrs/queries/team_queries";
+import ProjectQueries "cqrs/queries/project_queries";
+import TaskQueries "cqrs/queries/project_queries";
+import SupportQueries "cqrs/queries/support_queries";
+import PromotionQueries "cqrs/queries/promotion_queries";
+
+
+/* ----- Commands ----- */
+
+
+
+/* ----- Managers ----- */
+
+import CyclesManager "managers/cycles-manager";
+import OrganisationManager "managers/organisation-manager";
 import ProfileManager "managers/profile-manager";
 import TreasuryManager "managers/treasury-manager";
-import OrganisationManager "managers/organisation-manager";
-import CyclesManager "managers/cycles-manager";
-import OrganisationQueries "cqrs/queries/organisation_queries";
-import ProfileQueries "cqrs/queries/profile_queries";
+
+
+/* ----- Environment ----- */
+
+
 
 actor Self {
+
+
+
+
+  /* ----- Organisation Queries ----- */
+    //GetOrganisation
+    //ListOrganisations
+    //FindOrganisation
+    //RemoveOrganisation
+
+  /* ----- Organisation Commands ----- */
+    //PurchaseOrganisation
+    //UpdateOrganisation
+    //SetOrganisationBanner
+    //SetOrganisationColourScheme
+    //SetOrganisationIcon
+
+
+
+  /* ----- Projects Commands ----- */
+    //CreateProject
+    //UpdateProject
+    //UpdateProjectRanking
+    //AddProjectMember
+    //RemoveProjectMember
+    //AddProjectLink
+    //RemoveProjectLink
+
+
+  /* ----- Task Commands ----- */
+    //AddTask
+    //AssignTask
+    //UnassignTask
+    //UpdateTaskStatus
+    //SetTaskGroup?
+
+
+  public shared ({ caller }) func getProfile(dto: ProfileQueries.GetProfile) : async Result.Result<ProfileQueries.ProfileDTO, T.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.toText(caller);
+    assert dto.principalId == principalId;
+
+  };
+
+  /*
+  
+    OpenBook maintains a many to many relationship between users and organisations
+
+    Users can
+    - Create Oranisation
+
+    Organisations can
+    - Invite Users
+    - Add Projects
+    - Add Tasks
+  
+  */
+
+
+
+
 
   public shared ({ caller }) func getProfile(dto: ProfileQueries.GetProfile) : async Result.Result<ProfileQueries.ProfileDTO, T.Error> {
     assert not Principal.isAnonymous(caller);

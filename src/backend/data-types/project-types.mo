@@ -18,6 +18,7 @@ module ProjectTypes {
   };
 
   public type ProjectStatus = {
+    #Idea;
     #Proposed;
     #Approved;
     #NotStarted;
@@ -100,6 +101,7 @@ module ProjectTypes {
   };
 
   public type TaskStatus = {
+    #Idea;
     #New;
     #Draft;
     #Todo;
