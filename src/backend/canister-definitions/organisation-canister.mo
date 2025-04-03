@@ -1,6 +1,7 @@
 import MopsBaseTypes "../mops/mops_base_types";
 import OrganisationTypes "../data-types/organisation-types";
 import ProjectTypes "../data-types/project-types";
+import SupportTypes "../data-types/support-types";
 
 /* ----- Mops Packages ----- */
 
@@ -8,6 +9,7 @@ import ProjectTypes "../data-types/project-types";
 
 actor class _OrganisationCanister() {
     
+
     /* ----- Stable Variables ----- */
     
     private stable var name: Text = "";
@@ -15,9 +17,8 @@ actor class _OrganisationCanister() {
     private stable var colour_palette: MopsBaseTypes.ColourPalette = { primary = "#000000"; secondary = "#FFFFFF"; tertiary = "#0F0F0F"; };
     private stable var team_members: [OrganisationTypes.TeamMember] = [];
     private stable var projects: [ProjectTypes.Project] = [];
-    private stable var support_queries: [OrganisationTypes.SupportQuery] = [];
+    private stable var support_queries: [SupportTypes.SupportTickets] = [];
     private stable var promotional_campaigns: [PromotionalTypes.PromotionalCampaign] = [];
-
 
 
     /* ----- Commands ----- */
