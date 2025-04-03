@@ -26,5 +26,9 @@ module OrganisationQueries {
         banner: ?Blob;
         colourPalette: MopsBaseTypes.ColourPalette;
     };
+
+    public type FindOrganisation = {
+        searchTerm: Text;
+    };
     
 };

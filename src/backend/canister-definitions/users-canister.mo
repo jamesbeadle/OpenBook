@@ -17,19 +17,20 @@ import UserQueries "../queries/user-queries";
 import UserCommands "../commands/user-commands";
 import Utilities "../utilities/utilities";
 import AppTypes "../data-types/app-types";
+import UserTypes "../data-types/user-types";
 
 actor class _UserCanister() {
     private stable var stable_user_group_indexes : [(Ids.PrincipalId, Nat8)] = [];
-    private stable var userGroup1 : [AppTypes.User] = [];
-    private stable var userGroup2 : [AppTypes.User] = [];
-    private stable var userGroup3 : [AppTypes.User] = [];
-    private stable var userGroup4 : [AppTypes.User] = [];
-    private stable var userGroup5 : [AppTypes.User] = [];
-    private stable var userGroup6 : [AppTypes.User] = [];
-    private stable var userGroup7 : [AppTypes.User] = [];
-    private stable var userGroup8 : [AppTypes.User] = [];
-    private stable var userGroup9 : [AppTypes.User] = [];
-    private stable var userGroup10 : [AppTypes.User] = [];
+    private stable var userGroup1 : [UserTypes.User] = [];
+    private stable var userGroup2 : [UserTypes.User] = [];
+    private stable var userGroup3 : [UserTypes.User] = [];
+    private stable var userGroup4 : [UserTypes.User] = [];
+    private stable var userGroup5 : [UserTypes.User] = [];
+    private stable var userGroup6 : [UserTypes.User] = [];
+    private stable var userGroup7 : [UserTypes.User] = [];
+    private stable var userGroup8 : [UserTypes.User] = [];
+    private stable var userGroup9 : [UserTypes.User] = [];
+    private stable var userGroup10 : [UserTypes.User] = [];
 
     private stable var activeGroupIndex : Nat8 = 0;
     private stable var totalUsers = 0;

@@ -12,19 +12,19 @@ import Base "mo:waterway-mops/BaseTypes";
 
 /* ----- Canister Definition Files ----- */
 
-import UsersCanister "canister_definitions/users-canister";
-import OrganisationCanister "canister_definitions/organisation-canister";
+import UsersCanister "canister-definitions/users-canister";
+import OrganisationCanister "canister-definitions/organisation-canister";
 
 
 /* ----- Queries ----- */
 
-import OrganisationQueries "cqrs/queries/organisation_queries";
-import UserQueries "cqrs/queries/user_queries";
-import TeamQueries "cqrs/queries/team_queries";
-import ProjectQueries "cqrs/queries/project_queries";
-import TaskQueries "cqrs/queries/project_queries";
-import SupportQueries "cqrs/queries/support_queries";
-import PromotionQueries "cqrs/queries/promotion_queries";
+import OrganisationQueries "queries/organisation-queries";
+import ProjectQueries "queries/project-queries";
+import PromotionQueries "queries/promotion-queries";
+import SupportQueries "queries/support-queries";
+import TaskQueries "queries/project-queries";
+import TeamQueries "queries/team-queries";
+import UserQueries "queries/user-queries";
 
 
 /* ----- Commands ----- */
@@ -33,7 +33,6 @@ import PromotionQueries "cqrs/queries/promotion_queries";
 
 /* ----- Managers ----- */
 
-import CyclesManager "managers/cycles-manager";
 import OrganisationManager "managers/organisation-manager";
 import ProfileManager "managers/profile-manager";
 import TreasuryManager "managers/treasury-manager";
@@ -42,19 +41,58 @@ import TreasuryManager "managers/treasury-manager";
 /* ----- Environment ----- */
 
 
-
 actor Self {
 
-
-
-
+  
   /* ----- Organisation Queries ----- */
-    //GetOrganisation
-    //ListOrganisations
-    //FindOrganisation
-    //RemoveOrganisation
+  
+  public shared ({ caller }) func listOrganisations(dto: OrganisationQueries.ListOrgnisations) : async Result.Result<OrganisationQueries.OrganisationList, Enums.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.fromText(caller);
+    assert await hasMembership(principalId);
+    return await organisationManager.listOrganisations(dto);
+  };
+
+  public shared ({ caller }) func getOrganisation(dto: OrganisationQueries.GetOrganisation) : async Result.Result<OrganisationQueries.Organisation, Enums.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.fromText(caller);
+    assert await hasMembership(principalId);
+    return await organisationManager.getOrganisation(dto);
+  };
+
+  public shared ({ caller }) func findOrganisation(dto: OrganisationQueries.FindOrganisation) : async Result.Result<OrganisationQueries.Organisation, Enums.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.fromText(caller);
+    assert await hasMembership(principalId);
+    return await organisationManager.findOrganisation(dto);
+  };
+  
 
   /* ----- Organisation Commands ----- */
+
+  //CreateOrganisation
+  //UpdateOrganisationName
+  //UpdateOrganisationLegalName
+  //UpdateOrganisationLogo
+  //UpdateOrganisationBanner
+  //UpdateOrganisationColourPalette
+  //RemoveOrganisation
+  //RecoverOrganisation
+  //AcceptAccessRequest
+  //RejectAccessRequest
+  //
+
+
+  public shared ({ caller }) func removeOrganisation(dto: OrganisationQueries.RemoveOrganisation) : async Result.Result<(), Enums.Error> {
+    assert not Principal.isAnonymous(caller);
+    let principalId = Principal.fromText(caller);
+    assert await hasMembership(principalId);
+    return await organisationManager.removeOrganisation(dto);
+  };
+
+
+
+    //
     //PurchaseOrganisation
     //UpdateOrganisation
     //SetOrganisationBanner

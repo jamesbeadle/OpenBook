@@ -1,6 +1,8 @@
 import Ids "mo:waterway-mops/Ids";
 import AppIds "app-ids";
-import AppEnums "app-enums";
+import AppEnums "../enums/app-enums";
+import UserEnums "../enums/user-enums";
+import OrganisationEnums "../enums/organisation-enums";
 
 module OrganisationTypes {
 
@@ -51,8 +53,8 @@ module OrganisationTypes {
   };
 
   public type OrganisationPosition = {
-    role: AppEnums.UserRole;
-    department: AppEnums.Department;
+    role: UserEnums.UserRole;
+    department: OrganisationEnums.Department;
     started: Int;
     ended: Int;
   };

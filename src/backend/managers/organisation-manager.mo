@@ -1,5 +1,3 @@
-import T "../data-types/types";
-import OrganisationDTOs "../dtos/organisation-dtos";
 import Result "mo:base/Result";
 import Text "mo:base/Text";
 import Array "mo:base/Array";
