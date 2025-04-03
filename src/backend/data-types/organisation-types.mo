@@ -1,5 +1,3 @@
-import Departments "../data-types/organisation-departments";
-import UserRoles "../data-types/user-roles";
 import Ids "mo:waterway-mops/Ids";
 import AppIds "app-ids";
 import AppEnums "app-enums";
@@ -53,8 +51,8 @@ module OrganisationTypes {
   };
 
   public type OrganisationPosition = {
-    role: UserRoles.UserRole;
-    department: Departments.Department;
+    role: AppEnums.UserRole;
+    department: AppEnums.Department;
     started: Int;
     ended: Int;
   };

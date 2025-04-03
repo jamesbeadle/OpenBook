@@ -1,5 +1,4 @@
 import Ids "mo:waterway-mops/Ids";
-import MembershipTypes "../data-types/membership-types";
 import MopsBaseTypes "../mops/mops_base_types";
 import AppIds "../data-types/app-ids";
 
@@ -8,7 +7,7 @@ module OrganisationCommands {
     public type CreateOrganisation = {
         createdBy: Ids.PrincipalId;
         createdOn: Int;
-        linkedMembership: MembershipTypes.Membership;
+        //linkedMembership: MembershipTypes.Membership;
         name: Text;
         legalName: Text;
         logo: ?Blob;
@@ -47,6 +46,16 @@ module OrganisationCommands {
 
     public type RecoverOrganisation = {
         organisationId: AppIds.OrganisationId;
+    };
+
+    public type AcceptAccessRequest = {
+        organisationId: AppIds.OrganisationId;
+        userId: Ids.PrincipalId;
+    };
+
+    public type RejectAccessRequest = {
+        organisationId: AppIds.OrganisationId;
+        userId: Ids.PrincipalId;
     };
 
 };

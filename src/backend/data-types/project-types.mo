@@ -1,123 +1,65 @@
-import T "types";
-import Base "mo:waterway-mops/BaseTypes";
+import Ids "mo:waterway-mops/Ids";
+import AppIds "app-ids";
+import ProjectEnums "../enums/project-enums";
+import TaskTypes "task-types";
+import AppDefinitions "app-definitions";
+import MopsBaseTypes "../mops/mops_base_types";
+import AppEnums "../enums/app-enums";
+import AppTypes "app-types";
 
 module ProjectTypes {
 
   public type Project = {
-    id: T.ProjectId;
-    status: ProjectStatus;
+    id: AppIds.ProjectId;
+    organisationId: AppIds.OrganisationId;
     name: Text;
-    startDate: ?Int;
-    endDate: ?Int;
-    members: [ProjectMember];
-    linkTree: [ProjectLink];
+    icon: ?Blob;
+    description: Text;
+    colourPalette: MopsBaseTypes.ColourPalette;
+    visibility: AppEnums.VisibilityLevel;
+    position: AppDefinitions.ListPosition;
+    status: ProjectEnums.ProjectStatus;
     stages: [ProjectStage];
-    references: [ProjectReference];
-    addedBy: Base.PrincipalId;
-    timestamp: Int;
+    milestones: [Milestone];
+    tasks: [TaskTypes.Task];
+    members: [ProjectMember];
+    links: [ProjectLink];
+    targetDates: ?AppTypes.TargetDates;
+    metaData: AppTypes.Metadata;
   };
 
-  public type ProjectStatus = {
-    #Idea;
-    #Proposed;
-    #Approved;
-    #NotStarted;
-    #InProgress;
-    #Paused;
-    #Cancelled;
-    #Completed;
+  public type ProjectStage = {
+    id: AppIds.ProjectStageId;
+    projectId: AppIds.ProjectId;
+    position: Nat16;
+    name: Text;
+    tasks: [TaskTypes.Task];
+    targetDates: ?AppTypes.TargetDates;
+    metaData: AppTypes.Metadata;
+  };
+
+  public type Milestone = {
+    index: Nat16;
+    description: Text;
+    name: Text;
+    tasks: [TaskTypes.Task];
+    
+    targetDates: ?AppTypes.TargetDates;
+    metaData: AppTypes.Metadata;
   };
 
   public type ProjectMember = {
-    principcalId: Base.PrincipalId;
+    principcalId: Ids.PrincipalId;
     role: Text;
-    addedBy: Base.PrincipalId;
+    addedBy: Ids.PrincipalId;
     timestamp: Int;
   };
 
   public type ProjectLink = {
     url: Text;
     description: Text;
-    addedBy: Base.PrincipalId;
+    addedBy: Ids.PrincipalId;
     timestamp: Int;
-  };
-
-  public type ProjectStage = {
-    index: Nat16;
-    name: Text;
-    startDate: Int;
-    endDate: Int;
-    timestamp: Int;
-    addedBy: Base.PrincipalId;
-    milestones: [Milestone];
-  };
-
-  public type ProjectReference = {
-    description: Text;
-    icon: Blob;
-    link: Text;
-    addedBy: Base.PrincipalId;
-    timestamp: Int;
-  };  
-
-  public type Milestone = {
-    index: Nat16;
-    description: Text;
-    name: Text;
-    startDate: Int;
-    endDate: Int;
-    tasks: [Task];
-    timestamp: Int;
-    addedBy: Base.PrincipalId;
-  };
-
-  public type Task = {
-    id: Nat16;
-    index: Nat16;
-    title: Text;
-    description: Text;
-    acceptanceCriteria: Text;
-    priority: PriorityLevel;
-    status: TaskStatus;
-    visibility: Visibility;
-    assignedTo: Base.PrincipalId;
-    expectedDuration: Int;
-    actualDuration: Int;
-    comments: [Text];
-    timestamp: Int;
-    addedBy: Base.PrincipalId;
-  };
-
-  public type Visibility = {
-      #Private;
-      #Protected;
-      #Public;
-  };
-
-  public type TaskComment = {
-    comment: Text;
-    timestamp: Int;
-    addedBy: Base.PrincipalId;
-  };
-
-  public type TaskStatus = {
-    #Idea;
-    #New;
-    #Draft;
-    #Todo;
-    #InProgress;
-    #InReview;
-    #Completed;
-    #Blocked;
-    #OnHold;
-    #Testing;
-    #Cancelled;
-  };
-
-  public type PriorityLevel = {
-    #LowPriority;
-    #DefaultPriority;
-    #HighPriority;
   };
 
 

@@ -1,42 +1,45 @@
-import Base "mo:waterway-mops/BaseTypes";
+import Ids "mo:waterway-mops/Ids";
+import AppIds "../data-types/app-ids";
 
 module UserCommands {
 
-    public type CreateProfile = {
-        principalId: Base.PrincipalId;
-        username: Text;
-        profilePixture: ?Blob;
-        profilePictureExtension: Text;
-        displayName : Text;
-        profession : Text;
-        firstName : Text;
-        lastName : Text;
-    };
-
-
-
-    /*
-
-      termsAccepted : Bool;
-
-      username : Text;
+    public type CreateUser = {
+      principalId: Ids.PrincipalId;
+      username: Text;
+      picture: ?Blob;
       displayName : Text;
       profession : Text;
       firstName : Text;
       lastName : Text;
-      profilePicture : Blob;
-        profilePictureExtension: Text;
+      termAgreed: Bool;
+    };
 
-      openChatUsername : Text;
-      emailAddress : Text;
-      phoneNumber : Text;
-      otherContact : Text;
+    public type UpdateUser = {
+      // TODO: Complete when data structure defined
+    };
 
-      organisations : [OrganisationTypes.OrganisationId];
-      createDate : Int;
-      lastModified : Int64;
-      userDefinedWallet : Text;
-      preferredPaymentCurrency : T.CurrencyId;
-    */
+    public type RemoveUser = {
+
+    };
+
+    public type RecoverUser = {
+
+    };
+
+    public type RequestOrganisationAccess = {
+        principalId: Ids.PrincipalId;
+        organistionId: AppIds.OrganisationId;
+    };
+
+    public type CancelOrganisationAccessRequest = {
+        principalId: Ids.PrincipalId;
+        organistionId: AppIds.OrganisationId;
+    };
+
+    public type LeaveOrganisation = {
+        principalId: Ids.PrincipalId;
+        organistionId: AppIds.OrganisationId;
+    };
+
 
 };

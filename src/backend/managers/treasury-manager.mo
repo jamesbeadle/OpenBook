@@ -4,9 +4,9 @@ import Time "mo:base/Time";
 import Principal "mo:base/Principal";
 import Blob "mo:base/Blob";
 import Nat "mo:base/Nat";
-import Base "mo:waterway-mops/BaseTypes";
+import Ids "mo:waterway-mops/Ids";
+import Account "mo:waterway-mops/Account";
 import Ledger "../defs/ledger";
-import Account "../utilities/Account";
 
 module {
 
@@ -26,7 +26,7 @@ module {
             return balance.e8s;
         };
 
-        public func purchaseOrganisation(defaultAccount: Principal, userId: Base.PrincipalId) : async Ledger.Icrc1TransferResult{
+        public func purchaseOrganisation(defaultAccount: Principal, userId: Ids.PrincipalId) : async Ledger.Icrc1TransferResult{
             let _ = await ledger.icrc1_transfer({
                 memo = ?Blob.fromArray([]);
                 from_subaccount = ?Account.principalToSubaccount(Principal.fromText(userId));

@@ -4,13 +4,11 @@ import Result "mo:base/Result";
 import Text "mo:base/Text";
 import Array "mo:base/Array";
 import Principal "mo:base/Principal";
-import Management "../utilities/Management";
 import OrganisationCanister "../canister-defs/organisation";
 import Utilities "../utilities/Utilities";
 import Cycles "mo:base/ExperimentalCycles";
 import Option "mo:base/Option";
 import Base "mo:waterway-mops/BaseTypes";
-import Environment "../utilities/Environment";
 import Org "../data-types/organisation-types";
 
 module {

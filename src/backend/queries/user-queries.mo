@@ -1,11 +1,17 @@
-import Base "mo:waterway-mops/BaseTypes";
-import OrganisationTypes "../../data-types/organisation-types";
-import T "../../data-types/types";
+import Ids "mo:waterway-mops/Ids";
+import AppIds "../data-types/app-ids";
+module UserQueries {
 
-module ProfileQueries {
+    public type ListUserOrganisations = {
 
-    public type ProfileDTO = {
-      principalId : Base.PrincipalId;
+    };
+
+    public type UserOrganisations = {
+
+    };
+
+    public type User = {
+      principalId : Ids.PrincipalId;
       username : Text;
       displayName : Text;
       profession : Text;
@@ -17,14 +23,14 @@ module ProfileQueries {
       otherContact : Text;
       termsAccepted : Bool;
       profilePicture : Blob;
-      organisations : [OrganisationTypes.OrganisationId];
+      organisations : [AppIds.OrganisationId];
       createDate : Int;
       lastModified : Int64;
       userDefinedWallet : Text;
-      preferredPaymentCurrency : T.CurrencyId;
+      preferredPaymentCurrency : AppIds.CurrencyId;
     }; 
 
-    public type GetProfile = {
-      principalId : Base.PrincipalId;
+    public type GetUser = {
+      principalId : Ids.PrincipalId;
     };
 };
