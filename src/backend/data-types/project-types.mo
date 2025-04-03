@@ -11,13 +11,11 @@ module ProjectTypes {
 
   public type Project = {
     id: AppIds.ProjectId;
-    organisationId: AppIds.OrganisationId;
     name: Text;
     icon: ?Blob;
     description: Text;
     colourPalette: MopsBaseTypes.ColourPalette;
     visibility: AppEnums.VisibilityLevel;
-    position: AppDefinitions.ListPosition;
     status: ProjectEnums.ProjectStatus;
     stages: [ProjectStage];
     milestones: [Milestone];
@@ -25,26 +23,27 @@ module ProjectTypes {
     members: [ProjectMember];
     links: [ProjectLink];
     targetDates: ?AppTypes.TargetDates;
+    position: AppDefinitions.ListPosition;
     metaData: AppTypes.Metadata;
   };
 
   public type ProjectStage = {
     id: AppIds.ProjectStageId;
-    projectId: AppIds.ProjectId;
-    position: Nat16;
     name: Text;
     tasks: [TaskTypes.Task];
     targetDates: ?AppTypes.TargetDates;
+    position: AppDefinitions.ListPosition;
     metaData: AppTypes.Metadata;
   };
 
   public type Milestone = {
+    id: AppIds.ProjectMilestoneId;
     index: Nat16;
     description: Text;
     name: Text;
     tasks: [TaskTypes.Task];
-    
     targetDates: ?AppTypes.TargetDates;
+    position: AppDefinitions.ListPosition;
     metaData: AppTypes.Metadata;
   };
 
