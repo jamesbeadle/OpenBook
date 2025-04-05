@@ -7,4 +7,6 @@ module TeamQueries {
     //get team member requests
 
     //get requests by team member
+
+    public type TeamMember = {};
 };

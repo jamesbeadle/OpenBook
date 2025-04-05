@@ -17,7 +17,7 @@ actor class _OrganisationCanister() {
     private stable var colour_palette: MopsBaseTypes.ColourPalette = { primary = "#000000"; secondary = "#FFFFFF"; tertiary = "#0F0F0F"; };
     private stable var team_members: [OrganisationTypes.TeamMember] = [];
     private stable var projects: [ProjectTypes.Project] = [];
-    private stable var support_queries: [SupportTypes.SupportTickets] = [];
+    private stable var support_queries: [SupportTypes.SupportTicket] = [];
     private stable var promotional_campaigns: [PromotionalTypes.PromotionalCampaign] = [];
 
 

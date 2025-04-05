@@ -1,3 +1,3 @@
 module SupportTypes {
-    public type SupportTicket {};
+    public type SupportTicket = {};
 }
