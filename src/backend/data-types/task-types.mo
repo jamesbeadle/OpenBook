@@ -16,9 +16,9 @@ module TaskTypes {
     visibility: AppEnums.VisibilityLevel;
     assignedTo: Ids.PrincipalId;
     comments: [Text];
-
     targetDates: ?AppTypes.TargetDates;
     metaData: AppTypes.Metadata;
+    tasks: [Task];
   };
 
   public type TaskComment = {
