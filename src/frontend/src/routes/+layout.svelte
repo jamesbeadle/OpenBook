@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, type Snippet } from "svelte";
   import { fade } from "svelte/transition";
   import { browser } from "$app/environment";
   import { initAuthWorker } from "$lib/services/worker.auth.services";
@@ -9,43 +9,32 @@
   import { authSignedInStore } from "$lib/derived/auth.derived";
   import Welcome from "$lib/components/home/welcome.svelte";
   import Dashboard from "$lib/components/dashboard/dashboard.svelte";
+    import { get } from "svelte/store";
 
+  interface Props { children: Snippet }
+  let { children }: Props = $props();
+    
   let worker: { syncAuthIdle: (auth: AuthStoreData) => void } | undefined;
-  const init = async () => await Promise.all([syncAuthStore()]);
-  const syncAuthStore = async () => {
-    if (!browser) {
-      return;
-    }
+  let isLoading = $state(true);
 
-    try {
-      await authStore.sync();
-    } catch (err: unknown) {
-      console.error("Error syncing auth store", err);
-    }
+  const init = async () => {
+    if (!browser) return;
+    await authStore.sync();
   };
 
   onMount(async () => {
+    if (browser) {
+      document.querySelector('#app-spinner')?.remove();
+    }
+    await init();
+    const identity = get(authStore).identity;
     worker = await initAuthWorker();
+    isLoading = false;
   });
-
-  $: worker, $authStore, (() => worker?.syncAuthIdle($authStore))();
-
-  $: (() => {
-    if (!browser) {
-      return;
-    }
-
-    if ($authStore === undefined) {
-      return;
-    }
-
-    const spinner = document.querySelector("body > #app-spinner");
-    spinner?.remove();
-  })();
-
 </script>
 
-<svelte:window on:storage={syncAuthStore} />
+<svelte:window on:storage={authStore.sync} />
+
 {#await init()}
   <div in:fade>
     <FullScreenSpinner />
@@ -55,7 +44,7 @@
       <Welcome />
   {:else}
     <Dashboard>
-      <slot></slot>
+      {@render children()}
     </Dashboard>
   {/if}
 {/await}

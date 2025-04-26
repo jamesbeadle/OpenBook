@@ -2,6 +2,7 @@ import MopsBaseTypes "../mops/mops_base_types";
 import OrganisationTypes "../data-types/organisation-types";
 import ProjectTypes "../data-types/project-types";
 import SupportTypes "../data-types/support-types";
+import PromotionalTypes "../data-types/promotional-types";
 
 /* ----- Mops Packages ----- */
 

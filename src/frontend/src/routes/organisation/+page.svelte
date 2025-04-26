@@ -1,7 +1,7 @@
 
 <script lang="ts">
     import { onMount } from "svelte";
-      import Layout from "../Layout.svelte";
+      import Layout from "../+layout.svelte";
     
     onMount(async () => {
     });
