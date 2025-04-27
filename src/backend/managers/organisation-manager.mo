@@ -2,18 +2,20 @@ import Result "mo:base/Result";
 import Text "mo:base/Text";
 import Array "mo:base/Array";
 import Principal "mo:base/Principal";
-import OrganisationCanister "../canister-defs/organisation";
-import Utilities "../utilities/Utilities";
 import Cycles "mo:base/ExperimentalCycles";
 import Option "mo:base/Option";
 import Base "mo:waterway-mops/BaseTypes";
+import Ids "mo:waterway-mops/Ids";
+import Enums "mo:waterway-mops/Enums";
 import Org "../data-types/organisation-types";
+import OrganisationCommands "../commands/organisation-commands";
+import OrganisationQueries "../queries/organisation-queries";
 
 module {
   public class OrganisationManager() {
     
     private var unique_organisation_names : [Text] = [];
-    private var organisation_canister_ids: [Base.CanisterId] = [];
+    private var organisation_canister_ids: [Ids.CanisterId] = [];
 
     private var storeCanisterId : ?((canisterId : Text) -> async ()) = null;
     private var backendCanisterController : ?Principal = null;
@@ -28,7 +30,7 @@ module {
       backendCanisterController := ?controller;
     };
     
-    public func createOrganisation(dto: OrganisationDTOs.CreateOrganisation) : async Result.Result<Org.OrganisationId, T.Error> {
+    public func createOrganisation(dto: OrganisationCommands.CreateOrganisation) : async Result.Result<(), Enums.Error> {
       
       let nameTaken = isOrganisationNameAvailable(dto.name);
       if(nameTaken){
@@ -58,14 +60,14 @@ module {
       };      
     };
 
-    public func getOrganisation(organisationId: Org.OrganisationId) : async ?OrganisationDTOs.Organisation {
+    public func getOrganisation(dto: OrganisationQueries.GetOrganisation) : async Result.Result<OrganisationQueries.Organisation, Enums.Error> {
       let organisation_canister = actor (organisationId) : actor {
         getOrganisation : () -> async ?OrganisationDTOs.Organisation;
       };
       return await organisation_canister.getOrganisation();
     };
 
-    public func deleteOrganisation(organisationId: Org.OrganisationId) : async Result.Result<(), T.Error> {
+    public func deleteOrganisation(dto: OrganisationQueries.DeleteOrganisation) : async Result.Result<(), Enums.Error> {
 
       let organisation = await getOrganisation(organisationId);
 

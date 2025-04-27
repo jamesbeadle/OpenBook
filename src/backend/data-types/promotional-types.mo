@@ -1,6 +1,6 @@
-import TeamQueries "../queries/team-queries";
 import AppTypes "app-types";
 import AppIds "app-ids";
+import Ids "mo:waterway-mops/Ids";
 module PromotionalTypes {
 
     public type Campaign = {
@@ -17,8 +17,8 @@ module PromotionalTypes {
         location: AppTypes.Address;
         startDate: Int;
         endDate: Int;
-        teamMembers: [AppIds.TeamMemberId];
-        eventLead: AppIds.TeamMemberId;
+        teamMembers: [Ids.PrincipalId];
+        eventLead: Ids.PrincipalId;
     };
 
     public type StrategicEventType = {

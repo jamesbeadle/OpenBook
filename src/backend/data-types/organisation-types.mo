@@ -1,8 +1,8 @@
 import Ids "mo:waterway-mops/Ids";
 import AppIds "app-ids";
-import AppEnums "../enums/app-enums";
 import UserEnums "../enums/user-enums";
 import OrganisationEnums "../enums/organisation-enums";
+import AppTypes "app-types";
 
 module OrganisationTypes {
 
@@ -10,34 +10,19 @@ module OrganisationTypes {
     id: AppIds.OrganisationId;
     ownerId: Ids.PrincipalId;
     name: Text;
-    friendlyName : Text;
-    referenceNumber : Text;
+    officialName : Text;
     logo : ?Blob;
     banner : ?Blob;
     members : [TeamMember];
     mainAddressId : ?AppIds.AddressId;
     mainContactId : ?AppIds.ContactId;
-    addresses : [Address];
-    contacts : [Contact];
-    auditHistory : [AuditRecord];
+    addresses : [AppTypes.Address];
+    contacts : [AppTypes.Contact];
     invites : [OrganisationInvite];
-    lastModified : ?Int64;
+    lastModified : ?Int;
     createdOn: Int;
     accessRequests: [AccessRequest];
-    chargeBalance : Nat;
-  };
-
-  public type AuditRecord = {
-    changeType : AppEnums.ChangeType;
-    timestamp : Int64;
-    visibilityLevel : AppEnums.VisibilityLevel;
-  };
-
-  public type Address = {
-    id : AppIds.AddressId;
-    addressName : Text;
-    addressLines : [Text];
-    lastModified : Int;
+    auditHistory : [AppTypes.AuditRecord];
   };
 
   public type TeamMember = {
@@ -45,11 +30,6 @@ module OrganisationTypes {
     organisationId: AppIds.OrganisationId;
     positions: [OrganisationPosition];
     joined: Int;
-  };
-
-  public type AccessRequest = {
-    requesterPrincipalId: Ids.PrincipalId;
-    requestTime: Int;
   };
 
   public type OrganisationPosition = {
@@ -66,14 +46,9 @@ module OrganisationTypes {
     position: OrganisationPosition;
   };
 
-  public type Contact = {
-    id : AppIds.ContactId;
-    firstName : Text;
-    lastName : Text;
-    email : Text;
-    addressId : AppIds.AddressId;
-    jobTitle : Text;
-    lastModified : Int;
+  public type AccessRequest = {
+    requesterPrincipalId: Ids.PrincipalId;
+    requestTime: Int;
   };
 
 };
